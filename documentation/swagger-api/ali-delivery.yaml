@@ -1,0 +1,777 @@
+openapi: 3.0.1
+info:
+  title: Delivery box
+  version: 1.0.0
+  description: |- 
+    ### Условные сокращения
+    - БД - база данных 
+tags:
+  - name: Запросы пользователя
+    description: Запросы для пользователя 
+servers:
+  - url: http://localhost:8080/api/v1/
+    description: Локальный Компьютер
+paths: 
+  /users/user:
+    post:
+      summary: Метод регистрации пользователя
+      description: |-
+        ### Регистрация 
+        Данный запрос создает пользователя в системе, всего 3 вида:
+        - **Курьер**
+
+        - **Заказчик** (он же и получатель если зарегестрирован в приложении - **Стандартный пользователь**)
+
+        - **Неавторизованный пользователь** (**Заказчик** может указать данные **получателя**, после чего он примет роль *"неавторизованно пользователя"* и тогда получатель сможет получить уведомления о заказе)
+
+        - Вводятся обязательные поля для заполнения, без которых регистрация нового пользователя невозможна: **phone** или **email**, **firstName**, **lastName**, **passportID**, **birthDate**
+        
+        
+      
+      tags: 
+        - Запросы пользователя
+      operationId: regUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "201":
+          description: |-
+           ### Пользователь создан
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+                
+        '400':
+          description: |-
+             ### Неверный запрос, возвращается в случае:
+             - Когда введены некорректные данные в поля запроса
+             - Когда поля не заполнены до конца
+             - Пользователь с такими данными уже существует 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /users/user/{userId}:
+    put:
+      summary: Обновить данные пользователя
+      description: |-
+       ### Данный запрос реализует обновление данных пользователя
+
+       - Позволяет уже существующему пользователю изменить какой-либо пункт в своей профиле
+
+       - Редактирование осуществляется через запрос в базу данных по параметру **userID**, после чего в базе данных происходит замена информации о пользователе.
+
+      tags:
+        -  Запросы пользователя 
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+          description: Идентификатор пользователя
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        '200':
+          description: |-
+           ### Данные пользователя обновлены
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        '404':
+          description: |-
+            ### Пользователь не найден:
+              - **userID** параметр отсутсвует в базе данных
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '400':
+          description: |-
+            ### Неверный запрос
+            - Данные введены некорректно
+            - Прочие ошибки 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          
+          
+  /orders:
+    post:
+      summary: Создать заказ
+      description: |-
+        ### Создание заказа включает себя следующие параметры:
+
+        - Автоматически назначается **orderID** для дальнейших манипуляций с заказом.
+
+        - Параметр **status** выставлется в значение "размещен" при создании заказа.
+
+        - Заказчик заполняет сведения о заказе, которые будут размещены (**weight**, **size**, **boxInfo**) также адрес отправления и адрес получения соотвественно(**fromAddress**, **toAddress**)
+
+        - Цена будет автоматически высчитываться в зависимости от расстояния и габаритов заказа
+
+        - Заказ получает привязку к **userId** через **senderId**, чтобы заказ был прикреплен к определенному пользователю.
+
+        - Заказчик указывает **recipientId**(если это уже зарегистрированный пользователь), если нет, то заказчик может заполнить данные получателя и создать неавторизованного пользователя которому тоже присвоется ID в базе данных.
+
+      tags: 
+        - Запросы пользователя 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Order"
+      responses:
+        '201':
+          description: |-
+           ### Заказ успешно создан
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+                
+        '400':
+          description: |-
+           ### Неверный запрос:
+            Появляется в случае неккоректного заполнения параметров:
+              - Указаны габариты превыщающие лимиты доставки
+              - Указан неверный адрес
+              - Получатель не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  
+  
+  /orders/{orderId}:
+    put:
+      summary: Изменить данные заказа
+      description: |-
+        ### Редактирование заказа
+        Данный запрос позволяет изменить данные заказа, поиск заказа в БД осуществляется при помощи параметра **userID**.
+      tags:
+        - Запросы пользователя
+      parameters:
+        - in: path
+          name: orderId
+          required: true
+          schema:
+            type: integer
+          description: "Идентификатор заказа, который нужно изменить"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Order"
+      responses:
+        '200':
+          description: |-
+           ### Заказ успешно обновлен
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        '404':
+          description: |- 
+            ### Заказ не найден
+            **orderId** не существует в базе.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          
+        '400':
+          description: |- 
+            ### Неверный запрос
+            - Данные введены некорректно
+            - Прочие ошибки 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    patch:
+      summary: Удалить заказ (изменить статус на "удалённый")
+      description: |-
+        ### Удаление заказа для пользователя:
+        Данный запрос позволяет удалить заказ для пользователя, при этом в базе данных заказ остается, но на странице пользователя он неотображается. Для этого в бвзе данных у нас есть маркер **isDeleted**
+      tags:
+        - Запросы пользователя
+      parameters:
+        - in: path
+          name: orderId
+          required: true
+          schema:
+            type: integer
+          description: "Идентификатор заказа, который нужно удалить (изменить статус)"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  example: "удалённый"
+                  description: "Новый статус заказа, чтобы пометить его как удалённый"
+              required:
+                - status
+      responses:
+        '200':
+          description: |-
+           ### Статус заказа успешно изменён на "удалённый"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orderId:
+                    type: integer
+                    example: 101
+                  status:
+                    type: string
+                    example: "удалённый"
+        '404':
+          description: |-
+           ### Заказ не найден
+            **OrderId** отсутсвует в базе данных
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '400':
+          description: |-
+           ### Неверный запрос
+           - Данные введены некорректно
+           - Прочие ошибки 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  
+  
+  /users/user/{userId}/orders:
+    get:
+      summary: Получить список всех заказов, сделанных пользователем
+      description: |-
+       ### Получение списка всех заказов:
+
+        - Даннный запрос осуществляется при помощи параметра **userId**, который в свою очередь привязан к **senderId**, что поволяет осуществить поиск заказа конкретного пользователя в нашей базе данных.
+      tags:
+        - Запросы пользователя
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+          description: "Идентификатор пользователя, для которого необходимо получить список заказов"
+      responses:
+        '200':
+          description: |-
+           ### Список заказов, сделанных пользователем
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Order"
+        '404':
+          description: |- 
+           ### Пользователь не найден
+           **userId** отсутствует в базе
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '400':
+          description: |-
+           ### Неверный запрос
+           - У пользователя нет заказов
+           - Данные введены некорректно
+
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /orders/{orderId}/tracking:
+    get:
+      summary: Отслеживать заказ
+      description: |-
+       ### Метод отслеживания доставки
+       - Данный метод позволяет остслеживать в реальном времени состояние заказа
+
+       - При помощи параметра **orderId** мы будем осуществлять поиск заказа в нашей БД
+
+       - После чего пользователь получит текущую информацию по заказу, его статус (*в пути*), сроки доставки, информацию о курьере (*телефон для нештатных ситуаций*) 
+
+      tags:
+        - Запросы пользователя 
+      parameters:
+        - in: path
+          name: orderId
+          required: true
+          schema:
+            type: integer
+          description: "Идентификатор заказа, который нужно отследить"
+      responses:
+        '200':
+          description: |-
+           ### Информация об отслеживании заказа
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orderId:
+                    type: integer
+                    example: 101
+                    description: "Идентификатор заказа"
+                  status:
+                    type: string
+                    example: "в пути"
+                    description: "Текущий статус заказа"
+                  estimatedDelivery:
+                    type: string
+                    format: date
+                    example: "2024-09-15"
+                    description: "Предполагаемая дата доставки"
+                  fromAddress:
+                    type: string
+                    example: "ул. Eceнина, дом каруселина"
+                    description: "Адрес отправления"
+                  toAddress:
+                    type: string
+                    example: "ул. Пушкина, дом калотушкина"
+                    description: "Адрес доставки"
+        '404':
+          description: |-
+           ### Заказ не найден
+           - **orderId** не найден в базе 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '400':
+          description: |-
+           ### Неверный запрос
+           - У пользователя нет заказов
+           - Данные введены некорректно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+                
+                
+  /users/courier:
+    post:
+      summary: Метод регистрации Курьера
+      description: |-
+        ### Регистрация 
+        Данный запрос создает пользователя в системе, всего 3 вида:
+        - **Курьер**
+
+        - **Заказчик** (он же и получатель если зарегестрирован в приложении - **Стандартный пользователь**)
+
+        - **Неавторизованный пользователь** (**Заказчик** может указать данные **получателя**, после чего он примет роль *"неавторизованно пользователя"* и тогда получатель сможет получить уведомления о заказе)
+
+        - Вводятся обязательные поля для заполнения, без которых регистрация нового пользователя невозможна: **phone** или **email**, **firstName**, **lastName**, **passportID**, **birthDate**
+        
+      tags: 
+        - Запросы курьера 
+      operationId: regCourier
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "201":
+          description: |-
+           ### Пользователь создан
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+                
+        '400':
+          description: |-
+            ### Неверный запрос, возвращается в случае:
+             - Когда введены некорректные данные в поля запроса
+             - Когда поля не заполнены до конца
+             - Пользователь с такими данными уже существует
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+                
+  /users/courier/{userId}:
+    put:
+      summary: Обновить данные пользователя
+      description: |-
+       ### Данный запрос реализует обновление данных пользователя
+
+       - Позволяет уже существующему пользователю изменить какой-либо пункт в своей профиле
+
+       - Редактирование осуществляется через запрос в базу данных по параметру **userID**, после чего в базе данных происходит замена информации о пользователя
+      tags:
+        -  Запросы курьера 
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+          description: Идентификатор пользователя
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        '200':
+          description: |-
+           ### Данные пользователя обновлены
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        '404':
+          description: |-
+           ### Пользователь не найден:
+            - **userID** параметр отсутсвует в базе данных
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '400':
+          description: |-
+           ### Неверный запрос
+            - Данные введены некорректно
+            - Прочие ошибки 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  
+  /orders/active:
+    get:
+      summary: Получить список всех актуальных заказов
+      description: |-
+       ### Запрос курьера, который позволяет отслеживать все заказы размещеные пользователями
+       
+       - Данный запрос реализован для того, чтобы курьеры могли выбрать себе заказ
+       
+       - Данный запрос будет обращаться к базе данных, таблице **Orders**, и выводить все заказы которые имеют статус *"размещены"*
+       
+      tags:
+        - Запросы курьера
+      responses:
+        '200':
+          description: |-
+           ### Список всех актуальных заказов
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        '400':
+          description: |-
+           ### Неверный запрос
+           - Пользователь не является курьером
+           - Ошибка базы данных
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '500':
+          description: |-
+           ### Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+                
+  /orders/{orderId}/reserve:
+    patch:
+      summary: Управление заказом, манипуляции с заказом в роли курьера
+      description: |-
+       ### Запрос управления статусом заказа для курьера 
+       - Данный запрос реализован для того чтобы управлять логистикой курьера, то есть курьер может зарезервировать заказ, тем самым изменив статус заказа в нашей БД на *взят в отработку*
+       
+       - Также полсе завершения заказа, курьер может изменить статус заказа на *завершен*
+       
+       - В этом же запросе мы закрепляем курьера к заказу при помощи поля *courierId*, что помогает нам плавно отслеживать все манипуляции с заказом 
+       
+      tags:
+        - Запросы курьера
+      parameters:
+        - in: path
+          name: orderId
+          required: true
+          schema:
+            type: integer
+          description: "Идентификатор заказа, который нужно зарезервировать, завершить"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                courierId:
+                  type: integer
+                  example: 2
+                  description: "Идентификатор курьера, который берет заказ"
+                status:
+                  type: string
+                  enum:
+                    - взят в работу
+                    - завершен
+                  example: "взят в отработку"
+                  description: "Новый статус заказа при резервировании, (завершении) курьером"
+              required:
+                - courierId
+                - status
+      responses:
+        '200':
+          description: |- 
+           ###Заказ успешно зарезервирован
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orderId:
+                    type: integer
+                    example: 101
+                  courierId:
+                    type: integer
+                    example: 2
+                  status:
+                    type: string
+                    example: "взят в отработку"
+        '404':
+          description: |- 
+           ### Заказ не найден
+           - Заказ уже был взят другим курьером
+           - Заказ с таким **orderId** не существует
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '400':
+          description: |- 
+           ### Неверный запрос
+           - 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '500':
+          description: |- 
+           ### Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+                
+                
+  /orders/{orderId}/status:
+    get:
+      summary: Получить информацию о состоянии заказа
+      description: |- 
+       ### Отслеживание доставки для неавторизованных пользователей
+       
+       - После того как закзчик укажет **неавторизованного пользователя** ему будет отправлена ссылка для отслеживания через **orederId**
+       
+       - ??Добавить информацию о курьере??
+      tags:
+        - Запросы для неавторизованных пользователей
+      parameters:
+        - in: path
+          name: orderId
+          required: true
+          schema:
+            type: integer
+          description: "Идентификатор заказа для отслеживания"
+      responses:
+        '200':
+          description: Информация о состоянии заказа
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orderId:
+                    type: integer
+                    example: 101
+                    description: "Идентификатор заказа"
+                  status:
+                    type: string
+                    example: "в пути"
+                    description: "Текущий статус заказа"
+                  # trackingUrl:
+                  #   type: string
+                  #   example: "http://example.com/track/abc123"
+                  #   description: "Ссылка для отслеживания заказа"
+        '404':
+          description: |-
+           ### Заказ не найден
+           - отсутсвует **orderId**
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '400':
+          description: |- 
+           ### Неверный запро
+           - Пользователь не идентифицируется
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '500':
+          description: |- 
+           ### Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Error:
+      type: object
+      required: 
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+        message: 
+          type: string
+    Order:
+      type: object
+      properties:
+        orderId:
+          type: integer   
+          example: 101
+          description: "Идентификатор заказа, генерируется при создании"
+        status:
+          type: string
+          example: "размещен"
+          description: "Состояние заказа"
+        weight:
+          type: number
+          format: float
+          example: 1.5
+          description: "Вес заказа в килограммах"
+        price:
+          type: number
+          format: float
+          example: 500.0
+          description: "Цена заказа в валюте"
+        size:
+          type: string
+          example: "Medium"
+          description: "Размер заказа"
+        fromAddress:
+          type: string
+          example: "ул. Есенина, Дом 12"
+          description: "Адрес, откуда уходит заказ"
+        toAddress:
+          type: string
+          example: "ул. Пушкина, Дом 15"
+          description: "Адрес, куда доставляется заказ"
+        senderId:
+          type: integer
+          example: 1
+          description: "Идентификатор пользователя, который создает заказ"
+        recipientId:
+          type: integer
+          example: 3
+          description: "Идентификатор пользователя, который получит заказ"
+        boxInfo:
+          type: string
+          example: "Набор пластиковых втулок"
+          description: "Краткое описание полсылки"
+      required:
+                - status
+                - weight
+                - price
+                - size
+                - fromAddress
+                - toAddress
+                - senderId
+                - recipientId
+    User:
+      type: object
+      properties:
+        userId:
+          type: integer
+          example: 1
+          description: "Идентификатор пользователя"
+        phone:
+          type: string
+          example: "XXXXXXXXXXX"
+        email: 
+          type: string
+          example: "example@mail.ru"
+        firstName:
+          type: string
+          example: "Иван"
+        lastName:
+          type: string
+          example: "Иванов"
+        passportID:
+          type: string
+          example: "7777 77777777"
+        role: 
+          type: string
+          enum:
+            - courier
+            - customer
+          example: "customer"
+          description: Роль пользователя - курьер или заказчик (стандартныйный пользователь приложения)
+        birthDate: 
+          type: string
+          format: date
+          example: "1990-02-28"
+          description: Дата рождения пользователя
+        registrationDate:
+          type: string
+          format: date
+          example: "2024-02-12"
+          description: "Дата регистрации пользователя"
+      required: 
+          - phone
+          - email
+          - firstName
+          - lastName
+          - passportId
+          - role
+          - birthDate
+
+                
+                
+                
+
+                
+          
+      
