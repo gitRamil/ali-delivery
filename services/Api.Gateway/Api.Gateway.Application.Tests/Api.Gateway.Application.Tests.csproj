@@ -20,8 +20,4 @@
         <Using Include="Xunit"/>
     </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\Location.WebApi\Location.WebApi.csproj" />
-    </ItemGroup>
-
 </Project>

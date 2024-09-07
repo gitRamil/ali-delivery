@@ -1,4 +1,4 @@
-namespace Order.Domain.Tests;
+namespace Api.Gateway.Application.Tests;
 
 public class UnitTest1
 {

@@ -19,8 +19,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Location.Application\Location.Application.csproj" />
-      <ProjectReference Include="..\Location.Infrastructure\Location.Infrastructure.csproj" />
+      <ProjectReference Include="..\Api.Gateway.Application\Api.Gateway.Application.csproj" />
+      <ProjectReference Include="..\Api.Gateway.Infrastructure\Api.Gateway.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
