@@ -7,7 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Order.WebApi\Order.WebApi.csproj" />
+      <ProjectReference Include="..\Api.Gateway.Application.Tests\Api.Gateway.Application.Tests.csproj" />
+      <ProjectReference Include="..\Api.Gateway.Domain.Tests\Api.Gateway.Domain.Tests.csproj" />
     </ItemGroup>
 
 </Project>

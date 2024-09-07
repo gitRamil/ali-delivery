@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Location.WebApi\Location.WebApi.csproj" />
+      <ProjectReference Include="..\Api.Gateway.WebApi\Api.Gateway.WebApi.csproj" />
     </ItemGroup>
 
 </Project>

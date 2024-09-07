@@ -1,4 +1,4 @@
-namespace Order.Infrastructure.Tests;
+namespace Api.Gateway.WebApi.Tests;
 
 public class UnitTest1
 {
