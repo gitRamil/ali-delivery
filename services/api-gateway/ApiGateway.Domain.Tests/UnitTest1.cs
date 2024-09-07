@@ -1,4 +1,4 @@
-namespace Api.Gateway.Infrastructure.Tests;
+namespace ApiGateway.Domain.Tests;
 
 public class UnitTest1
 {

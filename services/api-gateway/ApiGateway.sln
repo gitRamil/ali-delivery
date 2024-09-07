@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Gateway.WebApi", "Api.Gateway.WebApi\Api.Gateway.WebApi.csproj", "{2EB79520-DA81-41BB-9FFC-A9437A832334}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway.WebApi", "ApiGateway.WebApi\ApiGateway.WebApi.csproj", "{2EB79520-DA81-41BB-9FFC-A9437A832334}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{F7778531-31B9-46A0-ACF8-1488E004743D}"
 EndProject
@@ -10,19 +10,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4E8A57F1-933B-493D-B877-C034515BC733}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Gateway.Application", "Api.Gateway.Application\Api.Gateway.Application.csproj", "{2C6154B3-DFC6-4E26-8388-9E348E73292E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway.Application", "ApiGateway.Application\ApiGateway.Application.csproj", "{2C6154B3-DFC6-4E26-8388-9E348E73292E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Gateway.Domain", "Api.Gateway.Domain\Api.Gateway.Domain.csproj", "{0A7B7114-2DB1-440E-9938-92BD64D476A2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway.Domain", "ApiGateway.Domain\ApiGateway.Domain.csproj", "{0A7B7114-2DB1-440E-9938-92BD64D476A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Gateway.Infrastructure", "Api.Gateway.Infrastructure\Api.Gateway.Infrastructure.csproj", "{05750D80-C05E-4FF3-B0D1-D4752E5AB388}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway.Infrastructure", "ApiGateway.Infrastructure\ApiGateway.Infrastructure.csproj", "{05750D80-C05E-4FF3-B0D1-D4752E5AB388}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Gateway.Application.Tests", "Api.Gateway.Application.Tests\Api.Gateway.Application.Tests.csproj", "{ECF9C488-67C7-4677-92A4-103BC7826D11}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway.Application.Tests", "ApiGateway.Application.Tests\ApiGateway.Application.Tests.csproj", "{ECF9C488-67C7-4677-92A4-103BC7826D11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Gateway.Domain.Tests", "Api.Gateway.Domain.Tests\Api.Gateway.Domain.Tests.csproj", "{28427719-BAD6-49DD-A924-5C28E36B147F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway.Domain.Tests", "ApiGateway.Domain.Tests\ApiGateway.Domain.Tests.csproj", "{28427719-BAD6-49DD-A924-5C28E36B147F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Gateway.Infrastructure.Tests", "Api.Gateway.Infrastructure.Tests\Api.Gateway.Infrastructure.Tests.csproj", "{0B1D3241-7ED3-4094-B4A4-1BEB0BA75428}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway.Infrastructure.Tests", "ApiGateway.Infrastructure.Tests\ApiGateway.Infrastructure.Tests.csproj", "{0B1D3241-7ED3-4094-B4A4-1BEB0BA75428}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Gateway.WebApi.Tests", "Api.Gateway.WebApi.Tests\Api.Gateway.WebApi.Tests.csproj", "{314B921C-DDAE-4159-9855-D047B113A50E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway.WebApi.Tests", "ApiGateway.WebApi.Tests\ApiGateway.WebApi.Tests.csproj", "{314B921C-DDAE-4159-9855-D047B113A50E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
