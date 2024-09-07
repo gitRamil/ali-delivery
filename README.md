@@ -1,2 +1,2 @@
 # Сервис доставки
-[API контракт](https://gitramil.github.io/ali-delivery/documentation/swagger-api/index.html)
+[Документация](https://gitramil.github.io/ali-delivery/index.html)
