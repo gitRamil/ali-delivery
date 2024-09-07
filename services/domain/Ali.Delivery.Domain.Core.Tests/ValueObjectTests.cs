@@ -2,7 +2,7 @@ using AutoFixture;
 using AutoFixture.Xunit2;
 using FluentAssertions;
 
-namespace Domain.Core.Tests;
+namespace Ali.Delivery.Domain.Core.Tests;
 
 [Trait("Category", "Unit")]
 public class ValueObjectTests

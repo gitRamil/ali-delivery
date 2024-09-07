@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace Domain.Core;
+namespace Ali.Delivery.Domain.Core;
 
 /// <summary>
 /// Представляет Entity в терминологии DDD.

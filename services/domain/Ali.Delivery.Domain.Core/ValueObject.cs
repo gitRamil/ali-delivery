@@ -1,4 +1,4 @@
-namespace Domain.Core;
+namespace Ali.Delivery.Domain.Core;
 
 /// <summary>
 /// Представляет ValueObject в терминологии DDD.

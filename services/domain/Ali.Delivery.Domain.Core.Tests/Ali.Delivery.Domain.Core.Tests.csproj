@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domain.Core\Domain.Core.csproj" />
+    <ProjectReference Include="..\Ali.Delivery.Domain.Core\Ali.Delivery.Domain.Core.csproj" />
   </ItemGroup>
 
 </Project>

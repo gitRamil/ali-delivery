@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 
-namespace Domain.Core.Primitives;
+namespace Ali.Delivery.Domain.Core.Primitives;
 
 /// <summary>
 /// Представляет последовательно генерируемый идентификатор.

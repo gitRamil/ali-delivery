@@ -1,9 +1,9 @@
 using AutoFixture;
 using AutoFixture.Xunit2;
-using Domain.Core.Primitives;
+using Ali.Delivery.Domain.Core.Primitives;
 using FluentAssertions;
 
-namespace Domain.Core.Tests;
+namespace Ali.Delivery.Domain.Core.Tests;
 
 [Trait("Category", "Unit")]
 public class SequentialGuidTests
