@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "uF0NEy73HpY=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\dies_\\OneDrive\\Документы\\GitHub\\ali-delivery\\services\\order\\Order.Application\\Order.Application.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\dies_\\.nuget\\packages\\ali.delivery.domain.core\\1.0.0\\ali.delivery.domain.core.1.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

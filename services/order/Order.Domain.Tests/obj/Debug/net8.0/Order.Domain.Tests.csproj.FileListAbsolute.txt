@@ -1,0 +1,16 @@
+C:\Users\dies_\OneDrive\Документы\GitHub\ali-delivery\services\order\Order.Domain.Tests\bin\Debug\net8.0\Order.Domain.Tests.deps.json
+C:\Users\dies_\OneDrive\Документы\GitHub\ali-delivery\services\order\Order.Domain.Tests\bin\Debug\net8.0\Order.Domain.Tests.dll
+C:\Users\dies_\OneDrive\Документы\GitHub\ali-delivery\services\order\Order.Domain.Tests\bin\Debug\net8.0\Order.Domain.Tests.pdb
+C:\Users\dies_\OneDrive\Документы\GitHub\ali-delivery\services\order\Order.Domain.Tests\bin\Debug\net8.0\Order.Domain.dll
+C:\Users\dies_\OneDrive\Документы\GitHub\ali-delivery\services\order\Order.Domain.Tests\bin\Debug\net8.0\Order.Domain.pdb
+C:\Users\dies_\OneDrive\Документы\GitHub\ali-delivery\services\order\Order.Domain.Tests\obj\Debug\net8.0\Order.Domain.Tests.csproj.AssemblyReference.cache
+C:\Users\dies_\OneDrive\Документы\GitHub\ali-delivery\services\order\Order.Domain.Tests\obj\Debug\net8.0\Order.Domain.Tests.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dies_\OneDrive\Документы\GitHub\ali-delivery\services\order\Order.Domain.Tests\obj\Debug\net8.0\Order.Domain.Tests.AssemblyInfoInputs.cache
+C:\Users\dies_\OneDrive\Документы\GitHub\ali-delivery\services\order\Order.Domain.Tests\obj\Debug\net8.0\Order.Domain.Tests.AssemblyInfo.cs
+C:\Users\dies_\OneDrive\Документы\GitHub\ali-delivery\services\order\Order.Domain.Tests\obj\Debug\net8.0\Order.Domain.Tests.csproj.CoreCompileInputs.cache
+C:\Users\dies_\OneDrive\Документы\GitHub\ali-delivery\services\order\Order.Domain.Tests\obj\Debug\net8.0\Order.Domain.Tests.sourcelink.json
+C:\Users\dies_\OneDrive\Документы\GitHub\ali-delivery\services\order\Order.Domain.Tests\obj\Debug\net8.0\Order.Do.32FEFFA5.Up2Date
+C:\Users\dies_\OneDrive\Документы\GitHub\ali-delivery\services\order\Order.Domain.Tests\obj\Debug\net8.0\Order.Domain.Tests.dll
+C:\Users\dies_\OneDrive\Документы\GitHub\ali-delivery\services\order\Order.Domain.Tests\obj\Debug\net8.0\refint\Order.Domain.Tests.dll
+C:\Users\dies_\OneDrive\Документы\GitHub\ali-delivery\services\order\Order.Domain.Tests\obj\Debug\net8.0\Order.Domain.Tests.pdb
+C:\Users\dies_\OneDrive\Документы\GitHub\ali-delivery\services\order\Order.Domain.Tests\obj\Debug\net8.0\ref\Order.Domain.Tests.dll

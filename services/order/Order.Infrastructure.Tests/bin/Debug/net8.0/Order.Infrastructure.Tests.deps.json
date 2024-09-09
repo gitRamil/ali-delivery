@@ -1,0 +1,81 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "Order.Infrastructure.Tests/1.0.0": {
+        "dependencies": {
+          "Order.Infrastructure": "1.0.0"
+        },
+        "runtime": {
+          "Order.Infrastructure.Tests.dll": {}
+        }
+      },
+      "Ali.Delivery.Domain.Core/1.0.0": {
+        "runtime": {
+          "lib/net7.0/Ali.Delivery.Domain.Core.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Order.Application/1.0.0": {
+        "dependencies": {
+          "Order.Domain": "1.0.0"
+        },
+        "runtime": {
+          "Order.Application.dll": {}
+        }
+      },
+      "Order.Domain/1.0.0": {
+        "dependencies": {
+          "Ali.Delivery.Domain.Core": "1.0.0"
+        },
+        "runtime": {
+          "Order.Domain.dll": {}
+        }
+      },
+      "Order.Infrastructure/1.0.0": {
+        "dependencies": {
+          "Order.Application": "1.0.0",
+          "Order.Domain": "1.0.0"
+        },
+        "runtime": {
+          "Order.Infrastructure.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Order.Infrastructure.Tests/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Ali.Delivery.Domain.Core/1.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-dMQwHoAZSdpzKLR4Q2lxG0lmznWj7B2ZV5TmNtzPnlCiLNyw1DBwRSmVCpIUgMNpF4mznVqcRwWnm92Ftv2QoA==",
+      "path": "ali.delivery.domain.core/1.0.0",
+      "hashPath": "ali.delivery.domain.core.1.0.0.nupkg.sha512"
+    },
+    "Order.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Order.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Order.Infrastructure/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

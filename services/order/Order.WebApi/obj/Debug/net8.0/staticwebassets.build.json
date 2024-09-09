@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "F1IO5glpTdm5vz6r61WlWnCmdzqpYuKpYjd7HRpms10=",
+  "Source": "Order.WebApi",
+  "BasePath": "_content/Order.WebApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
