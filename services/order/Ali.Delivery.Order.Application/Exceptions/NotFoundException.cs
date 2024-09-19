@@ -116,6 +116,7 @@ public sealed class NotFoundException : Exception
     /// </summary>
     /// <param name="info">Информация для сериализации.</param>
     /// <param name="context">Контекст.</param>
+    [Obsolete("Obsolete")]
     private NotFoundException(SerializationInfo info, StreamingContext context)
         : base(info, context) =>
         Details = info.GetString(nameof(Details));
@@ -141,6 +142,7 @@ public sealed class NotFoundException : Exception
     /// The <paramref name="info" /> parameter is a null reference (
     /// <see langword="Nothing" /> in Visual Basic).
     /// </exception>
+    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
     public override void GetObjectData(SerializationInfo info, StreamingContext context)
     {
         base.GetObjectData(info, context);
