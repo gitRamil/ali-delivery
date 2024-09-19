@@ -1,4 +1,5 @@
-﻿using Ali.Delivery.Order.Infrastructure.Persistence.Configurations.Base;
+﻿using Ali.Delivery.Order.Domain.ValueObjects.Order;
+using Ali.Delivery.Order.Infrastructure.Persistence.Configurations.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -17,7 +18,10 @@ internal class CourierConfiguration : EntityTypeConfigurationBase<Domain.Entitie
     {
         builder.ToTable("orders", t => t.HasComment("Заказ"));
 
-        builder.Property(p => p.Test)
-               .HasComment("Test");
+        builder.Property(p => p.Name)
+               .IsRequired()
+               .HasMaxLength(OrderName.MaxLength)
+               .HasComment("Наименование заказа")
+               .HasConversion(o => (string)o, s => new OrderName(s));
     }
 }

@@ -13,7 +13,6 @@
     <ItemGroup>
         <Folder Include="Core\" />
         <Folder Include="Entities\Dictionaries\"/>
-        <Folder Include="ValueObjects\"/>
     </ItemGroup>
 
 </Project>
