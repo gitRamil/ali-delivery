@@ -1,4 +1,5 @@
-﻿using Ali.Delivery.Order.Application.Dtos;
+﻿using Ali.Delivery.Order.Application.Dtos.Order;
+using Ali.Delivery.Order.Application.UseCases.CreateOrder;
 using Ali.Delivery.Order.Application.UseCases.GetOrder;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -24,14 +25,28 @@ public class OrderController : ControllerBase
     /// <summary>
     /// Получает заказ.
     /// </summary>
-    /// <param name="trackNumber">Трек номер заказа.</param>
+    /// <param name="command">Заказ.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
-    [HttpGet("order-info/{trackNumber:guid}")]
+    [HttpPost]
     [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetOrder(Guid trackNumber, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateOrder([FromBody] CreateOrderCommand command, CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new GetOrderQuery(trackNumber), cancellationToken);
+        await _mediator.Send(command, cancellationToken);
+        return Ok();
+    }
+
+    /// <summary>
+    /// Получает заказ.
+    /// </summary>
+    /// <param name="orderId">Идентификатор заказа.</param>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    [HttpGet("{orderId:guid}")]
+    [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetOrder(Guid orderId, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetOrderQuery(orderId), cancellationToken);
         return Ok(result);
     }
 }

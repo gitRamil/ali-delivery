@@ -13,7 +13,6 @@
 
     <ItemGroup>
         <Folder Include="Migrations\"/>
-        <Folder Include="Persistence\Configurations\Dictionaries\"/>
     </ItemGroup>
 
     <ItemGroup>

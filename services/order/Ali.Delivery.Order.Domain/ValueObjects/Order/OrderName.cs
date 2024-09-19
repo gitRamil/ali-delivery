@@ -8,7 +8,7 @@ namespace Ali.Delivery.Order.Domain.ValueObjects.Order;
 /// Представляет наименование заказа.
 /// </summary>
 [DebuggerDisplay("{_name}")]
-public class OrderName: ValueObject
+public class OrderName : ValueObject
 {
     /// <summary>
     /// Представляет максимальную длину наименования заказа.

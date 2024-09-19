@@ -11,8 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Core\" />
-        <Folder Include="Entities\Dictionaries\"/>
+        <Folder Include="Core\"/>
     </ItemGroup>
 
 </Project>

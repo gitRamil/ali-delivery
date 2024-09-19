@@ -19,9 +19,15 @@ internal class CourierConfiguration : EntityTypeConfigurationBase<Domain.Entitie
         builder.ToTable("orders", t => t.HasComment("Заказ"));
 
         builder.Property(p => p.Name)
-               .IsRequired()
                .HasMaxLength(OrderName.MaxLength)
                .HasComment("Наименование заказа")
                .HasConversion(o => (string)o, s => new OrderName(s));
+
+        builder.HasOne(p => p.OrderStatus)
+               .WithMany()
+               .HasForeignKey("OrderStatusId");
+
+        builder.Property("OrderStatusId")
+               .HasComment("Статус заказа");
     }
 }
