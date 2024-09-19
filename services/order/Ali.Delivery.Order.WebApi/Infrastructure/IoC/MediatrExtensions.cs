@@ -1,5 +1,5 @@
-﻿using MediatR;
-using Ali.Delivery.Order.Application.Behaviors;
+﻿using Ali.Delivery.Order.Application.Behaviors;
+using MediatR;
 
 namespace Ali.Delivery.Order.WebApi.Infrastructure.IoC;
 

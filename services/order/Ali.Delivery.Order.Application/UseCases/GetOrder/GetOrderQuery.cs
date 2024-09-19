@@ -1,5 +1,5 @@
-using MediatR;
 using Ali.Delivery.Order.Application.Dtos;
+using MediatR;
 
 namespace Ali.Delivery.Order.Application.UseCases.GetOrder;
 

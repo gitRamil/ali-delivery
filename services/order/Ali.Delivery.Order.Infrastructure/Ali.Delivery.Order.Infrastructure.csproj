@@ -7,19 +7,19 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Ali.Delivery.Order.Application\Ali.Delivery.Order.Application.csproj" />
-        <ProjectReference Include="..\Ali.Delivery.Order.Domain\Ali.Delivery.Order.Domain.csproj" />
+        <ProjectReference Include="..\Ali.Delivery.Order.Application\Ali.Delivery.Order.Application.csproj"/>
+        <ProjectReference Include="..\Ali.Delivery.Order.Domain\Ali.Delivery.Order.Domain.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
         <Folder Include="Migrations\"/>
-        <Folder Include="Persistence\Configurations\Dictionaries\" />
+        <Folder Include="Persistence\Configurations\Dictionaries\"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.8" />
-      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.8"/>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4"/>
     </ItemGroup>
 
 </Project>

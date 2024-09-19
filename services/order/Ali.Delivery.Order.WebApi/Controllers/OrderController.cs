@@ -1,6 +1,7 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Ali.Delivery.Order.Application.Dtos;
 using Ali.Delivery.Order.Application.UseCases.GetOrder;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Ali.Delivery.Order.WebApi.Controllers;
 
@@ -26,7 +27,7 @@ public class OrderController : ControllerBase
     /// <param name="trackNumber">Трек номер заказа.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
     [HttpGet("order-info/{trackNumber:guid}")]
-    //[ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetOrder(Guid trackNumber, CancellationToken cancellationToken)
     {

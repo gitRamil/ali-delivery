@@ -1,7 +1,7 @@
-﻿using EntityFramework.Exceptions.PostgreSQL;
+﻿using Ali.Delivery.Order.Application.Abstractions;
+using Ali.Delivery.Order.Infrastructure.Persistence;
+using EntityFramework.Exceptions.PostgreSQL;
 using Microsoft.EntityFrameworkCore;
-using Ali.Delivery.Order.Application.Abstractions;
-using Ali.Delivery.Order.Infrastructure.Persistence.Configurations;
 
 namespace Ali.Delivery.Order.WebApi.Infrastructure.IoC;
 
@@ -38,7 +38,7 @@ internal static class EntityFrameworkExtensions
         services.AddDbContext<AppDbContext>((provider, builder) =>
         {
             var configuration = provider.GetRequiredService<IConfiguration>();
-        
+
             var connectionString = configuration.GetConnectionString(DbConstants.ConnectionStringSectionName) ??
                                    throw new ArgumentException("Строка подключения к БД не указана в конфигурации.");
             builder.UseExceptionProcessor();

@@ -10,4 +10,3 @@ internal static class DbConstants
     /// </summary>
     public const string ConnectionStringSectionName = "DefaultConnection";
 }
-

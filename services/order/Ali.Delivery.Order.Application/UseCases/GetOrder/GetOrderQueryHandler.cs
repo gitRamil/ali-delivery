@@ -1,20 +1,17 @@
 using Ali.Delivery.Domain.Core.Primitives;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Ali.Delivery.Order.Application.Abstractions;
 using Ali.Delivery.Order.Application.Dtos;
 using Ali.Delivery.Order.Application.Exceptions;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ali.Delivery.Order.Application.UseCases.GetOrder;
 
-public class GetOrderQueryHandler: IRequestHandler<GetOrderQuery, OrderDto>
+public class GetOrderQueryHandler : IRequestHandler<GetOrderQuery, OrderDto>
 {
     private readonly IAppDbContext _context;
 
-    public GetOrderQueryHandler(IAppDbContext context)
-    {
-        _context = context ?? throw new ArgumentNullException(nameof(context));
-    }
+    public GetOrderQueryHandler(IAppDbContext context) => _context = context ?? throw new ArgumentNullException(nameof(context));
 
     /// <summary>Handles a request</summary>
     /// <param name="request">The request</param>
@@ -27,9 +24,8 @@ public class GetOrderQueryHandler: IRequestHandler<GetOrderQuery, OrderDto>
         _context.Orders.Add(new Domain.Entities.Order(new SequentialGuid()));
         await _context.SaveChangesAsync(cancellationToken);
 
-        var order = await _context.Orders.FirstOrDefaultAsync(cancellationToken) ??
-                    throw new NotFoundException(typeof(Domain.Entities.Order), request);
-        
+        var order = await _context.Orders.FirstOrDefaultAsync(cancellationToken) ?? throw new NotFoundException(typeof(Domain.Entities.Order), request);
+
         return new OrderDto();
     }
 }

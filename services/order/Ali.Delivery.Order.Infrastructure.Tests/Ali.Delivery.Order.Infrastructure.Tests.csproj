@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Ali.Delivery.Order.Infrastructure\Ali.Delivery.Order.Infrastructure.csproj" />
+        <ProjectReference Include="..\Ali.Delivery.Order.Infrastructure\Ali.Delivery.Order.Infrastructure.csproj"/>
     </ItemGroup>
 
 </Project>

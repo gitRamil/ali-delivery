@@ -90,7 +90,9 @@ public sealed class ValidationException : Exception
     /// The <paramref name="info" /> parameter is a null reference (
     /// <see langword="Nothing" /> in Visual Basic).
     /// </exception>
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
+    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.",
+              DiagnosticId = "SYSLIB0051",
+              UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
     public override void GetObjectData(SerializationInfo info, StreamingContext context)
     {
         base.GetObjectData(info, context);

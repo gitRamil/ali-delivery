@@ -14,7 +14,7 @@ public interface IAppDbContext
     /// Заказы.
     /// </value>
     DbSet<Domain.Entities.Order> Orders { get; }
-    
+
     /// <summary>
     /// Сохраняет изменения.
     /// </summary>

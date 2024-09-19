@@ -1,19 +1,26 @@
-﻿using Ali.Delivery.Domain.Core.Primitives;
+﻿using Ali.Delivery.Domain.Core;
+using Ali.Delivery.Domain.Core.Primitives;
 
 namespace Ali.Delivery.Order.Domain.Entities;
 
-public class Order
+public class Order : Entity<SequentialGuid>
 {
+    /// <summary>
+    /// Инициализирует новый экземпляр типа <see cref="T:Ali.Delivery.Domain.Core.Entity`1" />.
+    /// </summary>
+    /// <param name="id">Идентификатор.</param>
+    /// <exception cref="T:System.ArgumentNullException">
+    /// Возникает, если <paramref name="id" /> равен <c>null</c>.
+    /// </exception>
     public Order(SequentialGuid id)
+        : base(id)
     {
-        Id = id;
     }
 
     protected Order()
+        : base(SequentialGuid.Empty)
     {
     }
-    
-    public SequentialGuid Id { get; private set; } 
-    
+
     public bool Test { get; }
 }
