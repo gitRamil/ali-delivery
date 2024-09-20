@@ -5,6 +5,9 @@ using Ali.Delivery.Order.Domain.ValueObjects.Order;
 
 namespace Ali.Delivery.Order.Domain.Entities;
 
+/// <summary>
+/// Представляет сущность заказа.
+/// </summary>
 public class Order : Entity<SequentialGuid>
 {
     /// <summary>

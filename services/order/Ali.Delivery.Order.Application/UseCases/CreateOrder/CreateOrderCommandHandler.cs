@@ -1,6 +1,6 @@
 ﻿using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.Application.Abstractions;
-using Ali.Delivery.Order.Application.Extensions;
+using Ali.Delivery.Order.Domain.Entities.Dictionaries;
 using Ali.Delivery.Order.Domain.ValueObjects.Order;
 using MediatR;
 
@@ -31,7 +31,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand>
     {
         ArgumentNullException.ThrowIfNull(command);
 
-        _context.Orders.Add(new Domain.Entities.Order(SequentialGuid.Create(), new OrderName(command.OrderName), command.OrderStatusCode.ToRatingCoefficient()));
+        _context.Orders.Add(new Domain.Entities.Order(SequentialGuid.Create(), new OrderName(command.OrderName), OrderStatus.Created));
         await _context.SaveChangesAsync(cancellationToken);
     }
 }

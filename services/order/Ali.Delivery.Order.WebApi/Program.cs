@@ -1,4 +1,5 @@
 using Ali.Delivery.Order.WebApi.Infrastructure.IoC;
+using Ali.Delivery.Order.WebApi.IoC;
 using Serilog;
 
 try
@@ -12,6 +13,7 @@ try
     builder.Services.AddDefaultCorsPolicy();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
+    builder.Services.AddDateTimeService();
 
     var app = builder.Build();
     app.AddAutomaticMigrations();
