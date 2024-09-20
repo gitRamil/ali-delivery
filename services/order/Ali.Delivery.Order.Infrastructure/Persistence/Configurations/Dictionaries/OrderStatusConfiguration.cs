@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ali.Delivery.Order.Infrastructure.Persistence.Configurations.Dictionaries;
 
+/// <summary>
+/// Представляет настройку конфигурации для типа <see cref="OrderStatus" />.
+/// </summary>
 internal class OrderStatusConfiguration : EntityTypeConfigurationBase<OrderStatus>
 {
     /// <summary>
