@@ -1,0 +1,75 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ali.Delivery.Order.WebApi", "Ali.Delivery.Order.WebApi\Ali.Delivery.Order.WebApi.csproj", "{2B5D253D-E3DA-4FC2-970C-83A49F138ED9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{C9C76D75-EF93-4624-A3CA-7BB0B0728D2C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{51B5F223-D2EC-49D4-A50F-168068E3628C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{BCE899D1-35E6-4042-A07F-19BBF46505BA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DC6DBF47-4D83-4550-8BF2-07F29C89686E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ali.Delivery.Order.Application", "Ali.Delivery.Order.Application\Ali.Delivery.Order.Application.csproj", "{0248D012-1383-48CD-B9F3-41A0706AE9CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ali.Delivery.Order.Domain", "Ali.Delivery.Order.Domain\Ali.Delivery.Order.Domain.csproj", "{8CA50D1B-66F0-42D0-92B0-BF33AD3434CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ali.Delivery.Order.Infrastructure", "Ali.Delivery.Order.Infrastructure\Ali.Delivery.Order.Infrastructure.csproj", "{44691944-FC59-4B8E-BF9E-C68FE73D5A95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ali.Delivery.Order.Application.Tests", "Ali.Delivery.Order.Application.Tests\Ali.Delivery.Order.Application.Tests.csproj", "{BF050C9A-3587-48E4-8F36-CD54C699E90E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ali.Delivery.Order.Domain.Tests", "Ali.Delivery.Order.Domain.Tests\Ali.Delivery.Order.Domain.Tests.csproj", "{A1CD0D37-48BA-4D1A-8600-EE3EE151896C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ali.Delivery.Order.Infrastructure.Tests", "Ali.Delivery.Order.Infrastructure.Tests\Ali.Delivery.Order.Infrastructure.Tests.csproj", "{9A36E3E4-E517-4BA8-B44D-FB8222F5C2A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ali.Delivery.Order.WebApi.Tests", "Ali.Delivery.Order.WebApi.Tests\Ali.Delivery.Order.WebApi.Tests.csproj", "{ACCEDCF5-1D60-4F4B-B145-18FDAB093D3A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2B5D253D-E3DA-4FC2-970C-83A49F138ED9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B5D253D-E3DA-4FC2-970C-83A49F138ED9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B5D253D-E3DA-4FC2-970C-83A49F138ED9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B5D253D-E3DA-4FC2-970C-83A49F138ED9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0248D012-1383-48CD-B9F3-41A0706AE9CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0248D012-1383-48CD-B9F3-41A0706AE9CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0248D012-1383-48CD-B9F3-41A0706AE9CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0248D012-1383-48CD-B9F3-41A0706AE9CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CA50D1B-66F0-42D0-92B0-BF33AD3434CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CA50D1B-66F0-42D0-92B0-BF33AD3434CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CA50D1B-66F0-42D0-92B0-BF33AD3434CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CA50D1B-66F0-42D0-92B0-BF33AD3434CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44691944-FC59-4B8E-BF9E-C68FE73D5A95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44691944-FC59-4B8E-BF9E-C68FE73D5A95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44691944-FC59-4B8E-BF9E-C68FE73D5A95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44691944-FC59-4B8E-BF9E-C68FE73D5A95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF050C9A-3587-48E4-8F36-CD54C699E90E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF050C9A-3587-48E4-8F36-CD54C699E90E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF050C9A-3587-48E4-8F36-CD54C699E90E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF050C9A-3587-48E4-8F36-CD54C699E90E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1CD0D37-48BA-4D1A-8600-EE3EE151896C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1CD0D37-48BA-4D1A-8600-EE3EE151896C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1CD0D37-48BA-4D1A-8600-EE3EE151896C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1CD0D37-48BA-4D1A-8600-EE3EE151896C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A36E3E4-E517-4BA8-B44D-FB8222F5C2A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A36E3E4-E517-4BA8-B44D-FB8222F5C2A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A36E3E4-E517-4BA8-B44D-FB8222F5C2A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A36E3E4-E517-4BA8-B44D-FB8222F5C2A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACCEDCF5-1D60-4F4B-B145-18FDAB093D3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACCEDCF5-1D60-4F4B-B145-18FDAB093D3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACCEDCF5-1D60-4F4B-B145-18FDAB093D3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACCEDCF5-1D60-4F4B-B145-18FDAB093D3A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0248D012-1383-48CD-B9F3-41A0706AE9CA} = {C9C76D75-EF93-4624-A3CA-7BB0B0728D2C}
+		{8CA50D1B-66F0-42D0-92B0-BF33AD3434CD} = {51B5F223-D2EC-49D4-A50F-168068E3628C}
+		{44691944-FC59-4B8E-BF9E-C68FE73D5A95} = {BCE899D1-35E6-4042-A07F-19BBF46505BA}
+		{BF050C9A-3587-48E4-8F36-CD54C699E90E} = {DC6DBF47-4D83-4550-8BF2-07F29C89686E}
+		{A1CD0D37-48BA-4D1A-8600-EE3EE151896C} = {DC6DBF47-4D83-4550-8BF2-07F29C89686E}
+		{9A36E3E4-E517-4BA8-B44D-FB8222F5C2A7} = {DC6DBF47-4D83-4550-8BF2-07F29C89686E}
+		{ACCEDCF5-1D60-4F4B-B145-18FDAB093D3A} = {DC6DBF47-4D83-4550-8BF2-07F29C89686E}
+	EndGlobalSection
+EndGlobal
