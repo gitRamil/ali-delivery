@@ -1,5 +1,6 @@
 using Ali.Delivery.Order.WebApi.Infrastructure.IoC;
 using Ali.Delivery.Order.WebApi.IoC;
+using Hellang.Middleware.ProblemDetails;
 using Serilog;
 
 try
@@ -14,6 +15,7 @@ try
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
     builder.Services.AddDateTimeService();
+    builder.Services.AddDefaultProblemDetails();
 
     var app = builder.Build();
     app.AddAutomaticMigrations();
@@ -24,7 +26,9 @@ try
         app.UseSwaggerUI();
     }
 
+    app.UseSerilogRequestLogging();
     app.UseHttpsRedirection();
+    app.UseProblemDetails();
     app.UseRouting();
     app.UseCors();
     app.UseHttpsRedirection();

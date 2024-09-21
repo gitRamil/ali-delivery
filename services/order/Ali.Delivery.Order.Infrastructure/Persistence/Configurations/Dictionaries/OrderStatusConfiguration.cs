@@ -32,6 +32,6 @@ internal class OrderStatusConfiguration : EntityTypeConfigurationBase<OrderStatu
                .HasConversion(o => (string)o, s => new OrderStatusCode(s));
 
         builder.HasIndex(p => p.Code)
-               .IsUnique(); 
+               .IsUnique();
     }
 }
