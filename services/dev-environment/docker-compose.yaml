@@ -1,0 +1,88 @@
+version: "3.8"
+
+services:
+  #######################################################
+  # postgres
+  #######################################################
+  db:
+    image: postgres:15.2
+    container_name: "ed-postgres"
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+    ports:
+      - "9050:5432"
+    networks:
+      - ed
+  #######################################################
+  # seq
+  #######################################################
+  seq:
+    image: datalust/seq
+    container_name: "ed-seq"
+    restart: unless-stopped
+    mem_limit: 256m
+    environment:
+      ACCEPT_EULA: "Y"
+    ports:
+      - "9051:80"
+    networks:
+      - ed
+  #######################################################
+  # rabbitmq
+  #######################################################
+  rabbitmq:
+    image: rabbitmq:3.11-alpine  
+    container_name: "ed-rabbitmq"
+    hostname: "ed-rabbit"
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: ./rabbit.dockerfile
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    ports:
+      - '9061:5672'  # AMQP protocol port
+      - '9060:15672' # HTTP management UI
+    networks:
+      - ed
+    volumes:
+      - rmq-data:/var/lib/rabbitmq
+
+  #######################################################
+  # mailpit
+  #######################################################
+  mailpit:
+    image: axllent/mailpit:latest
+    hostname: "ed-mailpit"
+    container_name: "ed-mailpit"
+    restart: unless-stopped
+    environment:
+      MP_DATA_FILE: /data/mailpit.db
+      TZ: Europe/Moscow
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+      MP_WEBROOT: /mail
+      MP_MAX_MESSAGES: 50000
+    ports:
+      - "9062:1025" # smtp server
+      - "9063:8025" # web ui
+    networks:
+      - ed
+    volumes:
+      - mailpit-data:/data
+  
+volumes:
+  db-data:
+    name: ed-postgres-data
+  rmq-data:
+    name: ed-rabbitmq-data
+  mailpit-data:
+    name: ed-mailpit-data
+
+networks:
+  ed:
+    driver: bridge

@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ApiGateway.Application.Tests\ApiGateway.Application.Tests.csproj" />
+      <ProjectReference Include="..\ApiGateway.Domain.Tests\ApiGateway.Domain.Tests.csproj" />
+    </ItemGroup>
+
+</Project>
