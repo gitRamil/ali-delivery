@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.2" last-position="37,254" last-zoom="1" max-obj-count="12"
+	 default-schema="public" default-owner="postgres">
+<database name="new_database" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layer="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="Users" layer="0" collapse-mode="2" max-obj-count="10">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<appended-sql><![CDATA[id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    passport_id VARCHAR(20) UNIQUE,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    phone_number VARCHAR(15),
+    birth_date DATE,
+    user_role_id INT,
+    reg_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_role_id) REFERENCES Roles(id)]]></appended-sql>
+	<position x="380" y="320"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер пользователя ]]></comment>
+	</column>
+	<column name="first_name" not-null="true">
+		<type name="varchar" length="250"/>
+		<comment><![CDATA[Имя пользователя]]></comment>
+	</column>
+	<column name="last_name" not-null="true">
+		<type name="varchar" length="250"/>
+		<comment><![CDATA[Фамилия пользователя]]></comment>
+	</column>
+	<column name="passport_info">
+		<type name="integer" length="20"/>
+		<comment><![CDATA[Номер паспорта пользователя]]></comment>
+	</column>
+	<column name="email">
+		<type name="varchar" length="250"/>
+		<comment><![CDATA[Электронная почта пользователя ]]></comment>
+	</column>
+	<column name="phone_number" not-null="true">
+		<type name="varchar" length="200"/>
+		<comment><![CDATA[Телефонный номер пользователя ]]></comment>
+	</column>
+	<column name="role_id">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Внешний ключ для связи с таблицоей Roles]]></comment>
+	</column>
+	<column name="birth_day">
+		<type name="date" length="0"/>
+		<comment><![CDATA[Дата рождения пользователя ]]></comment>
+	</column>
+	<column name="create_date">
+		<type name="date" length="0"/>
+		<comment><![CDATA[Дата регистрации пользователя ]]></comment>
+	</column>
+	<constraint name="Users_pk" type="pk-constr" table="public.&quot;Users&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<initial-data>
+<![CDATA[id•first_name•last_name•passport_id•email•phone_number•role_id•birth_day•reg_date⸣
+11124•Иван•Иванов•7777 77777777•example@mail.ru•8(888)-888-88-88•1•1996-12-30•2024-12-20]]>
+	</initial-data>
+</table>
+
+<table name="Roles" layer="0" collapse-mode="2" max-obj-count="3">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="120" y="340"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер роли пользователя]]></comment>
+	</column>
+	<column name="role">
+		<type name="varchar" length="100"/>
+		<comment><![CDATA[Названия ролей для пользоватлей ]]></comment>
+	</column>
+	<column name="code">
+		<type name="varchar" length="25"/>
+	</column>
+	<constraint name="Roles_pk" type="pk-constr" table="public.&quot;Roles&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<initial-data>
+<![CDATA[id•role_name⸣
+1•Пользователь ⸣
+2•Курьер⸣
+3•Неавторизованный пользователь ]]>
+	</initial-data>
+</table>
+
+<genericsql name="Query">
+	<definition><![CDATA[CREATE TABLE Users1 (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    passport_id VARCHAR(20) UNIQUE,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    phone_number VARCHAR(15),
+    birth_date DATE,
+    user_role_id INT,
+    reg_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_role_id) REFERENCES Roles(id)
+);]]></definition>
+</genericsql>
+
+<table name="Orders" layer="0" collapse-mode="2" max-obj-count="9">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="660" y="320"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер заказа]]></comment>
+	</column>
+	<column name="order_info_id">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Внешний ключ для таблицы order_info гдесодержится информация о посылке]]></comment>
+	</column>
+	<column name="sender_id" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Внешний ключ для пользователя в роли Заказчика]]></comment>
+	</column>
+	<column name="courier_id" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Внешний ключ для пользователя в роли Курьера]]></comment>
+	</column>
+	<column name="recipient_id" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Внешний ключ для пользователя в роли Получателя]]></comment>
+	</column>
+	<column name="order_state_id">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Внешний ключ для таблицы States, статусов заказов ]]></comment>
+	</column>
+	<column name="is_deleted">
+		<type name="bool" length="0"/>
+		<comment><![CDATA[Проверка состояния заказа, если статус в значении удален, то true, для пользователей он не отображается]]></comment>
+	</column>
+	<column name="create_date">
+		<type name="date" length="0"/>
+		<comment><![CDATA[Дата создания заказа]]></comment>
+	</column>
+	<constraint name="Orders_pk" type="pk-constr" table="public.&quot;Orders&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="Statuses" layer="0" collapse-mode="2" max-obj-count="2">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<comment><![CDATA[Таблица которая хранит статусы заказов ]]></comment>
+	<position x="920" y="540"/>
+	<column name="id">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер статуса заказа]]></comment>
+	</column>
+	<column name="status">
+		<type name="varchar" length="20"/>
+		<comment><![CDATA[Наименования статусов заказа]]></comment>
+	</column>
+</table>
+
+<table name="order_info" layer="0" collapse-mode="2" max-obj-count="7">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="920" y="320"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер объектов характеристи посылки]]></comment>
+	</column>
+	<column name="weight">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Масса товара]]></comment>
+	</column>
+	<column name="size">
+		<type name="integer" length="20"/>
+		<comment><![CDATA[Внешний ключ для таблицы размеров Sizes]]></comment>
+	</column>
+	<column name="price">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Цена товара]]></comment>
+	</column>
+	<column name="address_from">
+		<type name="varchar" length="200"/>
+		<comment><![CDATA[Адрес отправления посылки]]></comment>
+	</column>
+	<column name="address_to">
+		<type name="varchar" length="200"/>
+		<comment><![CDATA[Адрес получения посылки]]></comment>
+	</column>
+</table>
+
+<table name="Sizes" layer="0" collapse-mode="2" max-obj-count="3">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1160" y="320"/>
+	<column name="id">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер размерности]]></comment>
+	</column>
+	<column name="sizes_type">
+		<type name="varchar" length="25"/>
+		<comment><![CDATA[Тип размерности]]></comment>
+	</column>
+	<column name="code">
+		<type name="varchar" length="25"/>
+	</column>
+</table>
+
+<table name="Location" layer="0" collapse-mode="2" max-obj-count="3">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="500" y="720"/>
+	<column name="id">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Порядковый номер локации]]></comment>
+	</column>
+	<column name="X">
+		<type name="varchar" length="250"/>
+	</column>
+	<column name="Y">
+		<type name="varchar" length="250"/>
+	</column>
+</table>
+
+<table name="Status" layer="0" collapse-mode="2" max-obj-count="4">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="660" y="700"/>
+	<column name="id">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Номер информации о заказе]]></comment>
+	</column>
+	<column name="order_id">
+		<type name="smallint" length="0"/>
+	</column>
+	<column name="pickup_time">
+		<type name="date" length="0"/>
+		<comment><![CDATA[Время забора посылки от заказчика]]></comment>
+	</column>
+	<column name="end_time">
+		<type name="date" length="0"/>
+		<comment><![CDATA[Время доставки посылки до получателя]]></comment>
+	</column>
+</table>
+
+<table name="Passport_types" layer="0" collapse-mode="2" max-obj-count="3">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="100" y="700"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="type">
+		<type name="varchar" length="200"/>
+	</column>
+	<column name="code">
+		<type name="varchar" length="200"/>
+	</column>
+	<constraint name="Passport_types_pk" type="pk-constr" table="public.&quot;Passport_types&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="Passport" layer="0" collapse-mode="2" max-obj-count="6">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="100" y="500"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="type_id">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="passport_number" not-null="true">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="reg_date">
+		<type name="date" length="0"/>
+	</column>
+	<column name="expiration_date">
+		<type name="date" length="0"/>
+	</column>
+	<constraint name="Passport_pk" type="pk-constr" table="public.&quot;Passport&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<constraint name="roles_keys" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Roles&quot;" table="public.&quot;Users&quot;">
+	<columns names="role_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="passport_info_ref" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Passport&quot;" table="public.&quot;Users&quot;">
+	<columns names="passport_info" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="state_keys" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Statuses&quot;" table="public.&quot;Orders&quot;">
+	<columns names="order_state_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+		<comment><![CDATA[Связь таблицы Order с таблицей  States]]></comment>
+</constraint>
+
+<constraint name="id_users_ref" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Users&quot;" table="public.&quot;Orders&quot;">
+	<columns names="recipient_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="Users_id_ref" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Users&quot;" table="public.&quot;Orders&quot;">
+	<columns names="sender_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="users_id_ref" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Users&quot;" table="public.&quot;Orders&quot;">
+	<columns names="courier_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="order_info_ref" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.order_info" table="public.&quot;Orders&quot;">
+	<columns names="order_info_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="sizes_ref" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Sizes&quot;" table="public.order_info">
+	<columns names="size" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="types_ref" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Passport_types&quot;" table="public.&quot;Passport&quot;">
+	<columns names="type_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_Users_Roles" type="relfk" layer="0"
+	 src-table="public.&quot;Users&quot;"
+	 dst-table="public.&quot;Roles&quot;" reference-fk="roles_keys"
+	 src-required="false" dst-required="false">
+	<label ref-type="name-label">
+		<position x="-0.0645306" y="5.29844"/>
+	</label>
+</relationship>
+
+<relationship name="rel_Orders_States" type="relfk" layer="0"
+	 src-table="public.&quot;Orders&quot;"
+	 dst-table="public.&quot;Statuses&quot;" reference-fk="state_keys"
+	 src-required="false" dst-required="false">
+	<label ref-type="src-label">
+		<position x="-2.0975" y="-5.075"/>
+	</label>
+</relationship>
+
+<relationship name="&quot;rel_Orders_Users&quot;" type="relfk" layer="0"
+	 src-table="public.&quot;Orders&quot;"
+	 dst-table="public.&quot;Users&quot;" reference-fk="id_users_ref"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="&quot;rel_Orders_Users1&quot;" type="relfk" layer="0"
+	 src-table="public.&quot;Orders&quot;"
+	 dst-table="public.&quot;Users&quot;" reference-fk="Users_id_ref"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_Orders_Users2" type="relfk" layer="0"
+	 src-table="public.&quot;Orders&quot;"
+	 dst-table="public.&quot;Users&quot;" reference-fk="users_id_ref"
+	 src-required="false" dst-required="false">
+	<label ref-type="src-label">
+		<position x="0.0925" y="8.125"/>
+	</label>
+</relationship>
+
+<relationship name="&quot;rel_Orders_order_info&quot;" type="relfk" layer="0"
+	 src-table="public.&quot;Orders&quot;"
+	 dst-table="public.order_info" reference-fk="order_info_ref"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="&quot;rel_order_info_Sizes&quot;" type="relfk" layer="0"
+	 src-table="public.order_info"
+	 dst-table="public.&quot;Sizes&quot;" reference-fk="sizes_ref"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="&quot;rel_Passport_Passport_types&quot;" type="relfk" layer="0"
+	 src-table="public.&quot;Passport&quot;"
+	 dst-table="public.&quot;Passport_types&quot;" reference-fk="types_ref"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="&quot;rel_Users_Passport&quot;" type="relfk" layer="0"
+	 src-table="public.&quot;Users&quot;"
+	 dst-table="public.&quot;Passport&quot;" reference-fk="passport_info_ref"
+	 src-required="false" dst-required="false"/>
+
+</dbmodel>
