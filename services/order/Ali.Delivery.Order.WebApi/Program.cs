@@ -1,3 +1,4 @@
+using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.WebApi.Infrastructure.IoC;
 using Ali.Delivery.Order.WebApi.IoC;
 using Hellang.Middleware.ProblemDetails;
@@ -5,6 +6,7 @@ using Serilog;
 
 try
 {
+    var qwe = SequentialGuid.Create();
     var builder = WebApplication.CreateBuilder(args);
     builder.AddDefaultSerilog();
     builder.Services.AddControllers();
@@ -31,7 +33,6 @@ try
     app.UseProblemDetails();
     app.UseRouting();
     app.UseCors();
-    app.UseHttpsRedirection();
     app.UseAuthorization();
     app.MapControllers();
     app.Run();

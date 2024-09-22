@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Документация</title>
+    <title>Диаграмма</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -41,26 +41,36 @@
         nav a:hover {
             color: #0366d6;
         }
-        .hidden {
-            display: none;
+        .content {
+            padding: 40px;
+        }
+        .image-container {
+            margin-top: 40px;
+        }
+        .image-container img {
+            max-width: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            display: block;
+            margin-left: 0;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Документация</h1>
-    </header>
-    <nav>
-        <a href="#">Главная</a>
-        <a href="#" class="hidden">Swagger документация</a>
-        <a href="./documentation/database/index.html">База данных</a>
-        <a href="./documentation/swagger-api/index.html">Swagger документация</a>
-        <a href="./documentation/diagram/index.html">Диаграмма</a>
-    </nav>
-    <div class="hidden">
-        <ul>
-            <li><a href="./documentation/swagger-api/ali-delivery.yaml">Ali Delivery API</a></li>
-        </ul>
+<header>
+    <h1>Диаграмма</h1>
+</header>
+<nav>
+    <a href="../../index.html">Главная</a>
+    <a href="../database/index.html">База данных</a>
+    <a href="../swagger-api/index.html">Swagger документация</a>
+    <a href="#">Диаграмма</a>
+</nav>
+<div class="content">
+    <p>Диаграмма</p>
+    <div class="image-container">
+        <img src="diagram.png" alt="Диаграмма">
     </div>
+</div>
 </body>
 </html>
