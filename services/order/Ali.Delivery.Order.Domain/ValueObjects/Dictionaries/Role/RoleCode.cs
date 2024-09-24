@@ -1,12 +1,12 @@
 using System.Diagnostics.CodeAnalysis;
 using Ali.Delivery.Domain.Core;
 
-namespace Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.Roles;
+namespace Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.Role;
 
 /// <summary>
 /// Представляет код справочника типов пользователей.
 /// </summary>
-public sealed class RolesCode : ValueObject
+public sealed class RoleCode : ValueObject
 {
     /// <summary>
     /// Представляет максимальную длину кода типов пользователей.
@@ -16,14 +16,14 @@ public sealed class RolesCode : ValueObject
     private readonly string _code;
 
     /// <summary>
-    /// Инициализирует новый экземпляр типа <see cref="RolesCode" />.
+    /// Инициализирует новый экземпляр типа <see cref="RoleCode" />.
     /// </summary>
     /// <param name="code">Код справочника типов пользователей.</param>
     /// <exception cref="ArgumentException">
     /// Возникает, если <paramref name="code" />
     /// является <c>null</c> или <c>whitespace</c> или его длина превышает <see cref="MaxLength" />.
     /// </exception>
-    public RolesCode(string code)
+    public RoleCode(string code)
     {
         if (string.IsNullOrWhiteSpace(code))
         {
@@ -52,9 +52,9 @@ public sealed class RolesCode : ValueObject
     }
 
     /// <summary>
-    /// Выполняет неявное преобразование из <see cref="RolesCode" /> в <see cref="string" />.
+    /// Выполняет неявное преобразование из <see cref="RoleCode" /> в <see cref="string" />.
     /// </summary>
     /// <param name="obj">Значение кода справочника типов пользователей.</param>
     [return: NotNullIfNotNull(nameof(obj))]
-    public static implicit operator string?(RolesCode? obj) => obj?._code;
+    public static implicit operator string?(RoleCode? obj) => obj?._code;
 }

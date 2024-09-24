@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ali.Delivery.Order.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240924164108_roles")]
-    partial class roles
+    [Migration("20240924195250_Role")]
+    partial class Role
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -84,7 +84,7 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Ali.Delivery.Order.Domain.Entities.Dictionaries.Roles", b =>
+            modelBuilder.Entity("Ali.Delivery.Order.Domain.Entities.Dictionaries.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -128,13 +128,13 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         .HasColumnName("updated_date");
 
                     b.HasKey("Id")
-                        .HasName("pk_roles");
+                        .HasName("pk_role");
 
                     b.HasIndex("Code")
                         .IsUnique()
-                        .HasDatabaseName("ix_roles_code");
+                        .HasDatabaseName("ix_role_code");
 
-                    b.ToTable("roles", null, t =>
+                    b.ToTable("role", null, t =>
                         {
                             t.HasComment("Справочник ролей пользователей");
                         });

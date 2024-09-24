@@ -6,7 +6,7 @@ using Serilog;
 
 try
 {
-    var qwe = SequentialGuid.Create();
+   // var qwe = SequentialGuid.Create();  
     var builder = WebApplication.CreateBuilder(args);
     builder.AddDefaultSerilog();
     builder.Services.AddControllers();

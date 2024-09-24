@@ -2,13 +2,13 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Ali.Delivery.Domain.Core;
 
-namespace Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.Roles;
+namespace Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.Role;
 
 /// <summary>
 /// Представляет наименование справочника статусов периода целеполагания.
 /// </summary>
 [DebuggerDisplay("{_name}")]
-public sealed class RolesName : ValueObject
+public sealed class RoleName : ValueObject
 {
     /// <summary>
     /// Представляет максимальную длину наименования справочника статусов периода целеполагания.
@@ -18,14 +18,14 @@ public sealed class RolesName : ValueObject
     private readonly string _name;
 
     /// <summary>
-    /// Инициализирует новый экземпляр типа <see cref="RolesName" />.
+    /// Инициализирует новый экземпляр типа <see cref="RoleName" />.
     /// </summary>
     /// <param name="name">Наименование справочника статусов периода целеполагания.</param>
     /// <exception cref="ArgumentException">
     /// Возникает, если <paramref name="name" />
     /// является <c>null</c> или <c>whitespace</c> или его длина превышает <see cref="MaxLength" />.
     /// </exception>
-    public RolesName(string name)
+    public RoleName(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -52,16 +52,16 @@ public sealed class RolesName : ValueObject
     }
 
     /// <summary>
-    /// Выполняет явное преобразование из <see cref="string" /> в <see cref="RolesCode" />.
+    /// Выполняет явное преобразование из <see cref="string" /> в <see cref="RoleCode" />.
     /// </summary>
     /// <param name="obj">Описание цели.</param>
     [return: NotNullIfNotNull(nameof(obj))]
-    public static explicit operator RolesName?(string? obj) => obj == null ? null : new RolesName(obj);
+    public static explicit operator RoleName?(string? obj) => obj == null ? null : new RoleName(obj);
 
     /// <summary>
-    /// Выполняет неявное преобразование из <see cref="RolesCode" /> в <see cref="string" />.
+    /// Выполняет неявное преобразование из <see cref="RoleCode" /> в <see cref="string" />.
     /// </summary>
     /// <param name="obj">Значение наименования справочника должностей.</param>
     [return: NotNullIfNotNull(nameof(obj))]
-    public static implicit operator string?(RolesName? obj) => obj?._name;
+    public static implicit operator string?(RoleName? obj) => obj?._name;
 }

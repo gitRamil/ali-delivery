@@ -1,26 +1,28 @@
 using Ali.Delivery.Domain.Core;
 using Ali.Delivery.Domain.Core.Primitives;
-using Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.Roles;
+using Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.Role;
 
 namespace Ali.Delivery.Order.Domain.Entities.Dictionaries;
-
-public class Roles : Entity<SequentialGuid>
+/// <summary>
+/// Роли пользователей.
+/// </summary>
+public class Role : Entity<SequentialGuid>
 {
     /// <summary>
     /// Возвращает тип пользователя: Курьер.
     /// </summary>
-    public static readonly Roles Courier = new(new Guid("2cae9a9e-ebf4-44f3-b7d6-70d76444da72"), new RolesCode("courier"), new RolesName("Курьер"));
+    public static readonly Role Courier = new(new Guid("3a1537be-fa32-3962-f94d-62f95e6ffcad"), new RoleCode("courier"), new RoleName("Курьер"));
 
     /// <summary>
     /// Возвращает тип пользователя: Пользователь.
     /// </summary>
-    public static readonly Roles BasicUser = new(new Guid("14b00673-ed23-4f3e-880a-2aa1d913f8b2"), new RolesCode("basicUser"), new RolesName("Пользователь"));
+    public static readonly Role BasicUser = new(new Guid("3a1537bf-cabc-d70c-f42c-012821b898b1"), new RoleCode("basicUser"), new RoleName("Пользователь"));
     /// <summary>
     /// Возвращает тип пользователя: Неавторизованный пользователь.
     /// </summary>
-    public static readonly Roles NotAuthUser = new(new Guid("5397baa2-61a2-408b-966d-09c451440bb2"), new RolesCode("notAuthUser"), new RolesName("Неавторизованный пользователь"));
+    public static readonly Role NotAuthUser = new(new Guid("3a1537c0-11f8-d788-90d9-ced196c63397"), new RoleCode("notAuthUser"), new RoleName("Неавторизованный пользователь"));
 
-    private static readonly Dictionary<RolesCode, Roles> RolesNames = new()
+    private static readonly Dictionary<RoleCode, Role> RoleNames = new()
     {
         [Courier.Code] = Courier,
         [BasicUser.Code] = BasicUser,
@@ -29,7 +31,7 @@ public class Roles : Entity<SequentialGuid>
     
     
     /// <summary>
-    /// Инициализирует новый экземпляр типа <see cref="Roles" />.
+    /// Инициализирует новый экземпляр типа <see cref="Role" />.
     /// </summary>
     /// <param name="id">Идентификатор.</param>
     /// <param name="code">Код.</param>
@@ -39,7 +41,7 @@ public class Roles : Entity<SequentialGuid>
     /// <paramref name="name" /> равен <c>null</c>.
     /// </exception>
     /// <remarks>Конструктор для EF.</remarks>
-    protected Roles (SequentialGuid id, RolesCode code, RolesName name)
+    protected Role (SequentialGuid id, RoleCode code, RoleName name)
         : base(id)
     {
         Code = code ?? throw new ArgumentNullException(nameof(code));
@@ -49,15 +51,15 @@ public class Roles : Entity<SequentialGuid>
     /// <summary>
     /// Возвращает код.
     /// </summary>
-    public RolesCode Code { get; }
+    public RoleCode Code { get; }
 
     /// <summary>
     /// Возвращает наименование.
     /// </summary>
-    public RolesName Name { get; }
+    public RoleName Name { get; }
 
     /// <summary>
     /// Возвращает все значения перечисления.
     /// </summary>
-    public static IReadOnlyCollection<Roles> GetAllValues() => RolesNames.Values;
+    public static IReadOnlyCollection<Role> GetAllValues() => RoleNames.Values;
 }
