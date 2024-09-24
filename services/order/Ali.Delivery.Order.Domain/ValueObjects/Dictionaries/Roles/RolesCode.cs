@@ -4,12 +4,12 @@ using Ali.Delivery.Domain.Core;
 namespace Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.Roles;
 
 /// <summary>
-/// Представляет код справочника статусов периода целеполагания.
+/// Представляет код справочника типов пользователей.
 /// </summary>
 public sealed class RolesCode : ValueObject
 {
     /// <summary>
-    /// Представляет максимальную длину кода статусов периода целеполагания.
+    /// Представляет максимальную длину кода типов пользователей.
     /// </summary>
     public const int MaxLength = 100;
 
@@ -18,7 +18,7 @@ public sealed class RolesCode : ValueObject
     /// <summary>
     /// Инициализирует новый экземпляр типа <see cref="RolesCode" />.
     /// </summary>
-    /// <param name="code">Код справочника статусов периода целеполагания.</param>
+    /// <param name="code">Код справочника типов пользователей.</param>
     /// <exception cref="ArgumentException">
     /// Возникает, если <paramref name="code" />
     /// является <c>null</c> или <c>whitespace</c> или его длина превышает <see cref="MaxLength" />.
@@ -27,14 +27,14 @@ public sealed class RolesCode : ValueObject
     {
         if (string.IsNullOrWhiteSpace(code))
         {
-            throw new ArgumentException("Код справочника статусов периода целеполагания не может быть null или пустой строкой.", nameof(code));
+            throw new ArgumentException("Код справочника типов пользователей не может быть null или пустой строкой.", nameof(code));
         }
 
         code = code.Trim();
 
         if (code.Length > MaxLength)
         {
-            throw new ArgumentException($"Код справочника статусов периода целеполагания не может быть больше {MaxLength}.", nameof(code));
+            throw new ArgumentException($"Код справочника типов пользователей не может быть больше {MaxLength}.", nameof(code));
         }
 
         _code = code;
@@ -54,7 +54,7 @@ public sealed class RolesCode : ValueObject
     /// <summary>
     /// Выполняет неявное преобразование из <see cref="RolesCode" /> в <see cref="string" />.
     /// </summary>
-    /// <param name="obj">Значение кода справочника статусов периода целеполагания.</param>
+    /// <param name="obj">Значение кода справочника типов пользователей.</param>
     [return: NotNullIfNotNull(nameof(obj))]
     public static implicit operator string?(RolesCode? obj) => obj?._code;
 }
