@@ -79,61 +79,19 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         {
                             t.HasComment("Справочник статусов заказов");
                         });
-                });
 
-            modelBuilder.Entity("Ali.Delivery.Order.Domain.Entities.Dictionaries.Role", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid")
-                        .HasColumnName("id")
-                        .HasComment("Уникальный идентификатор");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("code")
-                        .HasComment("Код");
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("created_by");
-
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)))
-                        .HasColumnName("created_date");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("character varying(250)")
-                        .HasColumnName("name")
-                        .HasComment("Наименование");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("updated_by");
-
-                    b.Property<DateTimeOffset>("UpdatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)))
-                        .HasColumnName("updated_date");
-
-                    b.HasKey("Id")
-                        .HasName("pk_role");
-
-                    b.HasIndex("Code")
-                        .IsUnique()
-                        .HasDatabaseName("ix_role_code");
-
-                    b.ToTable("role", null, t =>
+                    b.HasData(
+                        new
                         {
-                            t.HasComment("Справочник ролей пользователей");
+                            Id = new Guid("5ded1989-e506-448f-987d-7ad50574148b"),
+                            Code = "functional",
+                            Name = "Функциональная"
+                        },
+                        new
+                        {
+                            Id = new Guid("50ff84d1-016a-4a2b-ba53-51d6dd70459d"),
+                            Code = "individual",
+                            Name = "Индивидуальная"
                         });
                 });
 
