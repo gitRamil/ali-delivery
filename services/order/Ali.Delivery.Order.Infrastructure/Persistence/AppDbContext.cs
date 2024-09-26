@@ -51,6 +51,7 @@ public class AppDbContext : DbContext, IAppDbContext
     private void AttachDictionaryValues()
     {
         AttachRange(OrderStatus.GetAllValues());
+        AttachRange(Role.GetAllValues());
     }
 
     private void MarkCreated(EntityEntry entry)
