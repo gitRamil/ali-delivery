@@ -17,7 +17,7 @@ internal class RoleConfiguration : EntityTypeConfigurationBase<Role>
     /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
     protected override void OnConfigure(EntityTypeBuilder<Role> builder)
     {
-        builder.ToTable("role", t => t.HasComment("Справочник ролей пользователей"));
+        builder.ToTable("roles", t => t.HasComment("Справочник ролей пользователей"));
 
         builder.Property(p => p.Name)
             .IsRequired()

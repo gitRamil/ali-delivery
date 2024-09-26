@@ -3,6 +3,7 @@ using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.Role;
 
 namespace Ali.Delivery.Order.Domain.Entities.Dictionaries;
+
 /// <summary>
 /// Роли пользователей.
 /// </summary>
@@ -17,6 +18,7 @@ public class Role : Entity<SequentialGuid>
     /// Возвращает тип пользователя: Пользователь.
     /// </summary>
     public static readonly Role BasicUser = new(new Guid("3a1537bf-cabc-d70c-f42c-012821b898b1"), new RoleCode("basicUser"), new RoleName("Пользователь"));
+    
     /// <summary>
     /// Возвращает тип пользователя: Неавторизованный пользователь.
     /// </summary>

@@ -5,13 +5,13 @@ using Ali.Delivery.Domain.Core;
 namespace Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.Role;
 
 /// <summary>
-/// Представляет наименование справочника статусов периода целеполагания.
+/// Представляет наименование справочника типов пользователей..
 /// </summary>
 [DebuggerDisplay("{_name}")]
 public sealed class RoleName : ValueObject
 {
     /// <summary>
-    /// Представляет максимальную длину наименования справочника статусов периода целеполагания.
+    /// Представляет максимальную длину наименования справочника типов пользователей.
     /// </summary>
     public const int MaxLength = 250;
 
@@ -20,7 +20,7 @@ public sealed class RoleName : ValueObject
     /// <summary>
     /// Инициализирует новый экземпляр типа <see cref="RoleName" />.
     /// </summary>
-    /// <param name="name">Наименование справочника статусов периода целеполагания.</param>
+    /// <param name="name">Наименование справочника типов пользователей.</param>
     /// <exception cref="ArgumentException">
     /// Возникает, если <paramref name="name" />
     /// является <c>null</c> или <c>whitespace</c> или его длина превышает <see cref="MaxLength" />.
@@ -29,12 +29,12 @@ public sealed class RoleName : ValueObject
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            throw new ArgumentException("Наименование справочника статусов периода целеполагания не может быть null или пустой строкой.", nameof(name));
+            throw new ArgumentException("Наименование справочника типов пользователей не может быть null или пустой строкой.", nameof(name));
         }
 
         if (name.Length > MaxLength)
         {
-            throw new ArgumentException($"Наименование справочника статусов периода целеполагания не может быть больше {MaxLength}.", nameof(name));
+            throw new ArgumentException($"Наименование справочника типов пользователей не может быть больше {MaxLength}.", nameof(name));
         }
 
         _name = name;
