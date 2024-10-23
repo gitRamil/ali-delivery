@@ -27,6 +27,12 @@ public class AppDbContext : DbContext, IAppDbContext
     /// Возвращает набор заказов.
     /// </summary>
     public DbSet<Domain.Entities.Order> Orders => Set<Domain.Entities.Order>();
+    
+    /// <summary>
+    /// Возвращает набор пользователей.
+    /// </summary>
+    public DbSet<Domain.Entities.User> Users => Set<Domain.Entities.User>();
+    
 
     /// <inheritdoc cref="DbContext" />
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -46,12 +52,17 @@ public class AppDbContext : DbContext, IAppDbContext
         return await base.SaveChangesAsync(cancellationToken);
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder) => modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
-
+    protected override void OnModelCreating(ModelBuilder modelBuilder) 
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+    }
     private void AttachDictionaryValues()
     {
         AttachRange(OrderStatus.GetAllValues());
-        AttachRange(Role.GetAllValues());
+        AttachRange(RoleId.GetAllValues());
+        AttachRange(Size.GetAllValues());
+        AttachRange(PassportType.GetAllValues());
+        
     }
 
     private void MarkCreated(EntityEntry entry)

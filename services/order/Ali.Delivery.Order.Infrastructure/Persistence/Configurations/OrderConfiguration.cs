@@ -28,6 +28,6 @@ internal class CourierConfiguration : EntityTypeConfigurationBase<Domain.Entitie
                .HasForeignKey("OrderStatusId");
 
         builder.Property("OrderStatusId")
-               .HasComment("Статус заказа");
+               .HasComment("Идентификационный номер заказа");
     }
 }

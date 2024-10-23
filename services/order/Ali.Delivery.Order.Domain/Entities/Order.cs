@@ -28,19 +28,26 @@ public class Order : Entity<SequentialGuid>
         OrderStatus = orderStatus ?? throw new ArgumentNullException(nameof(orderStatus));
     }
 
+    
+
     /// <summary>
     /// Инициализирует новый экземпляр типа <see cref="Order" />.
     /// </summary>
-    /// <param name="id">Идентификатор.</param>
     /// <remarks>Конструктор для EF.</remarks>
     protected Order()
-        : base(SequentialGuid.Empty) =>
+        : base(SequentialGuid.Empty)
+    {
         Name = null!;
+        OrderStatus = null!;
+    }
+
+            
 
     /// <summary>
     /// Возвращает наименование заказа.
     /// </summary>
     public OrderName Name { get; }
+    
 
     /// <summary>
     /// Возвращает статус заказа.

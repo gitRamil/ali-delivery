@@ -1,3 +1,4 @@
+using Ali.Delivery.Order.Domain.Entities;
 using Ali.Delivery.Order.Domain.ValueObjects.User;
 using Ali.Delivery.Order.Infrastructure.Persistence.Configurations.Base;
 using Microsoft.EntityFrameworkCore;
@@ -6,75 +7,51 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Ali.Delivery.Order.Infrastructure.Persistence.Configurations
 {
     /// <summary>
-    /// Конфигурация сущности User для базы данных.
+    /// Представляет настройку конфигурации для типа <see cref="User" />.
     /// </summary>
-    internal class UserConfiguration : EntityTypeConfigurationBase<Domain.Entities.User>
+    internal class UserConfiguration : EntityTypeConfigurationBase<User>
     {
         /// <summary>
-        /// Конфигурирует сущность User.
+        /// Вызывается при выполнении конфигурации сущности типа <see cref="User" />.
         /// </summary>
-        /// <param name="builder">Построитель конфигурации Entity Framework.</param>
-        protected override void OnConfigure(EntityTypeBuilder<Domain.Entities.User> builder)
+        /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
+        protected override void OnConfigure(EntityTypeBuilder<User> builder)
         {
-            // Указываем таблицу для сущности User
-            builder.ToTable("Users", t => t.HasComment("Пользователи"));
+            // Указываем имя таблицы и добавляем комментарий
+            builder.ToTable("users", t => t.HasComment("Пользователь"));
             
-            // Настраиваем поле FirstName (Имя пользователя)
+            // Настройка свойства FirstName
             builder.Property(u => u.FirstName)
-                   .HasComment("Имя пользователя")
-                   .IsRequired()
                    .HasMaxLength(FirstName.MaxLength)
-                   .HasConversion(v => v.ToString(), v => new FirstName(v));
-
-            // Настраиваем поле LastName (Фамилия пользователя)
-            builder.Property(u => u.LastName)
-                   .HasConversion(v => v.ToString(), v => new LastName(v))
-                   .HasComment("Фамилия пользователя")
-                   .IsRequired()
-                   .HasMaxLength(LastName.MaxLength);
-
-            // Настраиваем поле PassportInfo (Паспортные данные пользователя)
-            // builder.Property(u => u.PassportInfo)
+                   .HasComment("Имя пользователя")
+                   .HasConversion(f => (string)f, s => new FirstName(s));
                    
 
-            // Устанавливаем связь с таблицей PassportInfo
-            // builder.HasOne(u => u.PassportInfo)  
-                  
+            // Настройка свойства LastName
+            builder.Property(u => u.LastName)
+                   .HasMaxLength(LastName.MaxLength)
+                   .HasComment("Фамилия пользователя")
+                   .HasConversion(l=>(string)l!,s=>new LastName(s));
 
-            // Настраиваем поле Email (Электронная почта пользователя)
-            builder.Property(u => u.Email)
-                   .HasConversion(v => v.ToString(), v => new UserEmail(v))
-                   .HasColumnName("Email")
-                   .IsRequired()
-                   .HasMaxLength(100);
+            // Настройка свойства PassportId
+            builder.Property(u => u.PassportId)
+                   .HasMaxLength(PassportId.MaxLength)
+                   .HasComment("Номер паспорта пользователя")
+                   .HasConversion(p => (string)p!, s => new PassportId(s));
 
-            // Настраиваем поле PhoneNumber (Номер телефона пользователя)
-            builder.Property(u => u.PhoneNumber)
-                   .HasConversion(v => v.ToString(), v => new PhoneNumber(v))
-                   .HasComment("PhoneNumber")
-                   .IsRequired()
-                   .HasMaxLength(20);
+            // Настройка свойства Birthday
+            builder.Property(u => u.Birthday)
+                   .HasComment("Дата рождения пользователя")
+                   .HasConversion(b => (DateTime)b!, s => new Birthday(s));
 
-            // Настраиваем поле RoleId (Идентификатор роли пользователя)
+            // Настройка свойства RoleId
             builder.HasOne(u => u.RoleId)
                    .WithMany()
                    .HasForeignKey("RoleId");
 
             builder.Property("RoleId")
-                   .HasComment("Идентификатор ролей пользователей");
-
-            // Настраиваем поле BirthDay (Дата рождения пользователя)
-            builder.Property(u => u.BirthDay)
-                   .HasComment("Дата рождения")
-                   .IsRequired();
-
-            // Добавляем уникальные индексы на Email для ускорения поиска и обеспечения уникальности
-            builder.HasIndex(u => u.Email)
-                   .IsUnique(); 
-
-            // Добавляем уникальные индексы на PhoneNumber для ускорения поиска и обеспечения уникальности
-            builder.HasIndex(u => u.PhoneNumber)
-                   .IsUnique(); 
+                   .HasComment("Роль пользователя");
+            
         }
     }
 }

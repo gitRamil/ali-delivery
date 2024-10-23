@@ -1,5 +1,6 @@
 using Ali.Delivery.Order.Domain.Entities.Dictionaries;
 using Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.Role;
+using Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.RoleId;
 using Ali.Delivery.Order.Infrastructure.Persistence.Configurations.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -7,15 +8,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Ali.Delivery.Order.Infrastructure.Persistence.Configurations.Dictionaries;
 
 /// <summary>
-/// Представляет настройку конфигурации для типа <see cref="Role" />.
+/// Представляет настройку конфигурации для типа <see cref="RoleId" />.
 /// </summary>
-internal class RoleConfiguration : EntityTypeConfigurationBase<Role>
+internal class RoleIdConfiguration : EntityTypeConfigurationBase<RoleId>
 {
     /// <summary>
-    /// Вызывается при выполнении конфигурации сущности типа <see cref="Role" />.
+    /// Вызывается при выполнении конфигурации сущности типа <see cref="RoleId" />.
     /// </summary>
     /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
-    protected override void OnConfigure(EntityTypeBuilder<Role> builder)
+    protected override void OnConfigure(EntityTypeBuilder<RoleId> builder)
     {
         builder.ToTable("roles", t => t.HasComment("Справочник ролей пользователей"));
 
