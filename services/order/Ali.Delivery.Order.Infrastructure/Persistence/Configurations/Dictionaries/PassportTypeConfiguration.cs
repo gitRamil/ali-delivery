@@ -32,7 +32,7 @@ internal class PassportTypeConfiguration : EntityTypeConfigurationBase<PassportT
             .HasConversion(o => (string)o, s => new PassportTypeCode(s));
 
         builder.HasIndex(p => p.Code)
-            .IsUnique()
-            .HasDatabaseName("IX_PassportType_Code");
+            .IsUnique();
+            
     }
 }

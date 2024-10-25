@@ -59,7 +59,7 @@ public class AppDbContext : DbContext, IAppDbContext
     private void AttachDictionaryValues()
     {
         AttachRange(OrderStatus.GetAllValues());
-        AttachRange(RoleId.GetAllValues());
+        AttachRange(Role.GetAllValues());
         AttachRange(Size.GetAllValues());
         AttachRange(PassportType.GetAllValues());
         

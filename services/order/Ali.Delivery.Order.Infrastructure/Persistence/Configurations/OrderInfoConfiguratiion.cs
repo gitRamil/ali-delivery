@@ -20,27 +20,31 @@ internal class OrderInfoConfiguration : EntityTypeConfigurationBase<Domain.Entit
 
         builder.Property(p => p.Weight)
             .IsRequired()
-            .HasComment("Вес заказа");
+            .HasComment("Вес заказа")
+            .HasConversion(p => (decimal)p, s => new Weight(s));
 
         builder.Property(p => p.Price)
             .IsRequired()
-            .HasComment("Цена заказа");
+            .HasComment("Цена заказа")
+            .HasConversion(p => (decimal)p, s => new Price(s));
 
         builder.Property(p => p.AddressFrom)
             .HasMaxLength(AddressFrom.MaxLength)
             .IsRequired()
-            .HasComment("Адрес отправления");
+            .HasComment("Адрес отправления")
+            .HasConversion(p => (string)p, s => new AddressFrom(s));
 
         builder.Property(p => p.AddressTo)
             .HasMaxLength(AddressTo.MaxLength)
             .IsRequired()
-            .HasComment("Адрес доставки");
+            .HasComment("Адрес доставки")
+            .HasConversion(p => (string)p, s => new AddressTo(s));
 
         builder.HasOne(p => p.Size)
             .WithMany()
-            .HasForeignKey("SizeId");
+            .HasForeignKey("size_id");
 
-        builder.Property("SizeId")
+        builder.Property("size_id")
             .HasComment("Идентификационный номер размера");
     }
 }

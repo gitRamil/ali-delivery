@@ -12,12 +12,12 @@ public class OrderStatus : Entity<SequentialGuid>
     /// <summary>
     /// Возвращает статус заказа: Создана.
     /// </summary>
-    public static readonly OrderStatus Created = new(new Guid("5ded1989-e506-448f-987d-7ad50574148b"), new OrderStatusCode("created"), new OrderStatusName("Создана"));
+    public static readonly OrderStatus Created = new(new Guid("aa37a123-940e-45c6-a06a-658a976ac744"), new OrderStatusCode("created"), new OrderStatusName("Создана"));
 
     /// <summary>
     /// Возвращает статус заказа: Завершена.
     /// </summary>
-    public static readonly OrderStatus Finished = new(new Guid("50ff84d1-016a-4a2b-ba53-51d6dd70459d"), new OrderStatusCode("finished"), new OrderStatusName("Завершена"));
+    public static readonly OrderStatus Finished = new(new Guid("fcdd8817-a5d9-4bd1-adf4-9e6abfc842af"), new OrderStatusCode("finished"), new OrderStatusName("Завершена"));
 
     private static readonly Dictionary<OrderStatusCode, OrderStatus> OrderStatuses = new()
     {

@@ -15,20 +15,23 @@ public class Order : Entity<SequentialGuid>
     /// </summary>
     /// <param name="id">Идентификатор.</param>
     /// <param name="name">Наименование цели.</param>
+    /// <param name="orderInfo"></param>
     /// <param name="orderStatus">Наименование цели.</param>
     /// &lt;param name="name"&gt;Наименование цели.&lt;/param&gt;
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="name" /> или
     /// <paramref name="name" /> равен <c>null</c>.
     /// </exception>
-    public Order(SequentialGuid id, OrderName name, OrderStatus orderStatus)
+    public Order(SequentialGuid id, OrderName name, OrderInfo orderInfo, OrderStatus orderStatus)
         : base(id)
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));
+        OrderInfo = orderInfo ?? throw new ArgumentNullException(nameof(orderInfo));
         OrderStatus = orderStatus ?? throw new ArgumentNullException(nameof(orderStatus));
     }
 
     
+
 
     /// <summary>
     /// Инициализирует новый экземпляр типа <see cref="Order" />.
@@ -39,6 +42,7 @@ public class Order : Entity<SequentialGuid>
     {
         Name = null!;
         OrderStatus = null!;
+        OrderInfo = null!;
     }
 
             
@@ -53,4 +57,10 @@ public class Order : Entity<SequentialGuid>
     /// Возвращает статус заказа.
     /// </summary>
     public virtual OrderStatus OrderStatus { get; }
+    
+    // /// <summary>
+    // /// Возвращает информацию заказа.
+    // /// </summary>
+    public virtual OrderInfo OrderInfo { get; }
+    
 }

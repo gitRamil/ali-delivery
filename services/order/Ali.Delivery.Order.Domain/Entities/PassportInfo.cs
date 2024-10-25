@@ -24,7 +24,7 @@ public class PassportInfo : Entity<SequentialGuid>
     public PassportInfo(SequentialGuid id, PassportType typeId, PassportNumber passportNumber, RegDate regDate, ExpirationDate expirationDate)
         : base(id)
     {
-        TypeId = typeId ?? throw new ArgumentNullException(nameof(typeId));
+        PassportType = typeId ?? throw new ArgumentNullException(nameof(typeId));
         PassportNumber = passportNumber ?? throw new ArgumentNullException(nameof(passportNumber));
         RegDate = regDate;
         ExpirationDate = expirationDate;
@@ -37,7 +37,7 @@ public class PassportInfo : Entity<SequentialGuid>
     protected PassportInfo()
         : base(SequentialGuid.Empty)
     {
-        TypeId = null!;
+        PassportType = null!;
         PassportNumber = null!;
         RegDate = null!;
         ExpirationDate = null!;
@@ -47,7 +47,7 @@ public class PassportInfo : Entity<SequentialGuid>
     /// <summary>
     /// Возвращает идентификатор типа паспорта.
     /// </summary>
-    public virtual PassportType TypeId { get; }
+    public virtual PassportType PassportType { get; }
 
     /// <summary>
     /// Возвращает номер паспорта.

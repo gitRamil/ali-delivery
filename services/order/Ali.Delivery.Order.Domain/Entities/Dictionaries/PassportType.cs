@@ -12,17 +12,17 @@ public class PassportType : Entity<SequentialGuid>
     /// <summary>
     /// Возвращает тип паспорта: Внутренний.
     /// </summary>
-    public static readonly PassportType Internal = new PassportType(new Guid("e4a1537e-abf2-4f1a-b6f7-73343e6bf4cd"), new PassportTypeCode("internal"), new PassportTypeName("Внутренний"));
+    public static readonly PassportType Internal = new(new Guid("df2f8eb6-4975-4fb8-8bc9-e426c3318786"), new PassportTypeCode("internal"), new PassportTypeName("Внутренний"));
 
     /// <summary>
     /// Возвращает тип паспорта: Заграничный.
     /// </summary>
-    public static readonly PassportType International = new PassportType(new Guid("e4a1537f-5fb2-4c9a-98e6-b03345a6d5df"), new PassportTypeCode("international"), new PassportTypeName("Заграничный"));
+    public static readonly PassportType International = new(new Guid("880dfb24-86d4-4fed-b2a9-a18cc8b85f04"), new PassportTypeCode("international"), new PassportTypeName("Заграничный"));
     
     /// <summary>
     /// Возвращает тип паспорта: Дипломатический.
     /// </summary>
-    public static readonly PassportType Diplomatic = new PassportType(new Guid("e4a15380-80ab-453b-9f7e-09e136a4ef2a"), new PassportTypeCode("diplomatic"), new PassportTypeName("Дипломатический"));
+    public static readonly PassportType Diplomatic = new(new Guid("50f78cc1-a5e6-468f-9b30-e12d383dd40a"), new PassportTypeCode("diplomatic"), new PassportTypeName("Дипломатический"));
 
     private static readonly Dictionary<PassportTypeCode, PassportType> PassportTypes = new()
     {

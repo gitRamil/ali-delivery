@@ -34,10 +34,12 @@ namespace Ali.Delivery.Order.Infrastructure.Persistence.Configurations
                    .HasConversion(l=>(string)l!,s=>new LastName(s));
 
             // Настройка свойства PassportId
-            builder.Property(u => u.PassportId)
-                   .HasMaxLength(PassportId.MaxLength)
-                   .HasComment("Номер паспорта пользователя")
-                   .HasConversion(p => (string)p!, s => new PassportId(s));
+            builder.HasOne(p => p.PassportInfo)
+                   .WithMany()
+                   .HasForeignKey("passport_info_id");
+            
+            builder.Property("passport_info_id")
+                   .HasComment("Информация о паспорте");
 
             // Настройка свойства Birthday
             builder.Property(u => u.Birthday)
@@ -45,11 +47,11 @@ namespace Ali.Delivery.Order.Infrastructure.Persistence.Configurations
                    .HasConversion(b => (DateTime)b!, s => new Birthday(s));
 
             // Настройка свойства RoleId
-            builder.HasOne(u => u.RoleId)
+            builder.HasOne(u => u.Role)
                    .WithMany()
-                   .HasForeignKey("RoleId");
+                   .HasForeignKey("role_id");
 
-            builder.Property("RoleId")
+            builder.Property("role_id")
                    .HasComment("Роль пользователя");
             
         }

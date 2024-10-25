@@ -6,7 +6,7 @@ namespace Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.PassportType;
 /// <summary>
 /// Представляет код справочника типов паспортов.
 /// </summary>
-public sealed class PassportTypeCode : ValueObject
+public class PassportTypeCode : ValueObject
 {
     /// <summary>
     /// Представляет максимальную длину кода типов паспортов.

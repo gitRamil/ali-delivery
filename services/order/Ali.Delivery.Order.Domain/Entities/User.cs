@@ -13,27 +13,27 @@ public class User : Entity<SequentialGuid>
     /// <param name="id">Идентификатор пользователя.</param>
     /// <param name="firstName">Имя пользователя.</param>
     /// <param name="lastName">Фамилия пользователя.</param>
-    /// <param name="passportId">Номер паспорта пользователя.</param>
-    /// <param name="roleId">Идентификатор роли пользователя.</param>
+    /// <param name="passportInfo"></param>
+    /// <param name="role">Идентификатор роли пользователя.</param>
     /// <param name="birthday">Дата рождения пользователя.</param>
     /// <exception cref="ArgumentNullException">
     /// Возникает, если любой из параметров <paramref name="firstName" />, 
-    /// <paramref name="lastName" />, <paramref name="passportId" />, 
-    /// <paramref name="roleId" /> или <paramref name="birthday" /> равен <c>null</c>.
+    /// <paramref name="lastName" />, <paramref name="passportInfo" />, 
+    /// <paramref name="role" /> или <paramref name="birthday" /> равен <c>null</c>.
     /// </exception>
     public User(
         SequentialGuid id, 
         FirstName firstName, 
         LastName lastName, 
-        PassportId passportId, 
-        RoleId roleId,  
+        PassportInfo  passportInfo , 
+        Role role,  
         Birthday birthday)
         : base(id)
     {
         FirstName = firstName ?? throw new ArgumentNullException(nameof(firstName));
         LastName = lastName ?? throw new ArgumentNullException(nameof(lastName));
-        PassportId = passportId ?? throw new ArgumentNullException(nameof(passportId));
-        RoleId = roleId ?? throw new ArgumentNullException(nameof(roleId));
+        PassportInfo = passportInfo ?? throw new ArgumentNullException(nameof(passportInfo));
+        Role = role ?? throw new ArgumentNullException(nameof(role));
         Birthday = birthday ?? throw new ArgumentNullException(nameof(birthday));
     }
 
@@ -46,9 +46,9 @@ public class User : Entity<SequentialGuid>
     {
         FirstName = null!;
         LastName = null!;
-        PassportId = null!;
+        PassportInfo = null!;
         Birthday = null!;
-        RoleId = null!;
+        Role = null!;
     }
 
     /// <summary>
@@ -64,12 +64,12 @@ public class User : Entity<SequentialGuid>
     /// <summary>
     /// Номер паспорта пользователя.
     /// </summary>
-    public PassportId PassportId { get;   }
+    public virtual PassportInfo PassportInfo { get;   }
 
     /// <summary>
     /// Идентификатор роли пользователя.
     /// </summary>
-    public virtual RoleId RoleId { get;   }
+    public virtual Role Role { get;   }
 
     /// <summary>
     /// Дата рождения пользователя.

@@ -38,6 +38,12 @@ public class OrderInfo : Entity<SequentialGuid>
         AddressTo = addressTo ?? throw new ArgumentNullException(nameof(addressTo));
     }
 
+    protected OrderInfo()
+        : base(SequentialGuid.Empty)
+    {
+        
+    }
+
     /// <summary>
     /// Вес заказа.
     /// </summary>

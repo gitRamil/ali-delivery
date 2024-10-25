@@ -21,21 +21,24 @@ internal class PassportInfoConfiguration : EntityTypeConfigurationBase<Domain.En
         builder.Property(p => p.PassportNumber)
             .IsRequired()
             .HasMaxLength(PassportNumber.MaxLength)
-            .HasComment("Номер паспорта");
+            .HasComment("Номер паспорта")
+            .HasConversion(b => (string)b, s => new PassportNumber(s));
 
         builder.Property(p => p.RegDate)
             .IsRequired()
-            .HasComment("Дата регистрации");
+            .HasComment("Дата регистрации")
+            .HasConversion(b => (DateTime)b, s => new RegDate(s));
 
         builder.Property(p => p.ExpirationDate)
             .IsRequired()
-            .HasComment("Дата истечения срока действия паспорта");
+            .HasComment("Дата истечения срока действия паспорта")
+            .HasConversion(b => (DateTime)b, s => new ExpirationDate(s));
 
-        builder.HasOne(p => p.TypeId)
+        builder.HasOne(p => p.PassportType)
             .WithMany()
-            .HasForeignKey("TypeId");
+            .HasForeignKey("passport_type_id");
 
-        builder.Property("TypeId")
+        builder.Property("passport_type_id")
             .HasComment("Идентификационный номер типа паспорта");
 
 
