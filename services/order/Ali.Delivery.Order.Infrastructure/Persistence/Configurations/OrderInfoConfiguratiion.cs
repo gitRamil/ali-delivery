@@ -21,25 +21,25 @@ internal class OrderInfoConfiguration : EntityTypeConfigurationBase<OrderInfo>
 
         builder.Property(p => p.Weight)
                .IsRequired()
-               .HasComment("Вес заказа")
-               .HasConversion(p => (decimal)p, s => new Weight(s));
+               .HasConversion(p => (decimal)p, s => new Weight(s))
+               .HasComment("Вес заказа");
 
         builder.Property(p => p.Price)
                .IsRequired()
-               .HasComment("Цена заказа")
-               .HasConversion(p => (decimal)p, s => new Price(s));
+               .HasConversion(p => (decimal)p, s => new Price(s))
+               .HasComment("Цена заказа");
 
         builder.Property(p => p.AddressFrom)
                .HasMaxLength(AddressFrom.MaxLength)
                .IsRequired()
-               .HasComment("Адрес отправления")
-               .HasConversion(p => (string)p, s => new AddressFrom(s));
+               .HasConversion(p => (string)p, s => new AddressFrom(s))
+               .HasComment("Адрес отправления");
 
         builder.Property(p => p.AddressTo)
                .HasMaxLength(AddressTo.MaxLength)
                .IsRequired()
-               .HasComment("Адрес доставки")
-               .HasConversion(p => (string)p, s => new AddressTo(s));
+               .HasConversion(p => (string)p, s => new AddressTo(s))
+               .HasComment("Адрес доставки");
 
         builder.HasOne(p => p.Size)
                .WithMany()

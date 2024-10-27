@@ -20,8 +20,8 @@ internal class CourierConfiguration : EntityTypeConfigurationBase<Domain.Entitie
 
         builder.Property(p => p.Name)
                .HasMaxLength(OrderName.MaxLength)
-               .HasComment("Наименование заказа")
-               .HasConversion(o => (string)o, s => new OrderName(s));
+               .HasConversion(o => (string)o, s => new OrderName(s))
+               .HasComment("Наименование заказа");
 
         builder.HasOne(p => p.OrderStatus)
                .WithMany()

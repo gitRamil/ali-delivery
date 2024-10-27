@@ -13,7 +13,7 @@ public class Price : ValueObject
     /// <summary>
     /// Минимальная допустимая цена заказа.
     /// </summary>
-    public const decimal MinPrice = 0.01m;
+    private const decimal MinPrice = 0.01m;
 
     private readonly decimal _price;
 

@@ -39,10 +39,16 @@ public class AddressFrom : ValueObject
     /// <inheritdoc />
     public override string ToString() => _address;
 
+    /// <summary>
+    /// Возвращает набор компонентов, участвующий в сравнении.
+    /// </summary>
     protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return _address;
     }
-
+    
+    /// <summary>
+    /// Выполняет неявное преобразование из <see cref="AddressFrom" /> в <see cref="string" />.
+    /// </summary>
     public static implicit operator string(AddressFrom obj) => obj._address;
 }

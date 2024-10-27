@@ -1,7 +1,6 @@
 using Ali.Delivery.Domain.Core;
 using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.Role;
-using Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.RoleId;
 
 namespace Ali.Delivery.Order.Domain.Entities.Dictionaries;
 

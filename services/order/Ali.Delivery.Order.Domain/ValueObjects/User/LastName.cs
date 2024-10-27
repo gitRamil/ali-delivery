@@ -40,10 +40,16 @@ public class LastName : ValueObject
     /// <inheritdoc />
     public override string ToString() => _name;
 
+    /// <summary>
+    /// Возвращает набор компонентов, участвующий в сравнении.
+    /// </summary>
     protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return _name;
     }
 
+    /// <summary>
+    /// Выполняет неявное преобразование из <see cref="LastName" /> в <see cref="string" />.
+    /// </summary>
     public static implicit operator string?(LastName? obj) => obj?._name;
 }

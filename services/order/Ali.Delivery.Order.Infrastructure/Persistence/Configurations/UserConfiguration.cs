@@ -23,14 +23,14 @@ internal class UserConfiguration : EntityTypeConfigurationBase<User>
         // Настройка свойства FirstName
         builder.Property(u => u.FirstName)
                .HasMaxLength(FirstName.MaxLength)
-               .HasComment("Имя пользователя")
-               .HasConversion(f => (string)f, s => new FirstName(s));
+               .HasConversion(f => (string)f, s => new FirstName(s))
+               .HasComment("Имя пользователя");
 
         // Настройка свойства LastName
         builder.Property(u => u.LastName)
                .HasMaxLength(LastName.MaxLength)
-               .HasComment("Фамилия пользователя")
-               .HasConversion(l => (string)l!, s => new LastName(s));
+               .HasConversion(l => (string)l!, s => new LastName(s))
+               .HasComment("Фамилия пользователя");
 
         // Настройка свойства PassportId
         builder.HasOne(p => p.PassportInfo)
@@ -42,8 +42,8 @@ internal class UserConfiguration : EntityTypeConfigurationBase<User>
 
         // Настройка свойства Birthday
         builder.Property(u => u.Birthday)
-               .HasComment("Дата рождения пользователя")
-               .HasConversion(b => (DateTime)b!, s => new Birthday(s));
+               .HasConversion(b => (DateTime)b!, s => new Birthday(s))
+               .HasComment("Дата рождения пользователя");
 
         // Настройка свойства RoleId
         builder.HasOne(u => u.Role)

@@ -26,17 +26,24 @@ public class OrderInfo : Entity<SequentialGuid>
         : base(id)
     {
         Weight = weight ?? throw new ArgumentNullException(nameof(weight));
-        ;
         Size = size ?? throw new ArgumentNullException(nameof(size));
         Price = price ?? throw new ArgumentNullException(nameof(price));
-        ;
         AddressFrom = addressFrom ?? throw new ArgumentNullException(nameof(addressFrom));
         AddressTo = addressTo ?? throw new ArgumentNullException(nameof(addressTo));
     }
-
+    
+    /// <summary>
+    /// Инициализирует новый экземпляр типа <see cref="OrderInfo" />.
+    /// </summary>
+    /// <remarks>Конструктор для EF.</remarks>
     protected OrderInfo()
         : base(SequentialGuid.Empty)
     {
+        Weight = null!;
+        Size = null!;
+        Price = null!;
+        AddressFrom = null!;
+        AddressTo = null!;
     }
 
     /// <summary>

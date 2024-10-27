@@ -20,10 +20,16 @@ public sealed class ExpirationDate : ValueObject
     /// <inheritdoc />
     public override string ToString() => _expirationDate.ToString("yyyy-MM-dd");
 
+    /// <summary>
+    /// Возвращает набор компонентов, участвующий в сравнении.
+    /// </summary>
     protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return _expirationDate;
     }
 
+    /// <summary>
+    /// Выполняет неявное преобразование из <see cref="ExpirationDate" /> в <see cref="DateTime" />.
+    /// </summary>
     public static implicit operator DateTime(ExpirationDate obj) => obj._expirationDate;
 }

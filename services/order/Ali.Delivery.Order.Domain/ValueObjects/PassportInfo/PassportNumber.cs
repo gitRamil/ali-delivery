@@ -39,10 +39,16 @@ public sealed class PassportNumber : ValueObject
     /// <inheritdoc />
     public override string ToString() => _passportNumber;
 
+    /// <summary>
+    /// Возвращает набор компонентов, участвующий в сравнении.
+    /// </summary>
     protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return _passportNumber;
     }
 
+    /// <summary>
+    /// Выполняет неявное преобразование из <see cref="PassportNumber" /> в <see cref="String" />.
+    /// </summary>
     public static implicit operator string(PassportNumber obj) => obj._passportNumber;
 }

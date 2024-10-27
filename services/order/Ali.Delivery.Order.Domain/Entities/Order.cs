@@ -14,9 +14,9 @@ public class Order : Entity<SequentialGuid>
     /// Инициализирует новый экземпляр типа <see cref="Order" />.
     /// </summary>
     /// <param name="id">Идентификатор.</param>
-    /// <param name="name">Наименование цели.</param>
-    /// <param name="orderInfo"></param>
-    /// <param name="orderStatus">Наименование цели.</param>
+    /// <param name="name">Наименование заказа.</param>
+    /// <param name="orderInfo">Информация о заказе.</param>
+    /// <param name="orderStatus">Статус заказа.</param>
     /// &lt;param name="name"&gt;Наименование цели.&lt;/param&gt;
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="name" /> или
@@ -47,9 +47,9 @@ public class Order : Entity<SequentialGuid>
     /// </summary>
     public OrderName Name { get; }
 
-    // /// <summary>
-    // /// Возвращает информацию заказа.
-    // /// </summary>
+    /// <summary>
+    /// Возвращает информацию заказа.
+    /// </summary>
     public virtual OrderInfo OrderInfo { get; }
 
     /// <summary>

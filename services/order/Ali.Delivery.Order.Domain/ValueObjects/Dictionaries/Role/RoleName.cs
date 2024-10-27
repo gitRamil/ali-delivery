@@ -1,9 +1,8 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Ali.Delivery.Domain.Core;
-using Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.Role;
 
-namespace Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.RoleId;
+namespace Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.Role;
 
 /// <summary>
 /// Представляет наименование справочника типов пользователей..

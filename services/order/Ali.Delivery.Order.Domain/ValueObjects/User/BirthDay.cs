@@ -21,12 +21,19 @@ public class Birthday : ValueObject
         _birthDate = birthDate;
     }
 
+    /// <inheritdoc />
     public override string ToString() => _birthDate.ToShortDateString();
 
+    /// <summary>
+    /// Возвращает набор компонентов, участвующий в сравнении.
+    /// </summary>
     protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return _birthDate;
     }
 
+    /// <summary>
+    /// Выполняет неявное преобразование из <see cref="Birthday" /> в <see cref="DateTime" />.
+    /// </summary>
     public static implicit operator DateTime(Birthday obj) => obj._birthDate;
 }

@@ -22,14 +22,14 @@ internal class OrderStatusConfiguration : EntityTypeConfigurationBase<OrderStatu
         builder.Property(p => p.Name)
                .IsRequired()
                .HasMaxLength(OrderStatusName.MaxLength)
-               .HasComment("Наименование")
-               .HasConversion(o => (string)o, s => new OrderStatusName(s));
+               .HasConversion(o => (string)o, s => new OrderStatusName(s))
+               .HasComment("Наименование");
 
         builder.Property(p => p.Code)
                .IsRequired()
                .HasMaxLength(OrderStatusCode.MaxLength)
-               .HasComment("Код")
-               .HasConversion(o => (string)o, s => new OrderStatusCode(s));
+               .HasConversion(o => (string)o, s => new OrderStatusCode(s))
+               .HasComment("Код");
 
         builder.HasIndex(p => p.Code)
                .IsUnique();

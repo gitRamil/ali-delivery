@@ -12,19 +12,19 @@ public class PassportType : Entity<SequentialGuid>
     /// <summary>
     /// Возвращает тип паспорта: Дипломатический.
     /// </summary>
-    public static readonly PassportType Diplomatic = new(new Guid("50f78cc1-a5e6-468f-9b30-e12d383dd40a"),
+    public static readonly PassportType Diplomatic = new(new Guid("3a15d9e1-c99f-95c5-162b-34f69121c4a1"),
                                                          new PassportTypeCode("diplomatic"),
                                                          new PassportTypeName("Дипломатический"));
 
     /// <summary>
     /// Возвращает тип паспорта: Внутренний.
     /// </summary>
-    public static readonly PassportType Internal = new(new Guid("df2f8eb6-4975-4fb8-8bc9-e426c3318786"), new PassportTypeCode("internal"), new PassportTypeName("Внутренний"));
+    public static readonly PassportType Internal = new(new Guid("3a15d9e1-c9a0-80ab-eac9-9369b2ace783"), new PassportTypeCode("internal"), new PassportTypeName("Внутренний"));
 
     /// <summary>
     /// Возвращает тип паспорта: Заграничный.
     /// </summary>
-    public static readonly PassportType International = new(new Guid("880dfb24-86d4-4fed-b2a9-a18cc8b85f04"),
+    public static readonly PassportType International = new(new Guid("3a15d9e1-c9a1-8b19-64f4-8cb3007b8a5d"),
                                                             new PassportTypeCode("international"),
                                                             new PassportTypeName("Заграничный"));
 

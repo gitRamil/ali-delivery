@@ -10,12 +10,11 @@ namespace Ali.Delivery.Order.Domain.ValueObjects.OrderInfo;
 [DebuggerDisplay("{_weight}")]
 public class Weight : ValueObject
 {
-    public const decimal MaxWeight = 1000m;
-
     /// <summary>
     /// Минимальный и максимальный вес заказа.
     /// </summary>
-    public const decimal MinWeight = 0.1m;
+    private const decimal MinWeight = 0.1m;
+    private const decimal MaxWeight = 1000m;
 
     private readonly decimal _weight;
 
@@ -37,10 +36,16 @@ public class Weight : ValueObject
     /// <inheritdoc />
     public override string ToString() => _weight.ToString(CultureInfo.InvariantCulture);
 
+    /// <summary>
+    /// Возвращает набор компонентов, участвующий в сравнении.
+    /// </summary>
     protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return _weight;
     }
 
+    /// <summary>
+    /// Выполняет неявное преобразование из <see cref="Weight" /> в <see cref="decimal" />.
+    /// </summary>
     public static implicit operator decimal(Weight obj) => obj._weight;
 }

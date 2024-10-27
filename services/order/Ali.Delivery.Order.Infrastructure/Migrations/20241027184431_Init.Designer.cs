@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ali.Delivery.Order.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241027145643_Init")]
+    [Migration("20241027184431_Init")]
     partial class Init
     {
         /// <inheritdoc />

@@ -22,14 +22,14 @@ internal class PassportTypeConfiguration : EntityTypeConfigurationBase<PassportT
         builder.Property(p => p.Name)
                .IsRequired()
                .HasMaxLength(PassportTypeName.MaxLength)
-               .HasComment("Наименование типа паспорта")
-               .HasConversion(o => (string)o, s => new PassportTypeName(s));
+               .HasConversion(o => (string)o, s => new PassportTypeName(s))
+               .HasComment("Наименование типа паспорта");
 
         builder.Property(p => p.Code)
                .IsRequired()
                .HasMaxLength(PassportTypeCode.MaxLength)
-               .HasComment("Код типа паспорта")
-               .HasConversion(o => (string)o, s => new PassportTypeCode(s));
+               .HasConversion(o => (string)o, s => new PassportTypeCode(s))
+               .HasComment("Код типа паспорта");
 
         builder.HasIndex(p => p.Code)
                .IsUnique();

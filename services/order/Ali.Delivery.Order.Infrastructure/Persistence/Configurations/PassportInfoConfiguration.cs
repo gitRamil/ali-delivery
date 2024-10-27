@@ -1,3 +1,4 @@
+using System;
 using Ali.Delivery.Order.Domain.Entities;
 using Ali.Delivery.Order.Domain.ValueObjects.PassportInfo;
 using Ali.Delivery.Order.Infrastructure.Persistence.Configurations.Base;
@@ -22,18 +23,18 @@ internal class PassportInfoConfiguration : EntityTypeConfigurationBase<PassportI
         builder.Property(p => p.PassportNumber)
                .IsRequired()
                .HasMaxLength(PassportNumber.MaxLength)
-               .HasComment("Номер паспорта")
-               .HasConversion(b => (string)b, s => new PassportNumber(s));
+               .HasConversion(b => (string)b, s => new PassportNumber(s))
+               .HasComment("Номер паспорта");
 
         builder.Property(p => p.RegDate)
                .IsRequired()
-               .HasComment("Дата регистрации")
-               .HasConversion(b => (DateTime)b, s => new RegDate(s));
+               .HasConversion(b => (DateTime)b, s => new RegDate(s))
+               .HasComment("Дата регистрации");
 
         builder.Property(p => p.ExpirationDate)
                .IsRequired()
-               .HasComment("Дата истечения срока действия паспорта")
-               .HasConversion(b => (DateTime)b, s => new ExpirationDate(s));
+               .HasConversion(b => (DateTime)b, s => new ExpirationDate(s))
+               .HasComment("Дата истечения срока действия паспорта");
 
         builder.HasOne(p => p.PassportType)
                .WithMany()
