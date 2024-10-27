@@ -33,7 +33,15 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand>
     {
         ArgumentNullException.ThrowIfNull(command);
 
-        _context.Orders.Add(new Domain.Entities.Order(SequentialGuid.Create(), new OrderName(command.OrderName),new OrderInfo(SequentialGuid.Create(), new Weight(1), Size.Medium,new Price(100m),new AddressFrom("Pushkin st"), new AddressTo("Lenin st") ),OrderStatus.Created));
+        _context.Orders.Add(new Domain.Entities.Order(SequentialGuid.Create(),
+                                                      new OrderName(command.OrderName),
+                                                      new OrderInfo(SequentialGuid.Create(),
+                                                                    new Weight(1),
+                                                                    Size.Medium,
+                                                                    new Price(100m),
+                                                                    new AddressFrom("Pushkin st"),
+                                                                    new AddressTo("Lenin st")),
+                                                      OrderStatus.Created));
         await _context.SaveChangesAsync(cancellationToken);
     }
 }

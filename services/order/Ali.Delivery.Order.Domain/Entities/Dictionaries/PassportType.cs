@@ -10,6 +10,13 @@ namespace Ali.Delivery.Order.Domain.Entities.Dictionaries;
 public class PassportType : Entity<SequentialGuid>
 {
     /// <summary>
+    /// Возвращает тип паспорта: Дипломатический.
+    /// </summary>
+    public static readonly PassportType Diplomatic = new(new Guid("50f78cc1-a5e6-468f-9b30-e12d383dd40a"),
+                                                         new PassportTypeCode("diplomatic"),
+                                                         new PassportTypeName("Дипломатический"));
+
+    /// <summary>
     /// Возвращает тип паспорта: Внутренний.
     /// </summary>
     public static readonly PassportType Internal = new(new Guid("df2f8eb6-4975-4fb8-8bc9-e426c3318786"), new PassportTypeCode("internal"), new PassportTypeName("Внутренний"));
@@ -17,12 +24,9 @@ public class PassportType : Entity<SequentialGuid>
     /// <summary>
     /// Возвращает тип паспорта: Заграничный.
     /// </summary>
-    public static readonly PassportType International = new(new Guid("880dfb24-86d4-4fed-b2a9-a18cc8b85f04"), new PassportTypeCode("international"), new PassportTypeName("Заграничный"));
-    
-    /// <summary>
-    /// Возвращает тип паспорта: Дипломатический.
-    /// </summary>
-    public static readonly PassportType Diplomatic = new(new Guid("50f78cc1-a5e6-468f-9b30-e12d383dd40a"), new PassportTypeCode("diplomatic"), new PassportTypeName("Дипломатический"));
+    public static readonly PassportType International = new(new Guid("880dfb24-86d4-4fed-b2a9-a18cc8b85f04"),
+                                                            new PassportTypeCode("international"),
+                                                            new PassportTypeName("Заграничный"));
 
     private static readonly Dictionary<PassportTypeCode, PassportType> PassportTypes = new()
     {

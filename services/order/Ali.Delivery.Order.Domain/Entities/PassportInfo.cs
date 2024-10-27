@@ -42,12 +42,11 @@ public class PassportInfo : Entity<SequentialGuid>
         RegDate = null!;
         ExpirationDate = null!;
     }
-    
-    
+
     /// <summary>
-    /// Возвращает идентификатор типа паспорта.
+    /// Возвращает дату окончания действия паспорта.
     /// </summary>
-    public virtual PassportType PassportType { get; }
+    public ExpirationDate ExpirationDate { get; }
 
     /// <summary>
     /// Возвращает номер паспорта.
@@ -55,12 +54,12 @@ public class PassportInfo : Entity<SequentialGuid>
     public PassportNumber PassportNumber { get; }
 
     /// <summary>
+    /// Возвращает идентификатор типа паспорта.
+    /// </summary>
+    public virtual PassportType PassportType { get; }
+
+    /// <summary>
     /// Возвращает дату регистрации паспорта.
     /// </summary>
     public RegDate RegDate { get; }
-
-    /// <summary>
-    /// Возвращает дату окончания действия паспорта.
-    /// </summary>
-    public ExpirationDate ExpirationDate { get; }
 }

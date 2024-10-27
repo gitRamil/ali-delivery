@@ -30,9 +30,6 @@ public class Order : Entity<SequentialGuid>
         OrderStatus = orderStatus ?? throw new ArgumentNullException(nameof(orderStatus));
     }
 
-    
-
-
     /// <summary>
     /// Инициализирует новый экземпляр типа <see cref="Order" />.
     /// </summary>
@@ -45,22 +42,18 @@ public class Order : Entity<SequentialGuid>
         OrderInfo = null!;
     }
 
-            
-
     /// <summary>
     /// Возвращает наименование заказа.
     /// </summary>
     public OrderName Name { get; }
-    
+
+    // /// <summary>
+    // /// Возвращает информацию заказа.
+    // /// </summary>
+    public virtual OrderInfo OrderInfo { get; }
 
     /// <summary>
     /// Возвращает статус заказа.
     /// </summary>
     public virtual OrderStatus OrderStatus { get; }
-    
-    // /// <summary>
-    // /// Возвращает информацию заказа.
-    // /// </summary>
-    public virtual OrderInfo OrderInfo { get; }
-    
 }

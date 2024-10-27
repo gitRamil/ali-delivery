@@ -1,6 +1,7 @@
 ﻿using Ali.Delivery.Domain.Core;
 using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.Application.Abstractions;
+using Ali.Delivery.Order.Domain.Entities;
 using Ali.Delivery.Order.Domain.Entities.Dictionaries;
 using Ali.Delivery.Order.Infrastructure.Persistence.Configurations.Base;
 using Microsoft.EntityFrameworkCore;
@@ -24,15 +25,14 @@ public class AppDbContext : DbContext, IAppDbContext
     }
 
     /// <summary>
+    /// Возвращает набор пользователей.
+    /// </summary>
+    public DbSet<User> Users => Set<User>();
+
+    /// <summary>
     /// Возвращает набор заказов.
     /// </summary>
     public DbSet<Domain.Entities.Order> Orders => Set<Domain.Entities.Order>();
-    
-    /// <summary>
-    /// Возвращает набор пользователей.
-    /// </summary>
-    public DbSet<Domain.Entities.User> Users => Set<Domain.Entities.User>();
-    
 
     /// <inheritdoc cref="DbContext" />
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -52,17 +52,17 @@ public class AppDbContext : DbContext, IAppDbContext
         return await base.SaveChangesAsync(cancellationToken);
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder) 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
     }
+
     private void AttachDictionaryValues()
     {
         AttachRange(OrderStatus.GetAllValues());
         AttachRange(Role.GetAllValues());
         AttachRange(Size.GetAllValues());
         AttachRange(PassportType.GetAllValues());
-        
     }
 
     private void MarkCreated(EntityEntry entry)

@@ -10,11 +10,12 @@ namespace Ali.Delivery.Order.Domain.ValueObjects.OrderInfo;
 [DebuggerDisplay("{_weight}")]
 public class Weight : ValueObject
 {
+    public const decimal MaxWeight = 1000m;
+
     /// <summary>
     /// Минимальный и максимальный вес заказа.
     /// </summary>
     public const decimal MinWeight = 0.1m;
-    public const decimal MaxWeight = 1000m;
 
     private readonly decimal _weight;
 

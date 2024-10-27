@@ -16,18 +16,18 @@ public sealed class SizeCode : ValueObject
     private readonly string _code;
 
     /// <summary>
-    /// Инициализирует новый экземпляр типа <see cref="SizeCode"/>.
+    /// Инициализирует новый экземпляр типа <see cref="SizeCode" />.
     /// </summary>
     /// <param name="code">Код справочника размеров.</param>
     /// <exception cref="ArgumentException">
-    /// Возникает, если <paramref name="code" /> является <c>null</c> или <c>whitespace</c> или его длина превышает <see cref="MaxLength" />.
+    /// Возникает, если <paramref name="code" /> является <c>null</c> или <c>whitespace</c> или его длина превышает
+    /// <see cref="MaxLength" />.
     /// </exception>
     public SizeCode(string code)
     {
         if (string.IsNullOrWhiteSpace(code))
         {
-            throw new ArgumentException("Код справочника размеров не может быть null или пустой строкой.",
-                nameof(code));
+            throw new ArgumentException("Код справочника размеров не может быть null или пустой строкой.", nameof(code));
         }
 
         code = code.Trim();

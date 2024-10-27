@@ -15,10 +15,7 @@ public sealed class RegDate : ValueObject
     /// Инициализирует новый экземпляр типа <see cref="RegDate" />.
     /// </summary>
     /// <param name="regDate">Дата регистрации паспорта.</param>
-    public RegDate(DateTime regDate)
-    {
-        _regDate = regDate;
-    }
+    public RegDate(DateTime regDate) => _regDate = regDate;
 
     /// <inheritdoc />
     public override string ToString() => _regDate.ToString("yyyy-MM-dd");

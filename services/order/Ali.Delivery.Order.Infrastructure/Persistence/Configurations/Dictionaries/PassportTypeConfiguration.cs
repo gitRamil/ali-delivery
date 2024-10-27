@@ -20,19 +20,18 @@ internal class PassportTypeConfiguration : EntityTypeConfigurationBase<PassportT
         builder.ToTable("passport_types", t => t.HasComment("Справочник типов паспортов"));
 
         builder.Property(p => p.Name)
-            .IsRequired()
-            .HasMaxLength(PassportTypeName.MaxLength)
-            .HasComment("Наименование типа паспорта")
-            .HasConversion(o => (string)o, s => new PassportTypeName(s));
+               .IsRequired()
+               .HasMaxLength(PassportTypeName.MaxLength)
+               .HasComment("Наименование типа паспорта")
+               .HasConversion(o => (string)o, s => new PassportTypeName(s));
 
         builder.Property(p => p.Code)
-            .IsRequired()
-            .HasMaxLength(PassportTypeCode.MaxLength)
-            .HasComment("Код типа паспорта")
-            .HasConversion(o => (string)o, s => new PassportTypeCode(s));
+               .IsRequired()
+               .HasMaxLength(PassportTypeCode.MaxLength)
+               .HasComment("Код типа паспорта")
+               .HasConversion(o => (string)o, s => new PassportTypeCode(s));
 
         builder.HasIndex(p => p.Code)
-            .IsUnique();
-            
+               .IsUnique();
     }
 }

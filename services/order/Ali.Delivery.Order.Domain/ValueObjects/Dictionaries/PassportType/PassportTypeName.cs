@@ -20,7 +20,8 @@ public sealed class PassportTypeName : ValueObject
     /// </summary>
     /// <param name="name">Наименование типа паспорта.</param>
     /// <exception cref="ArgumentException">
-    /// Возникает, если <paramref name="name" /> является <c>null</c> или <c>whitespace</c> или его длина превышает <see cref="MaxLength" />.
+    /// Возникает, если <paramref name="name" /> является <c>null</c> или <c>whitespace</c> или его длина превышает
+    /// <see cref="MaxLength" />.
     /// </exception>
     public PassportTypeName(string name)
     {

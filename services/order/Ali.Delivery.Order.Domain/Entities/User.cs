@@ -17,17 +17,11 @@ public class User : Entity<SequentialGuid>
     /// <param name="role">Идентификатор роли пользователя.</param>
     /// <param name="birthday">Дата рождения пользователя.</param>
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если любой из параметров <paramref name="firstName" />, 
-    /// <paramref name="lastName" />, <paramref name="passportInfo" />, 
+    /// Возникает, если любой из параметров <paramref name="firstName" />,
+    /// <paramref name="lastName" />, <paramref name="passportInfo" />,
     /// <paramref name="role" /> или <paramref name="birthday" /> равен <c>null</c>.
     /// </exception>
-    public User(
-        SequentialGuid id, 
-        FirstName firstName, 
-        LastName lastName, 
-        PassportInfo  passportInfo , 
-        Role role,  
-        Birthday birthday)
+    public User(SequentialGuid id, FirstName firstName, LastName lastName, PassportInfo passportInfo, Role role, Birthday birthday)
         : base(id)
     {
         FirstName = firstName ?? throw new ArgumentNullException(nameof(firstName));
@@ -52,27 +46,27 @@ public class User : Entity<SequentialGuid>
     }
 
     /// <summary>
+    /// Дата рождения пользователя.
+    /// </summary>
+    public Birthday Birthday { get; }
+
+    /// <summary>
     /// Имя пользователя.
     /// </summary>
-    public FirstName FirstName { get;  }
+    public FirstName FirstName { get; }
 
     /// <summary>
     /// Фамилия пользователя.
     /// </summary>
-    public LastName LastName { get;  }
+    public LastName LastName { get; }
 
     /// <summary>
     /// Номер паспорта пользователя.
     /// </summary>
-    public virtual PassportInfo PassportInfo { get;   }
+    public virtual PassportInfo PassportInfo { get; }
 
     /// <summary>
     /// Идентификатор роли пользователя.
     /// </summary>
-    public virtual Role Role { get;   }
-
-    /// <summary>
-    /// Дата рождения пользователя.
-    /// </summary>
-    public Birthday Birthday { get;  }
+    public virtual Role Role { get; }
 }

@@ -21,18 +21,18 @@ internal class RoleIdConfiguration : EntityTypeConfigurationBase<Role>
         builder.ToTable("roles", t => t.HasComment("Справочник ролей пользователей"));
 
         builder.Property(p => p.Name)
-            .IsRequired()
-            .HasMaxLength(RoleName.MaxLength)
-            .HasComment("Наименование")
-            .HasConversion(o => (string)o, s => new RoleName(s));
+               .IsRequired()
+               .HasMaxLength(RoleName.MaxLength)
+               .HasComment("Наименование")
+               .HasConversion(o => (string)o, s => new RoleName(s));
 
         builder.Property(p => p.Code)
-            .IsRequired()
-            .HasMaxLength(RoleCode.MaxLength)
-            .HasComment("Код")
-            .HasConversion(o => (string)o, s => new RoleCode(s));
+               .IsRequired()
+               .HasMaxLength(RoleCode.MaxLength)
+               .HasComment("Код")
+               .HasConversion(o => (string)o, s => new RoleCode(s));
 
         builder.HasIndex(p => p.Code)
-            .IsUnique();
+               .IsUnique();
     }
 }

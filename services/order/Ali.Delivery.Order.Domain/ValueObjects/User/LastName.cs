@@ -10,7 +10,6 @@ namespace Ali.Delivery.Order.Domain.ValueObjects.User;
 public class LastName : ValueObject
 {
     public const int MaxLength = 100;
-
     private readonly string _name;
 
     /// <summary>
@@ -18,7 +17,7 @@ public class LastName : ValueObject
     /// </summary>
     /// <param name="name">Фамилия пользователя.</param>
     /// <exception cref="ArgumentException">
-    /// Возникает, если <paramref name="name" /> является <c>null</c>, 
+    /// Возникает, если <paramref name="name" /> является <c>null</c>,
     /// <c>whitespace</c> или его длина превышает <see cref="MaxLength" />.
     /// </exception>
     public LastName(string name)

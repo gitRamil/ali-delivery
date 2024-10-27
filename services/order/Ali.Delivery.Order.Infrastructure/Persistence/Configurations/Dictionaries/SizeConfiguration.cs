@@ -20,18 +20,18 @@ internal class SizeConfiguration : EntityTypeConfigurationBase<Size>
         builder.ToTable("sizes", t => t.HasComment("Справочник размеров"));
 
         builder.Property(p => p.Name)
-            .IsRequired()
-            .HasMaxLength(SizeName.MaxLength)
-            .HasComment("Наименование")
-            .HasConversion(o => (string)o, s => new SizeName(s));
+               .IsRequired()
+               .HasMaxLength(SizeName.MaxLength)
+               .HasComment("Наименование")
+               .HasConversion(o => (string)o, s => new SizeName(s));
 
         builder.Property(p => p.Code)
-            .IsRequired()
-            .HasMaxLength(SizeCode.MaxLength)
-            .HasComment("Код")
-            .HasConversion(o => (string)o, s => new SizeCode(s));
+               .IsRequired()
+               .HasMaxLength(SizeCode.MaxLength)
+               .HasComment("Код")
+               .HasConversion(o => (string)o, s => new SizeCode(s));
 
         builder.HasIndex(p => p.Code)
-            .IsUnique();
+               .IsUnique();
     }
 }

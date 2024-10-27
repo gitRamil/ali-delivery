@@ -10,28 +10,19 @@ namespace Ali.Delivery.Order.Domain.Entities.Dictionaries;
 public class Size : Entity<SequentialGuid>
 {
     /// <summary>
-    /// Возвращает размер: Small.
+    /// Возвращает размер: Large.
     /// </summary>
-    public static readonly Size Small = new(
-        new Guid("3a156e1f-6055-abfb-36b7-7e630cc807b9"),
-        new SizeCode("small"), 
-        new SizeName("Маленький"));
+    public static readonly Size Large = new(new Guid("3a156e1f-6057-39cd-7580-20395231a00f"), new SizeCode("large"), new SizeName("Большой"));
 
     /// <summary>
     /// Возвращает размер: Medium.
     /// </summary>
-    public static readonly Size Medium = new(
-        new Guid("3a156e1f-6056-875d-e42d-3e8e7ec6e082"),
-        new SizeCode("medium"), 
-        new SizeName("Средний"));
+    public static readonly Size Medium = new(new Guid("3a156e1f-6056-875d-e42d-3e8e7ec6e082"), new SizeCode("medium"), new SizeName("Средний"));
 
     /// <summary>
-    /// Возвращает размер: Large.
+    /// Возвращает размер: Small.
     /// </summary>
-    public static readonly Size Large = new(
-        new Guid("3a156e1f-6057-39cd-7580-20395231a00f"),
-        new SizeCode("large"), 
-        new SizeName("Большой"));
+    public static readonly Size Small = new(new Guid("3a156e1f-6055-abfb-36b7-7e630cc807b9"), new SizeCode("small"), new SizeName("Маленький"));
 
     private static readonly Dictionary<SizeCode, Size> Sizes = new()
     {
@@ -41,7 +32,7 @@ public class Size : Entity<SequentialGuid>
     };
 
     /// <summary>
-    /// Инициализирует новый экземпляр типа <see cref="Size"/>.
+    /// Инициализирует новый экземпляр типа <see cref="Size" />.
     /// </summary>
     /// <param name="id">Идентификатор.</param>
     /// <param name="code">Код размера.</param>

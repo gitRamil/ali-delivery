@@ -22,7 +22,7 @@ public class FirstName : ValueObject
     /// </summary>
     /// <param name="name">Имя пользователя.</param>
     /// <exception cref="ArgumentException">
-    /// Возникает, если <paramref name="name" /> является <c>null</c>, 
+    /// Возникает, если <paramref name="name" /> является <c>null</c>,
     /// <c>whitespace</c> или его длина превышает <see cref="MaxLength" />.
     /// </exception>
     public FirstName(string name)

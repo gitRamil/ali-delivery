@@ -15,10 +15,7 @@ public sealed class ExpirationDate : ValueObject
     /// Инициализирует новый экземпляр типа <see cref="ExpirationDate" />.
     /// </summary>
     /// <param name="expirationDate">Дата истечения срока действия паспорта.</param>
-    public ExpirationDate(DateTime expirationDate)
-    {
-        _expirationDate = expirationDate;
-    }
+    public ExpirationDate(DateTime expirationDate) => _expirationDate = expirationDate;
 
     /// <inheritdoc />
     public override string ToString() => _expirationDate.ToString("yyyy-MM-dd");

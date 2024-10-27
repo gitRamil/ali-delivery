@@ -11,7 +11,7 @@ namespace Ali.Delivery.Order.Domain.Entities;
 public class OrderInfo : Entity<SequentialGuid>
 {
     /// <summary>
-    /// Инициализирует новый экземпляр типа <see cref="OrderInfo"/>.
+    /// Инициализирует новый экземпляр типа <see cref="OrderInfo" />.
     /// </summary>
     /// <param name="id">Идентификатор.</param>
     /// <param name="weight">Вес заказа.</param>
@@ -22,18 +22,14 @@ public class OrderInfo : Entity<SequentialGuid>
     /// <exception cref="ArgumentNullException">
     /// Возникает, если один из аргументов равен <c>null</c>.
     /// </exception>
-    public OrderInfo(
-        SequentialGuid id,
-        Weight weight,
-        Size size,
-        Price price,
-        AddressFrom addressFrom,
-        AddressTo addressTo)
+    public OrderInfo(SequentialGuid id, Weight weight, Size size, Price price, AddressFrom addressFrom, AddressTo addressTo)
         : base(id)
     {
-        Weight = weight ?? throw new ArgumentNullException(nameof(weight));;
+        Weight = weight ?? throw new ArgumentNullException(nameof(weight));
+        ;
         Size = size ?? throw new ArgumentNullException(nameof(size));
-        Price = price ?? throw new ArgumentNullException(nameof(price));;
+        Price = price ?? throw new ArgumentNullException(nameof(price));
+        ;
         AddressFrom = addressFrom ?? throw new ArgumentNullException(nameof(addressFrom));
         AddressTo = addressTo ?? throw new ArgumentNullException(nameof(addressTo));
     }
@@ -41,23 +37,7 @@ public class OrderInfo : Entity<SequentialGuid>
     protected OrderInfo()
         : base(SequentialGuid.Empty)
     {
-        
     }
-
-    /// <summary>
-    /// Вес заказа.
-    /// </summary>
-    public Weight Weight { get; }
-
-    /// <summary>
-    /// Размер заказа.
-    /// </summary>
-    public virtual Size Size { get; }
-
-    /// <summary>
-    /// Цена заказа.
-    /// </summary>
-    public Price Price { get; }
 
     /// <summary>
     /// Адрес отправления.
@@ -68,5 +48,19 @@ public class OrderInfo : Entity<SequentialGuid>
     /// Адрес доставки.
     /// </summary>
     public AddressTo AddressTo { get; }
-    
+
+    /// <summary>
+    /// Цена заказа.
+    /// </summary>
+    public Price Price { get; }
+
+    /// <summary>
+    /// Размер заказа.
+    /// </summary>
+    public virtual Size Size { get; }
+
+    /// <summary>
+    /// Вес заказа.
+    /// </summary>
+    public Weight Weight { get; }
 }

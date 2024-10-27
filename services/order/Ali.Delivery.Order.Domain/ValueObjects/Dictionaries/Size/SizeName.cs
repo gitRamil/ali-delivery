@@ -22,7 +22,8 @@ public sealed class SizeName : ValueObject
     /// </summary>
     /// <param name="name">Наименование справочника размеров.</param>
     /// <exception cref="ArgumentException">
-    /// Возникает, если <paramref name="name" /> является <c>null</c> или <c>whitespace</c>, или его длина превышает <see cref="MaxLength" />.
+    /// Возникает, если <paramref name="name" /> является <c>null</c> или <c>whitespace</c>, или его длина превышает
+    /// <see cref="MaxLength" />.
     /// </exception>
     public SizeName(string name)
     {
