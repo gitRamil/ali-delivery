@@ -8,4 +8,4 @@ namespace Ali.Delivery.Order.Application.UseCases.CreateOrder;
 /// </summary>
 /// <param name="OrderName">Наименование заказа.</param>
 /// <param name="OrderStatusCode">Код статуса заказа.</param>
-public record CreateOrderCommand(string OrderName, OrderStatusCode OrderStatusCode) : IRequest;
+public record CreateOrderCommand(string OrderName, OrderStatusCode OrderStatusCode, string OrderInfo) : IRequest;

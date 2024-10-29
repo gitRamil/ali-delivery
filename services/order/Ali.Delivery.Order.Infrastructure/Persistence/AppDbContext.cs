@@ -1,6 +1,10 @@
-﻿using Ali.Delivery.Domain.Core;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Ali.Delivery.Domain.Core;
 using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.Application.Abstractions;
+using Ali.Delivery.Order.Domain.Entities;
 using Ali.Delivery.Order.Domain.Entities.Dictionaries;
 using Ali.Delivery.Order.Infrastructure.Persistence.Configurations.Base;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +26,11 @@ public class AppDbContext : DbContext, IAppDbContext
         _dateTimeService = dateTimeService ?? throw new ArgumentNullException(nameof(dateTimeService));
         AttachDictionaryValues();
     }
+
+    /// <summary>
+    /// Возвращает набор пользователей.
+    /// </summary>
+    public DbSet<User> Users => Set<User>();
 
     /// <summary>
     /// Возвращает набор заказов.
@@ -46,12 +55,17 @@ public class AppDbContext : DbContext, IAppDbContext
         return await base.SaveChangesAsync(cancellationToken);
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder) => modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+    }
 
     private void AttachDictionaryValues()
     {
         AttachRange(OrderStatus.GetAllValues());
         AttachRange(Role.GetAllValues());
+        AttachRange(Size.GetAllValues());
+        AttachRange(PassportType.GetAllValues());
     }
 
     private void MarkCreated(EntityEntry entry)

@@ -14,33 +14,43 @@ public class Order : Entity<SequentialGuid>
     /// Инициализирует новый экземпляр типа <see cref="Order" />.
     /// </summary>
     /// <param name="id">Идентификатор.</param>
-    /// <param name="name">Наименование цели.</param>
-    /// <param name="orderStatus">Наименование цели.</param>
+    /// <param name="name">Наименование заказа.</param>
+    /// <param name="orderInfo">Информация о заказе.</param>
+    /// <param name="orderStatus">Статус заказа.</param>
     /// &lt;param name="name"&gt;Наименование цели.&lt;/param&gt;
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="name" /> или
     /// <paramref name="name" /> равен <c>null</c>.
     /// </exception>
-    public Order(SequentialGuid id, OrderName name, OrderStatus orderStatus)
+    public Order(SequentialGuid id, OrderName name, OrderInfo orderInfo, OrderStatus orderStatus)
         : base(id)
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));
+        OrderInfo = orderInfo ?? throw new ArgumentNullException(nameof(orderInfo));
         OrderStatus = orderStatus ?? throw new ArgumentNullException(nameof(orderStatus));
     }
 
     /// <summary>
     /// Инициализирует новый экземпляр типа <see cref="Order" />.
     /// </summary>
-    /// <param name="id">Идентификатор.</param>
     /// <remarks>Конструктор для EF.</remarks>
     protected Order()
-        : base(SequentialGuid.Empty) =>
+        : base(SequentialGuid.Empty)
+    {
         Name = null!;
+        OrderStatus = null!;
+        OrderInfo = null!;
+    }
 
     /// <summary>
     /// Возвращает наименование заказа.
     /// </summary>
     public OrderName Name { get; }
+
+    /// <summary>
+    /// Возвращает информацию заказа.
+    /// </summary>
+    public virtual OrderInfo OrderInfo { get; }
 
     /// <summary>
     /// Возвращает статус заказа.

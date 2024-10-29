@@ -1,4 +1,3 @@
-using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.WebApi.Infrastructure.IoC;
 using Ali.Delivery.Order.WebApi.IoC;
 using Hellang.Middleware.ProblemDetails;

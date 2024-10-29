@@ -1,4 +1,4 @@
-﻿using Ali.Delivery.Order.Domain.ValueObjects.Order;
+using Ali.Delivery.Order.Domain.ValueObjects.Order;
 using Ali.Delivery.Order.Infrastructure.Persistence.Configurations.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -20,8 +20,8 @@ internal class CourierConfiguration : EntityTypeConfigurationBase<Domain.Entitie
 
         builder.Property(p => p.Name)
                .HasMaxLength(OrderName.MaxLength)
-               .HasComment("Наименование заказа")
-               .HasConversion(o => (string)o, s => new OrderName(s));
+               .HasConversion(o => (string)o, s => new OrderName(s))
+               .HasComment("Наименование заказа");
 
         builder.HasOne(p => p.OrderStatus)
                .WithMany()
@@ -29,5 +29,12 @@ internal class CourierConfiguration : EntityTypeConfigurationBase<Domain.Entitie
 
         builder.Property("OrderStatusId")
                .HasComment("Статус заказа");
+
+        builder.HasOne(p => p.OrderInfo)
+               .WithMany()
+               .HasForeignKey("order_info_id");
+
+        builder.Property("order_info_id")
+               .HasComment("Информация о заказе");
     }
 }
