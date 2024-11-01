@@ -5,17 +5,23 @@ namespace Ali.Delivery.Order.Application.Dtos.Order;
 /// <summary>
 /// Представляет набор значений, описывающих статусы заказа.
 /// </summary>
-public enum OrderStatusCode
+public enum SizeCodeEnum
 {
     /// <summary>
     /// Согласована.
     /// </summary>
-    [EnumMember(Value = "created")]
-    Created,
+    [EnumMember(Value = "large")]
+    Large,
 
     /// <summary>
     /// Отклонена.
     /// </summary>
-    [EnumMember(Value = "finished")]
-    Finished
+    [EnumMember(Value = "small")]
+    Small,
+    
+    /// <summary>
+    /// Отклонена.
+    /// </summary>
+    [EnumMember(Value = "medium")]
+    Medium
 }

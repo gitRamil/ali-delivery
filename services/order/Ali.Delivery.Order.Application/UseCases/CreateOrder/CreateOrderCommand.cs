@@ -4,8 +4,14 @@ using MediatR;
 namespace Ali.Delivery.Order.Application.UseCases.CreateOrder;
 
 /// <summary>
-/// /// Представляет команду создания заказа.
+/// Команда для создания нового заказа.
 /// </summary>
-/// <param name="OrderName">Наименование заказа.</param>
-/// <param name="OrderStatusCode">Код статуса заказа.</param>
-public record CreateOrderCommand(string OrderName, OrderStatusCode OrderStatusCode, string OrderInfo) : IRequest;
+public record CreateOrderCommand(
+    string OrderName,               
+    decimal Weight,                 
+    SizeCodeEnum Size,              
+    decimal Price,                  
+    string AddressFrom,             
+    string AddressTo,               
+    OrderStatusCodeEnum OrderStatus 
+) : IRequest<Guid>;                 
