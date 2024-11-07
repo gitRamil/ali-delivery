@@ -4,4 +4,4 @@ namespace Ali.Delivery.Order.Application.Dtos.Order;
 /// Представляет заказ.
 /// </summary>
 /// <param name="Name">Наименование заказа.</param>
-public sealed record OrderDto(string Name);
+public sealed record OrderDto(Guid Id, string Name);

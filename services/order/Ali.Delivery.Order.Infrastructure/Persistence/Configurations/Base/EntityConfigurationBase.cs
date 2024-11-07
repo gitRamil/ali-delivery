@@ -10,11 +10,11 @@ namespace Ali.Delivery.Order.Infrastructure.Persistence.Configurations.Base;
 /// <typeparam name="T">Тип сущности.</typeparam>
 internal abstract class EntityConfigurationBase<T> : IEntityTypeConfiguration<T> where T : class
 {
-       /// <summary>
-       /// Вызывается при выполнении конфигурации базовой сущности типа <see cref="T" />.
-       /// </summary>
-       /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
-       protected abstract void OnBaseConfigure(EntityTypeBuilder<T> builder);
+    /// <summary>
+    /// Вызывается при выполнении конфигурации базовой сущности типа <see cref="T" />.
+    /// </summary>
+    /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
+    protected abstract void OnBaseConfigure(EntityTypeBuilder<T> builder);
 
     /// <inheritdoc />
     public void Configure(EntityTypeBuilder<T> builder)

@@ -9,11 +9,10 @@ namespace Ali.Delivery.Order.Application.UseCases.CreateUser
     public record CreateUserCommand(
         string FirstName,
         string LastName,
-        PassportTypeCodeEnum PassportType,
+        PassportType PassportType,
         string PassportNumber,
         DateTime RegDate,
         DateTime ExpirationDate,
-        RoleCodeEnum Role,
-        DateTime Birthday
-    ) : IRequest<Guid>;
+        RoleCode Role,
+        DateTime Birthday) : IRequest<Guid>;
 }

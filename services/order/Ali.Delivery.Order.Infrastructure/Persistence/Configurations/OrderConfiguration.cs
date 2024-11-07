@@ -36,5 +36,9 @@ internal class CourierConfiguration : EntityTypeConfigurationBase<Domain.Entitie
 
         builder.Property("order_info_id")
                .HasComment("Информация о заказе");
+
+        builder.HasOne(p => p.Sender)
+               .WithMany()
+               .HasForeignKey("sender_id");
     }
 }

@@ -2,22 +2,25 @@ using System.Runtime.Serialization;
 
 namespace Ali.Delivery.Order.Application.Dtos.Order;
 
-public enum RoleCodeEnum
+/// <summary>
+/// Представляет набор значений, описывающих роли пользователей.
+/// </summary>
+public enum RoleCode
 {
     /// <summary>
-    /// Согласована.
+    /// Пользователь.
     /// </summary>
     [EnumMember(Value = "basicUser")]
     BasicUser,
 
     /// <summary>
-    /// Отклонена.
+    /// Курьер.
     /// </summary>
     [EnumMember(Value = "courier")]
     Courier,
-    
+
     /// <summary>
-    /// Отклонена.
+    /// Неавторизованный пользователь.
     /// </summary>
     [EnumMember(Value = "notAuthUser")]
     NotAuthUser,

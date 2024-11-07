@@ -20,6 +20,14 @@ public class AppDbContext : DbContext, IAppDbContext
 {
     private readonly IDateTimeService _dateTimeService;
 
+    /// <summary>
+    /// Инициализирует новый экземпляр класса <see cref="AppDbContext"/> с заданными параметрами.
+    /// </summary>
+    /// <param name="options">Параметры конфигурации для контекста базы данных.</param>
+    /// <param name="dateTimeService">Сервис для работы с датой и временем.</param>
+    /// <exception cref="ArgumentNullException">
+    /// Выбрасывается, если <paramref name="dateTimeService"/> имеет значение <c>null</c>.
+    /// </exception>
     public AppDbContext(DbContextOptions<AppDbContext> options, IDateTimeService dateTimeService)
         : base(options)
     {

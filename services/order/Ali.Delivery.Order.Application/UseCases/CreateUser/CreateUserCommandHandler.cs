@@ -22,8 +22,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Guid>
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="context" /> равен <c>null</c>.
     /// </exception>
-    public CreateUserCommandHandler(IAppDbContext context) =>
-        _context = context ?? throw new ArgumentNullException(nameof(context));
+    public CreateUserCommandHandler(IAppDbContext context) => _context = context ?? throw new ArgumentNullException(nameof(context));
 
     /// <summary>
     /// Выполняет команду создания пользователя.
@@ -37,27 +36,15 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Guid>
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        // Создание PassportInfo на основе данных из команды
-        var passportInfo = new PassportInfo(
-            SequentialGuid.Create(),
-            request.PassportType.ToPassportType(), 
-            new PassportNumber(request.PassportNumber),
-            new RegDate(request.RegDate),
-            new ExpirationDate(request.ExpirationDate)
-        );
+        var passportInfo = new PassportInfo(SequentialGuid.Create(),
+                                            request.PassportType.ToPassportType(),
+                                            new PassportNumber(request.PassportNumber),
+                                            new RegDate(request.RegDate),
+                                            new ExpirationDate(request.ExpirationDate));
 
-        // Создание Role на основе кода
-        var role = request.Role.ToRole(); 
+        var role = request.Role.ToRole();
 
-        // Создание пользователя
-        var user = new User(
-            SequentialGuid.Create(),
-            new FirstName(request.FirstName),
-            new LastName(request.LastName),
-            passportInfo,
-            role,
-            new Birthday(request.Birthday)
-        );
+        var user = new User(SequentialGuid.Create(), new FirstName(request.FirstName), new LastName(request.LastName), passportInfo, role, new Birthday(request.Birthday));
 
         _context.Users.Add(user);
 

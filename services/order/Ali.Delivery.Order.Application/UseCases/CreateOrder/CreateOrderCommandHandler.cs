@@ -22,8 +22,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Gui
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="context" /> равен <c>null</c>.
     /// </exception>
-    public CreateOrderCommandHandler(IAppDbContext context) =>
-        _context = context ?? throw new ArgumentNullException(nameof(context));
+    public CreateOrderCommandHandler(IAppDbContext context) => _context = context ?? throw new ArgumentNullException(nameof(context));
 
     /// <summary>
     /// Выполняет команду создания заказа.
@@ -36,25 +35,18 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Gui
     public async Task<Guid> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        
-        var orderInfo = new OrderInfo(
-            SequentialGuid.Create(),
-            new Weight(request.Weight),
-            request.Size.ToSize(),   
-            new Price(request.Price),
-            new AddressFrom(request.AddressFrom),
-            new AddressTo(request.AddressTo)
-        );
-        
-        var order = new Domain.Entities.Order(
-            SequentialGuid.Create(),
-            new OrderName(request.OrderName),
-            orderInfo,
-            request.OrderStatus.ToOrderStatus() 
-        );
-        
+
+        var orderInfo = new OrderInfo(SequentialGuid.Create(),
+                                      new Weight(request.Weight),
+                                      request.Size.ToSize(),
+                                      new Price(request.Price),
+                                      new AddressFrom(request.AddressFrom),
+                                      new AddressTo(request.AddressTo));
+
+        var order = new Domain.Entities.Order(SequentialGuid.Create(), new OrderName(request.OrderName), orderInfo, request.OrderStatus.ToOrderStatus());
+
         _context.Orders.Add(order);
-        
+
         await _context.SaveChangesAsync(cancellationToken);
 
         return order.Id;

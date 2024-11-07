@@ -33,5 +33,7 @@ internal class PassportTypeConfiguration : EntityTypeConfigurationBase<PassportT
 
         builder.HasIndex(p => p.Code)
                .IsUnique();
+
+        builder.HasData(PassportType.GetAllValues());
     }
 }

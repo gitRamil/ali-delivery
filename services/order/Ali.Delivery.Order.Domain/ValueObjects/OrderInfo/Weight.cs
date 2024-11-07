@@ -14,8 +14,8 @@ public class Weight : ValueObject
     /// Минимальный и максимальный вес заказа.
     /// </summary>
     private const decimal MinWeight = 0.1m;
-    private const decimal MaxWeight = 1000m;
 
+    private const decimal MaxWeight = 1000m;
     private readonly decimal _weight;
 
     /// <summary>

@@ -2,22 +2,25 @@ using System.Runtime.Serialization;
 
 namespace Ali.Delivery.Order.Application.Dtos.Order;
 
-public enum PassportTypeCodeEnum
+/// <summary>
+/// Представляет набор значений, описывающих тип паспорта.
+/// </summary>
+public enum PassportType
 {
     /// <summary>
-    /// Согласована.
+    /// Внутренний.
     /// </summary>
     [EnumMember(Value = "internal")]
     Internal,
 
     /// <summary>
-    /// Отклонена.
+    /// Зарубежный.
     /// </summary>
     [EnumMember(Value = "international")]
     International,
-    
+
     /// <summary>
-    /// Отклонена.
+    /// Дипломатический.
     /// </summary>
     [EnumMember(Value = "diplomatic")]
     Diplomatic,

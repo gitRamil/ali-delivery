@@ -18,8 +18,7 @@ public interface IAppDbContext
     DbSet<Domain.Entities.Order> Orders { get; }
 
     DbSet<User> Users { get; }
-    
-    
+
     /// <summary>
     /// Сохраняет изменения.
     /// </summary>

@@ -31,7 +31,7 @@ public class OrderInfo : Entity<SequentialGuid>
         AddressFrom = addressFrom ?? throw new ArgumentNullException(nameof(addressFrom));
         AddressTo = addressTo ?? throw new ArgumentNullException(nameof(addressTo));
     }
-    
+
     /// <summary>
     /// Инициализирует новый экземпляр типа <see cref="OrderInfo" />.
     /// </summary>

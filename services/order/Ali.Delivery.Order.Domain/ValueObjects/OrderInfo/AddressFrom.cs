@@ -46,7 +46,7 @@ public class AddressFrom : ValueObject
     {
         yield return _address;
     }
-    
+
     /// <summary>
     /// Выполняет неявное преобразование из <see cref="AddressFrom" /> в <see cref="string" />.
     /// </summary>

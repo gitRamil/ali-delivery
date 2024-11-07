@@ -33,5 +33,7 @@ internal class OrderStatusConfiguration : EntityTypeConfigurationBase<OrderStatu
 
         builder.HasIndex(p => p.Code)
                .IsUnique();
+
+        builder.HasData(OrderStatus.GetAllValues());
     }
 }

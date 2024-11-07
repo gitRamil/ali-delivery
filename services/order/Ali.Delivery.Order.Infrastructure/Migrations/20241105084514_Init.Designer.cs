@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ali.Delivery.Order.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241027184431_Init")]
+    [Migration("20241105084514_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -82,6 +82,20 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         {
                             t.HasComment("Справочник статусов заказов");
                         });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("3a15d9e1-c989-2e49-e8d3-55a56db7a2e1"),
+                            Code = "created",
+                            Name = "Создана"
+                        },
+                        new
+                        {
+                            Id = new Guid("3a15d9e1-c99e-6357-1416-7c7be54dd2a5"),
+                            Code = "finished",
+                            Name = "Завершена"
+                        });
                 });
 
             modelBuilder.Entity("Ali.Delivery.Order.Domain.Entities.Dictionaries.PassportType", b =>
@@ -137,6 +151,26 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                     b.ToTable("passport_types", null, t =>
                         {
                             t.HasComment("Справочник типов паспортов");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("3a15d9e1-c9a0-80ab-eac9-9369b2ace783"),
+                            Code = "internal",
+                            Name = "Внутренний"
+                        },
+                        new
+                        {
+                            Id = new Guid("3a15d9e1-c9a1-8b19-64f4-8cb3007b8a5d"),
+                            Code = "international",
+                            Name = "Заграничный"
+                        },
+                        new
+                        {
+                            Id = new Guid("3a15d9e1-c99f-95c5-162b-34f69121c4a1"),
+                            Code = "diplomatic",
+                            Name = "Дипломатический"
                         });
                 });
 
@@ -194,6 +228,26 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         {
                             t.HasComment("Справочник ролей пользователей");
                         });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("3a1537be-fa32-3962-f94d-62f95e6ffcad"),
+                            Code = "courier",
+                            Name = "Курьер"
+                        },
+                        new
+                        {
+                            Id = new Guid("3a1537bf-cabc-d70c-f42c-012821b898b1"),
+                            Code = "basicUser",
+                            Name = "Пользователь"
+                        },
+                        new
+                        {
+                            Id = new Guid("3a1537c0-11f8-d788-90d9-ced196c63397"),
+                            Code = "notAuthUser",
+                            Name = "Неавторизованный пользователь"
+                        });
                 });
 
             modelBuilder.Entity("Ali.Delivery.Order.Domain.Entities.Dictionaries.Size", b =>
@@ -250,6 +304,26 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         {
                             t.HasComment("Справочник размеров");
                         });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("3a156e1f-6055-abfb-36b7-7e630cc807b9"),
+                            Code = "small",
+                            Name = "Маленький"
+                        },
+                        new
+                        {
+                            Id = new Guid("3a156e1f-6056-875d-e42d-3e8e7ec6e082"),
+                            Code = "medium",
+                            Name = "Средний"
+                        },
+                        new
+                        {
+                            Id = new Guid("3a156e1f-6057-39cd-7580-20395231a00f"),
+                            Code = "large",
+                            Name = "Большой"
+                        });
                 });
 
             modelBuilder.Entity("Ali.Delivery.Order.Domain.Entities.Order", b =>
@@ -298,6 +372,11 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         .HasColumnName("order_info_id")
                         .HasComment("Информация о заказе");
 
+                    b.Property<Guid?>("sender_id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("sender_id")
+                        .HasComment("Идентификатор связанной цели");
+
                     b.HasKey("Id")
                         .HasName("pk_orders");
 
@@ -306,6 +385,9 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
 
                     b.HasIndex("order_info_id")
                         .HasDatabaseName("ix_orders_order_info_id");
+
+                    b.HasIndex("sender_id")
+                        .HasDatabaseName("ix_orders_sender_id");
 
                     b.ToTable("orders", null, t =>
                         {
@@ -535,9 +617,16 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_orders_order_info_order_info_id");
 
+                    b.HasOne("Ali.Delivery.Order.Domain.Entities.User", "Sender")
+                        .WithMany()
+                        .HasForeignKey("sender_id")
+                        .HasConstraintName("fk_orders_users_sender_id");
+
                     b.Navigation("OrderInfo");
 
                     b.Navigation("OrderStatus");
+
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("Ali.Delivery.Order.Domain.Entities.OrderInfo", b =>

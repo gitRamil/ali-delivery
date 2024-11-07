@@ -3,24 +3,24 @@ using System.Runtime.Serialization;
 namespace Ali.Delivery.Order.Application.Dtos.Order;
 
 /// <summary>
-/// Представляет набор значений, описывающих статусы заказа.
+/// Представляет набор значений, описывающих размер посылки.
 /// </summary>
-public enum SizeCodeEnum
+public enum SizeCode
 {
     /// <summary>
-    /// Согласована.
+    /// Большая.
     /// </summary>
     [EnumMember(Value = "large")]
     Large,
 
     /// <summary>
-    /// Отклонена.
+    /// Маленькая.
     /// </summary>
     [EnumMember(Value = "small")]
     Small,
-    
+
     /// <summary>
-    /// Отклонена.
+    /// Средняя.
     /// </summary>
     [EnumMember(Value = "medium")]
     Medium

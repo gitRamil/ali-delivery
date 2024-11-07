@@ -56,4 +56,9 @@ public class Order : Entity<SequentialGuid>
     /// Возвращает статус заказа.
     /// </summary>
     public virtual OrderStatus OrderStatus { get; }
+
+    /// <summary>
+    /// Возвращает информацию о пользователе.
+    /// </summary>
+    public virtual User? Sender { get; }
 }

@@ -33,5 +33,7 @@ internal class SizeConfiguration : EntityTypeConfigurationBase<Size>
 
         builder.HasIndex(p => p.Code)
                .IsUnique();
+
+        builder.HasData(Size.GetAllValues());
     }
 }

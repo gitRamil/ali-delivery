@@ -5,7 +5,7 @@ using Ali.Delivery.Domain.Core;
 namespace Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.Role;
 
 /// <summary>
-/// Представляет наименование справочника типов пользователей..
+/// Представляет наименование справочника типов пользователей.
 /// </summary>
 [DebuggerDisplay("{_name}")]
 public sealed class RoleName : ValueObject
