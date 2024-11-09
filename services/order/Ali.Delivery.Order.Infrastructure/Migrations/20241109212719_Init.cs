@@ -90,10 +90,10 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Уникальный идентификатор"),
-                    expiration_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, comment: "Дата истечения срока действия паспорта"),
-                    passport_number = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false, comment: "Номер паспорта"),
+                    passport_info_expiration_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, comment: "Дата истечения срока действия паспорта"),
+                    passport_info_passport_number = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false, comment: "Номер паспорта"),
+                    passport_info_reg_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, comment: "Дата регистрации"),
                     passport_type_id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Идентификационный номер типа паспорта"),
-                    reg_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, comment: "Дата регистрации"),
                     created_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     created_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))),
                     updated_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
@@ -116,11 +116,11 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Уникальный идентификатор"),
-                    address_from = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false, comment: "Адрес отправления"),
-                    address_to = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false, comment: "Адрес доставки"),
-                    price = table.Column<decimal>(type: "numeric", nullable: false, comment: "Цена заказа"),
+                    order_info_address_from = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false, comment: "Адрес отправления"),
+                    order_info_address_to = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false, comment: "Адрес доставки"),
+                    order_info_price = table.Column<decimal>(type: "numeric", nullable: false, comment: "Цена заказа"),
+                    order_info_weight = table.Column<decimal>(type: "numeric", nullable: false, comment: "Вес заказа"),
                     size_id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Идентификационный номер размера"),
-                    weight = table.Column<decimal>(type: "numeric", nullable: false, comment: "Вес заказа"),
                     created_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     created_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))),
                     updated_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
@@ -143,11 +143,11 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Уникальный идентификатор"),
-                    birthday = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, comment: "Дата рождения пользователя"),
-                    first_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false, comment: "Имя пользователя"),
-                    last_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false, comment: "Фамилия пользователя"),
                     passport_info_id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Информация о паспорте"),
                     role_id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Роль пользователя"),
+                    user_birth_day = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, comment: "Дата рождения пользователя"),
+                    user_first_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false, comment: "Имя пользователя"),
+                    user_last_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false, comment: "Фамилия пользователя"),
                     created_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     created_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))),
                     updated_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
@@ -179,7 +179,7 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                     name = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false, comment: "Наименование заказа"),
                     order_info_id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Информация о заказе"),
                     order_status_id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Статус заказа"),
-                    sender_id = table.Column<Guid>(type: "uuid", nullable: true, comment: "Идентификатор связанной цели"),
+                    sender_id = table.Column<Guid>(type: "uuid", nullable: true),
                     created_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     created_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))),
                     updated_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),

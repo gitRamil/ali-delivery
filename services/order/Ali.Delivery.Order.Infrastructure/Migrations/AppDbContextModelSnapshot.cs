@@ -371,8 +371,7 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
 
                     b.Property<Guid?>("sender_id")
                         .HasColumnType("uuid")
-                        .HasColumnName("sender_id")
-                        .HasComment("Идентификатор связанной цели");
+                        .HasColumnName("sender_id");
 
                     b.HasKey("Id")
                         .HasName("pk_orders");
@@ -399,20 +398,6 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         .HasColumnName("id")
                         .HasComment("Уникальный идентификатор");
 
-                    b.Property<string>("AddressFrom")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("character varying(250)")
-                        .HasColumnName("address_from")
-                        .HasComment("Адрес отправления");
-
-                    b.Property<string>("AddressTo")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("character varying(250)")
-                        .HasColumnName("address_to")
-                        .HasComment("Адрес доставки");
-
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
@@ -424,10 +409,29 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         .HasDefaultValue(new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)))
                         .HasColumnName("created_date");
 
-                    b.Property<decimal>("Price")
+                    b.Property<string>("OrderInfoAddressFrom")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)")
+                        .HasColumnName("order_info_address_from")
+                        .HasComment("Адрес отправления");
+
+                    b.Property<string>("OrderInfoAddressTo")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)")
+                        .HasColumnName("order_info_address_to")
+                        .HasComment("Адрес доставки");
+
+                    b.Property<decimal>("OrderInfoPrice")
                         .HasColumnType("numeric")
-                        .HasColumnName("price")
+                        .HasColumnName("order_info_price")
                         .HasComment("Цена заказа");
+
+                    b.Property<decimal>("OrderInfoWeight")
+                        .HasColumnType("numeric")
+                        .HasColumnName("order_info_weight")
+                        .HasComment("Вес заказа");
 
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(100)
@@ -439,11 +443,6 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValue(new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)))
                         .HasColumnName("updated_date");
-
-                    b.Property<decimal>("Weight")
-                        .HasColumnType("numeric")
-                        .HasColumnName("weight")
-                        .HasComment("Вес заказа");
 
                     b.Property<Guid>("size_id")
                         .HasColumnType("uuid")
@@ -480,21 +479,21 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         .HasDefaultValue(new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)))
                         .HasColumnName("created_date");
 
-                    b.Property<DateTime>("ExpirationDate")
+                    b.Property<DateTime>("PassportInfoExpirationDate")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("expiration_date")
+                        .HasColumnName("passport_info_expiration_date")
                         .HasComment("Дата истечения срока действия паспорта");
 
-                    b.Property<string>("PassportNumber")
+                    b.Property<string>("PassportInfoPassportNumber")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)")
-                        .HasColumnName("passport_number")
+                        .HasColumnName("passport_info_passport_number")
                         .HasComment("Номер паспорта");
 
-                    b.Property<DateTime>("RegDate")
+                    b.Property<DateTime>("PassportInfoRegDate")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("reg_date")
+                        .HasColumnName("passport_info_reg_date")
                         .HasComment("Дата регистрации");
 
                     b.Property<string>("UpdatedBy")
@@ -532,11 +531,6 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         .HasColumnName("id")
                         .HasComment("Уникальный идентификатор");
 
-                    b.Property<DateTime>("Birthday")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("birthday")
-                        .HasComment("Дата рождения пользователя");
-
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
@@ -548,20 +542,6 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         .HasDefaultValue(new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)))
                         .HasColumnName("created_date");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("first_name")
-                        .HasComment("Имя пользователя");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("last_name")
-                        .HasComment("Фамилия пользователя");
-
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
@@ -572,6 +552,25 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValue(new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)))
                         .HasColumnName("updated_date");
+
+                    b.Property<DateTime>("UserBirthDay")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("user_birth_day")
+                        .HasComment("Дата рождения пользователя");
+
+                    b.Property<string>("UserFirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("user_first_name")
+                        .HasComment("Имя пользователя");
+
+                    b.Property<string>("UserLastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("user_last_name")
+                        .HasComment("Фамилия пользователя");
 
                     b.Property<Guid>("passport_info_id")
                         .HasColumnType("uuid")
