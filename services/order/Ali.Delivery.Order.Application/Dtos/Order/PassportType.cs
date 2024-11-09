@@ -23,5 +23,5 @@ public enum PassportType
     /// Дипломатический.
     /// </summary>
     [EnumMember(Value = "diplomatic")]
-    Diplomatic,
+    Diplomatic
 }

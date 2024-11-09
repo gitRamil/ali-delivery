@@ -1,8 +1,5 @@
-using Ali.Delivery.Order.Application.Dtos.Order;
 using Ali.Delivery.Order.Domain.Entities.Dictionaries;
 using Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.OrderStatus;
-using Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.Role;
-using Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.Size;
 using Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.PassportType;
 using OrderStatus = Ali.Delivery.Order.Application.Dtos.Order.OrderStatus;
 using PassportType = Ali.Delivery.Order.Domain.Entities.Dictionaries.PassportType;
@@ -39,31 +36,6 @@ public static class EnumDtoExtensions
             _ => throw new ArgumentOutOfRangeException(nameof(codeEnum), codeEnum, "Не поддерживаемое значение статуса заказа.")
         };
 
-    // *** Role Extensions ***
-    /// <summary>
-    /// Преобразует код роли в значение перечисления.
-    /// </summary>
-    public static RoleCode ToRole(this Domain.ValueObjects.Dictionaries.Role.RoleCode roleCode) =>
-        roleCode switch
-        {
-            not null when roleCode == Role.BasicUser.Code => RoleCode.BasicUser,
-            not null when roleCode == Role.Courier.Code => RoleCode.Courier,
-            not null when roleCode == Role.NotAuthUser.Code => RoleCode.NotAuthUser,
-            _ => throw new ArgumentOutOfRangeException(nameof(roleCode), roleCode, "Не поддерживаемое значение роли.")
-        };
-
-    /// <summary>
-    /// Преобразует значение перечисления в роль.
-    /// </summary>
-    public static Role ToRole(this RoleCode code) =>
-        code switch
-        {
-            RoleCode.BasicUser => Role.BasicUser,
-            RoleCode.Courier => Role.Courier,
-            RoleCode.NotAuthUser => Role.NotAuthUser,
-            _ => throw new ArgumentOutOfRangeException(nameof(code), code, "Не поддерживаемое значение роли.")
-        };
-
     // *** PassportType Extensions ***
     /// <summary>
     /// Преобразует код типа паспорта в значение перечисления.
@@ -87,6 +59,31 @@ public static class EnumDtoExtensions
             Dtos.Order.PassportType.Internal => PassportType.Internal,
             Dtos.Order.PassportType.International => PassportType.International,
             _ => throw new ArgumentOutOfRangeException(nameof(codeEnum), codeEnum, "Не поддерживаемое значение типа паспорта.")
+        };
+
+    // *** Role Extensions ***
+    /// <summary>
+    /// Преобразует код роли в значение перечисления.
+    /// </summary>
+    public static RoleCode ToRole(this Domain.ValueObjects.Dictionaries.Role.RoleCode roleCode) =>
+        roleCode switch
+        {
+            not null when roleCode == Role.BasicUser.Code => RoleCode.BasicUser,
+            not null when roleCode == Role.Courier.Code => RoleCode.Courier,
+            not null when roleCode == Role.NotAuthUser.Code => RoleCode.NotAuthUser,
+            _ => throw new ArgumentOutOfRangeException(nameof(roleCode), roleCode, "Не поддерживаемое значение роли.")
+        };
+
+    /// <summary>
+    /// Преобразует значение перечисления в роль.
+    /// </summary>
+    public static Role ToRole(this RoleCode code) =>
+        code switch
+        {
+            RoleCode.BasicUser => Role.BasicUser,
+            RoleCode.Courier => Role.Courier,
+            RoleCode.NotAuthUser => Role.NotAuthUser,
+            _ => throw new ArgumentOutOfRangeException(nameof(code), code, "Не поддерживаемое значение роли.")
         };
 
     // *** Size Extensions ***

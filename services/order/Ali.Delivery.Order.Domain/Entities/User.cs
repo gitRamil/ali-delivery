@@ -13,7 +13,7 @@ public class User : Entity<SequentialGuid>
     /// <param name="id">Идентификатор пользователя.</param>
     /// <param name="firstName">Имя пользователя.</param>
     /// <param name="lastName">Фамилия пользователя.</param>
-    /// <param name="passportInfo"></param>
+    /// <param name="passportInfo">Информация о паспорте пользователя</param>
     /// <param name="role">Идентификатор роли пользователя.</param>
     /// <param name="birthday">Дата рождения пользователя.</param>
     /// <exception cref="ArgumentNullException">
@@ -61,7 +61,7 @@ public class User : Entity<SequentialGuid>
     public LastName LastName { get; }
 
     /// <summary>
-    /// Номер паспорта пользователя.
+    /// Информация о паспорте пользователя.
     /// </summary>
     public virtual PassportInfo PassportInfo { get; }
 

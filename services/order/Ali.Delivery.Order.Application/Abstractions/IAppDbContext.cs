@@ -1,5 +1,4 @@
 ﻿using Ali.Delivery.Order.Domain.Entities;
-using Ali.Delivery.Order.Domain.Entities.Dictionaries;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ali.Delivery.Order.Application.Abstractions;
@@ -17,6 +16,12 @@ public interface IAppDbContext
     /// </value>
     DbSet<Domain.Entities.Order> Orders { get; }
 
+    /// <summary>
+    /// Возвращает набор пользователей.
+    /// </summary>
+    /// <value>
+    /// Пользователи.
+    /// </value>
     DbSet<User> Users { get; }
 
     /// <summary>

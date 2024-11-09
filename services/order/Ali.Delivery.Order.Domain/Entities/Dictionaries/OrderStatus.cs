@@ -10,12 +10,12 @@ namespace Ali.Delivery.Order.Domain.Entities.Dictionaries;
 public class OrderStatus : Entity<SequentialGuid>
 {
     /// <summary>
-    /// Возвращает статус заказа: Создана.
+    /// Возвращает статус заказа: Создан.
     /// </summary>
     public static readonly OrderStatus Created = new(new Guid("3a15d9e1-c989-2e49-e8d3-55a56db7a2e1"), new OrderStatusCode("created"), new OrderStatusName("Создана"));
 
     /// <summary>
-    /// Возвращает статус заказа: Завершена.
+    /// Возвращает статус заказа: Завершен.
     /// </summary>
     public static readonly OrderStatus Finished = new(new Guid("3a15d9e1-c99e-6357-1416-7c7be54dd2a5"), new OrderStatusCode("finished"), new OrderStatusName("Завершена"));
 

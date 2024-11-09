@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Ali.Delivery.Order.WebApi.Controllers;
 
 /// <summary>
-/// Контроллер для управления действиями c заказами.
+/// Контроллер для управления действиями с заказами.
 /// </summary>
 /// <remarks>
 /// Этот контроллер предоставляет API для выполнения операций, связанных с заказами,
@@ -48,20 +48,6 @@ public class OrderController : ControllerBase
     }
 
     /// <summary>
-    /// Получает заказ.
-    /// </summary>
-    /// <param name="orderId">Идентификатор заказа.</param>
-    /// <param name="cancellationToken">Маркер отмены.</param>
-    [HttpGet("{orderId:guid}")]
-    [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetOrder(Guid orderId, CancellationToken cancellationToken)
-    {
-        var result = await _mediator.Send(new GetOrderCommand(orderId), cancellationToken);
-        return Ok(result);
-    }
-
-    /// <summary>
     /// Получает список всех заказов.
     /// </summary>
     /// <param name="cancellationToken">Маркер отмены.</param>
@@ -72,6 +58,20 @@ public class OrderController : ControllerBase
     public async Task<IActionResult> GetAllOrders(CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetAllOrders(), cancellationToken);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Получает заказ.
+    /// </summary>
+    /// <param name="orderId">Идентификатор заказа.</param>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    [HttpGet("{orderId:guid}")]
+    [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetOrder(Guid orderId, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetOrderCommand(orderId), cancellationToken);
         return Ok(result);
     }
 }

@@ -17,10 +17,9 @@ public class Order : Entity<SequentialGuid>
     /// <param name="name">Наименование заказа.</param>
     /// <param name="orderInfo">Информация о заказе.</param>
     /// <param name="orderStatus">Статус заказа.</param>
-    /// &lt;param name="name"&gt;Наименование цели.&lt;/param&gt;
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если <paramref name="name" /> или
-    /// <paramref name="name" /> равен <c>null</c>.
+    /// Возникает, если любой из параметров <paramref name="name" />,
+    /// <paramref name="orderInfo" />, <paramref name="orderStatus" /> равен <c>null</c>.
     /// </exception>
     public Order(SequentialGuid id, OrderName name, OrderInfo orderInfo, OrderStatus orderStatus)
         : base(id)

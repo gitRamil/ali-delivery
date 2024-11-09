@@ -4,12 +4,12 @@ using Ali.Delivery.Domain.Core;
 namespace Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.OrderStatus;
 
 /// <summary>
-/// Представляет код справочника статусов периода целеполагания.
+/// Представляет код справочника статусов заказа.
 /// </summary>
 public sealed class OrderStatusCode : ValueObject
 {
     /// <summary>
-    /// Представляет максимальную длину кода статусов периода целеполагания.
+    /// Представляет максимальную длину кода статусов заказа.
     /// </summary>
     public const int MaxLength = 100;
 
@@ -18,7 +18,7 @@ public sealed class OrderStatusCode : ValueObject
     /// <summary>
     /// Инициализирует новый экземпляр типа <see cref="OrderStatusCode" />.
     /// </summary>
-    /// <param name="code">Код справочника статусов периода целеполагания.</param>
+    /// <param name="code">Код справочника статусов заказа.</param>
     /// <exception cref="ArgumentException">
     /// Возникает, если <paramref name="code" />
     /// является <c>null</c> или <c>whitespace</c> или его длина превышает <see cref="MaxLength" />.
@@ -54,7 +54,7 @@ public sealed class OrderStatusCode : ValueObject
     /// <summary>
     /// Выполняет неявное преобразование из <see cref="OrderStatusCode" /> в <see cref="string" />.
     /// </summary>
-    /// <param name="obj">Значение кода справочника статусов периода целеполагания.</param>
+    /// <param name="obj">Значение кода справочника статусов заказа.</param>
     [return: NotNullIfNotNull(nameof(obj))]
     public static implicit operator string?(OrderStatusCode? obj) => obj?._code;
 }

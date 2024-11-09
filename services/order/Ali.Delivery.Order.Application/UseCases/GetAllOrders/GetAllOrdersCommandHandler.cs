@@ -4,36 +4,35 @@ using Ali.Delivery.Order.Application.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Ali.Delivery.Order.Application.UseCases.GetAllOrders
+namespace Ali.Delivery.Order.Application.UseCases.GetAllOrders;
+
+/// <summary>
+/// Представляет обработчик запроса на получение списка всех заказов.
+/// </summary>
+public class GetAllOrdersCommandHandler : IRequestHandler<GetAllOrders, List<OrderDto>>
 {
+    private readonly IAppDbContext _context;
+
     /// <summary>
-    /// Представляет обработчик запроса на получение списка всех заказов.
+    /// Инициализирует новый экземпляр типа <see cref="GetAllOrdersCommandHandler" />.
     /// </summary>
-    public class GetAllOrdersCommandHandler : IRequestHandler<GetAllOrders, List<OrderDto>>
+    /// <param name="context">Контекст БД.</param>
+    /// <exception cref="ArgumentNullException">
+    /// Возникает, если <paramref name="context" /> равен <c>null</c>.
+    /// </exception>
+    public GetAllOrdersCommandHandler(IAppDbContext context) => _context = context ?? throw new ArgumentNullException(nameof(context));
+
+    /// <inheritdoc />
+    public async Task<List<OrderDto>> Handle(GetAllOrders query, CancellationToken cancellationToken)
     {
-        private readonly IAppDbContext _context;
+        var orders = await _context.Orders.Select(order => new OrderDto(order.Id, order.Name))
+                                   .ToListAsync(cancellationToken);
 
-        /// <summary>
-        /// Инициализирует новый экземпляр типа <see cref="GetAllOrdersCommandHandler" />.
-        /// </summary>
-        /// <param name="context">Контекст БД.</param>
-        /// <exception cref="ArgumentNullException">
-        /// Возникает, если <paramref name="context" /> равен <c>null</c>.
-        /// </exception>
-        public GetAllOrdersCommandHandler(IAppDbContext context) => _context = context ?? throw new ArgumentNullException(nameof(context));
-
-        /// <inheritdoc />
-        public async Task<List<OrderDto>> Handle(GetAllOrders query, CancellationToken cancellationToken)
+        if (!orders.Any())
         {
-            var orders = await _context.Orders.Select(order => new OrderDto(order.Id, order.Name))
-                                       .ToListAsync(cancellationToken);
-
-            if (!orders.Any())
-            {
-                throw new NotFoundException("No orders found.");
-            }
-
-            return orders;
+            throw new NotFoundException("No orders found.");
         }
+
+        return orders;
     }
 }

@@ -12,11 +12,11 @@ public class Birthday : ValueObject
     private readonly DateTime _birthDate;
 
     /// <summary>
-    /// Инициализирует новый экземпляр класса <see cref="Birthday"/> с указанной датой рождения.
+    /// Инициализирует новый экземпляр класса <see cref="Birthday" /> с указанной датой рождения.
     /// </summary>
     /// <param name="birthDate">Дата рождения.</param>
     /// <exception cref="ArgumentException">
-    /// Выбрасывается, если <paramref name="birthDate"/> имеет значение по умолчанию (01.01.0001).
+    /// Выбрасывается, если <paramref name="birthDate" /> имеет значение по умолчанию (01.01.0001).
     /// </exception>
     public Birthday(DateTime birthDate)
     {

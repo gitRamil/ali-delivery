@@ -23,5 +23,5 @@ public enum RoleCode
     /// Неавторизованный пользователь.
     /// </summary>
     [EnumMember(Value = "notAuthUser")]
-    NotAuthUser,
+    NotAuthUser
 }

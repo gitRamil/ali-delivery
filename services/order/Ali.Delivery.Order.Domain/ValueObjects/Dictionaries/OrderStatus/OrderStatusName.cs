@@ -5,13 +5,13 @@ using Ali.Delivery.Domain.Core;
 namespace Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.OrderStatus;
 
 /// <summary>
-/// Представляет наименование справочника статусов периода целеполагания.
+/// Представляет наименование справочника статусов заказа.
 /// </summary>
 [DebuggerDisplay("{_name}")]
 public sealed class OrderStatusName : ValueObject
 {
     /// <summary>
-    /// Представляет максимальную длину наименования справочника статусов периода целеполагания.
+    /// Представляет максимальную длину наименования справочника статусов заказа.
     /// </summary>
     public const int MaxLength = 250;
 
@@ -20,7 +20,7 @@ public sealed class OrderStatusName : ValueObject
     /// <summary>
     /// Инициализирует новый экземпляр типа <see cref="OrderStatusName" />.
     /// </summary>
-    /// <param name="name">Наименование справочника статусов периода целеполагания.</param>
+    /// <param name="name">Наименование справочника статусов заказа.</param>
     /// <exception cref="ArgumentException">
     /// Возникает, если <paramref name="name" />
     /// является <c>null</c> или <c>whitespace</c> или его длина превышает <see cref="MaxLength" />.
@@ -54,14 +54,14 @@ public sealed class OrderStatusName : ValueObject
     /// <summary>
     /// Выполняет явное преобразование из <see cref="string" /> в <see cref="OrderStatusCode" />.
     /// </summary>
-    /// <param name="obj">Описание цели.</param>
+    /// <param name="obj">Значение наименования справочника статусов заказа.</param>
     [return: NotNullIfNotNull(nameof(obj))]
     public static explicit operator OrderStatusName?(string? obj) => obj == null ? null : new OrderStatusName(obj);
 
     /// <summary>
     /// Выполняет неявное преобразование из <see cref="OrderStatusCode" /> в <see cref="string" />.
     /// </summary>
-    /// <param name="obj">Значение наименования справочника должностей.</param>
+    /// <param name="obj">Значение наименования справочника статусов заказа.</param>
     [return: NotNullIfNotNull(nameof(obj))]
     public static implicit operator string?(OrderStatusName? obj) => obj?._name;
 }

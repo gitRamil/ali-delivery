@@ -19,15 +19,16 @@ public class PassportInfo : Entity<SequentialGuid>
     /// <param name="regDate">Дата регистрации паспорта.</param>
     /// <param name="expirationDate">Дата окончания действия паспорта.</param>
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если <paramref name="typeId" /> равен <c>null</c>.
+    /// Возникает, если любой из параметров <paramref name="typeId" />, <paramref name="passportNumber" />,
+    /// <paramref name="regDate" /> или <paramref name="expirationDate" /> равен <c>null</c>.
     /// </exception>
     public PassportInfo(SequentialGuid id, PassportType typeId, PassportNumber passportNumber, RegDate regDate, ExpirationDate expirationDate)
         : base(id)
     {
         PassportType = typeId ?? throw new ArgumentNullException(nameof(typeId));
         PassportNumber = passportNumber ?? throw new ArgumentNullException(nameof(passportNumber));
-        RegDate = regDate;
-        ExpirationDate = expirationDate;
+        RegDate = regDate ?? throw new ArgumentNullException(nameof(regDate));
+        ExpirationDate = expirationDate ?? throw new ArgumentNullException(nameof(expirationDate));
     }
 
     /// <summary>
