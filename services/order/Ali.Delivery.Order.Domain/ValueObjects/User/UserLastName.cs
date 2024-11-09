@@ -7,20 +7,20 @@ namespace Ali.Delivery.Order.Domain.ValueObjects.User;
 /// Представляет фамилию пользователя.
 /// </summary>
 [DebuggerDisplay("{_name}")]
-public class LastName : ValueObject
+public class UserLastName : ValueObject
 {
     public const int MaxLength = 100;
     private readonly string _name;
 
     /// <summary>
-    /// Инициализирует новый экземпляр типа <see cref="LastName" />.
+    /// Инициализирует новый экземпляр типа <see cref="UserLastName" />.
     /// </summary>
     /// <param name="name">Фамилия пользователя.</param>
     /// <exception cref="ArgumentException">
     /// Возникает, если <paramref name="name" /> является <c>null</c>,
     /// <c>whitespace</c> или его длина превышает <see cref="MaxLength" />.
     /// </exception>
-    public LastName(string name)
+    public UserLastName(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -49,7 +49,7 @@ public class LastName : ValueObject
     }
 
     /// <summary>
-    /// Выполняет неявное преобразование из <see cref="LastName" /> в <see cref="string" />.
+    /// Выполняет неявное преобразование из <see cref="UserLastName" /> в <see cref="string" />.
     /// </summary>
-    public static implicit operator string?(LastName? obj) => obj?._name;
+    public static implicit operator string?(UserLastName? obj) => obj?._name;
 }

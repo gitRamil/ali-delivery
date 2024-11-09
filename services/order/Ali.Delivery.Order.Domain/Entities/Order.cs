@@ -14,17 +14,17 @@ public class Order : Entity<SequentialGuid>
     /// Инициализирует новый экземпляр типа <see cref="Order" />.
     /// </summary>
     /// <param name="id">Идентификатор.</param>
-    /// <param name="name">Наименование заказа.</param>
+    /// <param name="orderName">Наименование заказа.</param>
     /// <param name="orderInfo">Информация о заказе.</param>
     /// <param name="orderStatus">Статус заказа.</param>
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если любой из параметров <paramref name="name" />,
+    /// Возникает, если любой из параметров <paramref name="orderName" />,
     /// <paramref name="orderInfo" />, <paramref name="orderStatus" /> равен <c>null</c>.
     /// </exception>
-    public Order(SequentialGuid id, OrderName name, OrderInfo orderInfo, OrderStatus orderStatus)
+    public Order(SequentialGuid id, OrderName orderName, OrderInfo orderInfo, OrderStatus orderStatus)
         : base(id)
     {
-        Name = name ?? throw new ArgumentNullException(nameof(name));
+        Name = orderName ?? throw new ArgumentNullException(nameof(orderName));
         OrderInfo = orderInfo ?? throw new ArgumentNullException(nameof(orderInfo));
         OrderStatus = orderStatus ?? throw new ArgumentNullException(nameof(orderStatus));
     }

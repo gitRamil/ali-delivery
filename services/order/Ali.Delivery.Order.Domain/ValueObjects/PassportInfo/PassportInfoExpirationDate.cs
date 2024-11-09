@@ -7,15 +7,15 @@ namespace Ali.Delivery.Order.Domain.ValueObjects.PassportInfo;
 /// Представляет дату истечения срока действия паспорта.
 /// </summary>
 [DebuggerDisplay("{_expirationDate}")]
-public sealed class ExpirationDate : ValueObject
+public sealed class PassportInfoExpirationDate : ValueObject
 {
     private readonly DateTime _expirationDate;
 
     /// <summary>
-    /// Инициализирует новый экземпляр типа <see cref="ExpirationDate" />.
+    /// Инициализирует новый экземпляр типа <see cref="PassportInfoExpirationDate" />.
     /// </summary>
     /// <param name="expirationDate">Дата истечения срока действия паспорта.</param>
-    public ExpirationDate(DateTime expirationDate) => _expirationDate = expirationDate;
+    public PassportInfoExpirationDate(DateTime expirationDate) => _expirationDate = expirationDate;
 
     /// <inheritdoc />
     public override string ToString() => _expirationDate.ToString("yyyy-MM-dd");
@@ -29,7 +29,7 @@ public sealed class ExpirationDate : ValueObject
     }
 
     /// <summary>
-    /// Выполняет неявное преобразование из <see cref="ExpirationDate" /> в <see cref="DateTime" />.
+    /// Выполняет неявное преобразование из <see cref="PassportInfoExpirationDate" /> в <see cref="DateTime" />.
     /// </summary>
-    public static implicit operator DateTime(ExpirationDate obj) => obj._expirationDate;
+    public static implicit operator DateTime(PassportInfoExpirationDate obj) => obj._expirationDate;
 }

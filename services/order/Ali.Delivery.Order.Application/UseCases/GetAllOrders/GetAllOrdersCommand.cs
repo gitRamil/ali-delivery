@@ -6,6 +6,4 @@ namespace Ali.Delivery.Order.Application.UseCases.GetAllOrders;
 /// <summary>
 /// Представляет команду для получения всех заказов.
 /// </summary>
-public class GetAllOrders : IRequest<List<OrderDto>>
-{
-}
+public record GetAllOrders : IRequest<List<OrderDto>>;

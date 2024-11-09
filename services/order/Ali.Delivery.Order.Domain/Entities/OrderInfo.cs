@@ -14,23 +14,29 @@ public class OrderInfo : Entity<SequentialGuid>
     /// Инициализирует новый экземпляр типа <see cref="OrderInfo" />.
     /// </summary>
     /// <param name="id">Идентификатор.</param>
-    /// <param name="weight">Вес заказа.</param>
+    /// <param name="orderInfoWeight">Вес заказа.</param>
     /// <param name="size">Размер заказа.</param>
-    /// <param name="price">Цена заказа.</param>
-    /// <param name="addressFrom">Адрес отправления.</param>
-    /// <param name="addressTo">Адрес доставки.</param>
+    /// <param name="orderInfoPrice">Цена заказа.</param>
+    /// <param name="orderInfoAddressFrom">Адрес отправления.</param>
+    /// <param name="orderInfoAddressTo">Адрес доставки.</param>
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если любой из параметров <paramref name="weight" />, <paramref name="size" />,
-    /// <paramref name="price" />, <paramref name="addressFrom" /> или <paramref name="addressTo" /> равен <c>null</c>.
+    /// Возникает, если любой из параметров <paramref name="orderInfoWeight" />, <paramref name="size" />,
+    /// <paramref name="orderInfoPrice" />, <paramref name="orderInfoAddressFrom" /> или <paramref name="orderInfoAddressTo" />
+    /// равен <c>null</c>.
     /// </exception>
-    public OrderInfo(SequentialGuid id, Weight weight, Size size, Price price, AddressFrom addressFrom, AddressTo addressTo)
+    public OrderInfo(SequentialGuid id,
+                     OrderInfoWeight orderInfoWeight,
+                     Size size,
+                     OrderInfoPrice orderInfoPrice,
+                     OrderInfoAddressFrom orderInfoAddressFrom,
+                     OrderInfoAddressTo orderInfoAddressTo)
         : base(id)
     {
-        Weight = weight ?? throw new ArgumentNullException(nameof(weight));
+        OrderInfoWeight = orderInfoWeight ?? throw new ArgumentNullException(nameof(orderInfoWeight));
         Size = size ?? throw new ArgumentNullException(nameof(size));
-        Price = price ?? throw new ArgumentNullException(nameof(price));
-        AddressFrom = addressFrom ?? throw new ArgumentNullException(nameof(addressFrom));
-        AddressTo = addressTo ?? throw new ArgumentNullException(nameof(addressTo));
+        OrderInfoPrice = orderInfoPrice ?? throw new ArgumentNullException(nameof(orderInfoPrice));
+        OrderInfoAddressFrom = orderInfoAddressFrom ?? throw new ArgumentNullException(nameof(orderInfoAddressFrom));
+        OrderInfoAddressTo = orderInfoAddressTo ?? throw new ArgumentNullException(nameof(orderInfoAddressTo));
     }
 
     /// <summary>
@@ -40,35 +46,35 @@ public class OrderInfo : Entity<SequentialGuid>
     protected OrderInfo()
         : base(SequentialGuid.Empty)
     {
-        Weight = null!;
+        OrderInfoWeight = null!;
         Size = null!;
-        Price = null!;
-        AddressFrom = null!;
-        AddressTo = null!;
+        OrderInfoPrice = null!;
+        OrderInfoAddressFrom = null!;
+        OrderInfoAddressTo = null!;
     }
 
     /// <summary>
     /// Адрес отправления.
     /// </summary>
-    public AddressFrom AddressFrom { get; }
+    public OrderInfoAddressFrom OrderInfoAddressFrom { get; }
 
     /// <summary>
     /// Адрес доставки.
     /// </summary>
-    public AddressTo AddressTo { get; }
+    public OrderInfoAddressTo OrderInfoAddressTo { get; }
 
     /// <summary>
     /// Цена заказа.
     /// </summary>
-    public Price Price { get; }
+    public OrderInfoPrice OrderInfoPrice { get; }
+
+    /// <summary>
+    /// Вес заказа.
+    /// </summary>
+    public OrderInfoWeight OrderInfoWeight { get; }
 
     /// <summary>
     /// Размер заказа.
     /// </summary>
     public virtual Size Size { get; }
-
-    /// <summary>
-    /// Вес заказа.
-    /// </summary>
-    public Weight Weight { get; }
 }

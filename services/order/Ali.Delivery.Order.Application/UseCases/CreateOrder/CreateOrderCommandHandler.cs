@@ -37,11 +37,11 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Gui
         ArgumentNullException.ThrowIfNull(request);
 
         var orderInfo = new OrderInfo(SequentialGuid.Create(),
-                                      new Weight(request.Weight),
+                                      new OrderInfoWeight(request.Weight),
                                       request.Size.ToSize(),
-                                      new Price(request.Price),
-                                      new AddressFrom(request.AddressFrom),
-                                      new AddressTo(request.AddressTo));
+                                      new OrderInfoPrice(request.Price),
+                                      new OrderInfoAddressFrom(request.AddressFrom),
+                                      new OrderInfoAddressTo(request.AddressTo));
 
         var order = new Domain.Entities.Order(SequentialGuid.Create(), new OrderName(request.OrderName), orderInfo, request.OrderStatus.ToOrderStatus());
 

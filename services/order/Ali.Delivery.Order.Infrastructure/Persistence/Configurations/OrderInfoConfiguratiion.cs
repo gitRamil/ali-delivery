@@ -19,26 +19,26 @@ internal class OrderInfoConfiguration : EntityTypeConfigurationBase<OrderInfo>
     {
         builder.ToTable("order_info", t => t.HasComment("Информация о заказе"));
 
-        builder.Property(p => p.Weight)
+        builder.Property(p => p.OrderInfoWeight)
                .IsRequired()
-               .HasConversion(p => (decimal)p, s => new Weight(s))
+               .HasConversion(p => (decimal)p, s => new OrderInfoWeight(s))
                .HasComment("Вес заказа");
 
-        builder.Property(p => p.Price)
+        builder.Property(p => p.OrderInfoPrice)
                .IsRequired()
-               .HasConversion(p => (decimal)p, s => new Price(s))
+               .HasConversion(p => (decimal)p, s => new OrderInfoPrice(s))
                .HasComment("Цена заказа");
 
-        builder.Property(p => p.AddressFrom)
-               .HasMaxLength(AddressFrom.MaxLength)
+        builder.Property(p => p.OrderInfoAddressFrom)
+               .HasMaxLength(OrderInfoAddressFrom.MaxLength)
                .IsRequired()
-               .HasConversion(p => (string)p, s => new AddressFrom(s))
+               .HasConversion(p => (string)p, s => new OrderInfoAddressFrom(s))
                .HasComment("Адрес отправления");
 
-        builder.Property(p => p.AddressTo)
-               .HasMaxLength(AddressTo.MaxLength)
+        builder.Property(p => p.OrderInfoAddressTo)
+               .HasMaxLength(OrderInfoAddressTo.MaxLength)
                .IsRequired()
-               .HasConversion(p => (string)p, s => new AddressTo(s))
+               .HasConversion(p => (string)p, s => new OrderInfoAddressTo(s))
                .HasComment("Адрес доставки");
 
         builder.HasOne(p => p.Size)

@@ -6,6 +6,4 @@ namespace Ali.Delivery.Order.Application.UseCases.GetAllUsers;
 /// <summary>
 /// Представляет команду для получения всех пользователей.
 /// </summary>
-public class GetAllUsers : IRequest<List<UserDto>>
-{
-}
+public record GetAllUsers : IRequest<List<UserDto>>;

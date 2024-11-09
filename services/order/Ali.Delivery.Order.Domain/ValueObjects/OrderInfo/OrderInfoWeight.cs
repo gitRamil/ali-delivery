@@ -8,7 +8,7 @@ namespace Ali.Delivery.Order.Domain.ValueObjects.OrderInfo;
 /// Представляет вес заказа.
 /// </summary>
 [DebuggerDisplay("{_weight}")]
-public class Weight : ValueObject
+public class OrderInfoWeight : ValueObject
 {
     private const decimal MaxWeight = 1000m;
 
@@ -20,11 +20,11 @@ public class Weight : ValueObject
     private readonly decimal _weight;
 
     /// <summary>
-    /// Инициализирует новый экземпляр типа <see cref="Weight" />.
+    /// Инициализирует новый экземпляр типа <see cref="OrderInfoWeight" />.
     /// </summary>
     /// <param name="weight">Вес заказа.</param>
     /// <exception cref="ArgumentException">Возникает, если вес меньше минимального или больше максимального.</exception>
-    public Weight(decimal weight)
+    public OrderInfoWeight(decimal weight)
     {
         if (weight < MinWeight || weight > MaxWeight)
         {
@@ -46,7 +46,7 @@ public class Weight : ValueObject
     }
 
     /// <summary>
-    /// Выполняет неявное преобразование из <see cref="Weight" /> в <see cref="decimal" />.
+    /// Выполняет неявное преобразование из <see cref="OrderInfoWeight" /> в <see cref="decimal" />.
     /// </summary>
-    public static implicit operator decimal(Weight obj) => obj._weight;
+    public static implicit operator decimal(OrderInfoWeight obj) => obj._weight;
 }

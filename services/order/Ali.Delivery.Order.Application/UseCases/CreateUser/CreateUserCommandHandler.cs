@@ -38,13 +38,18 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Guid>
 
         var passportInfo = new PassportInfo(SequentialGuid.Create(),
                                             request.PassportType.ToPassportType(),
-                                            new PassportNumber(request.PassportNumber),
-                                            new RegDate(request.RegDate),
-                                            new ExpirationDate(request.ExpirationDate));
+                                            new PassportInfoPassportNumber(request.PassportNumber),
+                                            new PassportInfoRegDate(request.RegDate),
+                                            new PassportInfoExpirationDate(request.ExpirationDate));
 
         var role = request.Role.ToRole();
 
-        var user = new User(SequentialGuid.Create(), new FirstName(request.FirstName), new LastName(request.LastName), passportInfo, role, new Birthday(request.Birthday));
+        var user = new User(SequentialGuid.Create(),
+                            new UserFirstName(request.FirstName),
+                            new UserLastName(request.LastName),
+                            passportInfo,
+                            role,
+                            new UserBirthDay(request.Birthday));
 
         _context.Users.Add(user);
 

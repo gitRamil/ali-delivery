@@ -1,6 +1,5 @@
 using Ali.Delivery.Order.Application.Abstractions;
 using Ali.Delivery.Order.Application.Dtos.Order;
-using Ali.Delivery.Order.Application.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,13 +24,8 @@ public class GetAllUsersCommandHandler : IRequestHandler<GetAllUsers, List<UserD
     /// <inheritdoc />
     public async Task<List<UserDto>> Handle(GetAllUsers query, CancellationToken cancellationToken)
     {
-        var users = await _context.Users.Select(user => new UserDto(user.Id, user.FirstName, user.LastName!))
+        var users = await _context.Users.Select(user => new UserDto(user.Id, user.UserFirstName, user.UserLastName!))
                                   .ToListAsync(cancellationToken);
-
-        if (!users.Any())
-        {
-            throw new NotFoundException("No users found.");
-        }
 
         return users;
     }

@@ -19,14 +19,14 @@ internal class UserConfiguration : EntityTypeConfigurationBase<User>
     {
         builder.ToTable("users", t => t.HasComment("Пользователь"));
 
-        builder.Property(u => u.FirstName)
-               .HasMaxLength(FirstName.MaxLength)
-               .HasConversion(f => (string)f, s => new FirstName(s))
+        builder.Property(u => u.UserFirstName)
+               .HasMaxLength(UserFirstName.MaxLength)
+               .HasConversion(f => (string)f, s => new UserFirstName(s))
                .HasComment("Имя пользователя");
 
-        builder.Property(u => u.LastName)
-               .HasMaxLength(LastName.MaxLength)
-               .HasConversion(l => (string)l!, s => new LastName(s))
+        builder.Property(u => u.UserLastName)
+               .HasMaxLength(UserLastName.MaxLength)
+               .HasConversion(l => (string)l!, s => new UserLastName(s))
                .HasComment("Фамилия пользователя");
 
         builder.HasOne(p => p.PassportInfo)
@@ -36,8 +36,8 @@ internal class UserConfiguration : EntityTypeConfigurationBase<User>
         builder.Property("passport_info_id")
                .HasComment("Информация о паспорте");
 
-        builder.Property(u => u.Birthday)
-               .HasConversion(b => (DateTime)b!, s => new Birthday(s))
+        builder.Property(u => u.UserBirthDay)
+               .HasConversion(b => (DateTime)b!, s => new UserBirthDay(s))
                .HasComment("Дата рождения пользователя");
 
         builder.HasOne(u => u.Role)

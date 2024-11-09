@@ -8,7 +8,7 @@ namespace Ali.Delivery.Order.Domain.ValueObjects.OrderInfo;
 /// Представляет цену заказа.
 /// </summary>
 [DebuggerDisplay("{_price}")]
-public class Price : ValueObject
+public class OrderInfoPrice : ValueObject
 {
     /// <summary>
     /// Минимальная допустимая цена заказа.
@@ -18,11 +18,11 @@ public class Price : ValueObject
     private readonly decimal _price;
 
     /// <summary>
-    /// Инициализирует новый экземпляр типа <see cref="Price" />.
+    /// Инициализирует новый экземпляр типа <see cref="OrderInfoPrice" />.
     /// </summary>
     /// <param name="price">Цена заказа.</param>
     /// <exception cref="ArgumentException">Возникает, если цена меньше минимальной допустимой.</exception>
-    public Price(decimal price)
+    public OrderInfoPrice(decimal price)
     {
         if (price < MinPrice)
         {
@@ -44,7 +44,7 @@ public class Price : ValueObject
     }
 
     /// <summary>
-    /// Выполняет неявное преобразование из <see cref="Price" /> в <see cref="decimal" />.
+    /// Выполняет неявное преобразование из <see cref="OrderInfoPrice" /> в <see cref="decimal" />.
     /// </summary>
-    public static implicit operator decimal(Price obj) => obj._price;
+    public static implicit operator decimal(OrderInfoPrice obj) => obj._price;
 }

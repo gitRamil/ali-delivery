@@ -7,7 +7,7 @@ namespace Ali.Delivery.Order.Domain.ValueObjects.OrderInfo;
 /// Представляет адрес отправления заказа.
 /// </summary>
 [DebuggerDisplay("{_address}")]
-public class AddressFrom : ValueObject
+public class OrderInfoAddressFrom : ValueObject
 {
     /// <summary>
     /// Максимальная длина адреса.
@@ -17,11 +17,11 @@ public class AddressFrom : ValueObject
     private readonly string _address;
 
     /// <summary>
-    /// Инициализирует новый экземпляр типа <see cref="AddressFrom" />.
+    /// Инициализирует новый экземпляр типа <see cref="OrderInfoAddressFrom" />.
     /// </summary>
     /// <param name="address">Адрес отправления заказа.</param>
     /// <exception cref="ArgumentException">Возникает, если адрес пуст или превышает максимальную длину.</exception>
-    public AddressFrom(string address)
+    public OrderInfoAddressFrom(string address)
     {
         if (string.IsNullOrWhiteSpace(address))
         {
@@ -48,7 +48,7 @@ public class AddressFrom : ValueObject
     }
 
     /// <summary>
-    /// Выполняет неявное преобразование из <see cref="AddressFrom" /> в <see cref="string" />.
+    /// Выполняет неявное преобразование из <see cref="OrderInfoAddressFrom" /> в <see cref="string" />.
     /// </summary>
-    public static implicit operator string(AddressFrom obj) => obj._address;
+    public static implicit operator string(OrderInfoAddressFrom obj) => obj._address;
 }

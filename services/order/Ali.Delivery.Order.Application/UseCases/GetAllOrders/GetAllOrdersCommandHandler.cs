@@ -1,6 +1,5 @@
 using Ali.Delivery.Order.Application.Abstractions;
 using Ali.Delivery.Order.Application.Dtos.Order;
-using Ali.Delivery.Order.Application.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,12 +26,6 @@ public class GetAllOrdersCommandHandler : IRequestHandler<GetAllOrders, List<Ord
     {
         var orders = await _context.Orders.Select(order => new OrderDto(order.Id, order.Name))
                                    .ToListAsync(cancellationToken);
-
-        if (!orders.Any())
-        {
-            throw new NotFoundException("No orders found.");
-        }
-
         return orders;
     }
 }

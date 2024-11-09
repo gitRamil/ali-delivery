@@ -7,18 +7,18 @@ namespace Ali.Delivery.Order.Domain.ValueObjects.User;
 /// Представляет дату рождения пользователя.
 /// </summary>
 [DebuggerDisplay("{_birthDate}")]
-public class Birthday : ValueObject
+public class UserBirthDay : ValueObject
 {
     private readonly DateTime _birthDate;
 
     /// <summary>
-    /// Инициализирует новый экземпляр класса <see cref="Birthday" /> с указанной датой рождения.
+    /// Инициализирует новый экземпляр класса <see cref="UserBirthDay" /> с указанной датой рождения.
     /// </summary>
     /// <param name="birthDate">Дата рождения.</param>
     /// <exception cref="ArgumentException">
     /// Выбрасывается, если <paramref name="birthDate" /> имеет значение по умолчанию (01.01.0001).
     /// </exception>
-    public Birthday(DateTime birthDate)
+    public UserBirthDay(DateTime birthDate)
     {
         if (birthDate == default)
         {
@@ -40,7 +40,7 @@ public class Birthday : ValueObject
     }
 
     /// <summary>
-    /// Выполняет неявное преобразование из <see cref="Birthday" /> в <see cref="DateTime" />.
+    /// Выполняет неявное преобразование из <see cref="UserBirthDay" /> в <see cref="DateTime" />.
     /// </summary>
-    public static implicit operator DateTime(Birthday obj) => obj._birthDate;
+    public static implicit operator DateTime(UserBirthDay obj) => obj._birthDate;
 }

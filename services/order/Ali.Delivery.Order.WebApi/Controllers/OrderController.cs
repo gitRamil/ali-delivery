@@ -10,13 +10,6 @@ namespace Ali.Delivery.Order.WebApi.Controllers;
 /// <summary>
 /// Контроллер для управления действиями с заказами.
 /// </summary>
-/// <remarks>
-/// Этот контроллер предоставляет API для выполнения операций, связанных с заказами,
-/// таких как получение, создание, обновление и удаление.
-/// </remarks>
-/// <response code="200">Запрос выполнен успешно.</response>
-/// <response code="400">Ошибочный запрос.</response>
-/// <response code="404">Ресурс не найден.</response>
 [ApiController]
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiExplorerSettings(GroupName = "v1")]

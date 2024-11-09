@@ -33,6 +33,6 @@ public class GetUserCommandHandler : IRequestHandler<GetUserCommand, UserDto>
 
         var user = await _context.Users.FirstOrDefaultAsync(o => (Guid)o.Id == query.UserId, cancellationToken) ?? throw new NotFoundException(typeof(User), query.UserId);
 
-        return new UserDto(user.Id, user.FirstName, user.LastName!);
+        return new UserDto(user.Id, user.UserFirstName, user.UserLastName!);
     }
 }
