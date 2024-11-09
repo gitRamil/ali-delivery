@@ -5,6 +5,9 @@ using Ali.Delivery.Order.Domain.ValueObjects.User;
 
 namespace Ali.Delivery.Order.Domain.Entities;
 
+/// <summary>
+/// Представляет сущность пользователя.
+/// </summary>
 public class User : Entity<SequentialGuid>
 {
     /// <summary>

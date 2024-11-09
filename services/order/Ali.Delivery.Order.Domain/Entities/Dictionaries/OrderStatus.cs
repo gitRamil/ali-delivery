@@ -5,7 +5,7 @@ using Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.OrderStatus;
 namespace Ali.Delivery.Order.Domain.Entities.Dictionaries;
 
 /// <summary>
-/// Статус заказа.
+/// Представляет статусы заказа.
 /// </summary>
 public class OrderStatus : Entity<SequentialGuid>
 {

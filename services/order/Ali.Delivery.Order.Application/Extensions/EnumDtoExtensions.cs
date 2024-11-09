@@ -13,7 +13,7 @@ namespace Ali.Delivery.Order.Application.Extensions;
 /// </summary>
 public static class EnumDtoExtensions
 {
-    // *** OrderStatus Extensions ***
+    #region OrderStatus
     /// <summary>
     /// Преобразует код статуса заказа в значение перечисления.
     /// </summary>
@@ -35,8 +35,9 @@ public static class EnumDtoExtensions
             OrderStatus.Finished => Domain.Entities.Dictionaries.OrderStatus.Finished,
             _ => throw new ArgumentOutOfRangeException(nameof(codeEnum), codeEnum, "Не поддерживаемое значение статуса заказа.")
         };
+    #endregion
 
-    // *** PassportType Extensions ***
+    #region PassportType
     /// <summary>
     /// Преобразует код типа паспорта в значение перечисления.
     /// </summary>
@@ -60,8 +61,9 @@ public static class EnumDtoExtensions
             Dtos.Order.PassportType.International => PassportType.International,
             _ => throw new ArgumentOutOfRangeException(nameof(codeEnum), codeEnum, "Не поддерживаемое значение типа паспорта.")
         };
+    #endregion
 
-    // *** Role Extensions ***
+    #region RoleCode
     /// <summary>
     /// Преобразует код роли в значение перечисления.
     /// </summary>
@@ -85,8 +87,9 @@ public static class EnumDtoExtensions
             RoleCode.NotAuthUser => Role.NotAuthUser,
             _ => throw new ArgumentOutOfRangeException(nameof(code), code, "Не поддерживаемое значение роли.")
         };
+    #endregion
 
-    // *** Size Extensions ***
+    #region SizeCode
     /// <summary>
     /// Преобразует код размера в значение перечисления.
     /// </summary>
@@ -110,4 +113,5 @@ public static class EnumDtoExtensions
             SizeCode.Large => Size.Large,
             _ => throw new ArgumentOutOfRangeException(nameof(code), code, "Не поддерживаемое значение размера.")
         };
+    #endregion
 }

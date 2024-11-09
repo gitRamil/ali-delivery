@@ -6,7 +6,7 @@ using Ali.Delivery.Order.Domain.ValueObjects.PassportInfo;
 namespace Ali.Delivery.Order.Domain.Entities;
 
 /// <summary>
-/// Паспортная информация пользователя.
+/// Представляет паспортную информацию пользователя.
 /// </summary>
 public class PassportInfo : Entity<SequentialGuid>
 {

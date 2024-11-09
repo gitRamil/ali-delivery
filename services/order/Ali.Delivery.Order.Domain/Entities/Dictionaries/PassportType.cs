@@ -5,7 +5,7 @@ using Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.PassportType;
 namespace Ali.Delivery.Order.Domain.Entities.Dictionaries;
 
 /// <summary>
-/// Типы паспортов.
+/// Представляет типы паспортов.
 /// </summary>
 public class PassportType : Entity<SequentialGuid>
 {

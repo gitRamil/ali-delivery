@@ -4,7 +4,7 @@ using MediatR;
 namespace Ali.Delivery.Order.Application.UseCases.CreateUser;
 
 /// <summary>
-/// Команда для создания пользователя.
+/// Представляет команду для создания пользователя.
 /// <param name="FirstName">Имя пользователя.</param>
 /// <param name="LastName">Фамилия пользователя.</param>
 /// <param name="PassportType">Тип паспорта пользователя</param>

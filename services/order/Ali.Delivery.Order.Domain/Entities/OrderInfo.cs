@@ -6,7 +6,7 @@ using Ali.Delivery.Order.Domain.ValueObjects.OrderInfo;
 namespace Ali.Delivery.Order.Domain.Entities;
 
 /// <summary>
-/// Информация о заказе.
+/// Представляет информацию о заказе.
 /// </summary>
 public class OrderInfo : Entity<SequentialGuid>
 {
