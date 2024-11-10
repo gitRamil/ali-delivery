@@ -7,7 +7,7 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
     builder.AddDefaultSerilog();
-    builder.Services.AddControllers();
+    builder.Services.AddDefaultControllers();
     builder.Services.AddDefaultApiVersioning();
     builder.Services.AddDefaultSwagger();
     builder.Services.AddDefaultMediatr();
