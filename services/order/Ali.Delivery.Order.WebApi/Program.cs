@@ -9,6 +9,7 @@ try
     builder.AddDefaultSerilog();
     builder.Services.AddControllers();
     builder.Services.AddDefaultApiVersioning();
+    builder.Services.AddDefaultSwagger();
     builder.Services.AddDefaultMediatr();
     builder.Services.AddDefaultEfCore();
     builder.Services.AddDefaultCorsPolicy();

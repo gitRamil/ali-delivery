@@ -7,6 +7,14 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DocumentationFile>bin\Debug\Ali.Delivery.Order.WebApi.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <DocumentationFile>bin\Debug\Ali.Delivery.Order.WebApi.xml</DocumentationFile>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="EFCore.NamingConventions" Version="8.0.3"/>
         <PackageReference Include="EntityFrameworkCore.Exceptions.PostgreSQL" Version="8.1.3"/>
@@ -48,6 +56,7 @@
         <ProjectReference Include="..\Ali.Delivery.Order.Application\Ali.Delivery.Order.Application.csproj"/>
         <ProjectReference Include="..\Ali.Delivery.Order.Infrastructure\Ali.Delivery.Order.Infrastructure.csproj"/>
     </ItemGroup>
+
 
 
 </Project>
