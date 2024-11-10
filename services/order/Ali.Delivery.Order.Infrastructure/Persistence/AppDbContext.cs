@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Ali.Delivery.Domain.Core;
+﻿using Ali.Delivery.Domain.Core;
 using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.Application.Abstractions;
 using Ali.Delivery.Order.Domain.Entities;
@@ -20,17 +17,20 @@ public class AppDbContext : DbContext, IAppDbContext
 {
     private readonly IDateTimeService _dateTimeService;
 
+    /// <summary>
+    /// Инициализирует новый экземпляр класса <see cref="AppDbContext" /> с заданными параметрами.
+    /// </summary>
+    /// <param name="options">Параметры конфигурации для контекста базы данных.</param>
+    /// <param name="dateTimeService">Сервис для работы с датой и временем.</param>
+    /// <exception cref="ArgumentNullException">
+    /// Выбрасывается, если <paramref name="dateTimeService" /> имеет значение <c>null</c>.
+    /// </exception>
     public AppDbContext(DbContextOptions<AppDbContext> options, IDateTimeService dateTimeService)
         : base(options)
     {
         _dateTimeService = dateTimeService ?? throw new ArgumentNullException(nameof(dateTimeService));
         AttachDictionaryValues();
     }
-
-    /// <summary>
-    /// Возвращает набор пользователей.
-    /// </summary>
-    public DbSet<User> Users => Set<User>();
 
     /// <summary>
     /// Возвращает набор заказов.
@@ -54,6 +54,11 @@ public class AppDbContext : DbContext, IAppDbContext
 
         return await base.SaveChangesAsync(cancellationToken);
     }
+
+    /// <summary>
+    /// Возвращает набор пользователей.
+    /// </summary>
+    public DbSet<User> Users => Set<User>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

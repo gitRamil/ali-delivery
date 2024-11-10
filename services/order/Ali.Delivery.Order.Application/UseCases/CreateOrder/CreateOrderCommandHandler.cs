@@ -1,7 +1,7 @@
 ﻿using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.Application.Abstractions;
+using Ali.Delivery.Order.Application.Extensions;
 using Ali.Delivery.Order.Domain.Entities;
-using Ali.Delivery.Order.Domain.Entities.Dictionaries;
 using Ali.Delivery.Order.Domain.ValueObjects.Order;
 using Ali.Delivery.Order.Domain.ValueObjects.OrderInfo;
 using MediatR;
@@ -9,9 +9,9 @@ using MediatR;
 namespace Ali.Delivery.Order.Application.UseCases.CreateOrder;
 
 /// <summary>
-/// Представляет обработчик команды создания оценщика для карт целей.
+/// Представляет обработчик команды создания заказа.
 /// </summary>
-public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand>
+public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Guid>
 {
     private readonly IAppDbContext _context;
 
@@ -19,29 +19,36 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand>
     /// Инициализирует новый экземпляр типа <see cref="CreateOrderCommandHandler" />.
     /// </summary>
     /// <param name="context">Контекст БД.</param>
-    /// >
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="context" /> равен <c>null</c>.
     /// </exception>
     public CreateOrderCommandHandler(IAppDbContext context) => _context = context ?? throw new ArgumentNullException(nameof(context));
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Выполняет команду создания заказа.
+    /// </summary>
+    /// <param name="request">Команда.</param>
+    /// <param name="cancellationToken">Маркер отмены.</param>
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если <paramref name="command" /> равен <c>null</c>.
+    /// Возникает, если <paramref name="request" /> равен <c>null</c>.
     /// </exception>
-    public async Task Handle(CreateOrderCommand command, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(command);
+        ArgumentNullException.ThrowIfNull(request);
 
-        _context.Orders.Add(new Domain.Entities.Order(SequentialGuid.Create(),
-                                                      new OrderName(command.OrderName),
-                                                      new OrderInfo(SequentialGuid.Create(),
-                                                                    new Weight(1),
-                                                                    Size.Medium,
-                                                                    new Price(100m),
-                                                                    new AddressFrom("Pushkin st"),
-                                                                    new AddressTo("Lenin st")),
-                                                      OrderStatus.Created));
+        var orderInfo = new OrderInfo(SequentialGuid.Create(),
+                                      new OrderInfoWeight(request.Weight),
+                                      request.Size.ToSize(),
+                                      new OrderInfoPrice(request.Price),
+                                      new OrderInfoAddressFrom(request.AddressFrom),
+                                      new OrderInfoAddressTo(request.AddressTo));
+
+        var order = new Domain.Entities.Order(SequentialGuid.Create(), new OrderName(request.OrderName), orderInfo, request.OrderStatus.ToOrderStatus());
+
+        _context.Orders.Add(order);
+
         await _context.SaveChangesAsync(cancellationToken);
+
+        return order.Id;
     }
 }

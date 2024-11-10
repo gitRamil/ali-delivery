@@ -5,7 +5,7 @@ using Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.Size;
 namespace Ali.Delivery.Order.Domain.Entities.Dictionaries;
 
 /// <summary>
-/// Типы размеров заказа.
+/// Представляет типы размеров заказа.
 /// </summary>
 public class Size : Entity<SequentialGuid>
 {

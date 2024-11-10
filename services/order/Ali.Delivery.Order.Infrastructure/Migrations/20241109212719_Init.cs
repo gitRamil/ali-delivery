@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Ali.Delivery.Order.Infrastructure.Migrations
 {
     /// <inheritdoc />
@@ -88,10 +90,10 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Уникальный идентификатор"),
-                    expiration_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, comment: "Дата истечения срока действия паспорта"),
-                    passport_number = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false, comment: "Номер паспорта"),
+                    passport_info_expiration_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, comment: "Дата истечения срока действия паспорта"),
+                    passport_info_passport_number = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false, comment: "Номер паспорта"),
+                    passport_info_reg_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, comment: "Дата регистрации"),
                     passport_type_id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Идентификационный номер типа паспорта"),
-                    reg_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, comment: "Дата регистрации"),
                     created_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     created_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))),
                     updated_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
@@ -114,11 +116,11 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Уникальный идентификатор"),
-                    address_from = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false, comment: "Адрес отправления"),
-                    address_to = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false, comment: "Адрес доставки"),
-                    price = table.Column<decimal>(type: "numeric", nullable: false, comment: "Цена заказа"),
+                    order_info_address_from = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false, comment: "Адрес отправления"),
+                    order_info_address_to = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false, comment: "Адрес доставки"),
+                    order_info_price = table.Column<decimal>(type: "numeric", nullable: false, comment: "Цена заказа"),
+                    order_info_weight = table.Column<decimal>(type: "numeric", nullable: false, comment: "Вес заказа"),
                     size_id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Идентификационный номер размера"),
-                    weight = table.Column<decimal>(type: "numeric", nullable: false, comment: "Вес заказа"),
                     created_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     created_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))),
                     updated_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
@@ -141,11 +143,11 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Уникальный идентификатор"),
-                    birthday = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, comment: "Дата рождения пользователя"),
-                    first_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false, comment: "Имя пользователя"),
-                    last_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false, comment: "Фамилия пользователя"),
                     passport_info_id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Информация о паспорте"),
                     role_id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Роль пользователя"),
+                    user_birth_day = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, comment: "Дата рождения пользователя"),
+                    user_first_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false, comment: "Имя пользователя"),
+                    user_last_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false, comment: "Фамилия пользователя"),
                     created_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     created_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))),
                     updated_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
@@ -177,6 +179,7 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                     name = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false, comment: "Наименование заказа"),
                     order_info_id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Информация о заказе"),
                     order_status_id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Статус заказа"),
+                    sender_id = table.Column<Guid>(type: "uuid", nullable: true),
                     created_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     created_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))),
                     updated_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
@@ -197,8 +200,52 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         principalTable: "order_statuses",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_orders_users_sender_id",
+                        column: x => x.sender_id,
+                        principalTable: "users",
+                        principalColumn: "id");
                 },
                 comment: "Заказ");
+
+            migrationBuilder.InsertData(
+                table: "order_statuses",
+                columns: new[] { "id", "code", "created_by", "name", "updated_by" },
+                values: new object[,]
+                {
+                    { new Guid("3a15d9e1-c989-2e49-e8d3-55a56db7a2e1"), "created", null, "Создана", null },
+                    { new Guid("3a15d9e1-c99e-6357-1416-7c7be54dd2a5"), "finished", null, "Завершена", null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "passport_types",
+                columns: new[] { "id", "code", "created_by", "name", "updated_by" },
+                values: new object[,]
+                {
+                    { new Guid("3a15d9e1-c99f-95c5-162b-34f69121c4a1"), "diplomatic", null, "Дипломатический", null },
+                    { new Guid("3a15d9e1-c9a0-80ab-eac9-9369b2ace783"), "internal", null, "Внутренний", null },
+                    { new Guid("3a15d9e1-c9a1-8b19-64f4-8cb3007b8a5d"), "international", null, "Заграничный", null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "roles",
+                columns: new[] { "id", "code", "created_by", "name", "updated_by" },
+                values: new object[,]
+                {
+                    { new Guid("3a1537be-fa32-3962-f94d-62f95e6ffcad"), "courier", null, "Курьер", null },
+                    { new Guid("3a1537bf-cabc-d70c-f42c-012821b898b1"), "basicUser", null, "Пользователь", null },
+                    { new Guid("3a1537c0-11f8-d788-90d9-ced196c63397"), "notAuthUser", null, "Неавторизованный пользователь", null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "sizes",
+                columns: new[] { "id", "code", "created_by", "name", "updated_by" },
+                values: new object[,]
+                {
+                    { new Guid("3a156e1f-6055-abfb-36b7-7e630cc807b9"), "small", null, "Маленький", null },
+                    { new Guid("3a156e1f-6056-875d-e42d-3e8e7ec6e082"), "medium", null, "Средний", null },
+                    { new Guid("3a156e1f-6057-39cd-7580-20395231a00f"), "large", null, "Большой", null }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "ix_order_info_size_id",
@@ -220,6 +267,11 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                 name: "ix_orders_order_status_id",
                 table: "orders",
                 column: "order_status_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_orders_sender_id",
+                table: "orders",
+                column: "sender_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_passport_info_passport_type_id",
@@ -262,22 +314,22 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                 name: "orders");
 
             migrationBuilder.DropTable(
-                name: "users");
-
-            migrationBuilder.DropTable(
                 name: "order_info");
 
             migrationBuilder.DropTable(
                 name: "order_statuses");
 
             migrationBuilder.DropTable(
+                name: "users");
+
+            migrationBuilder.DropTable(
+                name: "sizes");
+
+            migrationBuilder.DropTable(
                 name: "passport_info");
 
             migrationBuilder.DropTable(
                 name: "roles");
-
-            migrationBuilder.DropTable(
-                name: "sizes");
 
             migrationBuilder.DropTable(
                 name: "passport_types");

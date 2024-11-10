@@ -5,7 +5,7 @@ using Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.Role;
 namespace Ali.Delivery.Order.Domain.Entities.Dictionaries;
 
 /// <summary>
-/// Роли пользователей.
+/// Представляет роли пользователей.
 /// </summary>
 public class Role : Entity<SequentialGuid>
 {

@@ -5,38 +5,34 @@ using Ali.Delivery.Domain.Core;
 namespace Ali.Delivery.Order.Domain.ValueObjects.User;
 
 /// <summary>
-/// Представляет имя пользователя.
+/// Представляет фамилию пользователя.
 /// </summary>
 [DebuggerDisplay("{_name}")]
-public class FirstName : ValueObject
+public class UserLastName : ValueObject
 {
-    /// <summary>
-    /// Представляет максимальную длину имени пользователя.
-    /// </summary>
     public const int MaxLength = 100;
-
     private readonly string _name;
 
     /// <summary>
-    /// Инициализирует новый экземпляр типа <see cref="FirstName" />.
+    /// Инициализирует новый экземпляр типа <see cref="UserLastName" />.
     /// </summary>
-    /// <param name="name">Имя пользователя.</param>
+    /// <param name="name">Фамилия пользователя.</param>
     /// <exception cref="ArgumentException">
     /// Возникает, если <paramref name="name" /> является <c>null</c>,
     /// <c>whitespace</c> или его длина превышает <see cref="MaxLength" />.
     /// </exception>
-    public FirstName(string name)
+    public UserLastName(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            throw new ArgumentException("Имя не может быть пустым или null.", nameof(name));
+            throw new ArgumentException("Фамилия не может быть пустой или null.", nameof(name));
         }
 
         name = name.Trim();
 
         if (name.Length > MaxLength)
         {
-            throw new ArgumentException($"Имя не может быть длиннее {MaxLength} символов.", nameof(name));
+            throw new ArgumentException($"Фамилия не может быть длиннее {MaxLength} символов.", nameof(name));
         }
 
         _name = name;
@@ -54,8 +50,8 @@ public class FirstName : ValueObject
     }
 
     /// <summary>
-    /// Выполняет неявное преобразование из <see cref="FirstName" /> в <see cref="string" />.
+    /// Выполняет неявное преобразование из <see cref="UserLastName" /> в <see cref="string" />.
     /// </summary>
     [return: NotNullIfNotNull(nameof(obj))]
-    public static implicit operator string?(FirstName? obj) => obj?._name;
+    public static implicit operator string?(UserLastName? obj) => obj?._name;
 }

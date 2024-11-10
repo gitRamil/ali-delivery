@@ -14,18 +14,17 @@ public class Order : Entity<SequentialGuid>
     /// Инициализирует новый экземпляр типа <see cref="Order" />.
     /// </summary>
     /// <param name="id">Идентификатор.</param>
-    /// <param name="name">Наименование заказа.</param>
+    /// <param name="orderName">Наименование заказа.</param>
     /// <param name="orderInfo">Информация о заказе.</param>
     /// <param name="orderStatus">Статус заказа.</param>
-    /// &lt;param name="name"&gt;Наименование цели.&lt;/param&gt;
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если <paramref name="name" /> или
-    /// <paramref name="name" /> равен <c>null</c>.
+    /// Возникает, если любой из параметров <paramref name="orderName" />,
+    /// <paramref name="orderInfo" />, <paramref name="orderStatus" /> равен <c>null</c>.
     /// </exception>
-    public Order(SequentialGuid id, OrderName name, OrderInfo orderInfo, OrderStatus orderStatus)
+    public Order(SequentialGuid id, OrderName orderName, OrderInfo orderInfo, OrderStatus orderStatus)
         : base(id)
     {
-        Name = name ?? throw new ArgumentNullException(nameof(name));
+        Name = orderName ?? throw new ArgumentNullException(nameof(orderName));
         OrderInfo = orderInfo ?? throw new ArgumentNullException(nameof(orderInfo));
         OrderStatus = orderStatus ?? throw new ArgumentNullException(nameof(orderStatus));
     }
@@ -56,4 +55,9 @@ public class Order : Entity<SequentialGuid>
     /// Возвращает статус заказа.
     /// </summary>
     public virtual OrderStatus OrderStatus { get; }
+
+    /// <summary>
+    /// Возвращает информацию о пользователе.
+    /// </summary>
+    public virtual User? Sender { get; }
 }

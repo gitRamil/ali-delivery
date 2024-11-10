@@ -6,7 +6,7 @@ using Ali.Delivery.Order.Domain.ValueObjects.PassportInfo;
 namespace Ali.Delivery.Order.Domain.Entities;
 
 /// <summary>
-/// Паспортная информация пользователя.
+/// Представляет паспортную информацию пользователя.
 /// </summary>
 public class PassportInfo : Entity<SequentialGuid>
 {
@@ -15,19 +15,24 @@ public class PassportInfo : Entity<SequentialGuid>
     /// </summary>
     /// <param name="id">Идентификатор.</param>
     /// <param name="typeId">Идентификатор типа паспорта.</param>
-    /// <param name="passportNumber">Номер паспорта.</param>
-    /// <param name="regDate">Дата регистрации паспорта.</param>
-    /// <param name="expirationDate">Дата окончания действия паспорта.</param>
+    /// <param name="passportInfoPassportNumber">Номер паспорта.</param>
+    /// <param name="passportInfoRegDate">Дата регистрации паспорта.</param>
+    /// <param name="passportInfoExpirationDate">Дата окончания действия паспорта.</param>
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если <paramref name="typeId" /> равен <c>null</c>.
+    /// Возникает, если любой из параметров <paramref name="typeId" />, <paramref name="passportInfoPassportNumber" />,
+    /// <paramref name="passportInfoRegDate" /> или <paramref name="passportInfoExpirationDate" /> равен <c>null</c>.
     /// </exception>
-    public PassportInfo(SequentialGuid id, PassportType typeId, PassportNumber passportNumber, RegDate regDate, ExpirationDate expirationDate)
+    public PassportInfo(SequentialGuid id,
+                        PassportType typeId,
+                        PassportInfoPassportNumber passportInfoPassportNumber,
+                        PassportInfoRegDate passportInfoRegDate,
+                        PassportInfoExpirationDate passportInfoExpirationDate)
         : base(id)
     {
         PassportType = typeId ?? throw new ArgumentNullException(nameof(typeId));
-        PassportNumber = passportNumber ?? throw new ArgumentNullException(nameof(passportNumber));
-        RegDate = regDate;
-        ExpirationDate = expirationDate;
+        PassportInfoPassportNumber = passportInfoPassportNumber ?? throw new ArgumentNullException(nameof(passportInfoPassportNumber));
+        PassportInfoRegDate = passportInfoRegDate ?? throw new ArgumentNullException(nameof(passportInfoRegDate));
+        PassportInfoExpirationDate = passportInfoExpirationDate ?? throw new ArgumentNullException(nameof(passportInfoExpirationDate));
     }
 
     /// <summary>
@@ -38,28 +43,28 @@ public class PassportInfo : Entity<SequentialGuid>
         : base(SequentialGuid.Empty)
     {
         PassportType = null!;
-        PassportNumber = null!;
-        RegDate = null!;
-        ExpirationDate = null!;
+        PassportInfoPassportNumber = null!;
+        PassportInfoRegDate = null!;
+        PassportInfoExpirationDate = null!;
     }
 
     /// <summary>
     /// Возвращает дату окончания действия паспорта.
     /// </summary>
-    public ExpirationDate ExpirationDate { get; }
+    public PassportInfoExpirationDate PassportInfoExpirationDate { get; }
 
     /// <summary>
     /// Возвращает номер паспорта.
     /// </summary>
-    public PassportNumber PassportNumber { get; }
+    public PassportInfoPassportNumber PassportInfoPassportNumber { get; }
+
+    /// <summary>
+    /// Возвращает дату регистрации паспорта.
+    /// </summary>
+    public PassportInfoRegDate PassportInfoRegDate { get; }
 
     /// <summary>
     /// Возвращает идентификатор типа паспорта.
     /// </summary>
     public virtual PassportType PassportType { get; }
-
-    /// <summary>
-    /// Возвращает дату регистрации паспорта.
-    /// </summary>
-    public RegDate RegDate { get; }
 }

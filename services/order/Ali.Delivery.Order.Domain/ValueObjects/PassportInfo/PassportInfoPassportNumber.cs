@@ -7,7 +7,7 @@ namespace Ali.Delivery.Order.Domain.ValueObjects.PassportInfo;
 /// Представляет номер паспорта.
 /// </summary>
 [DebuggerDisplay("{_passportNumber}")]
-public sealed class PassportNumber : ValueObject
+public sealed class PassportInfoPassportNumber : ValueObject
 {
     /// <summary>
     /// Максимальная длина номера паспорта.
@@ -17,11 +17,11 @@ public sealed class PassportNumber : ValueObject
     private readonly string _passportNumber;
 
     /// <summary>
-    /// Инициализирует новый экземпляр типа <see cref="PassportNumber" />.
+    /// Инициализирует новый экземпляр типа <see cref="PassportInfoPassportNumber" />.
     /// </summary>
     /// <param name="passportNumber">Номер паспорта.</param>
     /// <exception cref="ArgumentException">Возникает, если номер паспорта пуст или превышает максимальную длину.</exception>
-    public PassportNumber(string passportNumber)
+    public PassportInfoPassportNumber(string passportNumber)
     {
         if (string.IsNullOrWhiteSpace(passportNumber))
         {
@@ -48,7 +48,7 @@ public sealed class PassportNumber : ValueObject
     }
 
     /// <summary>
-    /// Выполняет неявное преобразование из <see cref="PassportNumber" /> в <see cref="String" />.
+    /// Выполняет неявное преобразование из <see cref="PassportInfoPassportNumber" /> в <see cref="String" />.
     /// </summary>
-    public static implicit operator string(PassportNumber obj) => obj._passportNumber;
+    public static implicit operator string(PassportInfoPassportNumber obj) => obj._passportNumber;
 }

@@ -7,15 +7,15 @@ namespace Ali.Delivery.Order.Domain.ValueObjects.PassportInfo;
 /// Представляет дату регистрации паспорта.
 /// </summary>
 [DebuggerDisplay("{_regDate}")]
-public sealed class RegDate : ValueObject
+public sealed class PassportInfoRegDate : ValueObject
 {
     private readonly DateTime _regDate;
 
     /// <summary>
-    /// Инициализирует новый экземпляр типа <see cref="RegDate" />.
+    /// Инициализирует новый экземпляр типа <see cref="PassportInfoRegDate" />.
     /// </summary>
     /// <param name="regDate">Дата регистрации паспорта.</param>
-    public RegDate(DateTime regDate) => _regDate = regDate;
+    public PassportInfoRegDate(DateTime regDate) => _regDate = regDate;
 
     /// <inheritdoc />
     public override string ToString() => _regDate.ToString("yyyy-MM-dd");
@@ -29,7 +29,7 @@ public sealed class RegDate : ValueObject
     }
 
     /// <summary>
-    /// Выполняет неявное преобразование из <see cref="RegDate" /> в <see cref="DateTime" />.
+    /// Выполняет неявное преобразование из <see cref="PassportInfoRegDate" /> в <see cref="DateTime" />.
     /// </summary>
-    public static implicit operator DateTime(RegDate obj) => obj._regDate;
+    public static implicit operator DateTime(PassportInfoRegDate obj) => obj._regDate;
 }
