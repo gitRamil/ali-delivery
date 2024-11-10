@@ -24,11 +24,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Guid>
     /// </exception>
     public CreateUserCommandHandler(IAppDbContext context) => _context = context ?? throw new ArgumentNullException(nameof(context));
 
-    /// <summary>
-    /// Выполняет команду создания пользователя.
-    /// </summary>
-    /// <param name="request">Команда.</param>
-    /// <param name="cancellationToken">Маркер отмены.</param>
+    /// <inheritdoc />
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="request" /> равен <c>null</c>.
     /// </exception>

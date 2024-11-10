@@ -27,7 +27,7 @@ public class OrderController : ControllerBase
     public OrderController(IMediator mediator) => _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
     /// <summary>
-    /// Получает заказ.
+    /// Создает заказ.
     /// </summary>
     /// <param name="command">Заказ.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>

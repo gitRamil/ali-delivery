@@ -44,7 +44,7 @@ public class UserController : ControllerBase
     /// <summary>
     /// Удаляет пользователя.
     /// </summary>
-    /// <param name="userId">Идентификатор пользователя</param>
+    /// <param name="userId">Идентификатор пользователя.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
     [HttpDelete]
     [ProducesResponseType(typeof(List<UserDto>), StatusCodes.Status200OK)]

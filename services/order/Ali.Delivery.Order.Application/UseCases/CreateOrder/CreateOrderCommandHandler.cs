@@ -24,11 +24,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Gui
     /// </exception>
     public CreateOrderCommandHandler(IAppDbContext context) => _context = context ?? throw new ArgumentNullException(nameof(context));
 
-    /// <summary>
-    /// Выполняет команду создания заказа.
-    /// </summary>
-    /// <param name="request">Команда.</param>
-    /// <param name="cancellationToken">Маркер отмены.</param>
+    /// <inheritdoc />
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="request" /> равен <c>null</c>.
     /// </exception>
