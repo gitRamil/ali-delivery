@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Ali.Delivery.Domain.Core;
 
 namespace Ali.Delivery.Order.Domain.ValueObjects.User;
@@ -51,5 +52,6 @@ public class UserLastName : ValueObject
     /// <summary>
     /// Выполняет неявное преобразование из <see cref="UserLastName" /> в <see cref="string" />.
     /// </summary>
+    [return: NotNullIfNotNull(nameof(obj))]
     public static implicit operator string?(UserLastName? obj) => obj?._name;
 }
