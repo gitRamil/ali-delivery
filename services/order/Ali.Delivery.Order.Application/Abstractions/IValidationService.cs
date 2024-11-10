@@ -1,3 +1,5 @@
+using FluentValidation;
+
 namespace Ali.Delivery.Order.Application.Abstractions;
 
 /// <summary>

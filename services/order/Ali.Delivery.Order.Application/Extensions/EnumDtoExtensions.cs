@@ -1,8 +1,7 @@
+using Ali.Delivery.Order.Application.Dtos.Order;
 using Ali.Delivery.Order.Domain.Entities.Dictionaries;
-using OrderStatus = Ali.Delivery.Order.Application.Dtos.Order.OrderStatus;
+using OrderStatus = Ali.Delivery.Order.Domain.Entities.Dictionaries.OrderStatus;
 using PassportType = Ali.Delivery.Order.Domain.Entities.Dictionaries.PassportType;
-using RoleCode = Ali.Delivery.Order.Application.Dtos.Order.RoleCode;
-using SizeCode = Ali.Delivery.Order.Application.Dtos.Order.SizeCode;
 
 namespace Ali.Delivery.Order.Application.Extensions;
 
@@ -15,11 +14,11 @@ public static class EnumDtoExtensions
     /// <summary>
     /// Преобразует значение перечисления в статус заказа.
     /// </summary>
-    public static Domain.Entities.Dictionaries.OrderStatus ToOrderStatus(this OrderStatus codeEnum) =>
+    public static OrderStatus ToOrderStatus(this Dtos.Order.OrderStatus codeEnum) =>
         codeEnum switch
         {
-            OrderStatus.Created => Domain.Entities.Dictionaries.OrderStatus.Created,
-            OrderStatus.Finished => Domain.Entities.Dictionaries.OrderStatus.Finished,
+            Dtos.Order.OrderStatus.Created => OrderStatus.Created,
+            Dtos.Order.OrderStatus.Finished => OrderStatus.Finished,
             _ => throw new ArgumentOutOfRangeException(nameof(codeEnum), codeEnum, "Не поддерживаемое значение статуса заказа.")
         };
     #endregion

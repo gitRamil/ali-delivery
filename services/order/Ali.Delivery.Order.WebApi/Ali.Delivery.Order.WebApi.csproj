@@ -8,11 +8,11 @@
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <DocumentationFile>bin\Debug\Ali.Delivery.Order.WebApi.xml</DocumentationFile>
+        <DocumentationFile>bin\Debug\Ali.Delivery.Order.WebApi.xml</DocumentationFile>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <DocumentationFile>bin\Debug\Ali.Delivery.Order.WebApi.xml</DocumentationFile>
+        <DocumentationFile>bin\Debug\Ali.Delivery.Order.WebApi.xml</DocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -56,7 +56,6 @@
         <ProjectReference Include="..\Ali.Delivery.Order.Application\Ali.Delivery.Order.Application.csproj"/>
         <ProjectReference Include="..\Ali.Delivery.Order.Infrastructure\Ali.Delivery.Order.Infrastructure.csproj"/>
     </ItemGroup>
-
 
 
 </Project>

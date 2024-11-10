@@ -13,12 +13,11 @@ namespace Ali.Delivery.Order.Application.UseCases.CreateUser;
 /// <param name="ExpirationDate">Дата окончания действия паспорта.</param>
 /// <param name="Role">Код роли пользователя.</param>
 /// <param name="Birthday">Дата рождения пользователя.</param>
-public record CreateUserCommand(
-    string FirstName,
-    string LastName,
-    PassportType PassportType,
-    string PassportNumber,
-    DateTime RegDate,
-    DateTime ExpirationDate,
-    RoleCode Role,
-    DateTime Birthday) : IRequest<Guid>;
+public record CreateUserCommand(string FirstName,
+                                string LastName,
+                                PassportType PassportType,
+                                string PassportNumber,
+                                DateTime RegDate,
+                                DateTime ExpirationDate,
+                                RoleCode Role,
+                                DateTime Birthday) : IRequest<Guid>;
