@@ -4,6 +4,7 @@ using MediatR;
 namespace Ali.Delivery.Order.Application.UseCases.CreateOrder;
 
 /// <summary>
+/// Представляет команду создания заказа.
 /// </summary>
 /// <param name="OrderName">Наименование заказа.</param>
 /// <param name="Weight">Информация о заказе.</param>
