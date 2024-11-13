@@ -28,11 +28,11 @@ public class GetAllOrdersCommandHandler : IRequestHandler<GetAllOrders, List<Ord
                                    .Include(o => o.OrderInfo)
                                    .Select(order => new OrderDto(order.Id,
                                                                  order.Name,
-                                                                 order.OrderStatus.Name, // Имя статуса
-                                                                 order.OrderInfo.OrderInfoPrice, // Цена
-                                                                 order.OrderInfo.OrderInfoWeight, // Вес
-                                                                 order.OrderInfo.OrderInfoAddressFrom, // Адрес отправления
-                                                                 order.OrderInfo.OrderInfoAddressTo // Адрес назначения
+                                                                 order.OrderStatus.Name,
+                                                                 order.OrderInfo.OrderInfoPrice, 
+                                                                 order.OrderInfo.OrderInfoWeight, 
+                                                                 order.OrderInfo.OrderInfoAddressFrom, 
+                                                                 order.OrderInfo.OrderInfoAddressTo 
                                            ))
                                    .ToListAsync(cancellationToken);
         return orders;
