@@ -1,5 +1,6 @@
 ﻿using Ali.Delivery.Order.Application.Dtos.Order;
 using Ali.Delivery.Order.Application.UseCases.CreateOrder;
+using Ali.Delivery.Order.Application.UseCases.DeleteOrder;
 using Ali.Delivery.Order.Application.UseCases.GetAllOrders;
 using Ali.Delivery.Order.Application.UseCases.GetOrder;
 using MediatR;
@@ -38,6 +39,20 @@ public class OrderController : ControllerBase
     {
         await _mediator.Send(command, cancellationToken);
         return Ok();
+    }
+
+    /// <summary>
+    /// Удаляет заказ.
+    /// </summary>
+    /// <param name="orderId">Идентификатор заказа.</param>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    [HttpDelete]
+    [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteOrder(Guid orderId, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new DeleteOrderCommand(orderId), cancellationToken);
+        return Ok(result);
     }
 
     /// <summary>

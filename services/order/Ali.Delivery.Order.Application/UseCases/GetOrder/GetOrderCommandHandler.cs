@@ -30,9 +30,17 @@ public class GetOrderCommandHandler : IRequestHandler<GetOrderCommand, OrderDto>
     {
         ArgumentNullException.ThrowIfNull(query);
 
-        var order = await _context.Orders.FirstOrDefaultAsync(o => (Guid)o.Id == query.OrderId, cancellationToken) ??
+        var order = await _context.Orders.Include(o => o.OrderStatus) // Загружаем данные статуса заказа
+                                  .Include(o => o.OrderInfo) // Загружаем данные информации о заказе
+                                  .FirstOrDefaultAsync(o => (Guid)o.Id == query.OrderId, cancellationToken) ??
                     throw new NotFoundException(typeof(Domain.Entities.Order), query.OrderId);
 
-        return new OrderDto(order.Id, order.Name);
+        return new OrderDto(order.Id,
+                            order.Name,
+                            order.OrderStatus.Name,
+                            order.OrderInfo.OrderInfoWeight,
+                            order.OrderInfo.OrderInfoPrice,
+                            order.OrderInfo.OrderInfoAddressFrom,
+                            order.OrderInfo.OrderInfoAddressTo);
     }
 }
