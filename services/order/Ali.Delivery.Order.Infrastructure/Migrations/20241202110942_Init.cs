@@ -50,6 +50,24 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                 comment: "Справочник типов паспортов");
 
             migrationBuilder.CreateTable(
+                name: "permissions",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Уникальный идентификатор"),
+                    code = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false, comment: "Код"),
+                    name = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false, comment: "Наименование"),
+                    created_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    created_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))),
+                    updated_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    updated_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)))
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_permissions", x => x.id);
+                },
+                comment: "Справочник доступа пользователей");
+
+            migrationBuilder.CreateTable(
                 name: "roles",
                 columns: table => new
                 {
@@ -110,6 +128,37 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 },
                 comment: "Информация о паспортах");
+
+            migrationBuilder.CreateTable(
+                name: "role_permissions",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Уникальный идентификатор"),
+                    permission_id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Доступ пользователя"),
+                    role_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    token = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false, comment: "Токен"),
+                    created_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    created_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))),
+                    updated_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    updated_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)))
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_role_permissions", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_role_permissions_permissions_permission_id",
+                        column: x => x.permission_id,
+                        principalTable: "permissions",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "role_id",
+                        column: x => x.role_id,
+                        principalTable: "roles",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                },
+                comment: "Доступ");
 
             migrationBuilder.CreateTable(
                 name: "order_info",
@@ -228,6 +277,17 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "permissions",
+                columns: new[] { "id", "code", "created_by", "name", "updated_by" },
+                values: new object[,]
+                {
+                    { new Guid("3a166cc9-7999-9fc9-2798-85b0ef75288d"), "adminAccess", null, "ДоступАдминистратора", null },
+                    { new Guid("3a166cc9-799b-7735-e11f-57780f8b0f28"), "userAccess", null, "ДоступПользователя", null },
+                    { new Guid("3a166cc9-799c-27fb-42d7-c1cc8512aeef"), "courierAccess", null, "ДоступКурьера", null },
+                    { new Guid("3a166cc9-799d-6b4b-087a-93e047e60d91"), "notAuthUserAccess", null, "ДоступНеавторизованногоПользователя", null }
+                });
+
+            migrationBuilder.InsertData(
                 table: "roles",
                 columns: new[] { "id", "code", "created_by", "name", "updated_by" },
                 values: new object[,]
@@ -285,6 +345,22 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "ix_permissions_code",
+                table: "permissions",
+                column: "code",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "ix_role_permissions_permission_id",
+                table: "role_permissions",
+                column: "permission_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_role_permissions_role_id",
+                table: "role_permissions",
+                column: "role_id");
+
+            migrationBuilder.CreateIndex(
                 name: "ix_roles_code",
                 table: "roles",
                 column: "code",
@@ -314,6 +390,9 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                 name: "orders");
 
             migrationBuilder.DropTable(
+                name: "role_permissions");
+
+            migrationBuilder.DropTable(
                 name: "order_info");
 
             migrationBuilder.DropTable(
@@ -321,6 +400,9 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "users");
+
+            migrationBuilder.DropTable(
+                name: "permissions");
 
             migrationBuilder.DropTable(
                 name: "sizes");

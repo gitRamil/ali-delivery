@@ -33,7 +33,12 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, UserD
 
         var user = await _context.Users.FirstOrDefaultAsync(u => (Guid)u.Id == query.UserId, cancellationToken) ?? throw new NotFoundException(typeof(User), query.UserId);
 
-        var userDto = new UserDto(user.Id, user.UserFirstName, user.UserLastName);
+        var userDto = new UserDto(user.Id,
+                                  user.UserFirstName,
+                                  user.UserLastName,
+                                  user.PassportInfo.PassportInfoPassportNumber,
+                                  user.PassportInfo.PassportType.Name,
+                                  user.Role.Name);
 
         _context.Users.Remove(user);
 

@@ -29,11 +29,10 @@ public class GetAllOrdersCommandHandler : IRequestHandler<GetAllOrders, List<Ord
                                    .Select(order => new OrderDto(order.Id,
                                                                  order.Name,
                                                                  order.OrderStatus.Name,
-                                                                 order.OrderInfo.OrderInfoPrice, 
-                                                                 order.OrderInfo.OrderInfoWeight, 
-                                                                 order.OrderInfo.OrderInfoAddressFrom, 
-                                                                 order.OrderInfo.OrderInfoAddressTo 
-                                           ))
+                                                                 order.OrderInfo.OrderInfoPrice,
+                                                                 order.OrderInfo.OrderInfoWeight,
+                                                                 order.OrderInfo.OrderInfoAddressFrom,
+                                                                 order.OrderInfo.OrderInfoAddressTo))
                                    .ToListAsync(cancellationToken);
         return orders;
     }

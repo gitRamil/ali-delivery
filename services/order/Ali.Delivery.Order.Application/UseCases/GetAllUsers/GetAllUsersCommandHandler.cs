@@ -24,7 +24,12 @@ public class GetAllUsersCommandHandler : IRequestHandler<GetAllUsers, List<UserD
     /// <inheritdoc />
     public async Task<List<UserDto>> Handle(GetAllUsers query, CancellationToken cancellationToken)
     {
-        var users = await _context.Users.Select(user => new UserDto(user.Id, user.UserFirstName, user.UserLastName))
+        var users = await _context.Users.Select(user => new UserDto(user.Id,
+                                                                    user.UserFirstName,
+                                                                    user.UserLastName,
+                                                                    user.PassportInfo.PassportInfoPassportNumber,
+                                                                    user.PassportInfo.PassportType.Name,
+                                                                    user.Role.Name))
                                   .ToListAsync(cancellationToken);
 
         return users;

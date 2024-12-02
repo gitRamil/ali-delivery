@@ -171,6 +171,88 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Ali.Delivery.Order.Domain.Entities.Dictionaries.Permission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id")
+                        .HasComment("Уникальный идентификатор");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("code")
+                        .HasComment("Код");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("created_by");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)))
+                        .HasColumnName("created_date");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)")
+                        .HasColumnName("name")
+                        .HasComment("Наименование");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("updated_by");
+
+                    b.Property<DateTimeOffset>("UpdatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)))
+                        .HasColumnName("updated_date");
+
+                    b.HasKey("Id")
+                        .HasName("pk_permissions");
+
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasDatabaseName("ix_permissions_code");
+
+                    b.ToTable("permissions", null, t =>
+                        {
+                            t.HasComment("Справочник доступа пользователей");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("3a166cc9-7999-9fc9-2798-85b0ef75288d"),
+                            Code = "adminAccess",
+                            Name = "ДоступАдминистратора"
+                        },
+                        new
+                        {
+                            Id = new Guid("3a166cc9-799c-27fb-42d7-c1cc8512aeef"),
+                            Code = "courierAccess",
+                            Name = "ДоступКурьера"
+                        },
+                        new
+                        {
+                            Id = new Guid("3a166cc9-799b-7735-e11f-57780f8b0f28"),
+                            Code = "userAccess",
+                            Name = "ДоступПользователя"
+                        },
+                        new
+                        {
+                            Id = new Guid("3a166cc9-799d-6b4b-087a-93e047e60d91"),
+                            Code = "notAuthUserAccess",
+                            Name = "ДоступНеавторизованногоПользователя"
+                        });
+                });
+
             modelBuilder.Entity("Ali.Delivery.Order.Domain.Entities.Dictionaries.Role", b =>
                 {
                     b.Property<Guid>("Id")
@@ -524,6 +606,66 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Ali.Delivery.Order.Domain.Entities.RolePermission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id")
+                        .HasComment("Уникальный идентификатор");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("created_by");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)))
+                        .HasColumnName("created_date");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("role_id");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("token")
+                        .HasComment("Токен");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("updated_by");
+
+                    b.Property<DateTimeOffset>("UpdatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)))
+                        .HasColumnName("updated_date");
+
+                    b.Property<Guid>("permission_id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("permission_id")
+                        .HasComment("Доступ пользователя");
+
+                    b.HasKey("Id")
+                        .HasName("pk_role_permissions");
+
+                    b.HasIndex("RoleId")
+                        .HasDatabaseName("ix_role_permissions_role_id");
+
+                    b.HasIndex("permission_id")
+                        .HasDatabaseName("ix_role_permissions_permission_id");
+
+                    b.ToTable("role_permissions", null, t =>
+                        {
+                            t.HasComment("Доступ");
+                        });
+                });
+
             modelBuilder.Entity("Ali.Delivery.Order.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -649,6 +791,27 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                     b.Navigation("PassportType");
                 });
 
+            modelBuilder.Entity("Ali.Delivery.Order.Domain.Entities.RolePermission", b =>
+                {
+                    b.HasOne("Ali.Delivery.Order.Domain.Entities.Dictionaries.Role", "Role")
+                        .WithMany("RolePermissions")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("role_id");
+
+                    b.HasOne("Ali.Delivery.Order.Domain.Entities.Dictionaries.Permission", "Permission")
+                        .WithMany()
+                        .HasForeignKey("permission_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_role_permissions_permissions_permission_id");
+
+                    b.Navigation("Permission");
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("Ali.Delivery.Order.Domain.Entities.User", b =>
                 {
                     b.HasOne("Ali.Delivery.Order.Domain.Entities.PassportInfo", "PassportInfo")
@@ -668,6 +831,11 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                     b.Navigation("PassportInfo");
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("Ali.Delivery.Order.Domain.Entities.Dictionaries.Role", b =>
+                {
+                    b.Navigation("RolePermissions");
                 });
 #pragma warning restore 612, 618
         }

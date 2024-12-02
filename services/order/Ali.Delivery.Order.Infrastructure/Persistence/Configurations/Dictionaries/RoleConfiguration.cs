@@ -11,11 +11,11 @@ namespace Ali.Delivery.Order.Infrastructure.Persistence.Configurations.Dictionar
 /// </summary>
 internal class RoleConfiguration : EntityTypeConfigurationBase<Role>
 {
-    /// <summary>
-    /// Вызывается при выполнении конфигурации сущности типа <see cref="Role" />.
-    /// </summary>
-    /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
-    protected override void OnConfigure(EntityTypeBuilder<Role> builder)
+       /// <summary>
+       /// Вызывается при выполнении конфигурации сущности типа <see cref="Role" />.
+       /// </summary>
+       /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
+       protected override void OnConfigure(EntityTypeBuilder<Role> builder)
     {
         builder.ToTable("roles", t => t.HasComment("Справочник ролей пользователей"));
 
@@ -33,6 +33,12 @@ internal class RoleConfiguration : EntityTypeConfigurationBase<Role>
 
         builder.HasIndex(p => p.Code)
                .IsUnique();
+
+        builder.HasMany(r => r.RolePermissions)
+               .WithOne(rp => rp.Role)
+               .HasForeignKey(rp => rp.RoleId)
+               .HasConstraintName("role_permission_id")
+               .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasData(Role.GetAllValues());
     }

@@ -3,6 +3,7 @@ using Ali.Delivery.Order.Application.UseCases.CreateOrder;
 using Ali.Delivery.Order.Application.UseCases.DeleteOrder;
 using Ali.Delivery.Order.Application.UseCases.GetAllOrders;
 using Ali.Delivery.Order.Application.UseCases.GetOrder;
+using Ali.Delivery.Order.Application.UseCases.UpdateOrder;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -80,6 +81,20 @@ public class OrderController : ControllerBase
     public async Task<IActionResult> GetOrder(Guid orderId, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetOrderCommand(orderId), cancellationToken);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Обновляет заказ.
+    /// </summary>
+    /// <param name="command">Команда обновления заказа.</param>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    [HttpPut]
+    [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateOrder([FromBody] UpdateOrderCommand command, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(command, cancellationToken);
         return Ok(result);
     }
 }
