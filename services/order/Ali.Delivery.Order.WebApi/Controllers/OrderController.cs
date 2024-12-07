@@ -1,4 +1,5 @@
 ﻿using Ali.Delivery.Order.Application.Dtos.Order;
+using Ali.Delivery.Order.Application.Exceptions;
 using Ali.Delivery.Order.Application.UseCases.CreateOrder;
 using Ali.Delivery.Order.Application.UseCases.DeleteOrder;
 using Ali.Delivery.Order.Application.UseCases.GetAllOrders;
@@ -52,10 +53,16 @@ public class OrderController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteOrder(Guid orderId, CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new DeleteOrderCommand(orderId), cancellationToken);
-        return Ok(result);
+        try
+        {
+            await _mediator.Send(new DeleteOrderCommand(orderId), cancellationToken);
+            return Ok(); 
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
     }
-
     /// <summary>
     /// Получает список всех заказов.
     /// </summary>

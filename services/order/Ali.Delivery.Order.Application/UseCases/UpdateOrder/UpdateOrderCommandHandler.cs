@@ -3,7 +3,6 @@ using Ali.Delivery.Order.Application.Dtos.Order;
 using Ali.Delivery.Order.Application.Exceptions;
 using Ali.Delivery.Order.Application.Extensions;
 using Ali.Delivery.Order.Domain.ValueObjects.Order;
-using Ali.Delivery.Order.Domain.ValueObjects.OrderInfo;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -39,13 +38,6 @@ public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand, Ord
                     throw new NotFoundException(typeof(Domain.Entities.Order), command.OrderId);
 
         order.UpdateOrderName(new OrderName(command.OrderName));
-
-        var orderInfo = order.OrderInfo;
-        orderInfo.OrderInfoWeight = new OrderInfoWeight(command.Weight);
-        orderInfo.OrderInfoPrice = new OrderInfoPrice(command.Price);
-        orderInfo.OrderInfoAddressTo = new OrderInfoAddressTo(command.AddressTo);
-        orderInfo.OrderInfoAddressFrom = new OrderInfoAddressFrom(command.AddressFrom);
-        orderInfo.Size = command.Size.ToSize();
 
         order.UpdateOrderStatus(command.OrderStatus.ToOrderStatus());
 

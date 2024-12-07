@@ -1,4 +1,3 @@
-using Ali.Delivery.Order.Application.Dtos.Order;
 using MediatR;
 
 namespace Ali.Delivery.Order.Application.UseCases.DeleteOrder;
@@ -7,4 +6,4 @@ namespace Ali.Delivery.Order.Application.UseCases.DeleteOrder;
 /// Представляет команду для удаления заказа.
 /// </summary>
 /// <param name="OrderId">Идентификатор заказа.</param>
-public record DeleteOrderCommand(Guid OrderId) : IRequest<OrderDto>;
+public record DeleteOrderCommand(Guid OrderId): IRequest;

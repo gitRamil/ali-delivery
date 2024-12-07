@@ -22,25 +22,25 @@ public class GetOrderCommandHandler : IRequestHandler<GetOrderCommand, OrderDto>
     /// </exception>
     public GetOrderCommandHandler(IAppDbContext context) => _context = context ?? throw new ArgumentNullException(nameof(context));
 
+    /// <exception cref="NotFoundException"></exception>
     /// <inheritdoc />
-    /// <exception cref="ArgumentNullException">
-    /// Возникает, если <paramref name="query" /> равен <c>null</c>.
-    /// </exception>
     public async Task<OrderDto> Handle(GetOrderCommand query, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(query);
 
-        var order = await _context.Orders.Include(o => o.OrderStatus)
-                                  .Include(o => o.OrderInfo)
-                                  .FirstOrDefaultAsync(o => (Guid)o.Id == query.OrderId, cancellationToken) ??
-                    throw new NotFoundException(typeof(Domain.Entities.Order), query.OrderId);
-
-        return new OrderDto(order.Id,
-                            order.Name,
-                            order.OrderStatus.Name,
-                            order.OrderInfo.OrderInfoWeight,
-                            order.OrderInfo.OrderInfoPrice,
-                            order.OrderInfo.OrderInfoAddressFrom,
-                            order.OrderInfo.OrderInfoAddressTo);
+        var order = await _context.Orders.Select(order =>new OrderDto(order.Id,
+                                                 order.Name,
+                                                 order.OrderStatus.Name,
+                                                 order.OrderInfo.OrderInfoWeight,
+                                                 order.OrderInfo.OrderInfoPrice,
+                                                 order.OrderInfo.OrderInfoAddressFrom,
+                                                 order.OrderInfo.OrderInfoAddressTo))
+                                  .FirstOrDefaultAsync(cancellationToken);
+        if (order == null)
+        {
+            throw new NotFoundException(typeof(Domain.Entities.Order), query.OrderId); 
+        }
+        
+                    
+        return order;
     }
 }

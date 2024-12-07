@@ -67,7 +67,8 @@ public class Order : Entity<SequentialGuid>
     /// <param name="name"></param>
     public void UpdateOrderName(OrderName name)
     {
-        Name = name ?? throw new ArgumentNullException(nameof(name));
+        ArgumentNullException.ThrowIfNull(name);
+        Name = name;
     }
 
     /// <summary>
@@ -76,6 +77,7 @@ public class Order : Entity<SequentialGuid>
     /// <param name="orderStatus"></param>
     public void UpdateOrderStatus(OrderStatus orderStatus)
     {
-        OrderStatus = orderStatus ?? throw new ArgumentNullException(nameof(orderStatus));
+        ArgumentNullException.ThrowIfNull(orderStatus);
+        OrderStatus = orderStatus;
     }
 }

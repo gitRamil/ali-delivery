@@ -56,25 +56,25 @@ public class OrderInfo : Entity<SequentialGuid>
     /// <summary>
     /// Адрес отправления.
     /// </summary>
-    public virtual OrderInfoAddressFrom OrderInfoAddressFrom { get; set; }
+    public  OrderInfoAddressFrom OrderInfoAddressFrom { get;  }
 
     /// <summary>
     /// Адрес доставки.
     /// </summary>
-    public virtual OrderInfoAddressTo OrderInfoAddressTo { get; set; }
+    public  OrderInfoAddressTo OrderInfoAddressTo { get;  }
 
     /// <summary>
     /// Цена заказа.
     /// </summary>
-    public virtual OrderInfoPrice OrderInfoPrice { get; set; }
+    public  OrderInfoPrice OrderInfoPrice { get;  }
 
     /// <summary>
     /// Вес заказа.
     /// </summary>
-    public virtual OrderInfoWeight OrderInfoWeight { get; set; }
+    public  OrderInfoWeight OrderInfoWeight { get;  }
 
     /// <summary>
     /// Размер заказа.
     /// </summary>
-    public virtual Size Size { get; set; }
+    public virtual Size Size { get;  }
 }

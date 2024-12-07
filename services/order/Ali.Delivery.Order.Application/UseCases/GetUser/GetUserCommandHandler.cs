@@ -1,7 +1,6 @@
 using Ali.Delivery.Order.Application.Abstractions;
 using Ali.Delivery.Order.Application.Dtos.Order;
 using Ali.Delivery.Order.Application.Exceptions;
-using Ali.Delivery.Order.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,16 +22,20 @@ public class GetUserCommandHandler : IRequestHandler<GetUserCommand, UserDto>
     /// </exception>
     public GetUserCommandHandler(IAppDbContext context) => _context = context ?? throw new ArgumentNullException(nameof(context));
 
+    /// <exception cref="NotFoundException"></exception>
     /// <inheritdoc />
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="query" /> равен <c>null</c>.
     /// </exception>
     public async Task<UserDto> Handle(GetUserCommand query, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(query);
 
-        var user = await _context.Users.FirstOrDefaultAsync(o => (Guid)o.Id == query.UserId, cancellationToken) ?? throw new NotFoundException(typeof(User), query.UserId);
-
-        return new UserDto(user.Id, user.UserFirstName, user.UserLastName, user.PassportInfo.PassportInfoPassportNumber, user.PassportInfo.PassportType.Name, user.Role.Name);
+        var user = await _context.Users.Select(user=> new  UserDto(user.Id, user.UserFirstName, user.UserLastName, user.PassportInfo.PassportInfoPassportNumber, user.PassportInfo.PassportType.Name, user.Role.Name))
+                                 .FirstOrDefaultAsync(cancellationToken);
+        if (user == null)
+        {
+            throw new NotFoundException(typeof(Domain.Entities.Order), query.UserId); 
+        }                                          
+        return user;
     }
 }

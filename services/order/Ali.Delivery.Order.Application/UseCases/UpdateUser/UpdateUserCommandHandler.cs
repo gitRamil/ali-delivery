@@ -3,7 +3,6 @@ using Ali.Delivery.Order.Application.Dtos.Order;
 using Ali.Delivery.Order.Application.Exceptions;
 using Ali.Delivery.Order.Application.Extensions;
 using Ali.Delivery.Order.Domain.Entities;
-using Ali.Delivery.Order.Domain.ValueObjects.PassportInfo;
 using Ali.Delivery.Order.Domain.ValueObjects.User;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -40,13 +39,7 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserD
                    throw new NotFoundException(typeof(User), command.UserId);
 
         user.UpdateName(new UserFirstName(command.FirstName), new UserLastName(command.LastName));
-
-        var passportInfo = user.PassportInfo;
-        passportInfo.PassportType = command.PassportType.ToPassportType();
-        passportInfo.PassportInfoPassportNumber = new PassportInfoPassportNumber(command.PassportNumber);
-        passportInfo.PassportInfoRegDate = new PassportInfoRegDate(command.RegDate);
-        passportInfo.PassportInfoExpirationDate = new PassportInfoExpirationDate(command.ExpirationDate);
-
+        
         user.UpdateRole(command.Role.ToRole());
 
         user.UpdateBirthDay(new UserBirthDay(command.Birthdate));

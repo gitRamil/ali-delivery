@@ -7,4 +7,4 @@ namespace Ali.Delivery.Order.Application.UseCases.DeleteUser;
 /// Представляет команду для удаления пользователя.
 /// </summary>
 /// <param name="UserId">Идентификатор пользователя.</param>
-public record DeleteUserCommand(Guid UserId) : IRequest<UserDto>;
+public record DeleteUserCommand(Guid UserId) : IRequest;

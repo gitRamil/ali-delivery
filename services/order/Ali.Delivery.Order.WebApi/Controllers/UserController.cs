@@ -1,4 +1,5 @@
 using Ali.Delivery.Order.Application.Dtos.Order;
+using Ali.Delivery.Order.Application.Exceptions;
 using Ali.Delivery.Order.Application.UseCases.CreateUser;
 using Ali.Delivery.Order.Application.UseCases.DeleteUser;
 using Ali.Delivery.Order.Application.UseCases.GetAllUsers;
@@ -52,8 +53,15 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteUser(Guid userId, CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new DeleteUserCommand(userId), cancellationToken);
-        return Ok(result);
+        try
+        {
+            await _mediator.Send(new DeleteUserCommand(userId), cancellationToken);
+            return Ok(); 
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
     }
 
     /// <summary>

@@ -34,12 +34,6 @@ internal class RoleConfiguration : EntityTypeConfigurationBase<Role>
         builder.HasIndex(p => p.Code)
                .IsUnique();
 
-        builder.HasMany(r => r.RolePermissions)
-               .WithOne(rp => rp.Role)
-               .HasForeignKey(rp => rp.RoleId)
-               .HasConstraintName("role_permission_id")
-               .OnDelete(DeleteBehavior.Cascade);
-
         builder.HasData(Role.GetAllValues());
     }
 }
