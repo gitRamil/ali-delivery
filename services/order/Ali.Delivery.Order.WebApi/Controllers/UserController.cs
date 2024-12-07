@@ -4,6 +4,7 @@ using Ali.Delivery.Order.Application.UseCases.DeleteUser;
 using Ali.Delivery.Order.Application.UseCases.GetAllUsers;
 using Ali.Delivery.Order.Application.UseCases.GetUser;
 using Ali.Delivery.Order.Application.UseCases.UpdateUser;
+using Ali.Delivery.Order.WebApi.Attribute;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,6 +35,7 @@ public class UserController : ControllerBase
     /// <param name="command">Пользователь.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
     [HttpPost]
+    // [Permission("CreateUser")]
     [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CreateOrder([FromBody] CreateUserCommand command, CancellationToken cancellationToken)

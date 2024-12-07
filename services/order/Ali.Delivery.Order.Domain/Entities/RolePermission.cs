@@ -1,7 +1,6 @@
 using Ali.Delivery.Domain.Core;
 using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.Domain.Entities.Dictionaries;
-using Ali.Delivery.Order.Domain.ValueObjects.RolePermission;
 
 namespace Ali.Delivery.Order.Domain.Entities;
 
@@ -15,18 +14,17 @@ public class RolePermission : Entity<SequentialGuid>
     /// </summary>
     /// <param name="id">Идентификатор доступа.</param>
     /// <param name="permission">Доступ.</param>
-    /// <param name="token">Токен.</param>
-    /// <param name="roleId">Идентификатор роли пользователя.</param>
+    /// <param name="role">Идентификатор роли пользователя.</param>
+    /// <param name="token">JWT токен.</param>
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если любой из параметров <paramref name="permission" />,
-    /// <paramref name="token" />, <paramref name="roleId" /> равен <c>null</c>.
+    /// Возникает, если любой из параметров <paramref name="permission" />, <paramref name="role" /> или <paramref name="token" /> равен <c>null</c>.
     /// </exception>
-    public RolePermission(SequentialGuid id, Permission permission, RolePermissionToken token, SequentialGuid roleId)
+    public RolePermission(SequentialGuid id, Permission permission, Role role, string token)
         : base(id)
     {
         Permission = permission ?? throw new ArgumentNullException(nameof(permission));
+        Role = role ?? throw new ArgumentNullException(nameof(role));
         Token = token ?? throw new ArgumentNullException(nameof(token));
-        RoleId = roleId;
     }
 
     /// <summary>
@@ -37,27 +35,27 @@ public class RolePermission : Entity<SequentialGuid>
         : base(SequentialGuid.Empty)
     {
         Permission = null!;
-        Token = RolePermissionToken.Generate();
-        RoleId = SequentialGuid.Empty;
+        Role = null!;
+        Token = string.Empty;
     }
 
     /// <summary>
-    /// Доступ
+    /// Доступ.
     /// </summary>
     public virtual Permission Permission { get; private set; }
 
     /// <summary>
     /// Связанная роль.
     /// </summary>
-    public virtual Role Role { get; private set; } = null!;
+    public virtual Role Role { get; private set; }
 
+    // /// <summary>
+    // /// Идентификатор роли.
+    // /// </summary>
+    // public Guid RoleId { get; private set; }
+    
     /// <summary>
-    /// Идентификатор роли.
+    /// JWT токен.
     /// </summary>
-    public SequentialGuid RoleId { get; private set; }
-
-    /// <summary>
-    /// Токен.
-    /// </summary>
-    public RolePermissionToken Token { get; private set; }
+    public string Token { get; private set; }
 }

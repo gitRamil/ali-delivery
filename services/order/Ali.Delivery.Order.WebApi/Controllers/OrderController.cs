@@ -4,6 +4,7 @@ using Ali.Delivery.Order.Application.UseCases.DeleteOrder;
 using Ali.Delivery.Order.Application.UseCases.GetAllOrders;
 using Ali.Delivery.Order.Application.UseCases.GetOrder;
 using Ali.Delivery.Order.Application.UseCases.UpdateOrder;
+using Ali.Delivery.Order.WebApi.Attribute;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,6 +35,7 @@ public class OrderController : ControllerBase
     /// <param name="command">Заказ.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
     [HttpPost]
+    // [Permission("CreateOrder")]
     [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CreateOrder([FromBody] CreateOrderCommand command, CancellationToken cancellationToken)
@@ -76,6 +78,7 @@ public class OrderController : ControllerBase
     /// <param name="orderId">Идентификатор заказа.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
     [HttpGet("{orderId:guid}")]
+    [Permission("GetOrder")]
     [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetOrder(Guid orderId, CancellationToken cancellationToken)

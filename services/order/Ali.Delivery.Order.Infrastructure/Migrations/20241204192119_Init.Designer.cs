@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ali.Delivery.Order.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241202110942_Init")]
+    [Migration("20241204192119_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -232,27 +232,27 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3a166cc9-7999-9fc9-2798-85b0ef75288d"),
-                            Code = "adminAccess",
-                            Name = "ДоступАдминистратора"
-                        },
-                        new
-                        {
                             Id = new Guid("3a166cc9-799c-27fb-42d7-c1cc8512aeef"),
-                            Code = "courierAccess",
-                            Name = "ДоступКурьера"
+                            Code = "createUser",
+                            Name = "Доступ создания пользователя"
                         },
                         new
                         {
-                            Id = new Guid("3a166cc9-799b-7735-e11f-57780f8b0f28"),
-                            Code = "userAccess",
-                            Name = "ДоступПользователя"
+                            Id = new Guid("3a166cc9-7999-9fc9-2798-85b0ef75288d"),
+                            Code = "updateOrder",
+                            Name = "Доступ обновления заказа"
                         },
                         new
                         {
                             Id = new Guid("3a166cc9-799d-6b4b-087a-93e047e60d91"),
-                            Code = "notAuthUserAccess",
-                            Name = "ДоступНеавторизованногоПользователя"
+                            Code = "getOrder",
+                            Name = "Доступ просмотра заказа"
+                        },
+                        new
+                        {
+                            Id = new Guid("3a166cc9-799b-7735-e11f-57780f8b0f28"),
+                            Code = "deleteOrder",
+                            Name = "Доступ удаления заказа"
                         });
                 });
 
@@ -627,16 +627,12 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         .HasDefaultValue(new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)))
                         .HasColumnName("created_date");
 
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("role_id");
-
                     b.Property<string>("Token")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("character varying(64)")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
                         .HasColumnName("token")
-                        .HasComment("Токен");
+                        .HasComment("JWT токен, связанный с разрешением роли");
 
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(100)
@@ -652,21 +648,23 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                     b.Property<Guid>("permission_id")
                         .HasColumnType("uuid")
                         .HasColumnName("permission_id")
-                        .HasComment("Доступ пользователя");
+                        .HasComment("Идентификатор разрешения");
+
+                    b.Property<Guid>("role_id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("role_id")
+                        .HasComment("Идентификатор роли");
 
                     b.HasKey("Id")
                         .HasName("pk_role_permissions");
 
-                    b.HasIndex("RoleId")
-                        .HasDatabaseName("ix_role_permissions_role_id");
-
                     b.HasIndex("permission_id")
                         .HasDatabaseName("ix_role_permissions_permission_id");
 
-                    b.ToTable("role_permissions", null, t =>
-                        {
-                            t.HasComment("Доступ");
-                        });
+                    b.HasIndex("role_id")
+                        .HasDatabaseName("ix_role_permissions_role_id");
+
+                    b.ToTable("role_permissions", (string)null);
                 });
 
             modelBuilder.Entity("Ali.Delivery.Order.Domain.Entities.User", b =>
@@ -796,19 +794,19 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
 
             modelBuilder.Entity("Ali.Delivery.Order.Domain.Entities.RolePermission", b =>
                 {
-                    b.HasOne("Ali.Delivery.Order.Domain.Entities.Dictionaries.Role", "Role")
-                        .WithMany("RolePermissions")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("role_id");
-
                     b.HasOne("Ali.Delivery.Order.Domain.Entities.Dictionaries.Permission", "Permission")
                         .WithMany()
                         .HasForeignKey("permission_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_role_permissions_permissions_permission_id");
+
+                    b.HasOne("Ali.Delivery.Order.Domain.Entities.Dictionaries.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("role_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_role_permissions_roles_role_id");
 
                     b.Navigation("Permission");
 
@@ -834,11 +832,6 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                     b.Navigation("PassportInfo");
 
                     b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("Ali.Delivery.Order.Domain.Entities.Dictionaries.Role", b =>
-                {
-                    b.Navigation("RolePermissions");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,11 +1,15 @@
+using System.Text;
 using Ali.Delivery.Order.WebApi.Infrastructure.IoC;
 using Ali.Delivery.Order.WebApi.IoC;
 using Hellang.Middleware.ProblemDetails;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 
 try
 {
     var builder = WebApplication.CreateBuilder(args);
+    var config = builder.Configuration;
     builder.AddDefaultSerilog();
     builder.Services.AddControllers();
     builder.Services.AddDefaultApiVersioning();
@@ -17,6 +21,20 @@ try
     builder.Services.AddSwaggerGen();
     builder.Services.AddDateTimeService();
     builder.Services.AddDefaultProblemDetails();
+
+    builder.Services.AddAuthentication("Bearer")
+           .AddJwtBearer(options =>
+           {
+               options.TokenValidationParameters = new TokenValidationParameters
+               {
+                   ValidateIssuerSigningKey = true,
+                   IssuerSigningKey = new SymmetricSecurityKey(
+                       Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"] ?? string.Empty)),
+                   ValidateIssuer = false,
+                   ValidateAudience = false
+               };
+           });
+    builder.Services.AddAuthorization();
 
     var app = builder.Build();
     app.AddAutomaticMigrations();
@@ -32,6 +50,7 @@ try
     app.UseProblemDetails();
     app.UseRouting();
     app.UseCors();
+    app.UseAuthentication();
     app.UseAuthorization();
     app.MapControllers();
     app.Run();
