@@ -134,9 +134,9 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Уникальный идентификатор"),
-                    permission_id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Доступ пользователя"),
-                    role_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    token = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false, comment: "Токен"),
+                    permission_id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Идентификатор разрешения"),
+                    role_id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Идентификатор роли"),
+                    token = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false, comment: "JWT токен, связанный с разрешением роли"),
                     created_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     created_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))),
                     updated_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
@@ -152,13 +152,12 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "role_id",
+                        name: "fk_role_permissions_roles_role_id",
                         column: x => x.role_id,
                         principalTable: "roles",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
-                },
-                comment: "Доступ");
+                });
 
             migrationBuilder.CreateTable(
                 name: "order_info",
@@ -281,10 +280,10 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                 columns: new[] { "id", "code", "created_by", "name", "updated_by" },
                 values: new object[,]
                 {
-                    { new Guid("3a166cc9-7999-9fc9-2798-85b0ef75288d"), "adminAccess", null, "ДоступАдминистратора", null },
-                    { new Guid("3a166cc9-799b-7735-e11f-57780f8b0f28"), "userAccess", null, "ДоступПользователя", null },
-                    { new Guid("3a166cc9-799c-27fb-42d7-c1cc8512aeef"), "courierAccess", null, "ДоступКурьера", null },
-                    { new Guid("3a166cc9-799d-6b4b-087a-93e047e60d91"), "notAuthUserAccess", null, "ДоступНеавторизованногоПользователя", null }
+                    { new Guid("3a166cc9-7999-9fc9-2798-85b0ef75288d"), "updateOrder", null, "Доступ обновления заказа", null },
+                    { new Guid("3a166cc9-799b-7735-e11f-57780f8b0f28"), "deleteOrder", null, "Доступ удаления заказа", null },
+                    { new Guid("3a166cc9-799c-27fb-42d7-c1cc8512aeef"), "createUser", null, "Доступ создания пользователя", null },
+                    { new Guid("3a166cc9-799d-6b4b-087a-93e047e60d91"), "getOrder", null, "Доступ просмотра заказа", null }
                 });
 
             migrationBuilder.InsertData(

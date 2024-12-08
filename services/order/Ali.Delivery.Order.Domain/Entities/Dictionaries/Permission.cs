@@ -13,28 +13,28 @@ public class Permission : Entity<SequentialGuid>
     /// Возвращает тип доступа: Доступ создания пользователя.
     /// </summary>
     public static readonly Permission CreateUser = new(new Guid("3a166cc9-799c-27fb-42d7-c1cc8512aeef"),
-                                                          new PermissionCode("courierAccess"),
+                                                          new PermissionCode("createUser"),
                                                           new PermissionName("Доступ создания пользователя"));
 
     /// <summary>
     /// Возвращает тип доступа: Доступ обновления заказа.
     /// </summary>
     public static readonly Permission UpdateOrder = new(new Guid("3a166cc9-7999-9fc9-2798-85b0ef75288d"),
-                                                       new PermissionCode("adminAccess"),
+                                                       new PermissionCode("updateOrder"),
                                                        new PermissionName("Доступ обновления заказа"));
 
     /// <summary>
     /// Возвращает тип доступа: Доступ просмотра заказа.
     /// </summary>
     public static readonly Permission GetOrder = new(new Guid("3a166cc9-799d-6b4b-087a-93e047e60d91"),
-                                                              new PermissionCode("notAuthUserAccess"),
+                                                              new PermissionCode("getOrder"),
                                                               new PermissionName("Доступ просмотра заказа"));
 
     /// <summary>
     /// Возвращает тип доступа: Доступ удаления заказа.
     /// </summary>
     public static readonly Permission DeleteOrder = new(new Guid("3a166cc9-799b-7735-e11f-57780f8b0f28"),
-                                                       new PermissionCode("userAccess"),
+                                                       new PermissionCode("deleteOrder"),
                                                        new PermissionName("Доступ удаления заказа"));
 
     private static readonly Dictionary<PermissionCode, Permission> PermissionNames = new()

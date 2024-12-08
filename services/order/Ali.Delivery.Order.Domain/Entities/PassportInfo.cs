@@ -66,5 +66,5 @@ public class PassportInfo : Entity<SequentialGuid>
     /// <summary>
     /// Возвращает идентификатор типа паспорта.
     /// </summary>
-    public  PassportType PassportType { get;  }
+    public  virtual PassportType PassportType { get;  }
 }
