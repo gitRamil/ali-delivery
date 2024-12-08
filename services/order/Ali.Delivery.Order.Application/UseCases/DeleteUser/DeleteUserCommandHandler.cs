@@ -1,5 +1,4 @@
 using Ali.Delivery.Order.Application.Abstractions;
-using Ali.Delivery.Order.Application.Dtos.Order;
 using Ali.Delivery.Order.Application.Exceptions;
 using Ali.Delivery.Order.Domain.Entities;
 using MediatR;
@@ -10,7 +9,7 @@ namespace Ali.Delivery.Order.Application.UseCases.DeleteUser;
 /// <summary>
 /// Представляет обработчик команды для удаления пользователя.
 /// </summary>
-public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, UserDto>
+public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
 {
     private readonly IAppDbContext _context;
 
@@ -27,18 +26,14 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, UserD
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="query" /> равен <c>null</c>.
     /// </exception>
-    public async Task<UserDto> Handle(DeleteUserCommand query, CancellationToken cancellationToken)
+    public async Task Handle(DeleteUserCommand query, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(query);
 
         var user = await _context.Users.FirstOrDefaultAsync(u => (Guid)u.Id == query.UserId, cancellationToken) ?? throw new NotFoundException(typeof(User), query.UserId);
 
-        var userDto = new UserDto(user.Id, user.UserFirstName, user.UserLastName);
-
         _context.Users.Remove(user);
 
         await _context.SaveChangesAsync(cancellationToken);
-
-        return userDto;
     }
 }

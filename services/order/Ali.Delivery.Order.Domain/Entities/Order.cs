@@ -44,20 +44,40 @@ public class Order : Entity<SequentialGuid>
     /// <summary>
     /// Возвращает наименование заказа.
     /// </summary>
-    public OrderName Name { get; }
+    public OrderName Name { get; private set; }
 
     /// <summary>
     /// Возвращает информацию заказа.
     /// </summary>
-    public virtual OrderInfo OrderInfo { get; }
+    public virtual OrderInfo OrderInfo { get; private set; }
 
     /// <summary>
     /// Возвращает статус заказа.
     /// </summary>
-    public virtual OrderStatus OrderStatus { get; }
+    public virtual OrderStatus OrderStatus { get; private set; }
 
     /// <summary>
     /// Возвращает информацию о пользователе.
     /// </summary>
     public virtual User? Sender { get; }
+
+    /// <summary>
+    /// Обновляет наименование заказа.
+    /// </summary>
+    /// <param name="name"></param>
+    public void UpdateOrderName(OrderName name)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+        Name = name;
+    }
+
+    /// <summary>
+    /// Обновляет статус заказа.
+    /// </summary>
+    /// <param name="orderStatus"></param>
+    public void UpdateOrderStatus(OrderStatus orderStatus)
+    {
+        ArgumentNullException.ThrowIfNull(orderStatus);
+        OrderStatus = orderStatus;
+    }
 }
