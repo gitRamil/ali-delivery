@@ -56,11 +56,14 @@ public class UserController : ControllerBase
         try
         {
             await _mediator.Send(new DeleteUserCommand(userId), cancellationToken);
-            return Ok(); 
+            return Ok();
         }
         catch (NotFoundException ex)
         {
-            return NotFound(new { message = ex.Message });
+            return NotFound(new
+            {
+                message = ex.Message
+            });
         }
     }
 

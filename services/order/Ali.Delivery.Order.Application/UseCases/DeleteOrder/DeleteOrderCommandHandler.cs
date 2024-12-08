@@ -31,7 +31,7 @@ public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand>
 
         var order = await _context.Orders.FirstOrDefaultAsync(o => (Guid)o.Id == query.OrderId, cancellationToken) ??
                     throw new NotFoundException(typeof(Domain.Entities.Order), query.OrderId);
-        
+
         _context.Orders.Remove(order);
 
         await _context.SaveChangesAsync(cancellationToken);

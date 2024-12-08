@@ -1,5 +1,4 @@
 using Ali.Delivery.Order.Application.Abstractions;
-using Ali.Delivery.Order.Application.Dtos.Order;
 using Ali.Delivery.Order.Application.Exceptions;
 using Ali.Delivery.Order.Domain.Entities;
 using MediatR;
@@ -27,12 +26,12 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="query" /> равен <c>null</c>.
     /// </exception>
-    public async Task  Handle(DeleteUserCommand query, CancellationToken cancellationToken)
+    public async Task Handle(DeleteUserCommand query, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(query);
 
         var user = await _context.Users.FirstOrDefaultAsync(u => (Guid)u.Id == query.UserId, cancellationToken) ?? throw new NotFoundException(typeof(User), query.UserId);
-        
+
         _context.Users.Remove(user);
 
         await _context.SaveChangesAsync(cancellationToken);

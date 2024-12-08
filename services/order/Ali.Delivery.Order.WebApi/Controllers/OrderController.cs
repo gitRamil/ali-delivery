@@ -56,13 +56,17 @@ public class OrderController : ControllerBase
         try
         {
             await _mediator.Send(new DeleteOrderCommand(orderId), cancellationToken);
-            return Ok(); 
+            return Ok();
         }
         catch (NotFoundException ex)
         {
-            return NotFound(new { message = ex.Message });
+            return NotFound(new
+            {
+                message = ex.Message
+            });
         }
     }
+
     /// <summary>
     /// Получает список всех заказов.
     /// </summary>

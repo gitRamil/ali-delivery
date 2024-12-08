@@ -58,7 +58,7 @@ public class Role : Entity<SequentialGuid>
     /// Возвращает наименование.
     /// </summary>
     public RoleName Name { get; }
-    
+
     /// <summary>
     /// Возвращает все значения перечисления.
     /// </summary>

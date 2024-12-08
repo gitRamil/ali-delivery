@@ -1,7 +1,7 @@
 using Ali.Delivery.Order.Domain.Entities;
+using Ali.Delivery.Order.Infrastructure.Persistence.Configurations.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Ali.Delivery.Order.Infrastructure.Persistence.Configurations.Base;
 
 namespace Ali.Delivery.Order.Infrastructure.Persistence.Configurations;
 
@@ -13,7 +13,7 @@ internal class RolePermissionConfiguration : EntityTypeConfigurationBase<RolePer
     protected override void OnConfigure(EntityTypeBuilder<RolePermission> builder)
     {
         builder.ToTable("role_permissions");
-              
+
         builder.HasOne(r => r.Role)
                .WithMany()
                .HasForeignKey("role_id"); // Используем свойство RoleId как внешний ключ
@@ -21,7 +21,7 @@ internal class RolePermissionConfiguration : EntityTypeConfigurationBase<RolePer
         builder.Property("role_id")
                .HasColumnName("role_id")
                .HasComment("Идентификатор роли");
-              
+
         builder.HasOne(r => r.Permission)
                .WithMany()
                .HasForeignKey("permission_id");

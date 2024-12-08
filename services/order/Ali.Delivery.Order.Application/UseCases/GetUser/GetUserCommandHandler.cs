@@ -29,13 +29,19 @@ public class GetUserCommandHandler : IRequestHandler<GetUserCommand, UserDto>
     /// </exception>
     public async Task<UserDto> Handle(GetUserCommand query, CancellationToken cancellationToken)
     {
-
-        var user = await _context.Users.Select(user=> new  UserDto(user.Id, user.UserFirstName, user.UserLastName, user.PassportInfo.PassportInfoPassportNumber, user.PassportInfo.PassportType.Name, user.Role.Name))
+        var user = await _context.Users.Select(user => new UserDto(user.Id,
+                                                                   user.UserFirstName,
+                                                                   user.UserLastName,
+                                                                   user.PassportInfo.PassportInfoPassportNumber,
+                                                                   user.PassportInfo.PassportType.Name,
+                                                                   user.Role.Name))
                                  .FirstOrDefaultAsync(cancellationToken);
+
         if (user == null)
         {
-            throw new NotFoundException(typeof(Domain.Entities.Order), query.UserId); 
-        }                                          
+            throw new NotFoundException(typeof(Domain.Entities.Order), query.UserId);
+        }
+
         return user;
     }
 }

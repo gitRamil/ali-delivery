@@ -39,7 +39,7 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserD
                    throw new NotFoundException(typeof(User), command.UserId);
 
         user.UpdateName(new UserFirstName(command.FirstName), new UserLastName(command.LastName));
-        
+
         user.UpdateRole(command.Role.ToRole());
 
         user.UpdateBirthDay(new UserBirthDay(command.Birthdate));

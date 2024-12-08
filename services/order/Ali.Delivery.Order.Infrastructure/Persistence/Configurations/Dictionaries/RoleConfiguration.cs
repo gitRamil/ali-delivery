@@ -33,7 +33,7 @@ internal class RoleConfiguration : EntityTypeConfigurationBase<Role>
 
         builder.HasIndex(p => p.Code)
                .IsUnique();
-        
+
         builder.HasData(Role.GetAllValues());
     }
 }
