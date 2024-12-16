@@ -1,8 +1,10 @@
 using Ali.Delivery.Order.Application.Dtos.Order;
+using Ali.Delivery.Order.Application.Exceptions;
 using Ali.Delivery.Order.Application.UseCases.CreateUser;
 using Ali.Delivery.Order.Application.UseCases.DeleteUser;
 using Ali.Delivery.Order.Application.UseCases.GetAllUsers;
 using Ali.Delivery.Order.Application.UseCases.GetUser;
+using Ali.Delivery.Order.Application.UseCases.UpdateUser;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -51,8 +53,18 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteUser(Guid userId, CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new DeleteUserCommand(userId), cancellationToken);
-        return Ok(result);
+        try
+        {
+            await _mediator.Send(new DeleteUserCommand(userId), cancellationToken);
+            return Ok();
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(new
+            {
+                message = ex.Message
+            });
+        }
     }
 
     /// <summary>
@@ -80,6 +92,20 @@ public class UserController : ControllerBase
     public async Task<IActionResult> GetUser(Guid userId, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetUserCommand(userId), cancellationToken);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Обновляет данные пользователя.
+    /// </summary>
+    /// <param name="command">Команда обновления пользователя.</param>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    [HttpPut]
+    [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateUser([FromBody] UpdateUserCommand command, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(command, cancellationToken);
         return Ok(result);
     }
 }

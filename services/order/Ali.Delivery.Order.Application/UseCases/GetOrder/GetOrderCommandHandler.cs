@@ -1,3 +1,4 @@
+using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.Application.Abstractions;
 using Ali.Delivery.Order.Application.Dtos.Order;
 using Ali.Delivery.Order.Application.Exceptions;
@@ -22,17 +23,19 @@ public class GetOrderCommandHandler : IRequestHandler<GetOrderCommand, OrderDto>
     /// </exception>
     public GetOrderCommandHandler(IAppDbContext context) => _context = context ?? throw new ArgumentNullException(nameof(context));
 
+    /// <exception cref="NotFoundException"></exception>
     /// <inheritdoc />
-    /// <exception cref="ArgumentNullException">
-    /// Возникает, если <paramref name="query" /> равен <c>null</c>.
-    /// </exception>
-    public async Task<OrderDto> Handle(GetOrderCommand query, CancellationToken cancellationToken)
+    public async Task<OrderDto> Handle(GetOrderCommand request, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(query);
-
-        var order = await _context.Orders.FirstOrDefaultAsync(o => (Guid)o.Id == query.OrderId, cancellationToken) ??
-                    throw new NotFoundException(typeof(Domain.Entities.Order), query.OrderId);
-
-        return new OrderDto(order.Id, order.Name);
+        return await _context.Orders.Where(o => o.Id == (SequentialGuid)request.OrderId)
+                             .Select(o => new OrderDto(o.Id,
+                                                       o.Name,
+                                                       o.OrderStatus.Name,
+                                                       o.OrderInfo.OrderInfoWeight,
+                                                       o.OrderInfo.OrderInfoPrice,
+                                                       o.OrderInfo.OrderInfoAddressFrom,
+                                                       o.OrderInfo.OrderInfoAddressTo))
+                             .FirstOrDefaultAsync(cancellationToken) ??
+               throw new NotFoundException(typeof(Domain.Entities.Order), request.OrderId);
     }
 }
