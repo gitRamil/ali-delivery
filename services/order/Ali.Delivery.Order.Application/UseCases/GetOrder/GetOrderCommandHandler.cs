@@ -1,3 +1,4 @@
+using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.Application.Abstractions;
 using Ali.Delivery.Order.Application.Dtos.Order;
 using Ali.Delivery.Order.Application.Exceptions;
@@ -24,22 +25,17 @@ public class GetOrderCommandHandler : IRequestHandler<GetOrderCommand, OrderDto>
 
     /// <exception cref="NotFoundException"></exception>
     /// <inheritdoc />
-    public async Task<OrderDto> Handle(GetOrderCommand query, CancellationToken cancellationToken)
+    public async Task<OrderDto> Handle(GetOrderCommand request, CancellationToken cancellationToken)
     {
-        var order = await _context.Orders.Select(order => new OrderDto(order.Id,
-                                                                       order.Name,
-                                                                       order.OrderStatus.Name,
-                                                                       order.OrderInfo.OrderInfoWeight,
-                                                                       order.OrderInfo.OrderInfoPrice,
-                                                                       order.OrderInfo.OrderInfoAddressFrom,
-                                                                       order.OrderInfo.OrderInfoAddressTo))
-                                  .FirstOrDefaultAsync(cancellationToken);
-
-        if (order == null)
-        {
-            throw new NotFoundException(typeof(Domain.Entities.Order), query.OrderId);
-        }
-
-        return order;
+        return await _context.Orders.Where(o => o.Id == (SequentialGuid)request.OrderId)
+                             .Select(o => new OrderDto(o.Id,
+                                                       o.Name,
+                                                       o.OrderStatus.Name,
+                                                       o.OrderInfo.OrderInfoWeight,
+                                                       o.OrderInfo.OrderInfoPrice,
+                                                       o.OrderInfo.OrderInfoAddressFrom,
+                                                       o.OrderInfo.OrderInfoAddressTo))
+                             .FirstOrDefaultAsync(cancellationToken) ??
+               throw new NotFoundException(typeof(Domain.Entities.Order), request.OrderId);
     }
 }

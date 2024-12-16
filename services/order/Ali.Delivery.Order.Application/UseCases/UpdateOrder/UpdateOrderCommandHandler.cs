@@ -26,20 +26,19 @@ public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand, Ord
 
     /// <inheritdoc />
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если <paramref name="command" /> равен <c>null</c>.
+    /// Возникает, если <paramref name="request" /> равен <c>null</c>.
     /// </exception>
-    public async Task<OrderDto> Handle(UpdateOrderCommand command, CancellationToken cancellationToken)
+    public async Task<OrderDto> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(command);
+        ArgumentNullException.ThrowIfNull(request);
 
         var order = await _context.Orders.Include(o => o.OrderInfo)
                                   .Include(o => o.OrderStatus)
-                                  .FirstOrDefaultAsync(o => (Guid)o.Id == command.OrderId, cancellationToken) ??
-                    throw new NotFoundException(typeof(Domain.Entities.Order), command.OrderId);
+                                  .FirstOrDefaultAsync(o => (Guid)o.Id == request.OrderId, cancellationToken) ??
+                    throw new NotFoundException(typeof(Domain.Entities.Order), request.OrderId);
 
-        order.UpdateOrderName(new OrderName(command.OrderName));
-
-        order.UpdateOrderStatus(command.OrderStatus.ToOrderStatus());
+        order.UpdateOrderName(new OrderName(request.OrderName));
+        order.UpdateOrderStatus(request.OrderStatus.ToOrderStatus());
 
         await _context.SaveChangesAsync(cancellationToken);
 

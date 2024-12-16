@@ -77,12 +77,12 @@ public class OrderController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllOrders(CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new GetAllOrders(), cancellationToken);
+        var result = await _mediator.Send(new GetAllOrdersCommand(), cancellationToken);
         return Ok(result);
     }
 
     /// <summary>
-    /// Получает заказ.
+    /// Получает заказ по идентификатору.
     /// </summary>
     /// <param name="orderId">Идентификатор заказа.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
