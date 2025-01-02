@@ -51,25 +51,58 @@ public class User : Entity<SequentialGuid>
     /// <summary>
     /// Информация о паспорте пользователя.
     /// </summary>
-    public virtual PassportInfo PassportInfo { get; }
+    public virtual PassportInfo PassportInfo { get; private set; }
 
     /// <summary>
     /// Идентификатор роли пользователя.
     /// </summary>
-    public virtual Role Role { get; }
+    public virtual Role Role { get; private set; }
 
     /// <summary>
     /// Дата рождения пользователя.
     /// </summary>
-    public UserBirthDay UserBirthDay { get; }
+    public UserBirthDay UserBirthDay { get; private set; }
 
     /// <summary>
     /// Имя пользователя.
     /// </summary>
-    public UserFirstName UserFirstName { get; }
+    public UserFirstName UserFirstName { get; private set; }
 
     /// <summary>
     /// Фамилия пользователя.
     /// </summary>
-    public UserLastName UserLastName { get; }
+    public UserLastName UserLastName { get; private set; }
+
+    /// <summary>
+    /// Обновляет дату рождения пользователя.
+    /// </summary>
+    /// <param name="birthDay">Новая дата рождения.</param>
+    public void UpdateBirthDay(UserBirthDay birthDay)
+    {
+        ArgumentNullException.ThrowIfNull(birthDay);
+        UserBirthDay = birthDay;
+    }
+
+    /// <summary>
+    /// Обновляет имя и фамилию пользователя.
+    /// </summary>
+    /// <param name="userFirstName">Новое имя пользователя.</param>
+    /// <param name="userLastName">Новая фамилия пользователя.</param>
+    public void UpdateName(UserFirstName userFirstName, UserLastName userLastName)
+    {
+        ArgumentNullException.ThrowIfNull(userFirstName);
+        UserFirstName = userFirstName;
+        ArgumentNullException.ThrowIfNull(userLastName);
+        UserLastName = userLastName;
+    }
+
+    /// <summary>
+    /// Обновляет роль пользователя.
+    /// </summary>
+    /// <param name="role">Новая роль.</param>
+    public void UpdateRole(Role role)
+    {
+        ArgumentNullException.ThrowIfNull(role);
+        Role = role;
+    }
 }

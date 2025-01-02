@@ -32,6 +32,10 @@ public class AppDbContext : DbContext, IAppDbContext
         AttachDictionaryValues();
     }
 
+    public DbSet<Permission> Permissions => Set<Permission>();
+    public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
+    public DbSet<Role> Roles => Set<Role>();
+
     /// <summary>
     /// Возвращает набор заказов.
     /// </summary>
@@ -71,6 +75,7 @@ public class AppDbContext : DbContext, IAppDbContext
         AttachRange(Role.GetAllValues());
         AttachRange(Size.GetAllValues());
         AttachRange(PassportType.GetAllValues());
+        AttachRange(Permission.GetAllValues());
     }
 
     private void MarkCreated(EntityEntry entry)

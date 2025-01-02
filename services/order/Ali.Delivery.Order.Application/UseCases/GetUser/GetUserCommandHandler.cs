@@ -1,3 +1,4 @@
+using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.Application.Abstractions;
 using Ali.Delivery.Order.Application.Dtos.Order;
 using Ali.Delivery.Order.Application.Exceptions;
@@ -23,16 +24,21 @@ public class GetUserCommandHandler : IRequestHandler<GetUserCommand, UserDto>
     /// </exception>
     public GetUserCommandHandler(IAppDbContext context) => _context = context ?? throw new ArgumentNullException(nameof(context));
 
+    /// <exception cref="NotFoundException"></exception>
     /// <inheritdoc />
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если <paramref name="query" /> равен <c>null</c>.
+    /// Возникает, если <paramref name="request" /> равен <c>null</c>.
     /// </exception>
-    public async Task<UserDto> Handle(GetUserCommand query, CancellationToken cancellationToken)
+    public async Task<UserDto> Handle(GetUserCommand request, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(query);
-
-        var user = await _context.Users.FirstOrDefaultAsync(o => (Guid)o.Id == query.UserId, cancellationToken) ?? throw new NotFoundException(typeof(User), query.UserId);
-
-        return new UserDto(user.Id, user.UserFirstName, user.UserLastName);
+        return await _context.Users.Where(u => u.Id == (SequentialGuid)request.UserId)
+                             .Select(user => new UserDto(user.Id,
+                                                         user.UserFirstName,
+                                                         user.UserLastName,
+                                                         user.PassportInfo.PassportInfoPassportNumber,
+                                                         user.PassportInfo.PassportType.Name,
+                                                         user.Role.Name))
+                             .FirstOrDefaultAsync(cancellationToken) ??
+               throw new NotFoundException(typeof(User), request.UserId);
     }
 }
