@@ -1,8 +1,11 @@
 using System.Text;
+using Ali.Delivery.Order.Application;
 using Ali.Delivery.Order.WebApi.Infrastructure.IoC;
 using Ali.Delivery.Order.WebApi.IoC;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.CookiePolicy;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 
@@ -21,6 +24,14 @@ try
     builder.Services.AddSwaggerGen();
     builder.Services.AddDateTimeService();
     builder.Services.AddDefaultProblemDetails();
+    builder.Services.AddScoped<JwtProvider>();
+
+    builder.Services.AddSwaggerGen(c =>
+    {
+        c.CustomSchemaIds(type => type.FullName); // Избегает конфликтов имен схем
+        c.IgnoreObsoleteProperties(); // Игнорирует устаревшие свойства
+        c.MapType<IFeatureCollection>(() => null); // Исключение типа
+    });
 
     builder.Services.AddAuthentication("Bearer")
            .AddJwtBearer(options =>
@@ -28,10 +39,19 @@ try
                options.TokenValidationParameters = new TokenValidationParameters
                {
                    ValidateIssuerSigningKey = true,
-                   IssuerSigningKey = new SymmetricSecurityKey(
-                       Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"] ?? string.Empty)),
+                   ValidateLifetime = true,
+                   IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"] ?? string.Empty)),
                    ValidateIssuer = false,
                    ValidateAudience = false
+               };
+
+               options.Events = new JwtBearerEvents
+               {
+                   OnMessageReceived = context =>
+                   {
+                       context.Token = context.Request.Cookies["tasty-cookies"];
+                       return Task.CompletedTask;
+                   }
                };
            });
     builder.Services.AddAuthorization();
@@ -50,6 +70,13 @@ try
     app.UseProblemDetails();
     app.UseRouting();
     app.UseCors();
+
+    app.UseCookiePolicy(new CookiePolicyOptions
+    {
+        MinimumSameSitePolicy = SameSiteMode.Strict,
+        HttpOnly = HttpOnlyPolicy.Always,
+        Secure = CookieSecurePolicy.Always
+    });
     app.UseAuthentication();
     app.UseAuthorization();
     app.MapControllers();
