@@ -8,7 +8,7 @@ namespace Ali.Delivery.Order.Application.UseCases.GetAllOrders;
 /// <summary>
 /// Представляет обработчик запроса на получение списка всех заказов.
 /// </summary>
-public class GetAllOrdersCommandHandler : IRequestHandler<GetAllOrdersCommand, List<OrderDto>>
+public class GetAllOrdersCommandHandler : IRequestHandler<GetAllOrders, List<OrderDto>>
 {
     private readonly IAppDbContext _context;
 
@@ -22,15 +22,18 @@ public class GetAllOrdersCommandHandler : IRequestHandler<GetAllOrdersCommand, L
     public GetAllOrdersCommandHandler(IAppDbContext context) => _context = context ?? throw new ArgumentNullException(nameof(context));
 
     /// <inheritdoc />
-    public async Task<List<OrderDto>> Handle(GetAllOrdersCommand request, CancellationToken cancellationToken)
+    public async Task<List<OrderDto>> Handle(GetAllOrders query, CancellationToken cancellationToken)
     {
-        return await _context.Orders.Select(order => new OrderDto(order.Id,
-                                                                  order.Name,
-                                                                  order.OrderStatus.Name,
-                                                                  order.OrderInfo.OrderInfoPrice,
-                                                                  order.OrderInfo.OrderInfoWeight,
-                                                                  order.OrderInfo.OrderInfoAddressFrom,
-                                                                  order.OrderInfo.OrderInfoAddressTo))
-                             .ToListAsync(cancellationToken);
+        var orders = await _context.Orders.Include(o => o.OrderStatus)
+                                   .Include(o => o.OrderInfo)
+                                   .Select(order => new OrderDto(order.Id,
+                                                                 order.Name,
+                                                                 order.OrderStatus.Name,
+                                                                 order.OrderInfo.OrderInfoPrice,
+                                                                 order.OrderInfo.OrderInfoWeight,
+                                                                 order.OrderInfo.OrderInfoAddressFrom,
+                                                                 order.OrderInfo.OrderInfoAddressTo))
+                                   .ToListAsync(cancellationToken);
+        return orders;
     }
 }

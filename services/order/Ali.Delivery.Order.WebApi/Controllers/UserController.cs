@@ -1,9 +1,9 @@
 using Ali.Delivery.Order.Application.Dtos.Order;
-using Ali.Delivery.Order.Application.Exceptions;
 using Ali.Delivery.Order.Application.UseCases.CreateUser;
 using Ali.Delivery.Order.Application.UseCases.DeleteUser;
 using Ali.Delivery.Order.Application.UseCases.GetAllUsers;
 using Ali.Delivery.Order.Application.UseCases.GetUser;
+using Ali.Delivery.Order.Application.UseCases.Login;
 using Ali.Delivery.Order.Application.UseCases.UpdateUser;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -53,18 +53,8 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteUser(Guid userId, CancellationToken cancellationToken)
     {
-        try
-        {
-            await _mediator.Send(new DeleteUserCommand(userId), cancellationToken);
-            return Ok();
-        }
-        catch (NotFoundException ex)
-        {
-            return NotFound(new
-            {
-                message = ex.Message
-            });
-        }
+        var result = await _mediator.Send(new DeleteUserCommand(userId), cancellationToken);
+        return Ok(result);
     }
 
     /// <summary>
@@ -93,6 +83,24 @@ public class UserController : ControllerBase
     {
         var result = await _mediator.Send(new GetUserCommand(userId), cancellationToken);
         return Ok(result);
+    }
+
+    /// <summary>
+    /// Авторизует пользователя.
+    /// </summary>
+    /// <param name="login">Логин пользователя.</param>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    /// <returns>JWT-токен.</returns>
+    [HttpPost("login")]
+    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> Login(string login, CancellationToken cancellationToken)
+    {
+        var token = await _mediator.Send(new LoginCommand(login), cancellationToken);
+
+        HttpContext.Response.Cookies.Append("tasty-cookies", token);
+
+        return Ok(token);
     }
 
     /// <summary>

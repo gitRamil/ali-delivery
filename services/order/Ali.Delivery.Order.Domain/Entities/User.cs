@@ -79,8 +79,7 @@ public class User : Entity<SequentialGuid>
     /// <param name="birthDay">Новая дата рождения.</param>
     public void UpdateBirthDay(UserBirthDay birthDay)
     {
-        ArgumentNullException.ThrowIfNull(birthDay);
-        UserBirthDay = birthDay;
+        UserBirthDay = birthDay ?? throw new ArgumentNullException(nameof(birthDay));
     }
 
     /// <summary>
@@ -90,10 +89,8 @@ public class User : Entity<SequentialGuid>
     /// <param name="userLastName">Новая фамилия пользователя.</param>
     public void UpdateName(UserFirstName userFirstName, UserLastName userLastName)
     {
-        ArgumentNullException.ThrowIfNull(userFirstName);
-        UserFirstName = userFirstName;
-        ArgumentNullException.ThrowIfNull(userLastName);
-        UserLastName = userLastName;
+        UserFirstName = userFirstName ?? throw new ArgumentNullException(nameof(userFirstName));
+        UserLastName = userLastName ?? throw new ArgumentNullException(nameof(userLastName));
     }
 
     /// <summary>
@@ -102,7 +99,6 @@ public class User : Entity<SequentialGuid>
     /// <param name="role">Новая роль.</param>
     public void UpdateRole(Role role)
     {
-        ArgumentNullException.ThrowIfNull(role);
-        Role = role;
+        Role = role ?? throw new ArgumentNullException(nameof(role));
     }
 }

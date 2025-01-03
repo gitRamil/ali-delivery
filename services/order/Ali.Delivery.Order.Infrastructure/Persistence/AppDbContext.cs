@@ -32,14 +32,13 @@ public class AppDbContext : DbContext, IAppDbContext
         AttachDictionaryValues();
     }
 
-    public DbSet<Permission> Permissions => Set<Permission>();
-    public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
-    public DbSet<Role> Roles => Set<Role>();
-
     /// <summary>
     /// Возвращает набор заказов.
     /// </summary>
     public DbSet<Domain.Entities.Order> Orders => Set<Domain.Entities.Order>();
+
+    public DbSet<Permission> Permissions => Set<Permission>();
+    public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
 
     /// <inheritdoc cref="DbContext" />
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -63,6 +62,8 @@ public class AppDbContext : DbContext, IAppDbContext
     /// Возвращает набор пользователей.
     /// </summary>
     public DbSet<User> Users => Set<User>();
+
+    public DbSet<Role> Roles => Set<Role>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
