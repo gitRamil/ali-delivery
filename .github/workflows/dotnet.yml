@@ -3,7 +3,7 @@ name: .NET Build
 on:
   push:
     branches:
-      - '**' # Это указывает на то, что реагировать следует на пуш в любую ветку
+      - '**' # Listen to pushes on all branches
 
 jobs:
   build:
@@ -16,7 +16,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '8.0.x' # Указываем нужную версию .NET
+        dotnet-version: '8.0.x' # Specify desired .NET version
 
     - name: Restore dependencies
       run: dotnet restore ./services/order
@@ -25,4 +25,4 @@ jobs:
       run: dotnet build ./services/order --configuration Release
 
     - name: Test
-      run: dotnet test ./services/order --no-build --verbosity normal
+      run: dotnet test ./services/order --configuration Release --no-build --verbosity normal
