@@ -19,10 +19,10 @@ jobs:
         dotnet-version: '8.0.x' # Указываем нужную версию .NET
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore ./services/order
 
     - name: Build
-      run: dotnet build --configuration Release
+      run: dotnet build ./services/order --configuration Release
 
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test ./services/order --no-build --verbosity normal
