@@ -35,7 +35,6 @@ public class UserController : ControllerBase
     /// </summary>
     /// <param name="command">Пользователь.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
-    [Authorize]
     [HttpPost]
     [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -78,7 +77,7 @@ public class UserController : ControllerBase
     /// </summary>
     /// <param name="userId">Идентификатор пользователя.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
-    [HttpGet("{userId:guid}")]
+    [HttpGet("{userId}")]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetUser(Guid userId, CancellationToken cancellationToken)
@@ -100,7 +99,7 @@ public class UserController : ControllerBase
     {
         var token = await _mediator.Send(command, cancellationToken);
 
-        HttpContext.Response.Cookies.Append("tasty-cookies", token);
+        HttpContext.Response.Cookies.Append("token", token);
 
         return Ok(token);
     }

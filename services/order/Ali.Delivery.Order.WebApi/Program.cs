@@ -1,4 +1,6 @@
 using Ali.Delivery.Order.Application;
+using Ali.Delivery.Order.Application.Abstractions;
+using Ali.Delivery.Order.Application.Services;
 using Ali.Delivery.Order.WebApi.Infrastructure.IoC;
 using Ali.Delivery.Order.WebApi.IoC;
 using Hellang.Middleware.ProblemDetails;
@@ -19,14 +21,17 @@ try
     builder.Services.AddDefaultCorsPolicy();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
-    builder.Services.AddDateTimeService();
+    builder.Services.AddDateTimeService();        
     builder.Services.AddDefaultProblemDetails();
     builder.Services.AddScoped<JwtProvider>();
-    builder.Services.Configure<JwtSettings>(config.GetSection(nameof(JwtSettings)));
+    builder.Services.Configure<JwtOptions>(config.GetSection(nameof(JwtOptions)));
 
     var jwtOptions = builder.Services.BuildServiceProvider()
-                            .GetRequiredService<IOptions<JwtSettings>>();
+                            .GetRequiredService<IOptions<JwtOptions>>();
     builder.Services.AddApiAuthentication(jwtOptions);
+    
+    builder.Services.AddHttpContextAccessor();
+    builder.Services.AddTransient<ICurrentUser, CurrentUserService>();
 
     var app = builder.Build();
     app.AddAutomaticMigrations();

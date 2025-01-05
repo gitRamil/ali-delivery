@@ -8,7 +8,7 @@ namespace Ali.Delivery.Order.WebApi.IoC;
 
 public static class AuthExtensions
 {
-    public static void AddApiAuthentication(this IServiceCollection services, IOptions<JwtSettings> jwtOptions)
+    public static void AddApiAuthentication(this IServiceCollection services, IOptions<JwtOptions> jwtOptions)
     {
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,
@@ -27,7 +27,7 @@ public static class AuthExtensions
                                   {
                                       OnMessageReceived = context =>
                                       {
-                                          context.Token = context.Request.Cookies["tasty-cookies"];
+                                          context.Token = context.Request.Cookies["token"];
                                           return Task.CompletedTask;
                                       }
                                   };

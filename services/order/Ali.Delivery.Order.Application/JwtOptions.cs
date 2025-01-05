@@ -3,7 +3,7 @@ namespace Ali.Delivery.Order.Application;
 /// <summary>
 /// Представляет настройки, необходимые для создания JWT-токенов.
 /// </summary>
-public class JwtSettings
+public class JwtOptions
 {
     /// <summary>
     /// Получает или задает количество часов до истечения срока действия токена.
@@ -13,5 +13,5 @@ public class JwtSettings
     /// <summary>
     /// Получает или задает секретный ключ, используемый для подписи токена.
     /// </summary>
-    public string SecretKey { get; set; }
+    public string SecretKey { get; set; } = string.Empty;
 }

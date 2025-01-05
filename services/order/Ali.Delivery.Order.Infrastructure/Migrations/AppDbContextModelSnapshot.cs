@@ -709,26 +709,26 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
 
                     b.Property<DateTime>("UserBirthDay")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("birth_day")
+                        .HasColumnName("user_birth_day")
                         .HasComment("Дата рождения пользователя");
 
                     b.Property<string>("UserFirstName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
-                        .HasColumnName("first_name")
+                        .HasColumnName("user_first_name")
                         .HasComment("Имя пользователя");
 
                     b.Property<string>("UserLastName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
-                        .HasColumnName("last_name")
+                        .HasColumnName("user_last_name")
                         .HasComment("Фамилия пользователя");
 
-                    b.Property<Guid>("passport_id")
+                    b.Property<Guid>("passport_info_id")
                         .HasColumnType("uuid")
-                        .HasColumnName("passport_id")
+                        .HasColumnName("passport_info_id")
                         .HasComment("Информация о паспорте");
 
                     b.Property<Guid>("role_id")
@@ -739,8 +739,8 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("pk_users");
 
-                    b.HasIndex("passport_id")
-                        .HasDatabaseName("ix_users_passport_id");
+                    b.HasIndex("passport_info_id")
+                        .HasDatabaseName("ix_users_passport_info_id");
 
                     b.HasIndex("role_id")
                         .HasDatabaseName("ix_users_role_id");
@@ -828,10 +828,10 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                 {
                     b.HasOne("Ali.Delivery.Order.Domain.Entities.PassportInfo", "PassportInfo")
                         .WithMany()
-                        .HasForeignKey("passport_id")
+                        .HasForeignKey("passport_info_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_users_passport_passport_id");
+                        .HasConstraintName("fk_users_passport_passport_info_id");
 
                     b.HasOne("Ali.Delivery.Order.Domain.Entities.Dictionaries.Role", "Role")
                         .WithMany()

@@ -6,9 +6,9 @@ namespace Ali.Delivery.Order.WebApi.Attribute;
 
 /// <summary>
 /// </summary>
-/// <param name="permission"></param>
+/// <param name="permissions"></param>
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-public class UserPermissionAttribute(string permission) : System.Attribute, IAsyncActionFilter
+public class UserPermissionAttribute(params string[] permissions) : System.Attribute, IAsyncActionFilter
 {
     /// <summary>
     /// </summary>
@@ -16,7 +16,7 @@ public class UserPermissionAttribute(string permission) : System.Attribute, IAsy
     /// <param name="next"></param>
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
-        var tokenString = context.HttpContext.Request.Cookies["tasty-cookies"];
+        var tokenString = context.HttpContext.Request.Cookies["token"];
 
         if (tokenString == null)
         {
@@ -34,10 +34,10 @@ public class UserPermissionAttribute(string permission) : System.Attribute, IAsy
 
         var jwtToken = tokenHandler.ReadJwtToken(tokenString);
 
-        var userPermission = jwtToken.Claims.FirstOrDefault(c => c.Type == "userPermissions")
-                                     ?.Value;
+        var userPermission = jwtToken.Claims.Where(c => c.Type == "userPermissions").Select(c=> c.Value)
+                                     .ToList();
 
-        if (userPermission != permission)
+        if (!permissions.Any(permission => userPermission.Contains(permission)))
         {
             context.Result = new ForbidResult();
             return;

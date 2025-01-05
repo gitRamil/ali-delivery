@@ -12,13 +12,13 @@ namespace Ali.Delivery.Order.Application;
 /// </summary>
 public class JwtProvider
 {
-    private readonly JwtSettings _settings;
+    private readonly JwtOptions _options;
 
     /// <summary>
     /// Инициализирует новый экземпляр класса <see cref="JwtProvider" />.
     /// </summary>
     /// <param name="options">Настройки JWT, предоставленные через внедрение зависимостей.</param>
-    public JwtProvider(IOptions<JwtSettings> options) => _settings = options.Value;
+    public JwtProvider(IOptions<JwtOptions> options) => _options = options.Value;
 
     /// <summary>
     /// Генерирует JSON Web Token (JWT) для указанного пользователя.
@@ -33,15 +33,10 @@ public class JwtProvider
             new("userId", user.Id.ToString())
         };
 
-        foreach (var permission in permissions)
-        {
-            claims.Add(new Claim("userPermissions", permission));
-        }
+        claims.AddRange(permissions.Select(permission => new Claim("userPermissions", permission)));
 
-        var signingCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.SecretKey)), SecurityAlgorithms.HmacSha256Signature);
-
-        var token = new JwtSecurityToken(claims: claims, signingCredentials: signingCredentials, expires: DateTime.Now.AddHours(_settings.ExpiresHours));
-
+        var signingCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey)), SecurityAlgorithms.HmacSha256Signature);
+        var token = new JwtSecurityToken(claims: claims, signingCredentials: signingCredentials, expires: DateTime.Now.AddHours(_options.ExpiresHours));
         var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
 
         return tokenValue;
