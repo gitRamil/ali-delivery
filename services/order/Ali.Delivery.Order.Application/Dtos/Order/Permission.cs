@@ -3,7 +3,6 @@ using System.Runtime.Serialization;
 namespace Ali.Delivery.Order.Application.Dtos.Order;
 
 /// <summary>
-/// 
 /// </summary>
 public enum PermissionCode
 {
@@ -24,10 +23,10 @@ public enum PermissionCode
     /// </summary>
     [EnumMember(Value = "getOrder")]
     GetOrder,
-    
+
     /// <summary>
     /// Неавторизованный пользователь.
     /// </summary>
     [EnumMember(Value = "deleteOrder")]
-    DeleteOrder,
+    DeleteOrder
 }

@@ -8,27 +8,36 @@ using Microsoft.IdentityModel.Tokens;
 namespace Ali.Delivery.Order.Application;
 
 /// <summary>
+/// Предоставляет функциональность для создания JWT-токенов.
 /// </summary>
 public class JwtProvider
 {
     private readonly JwtSettings _settings;
 
     /// <summary>
+    /// Инициализирует новый экземпляр класса <see cref="JwtProvider"/>.
     /// </summary>
-    /// <param name="options"></param>
+    /// <param name="options">Настройки JWT, предоставленные через внедрение зависимостей.</param>
     public JwtProvider(IOptions<JwtSettings> options) => _settings = options.Value;
 
     /// <summary>
+    /// Генерирует JSON Web Token (JWT) для указанного пользователя.
     /// </summary>
-    /// <param name="user"></param>
-    /// <returns></returns>
+    /// <param name="user">Пользователь, для которого создается токен.</param>
+    /// <returns>JWT в виде строки.</returns>
     public string GenerateToken(User user)
     {
         Claim[] claims = [new Claim("userId", user.Id.ToString())];
 
-        var signingCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("4654sdfg4sdfvsd-asdfasd152adf-asdfgasdf")),
+        var signingCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.Key)),
                                                         SecurityAlgorithms.HmacSha256Signature);
-        var token = new JwtSecurityToken(claims: claims, signingCredentials: signingCredentials, expires: DateTime.Now.AddHours(_settings.ExpitesHours));
+        
+        var token = new JwtSecurityToken(
+            claims: claims,
+            signingCredentials: signingCredentials,
+            expires: DateTime.Now.AddHours(_settings.ExpitesHours)
+        );
+        
         var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
 
         return tokenValue;

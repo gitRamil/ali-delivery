@@ -5,7 +5,6 @@ using Ali.Delivery.Order.WebApi.IoC;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.CookiePolicy;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 
@@ -25,13 +24,6 @@ try
     builder.Services.AddDateTimeService();
     builder.Services.AddDefaultProblemDetails();
     builder.Services.AddScoped<JwtProvider>();
-
-    builder.Services.AddSwaggerGen(c =>
-    {
-        c.CustomSchemaIds(type => type.FullName); // Избегает конфликтов имен схем
-        c.IgnoreObsoleteProperties(); // Игнорирует устаревшие свойства
-        c.MapType<IFeatureCollection>(() => null); // Исключение типа
-    });
 
     builder.Services.AddAuthentication("Bearer")
            .AddJwtBearer(options =>
