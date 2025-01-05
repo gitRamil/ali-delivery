@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using Ali.Delivery.Order.Application;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -8,7 +9,7 @@ namespace Ali.Delivery.Order.WebApi.Attribute;
 /// </summary>
 /// <param name="permissions"></param>
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-public class UserPermissionAttribute(params string[] permissions) : System.Attribute, IAsyncActionFilter
+public class UserPermissionAttribute(params UserPermissionCode[] permissions) : System.Attribute, IAsyncActionFilter
 {
     /// <summary>
     /// </summary>
@@ -16,7 +17,7 @@ public class UserPermissionAttribute(params string[] permissions) : System.Attri
     /// <param name="next"></param>
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
-        var tokenString = context.HttpContext.Request.Cookies["token"];
+         var tokenString = context.HttpContext.Request.Cookies["token"];
 
         if (tokenString == null)
         {
@@ -37,7 +38,7 @@ public class UserPermissionAttribute(params string[] permissions) : System.Attri
         var userPermission = jwtToken.Claims.Where(c => c.Type == "userPermissions").Select(c=> c.Value)
                                      .ToList();
 
-        if (!permissions.Any(permission => userPermission.Contains(permission)))
+        if (!permissions.Any(permission => userPermission.Contains(((int)permission).ToString())))
         {
             context.Result = new ForbidResult();
             return;

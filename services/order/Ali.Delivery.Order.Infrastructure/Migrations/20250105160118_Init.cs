@@ -54,7 +54,7 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Уникальный идентификатор"),
-                    code = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false, comment: "Код"),
+                    code = table.Column<int>(type: "integer", nullable: false, comment: "Код"),
                     name = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false, comment: "Наименование"),
                     created_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     created_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))),
@@ -282,10 +282,10 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                 columns: new[] { "id", "code", "created_by", "name", "updated_by" },
                 values: new object[,]
                 {
-                    { new Guid("3a166cc9-7999-9fc9-2798-85b0ef75288d"), "updateOrder", null, "Доступ обновления заказа", null },
-                    { new Guid("3a166cc9-799b-7735-e11f-57780f8b0f28"), "deleteOrder", null, "Доступ удаления заказа", null },
-                    { new Guid("3a166cc9-799c-27fb-42d7-c1cc8512aeef"), "createUser", null, "Доступ создания пользователя", null },
-                    { new Guid("3a166cc9-799d-6b4b-087a-93e047e60d91"), "getOrder", null, "Доступ просмотра заказа", null }
+                    { new Guid("3a166cc9-7999-9fc9-2798-85b0ef75288d"), 1003, null, "Доступ обновления заказа", null },
+                    { new Guid("3a166cc9-799b-7735-e11f-57780f8b0f28"), 1001, null, "Доступ удаления заказа", null },
+                    { new Guid("3a166cc9-799c-27fb-42d7-c1cc8512aeef"), 1000, null, "Доступ создания пользователя", null },
+                    { new Guid("3a166cc9-799d-6b4b-087a-93e047e60d91"), 1002, null, "Доступ просмотра заказа", null }
                 });
 
             migrationBuilder.InsertData(

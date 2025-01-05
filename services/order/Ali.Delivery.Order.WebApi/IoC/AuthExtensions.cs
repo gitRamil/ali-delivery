@@ -6,8 +6,16 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Ali.Delivery.Order.WebApi.IoC;
 
+/// <summary>
+/// 
+/// </summary>
 public static class AuthExtensions
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="jwtOptions"></param>
     public static void AddApiAuthentication(this IServiceCollection services, IOptions<JwtOptions> jwtOptions)
     {
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

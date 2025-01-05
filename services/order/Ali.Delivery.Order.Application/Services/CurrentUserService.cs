@@ -34,7 +34,7 @@ public class CurrentUserService : ICurrentUser
     public bool IsAuthenticated { get; }
 
     /// <inheritdoc />
-    public bool HasPermission(params Permission[] permissions)
+    public bool HasPermission(params UserPermissionCode[] permissions)
     {
         if (!IsAuthenticated)
         {
@@ -45,7 +45,7 @@ public class CurrentUserService : ICurrentUser
                                    .Where(c => c.Type == "userPermissions")
                                    .Select(c => c.Value)
                                    .ToList();
-            
-        return permissions.Any(permission => userPermissions.Contains(permission.Code));
+
+        return permissions.Any(permission => userPermissions.Contains(((int)permission).ToString()));
     }
 }

@@ -41,13 +41,13 @@ public static class EnumDtoExtensions
     /// <summary>
     /// Преобразует значение перечисления в размер.
     /// </summary>
-    public static Permission ToPermission(this PermissionCode code) =>
+    public static Domain.Entities.Dictionaries.Permission ToPermission(this Dtos.Order.PermissionCode code) =>
         code switch
         {
-            PermissionCode.CreateUser => Permission.CreateUser,
-            PermissionCode.UpdateOrder => Permission.UpdateOrder,
-            PermissionCode.GetOrder => Permission.GetOrder,
-            PermissionCode.DeleteOrder => Permission.DeleteOrder,
+            Dtos.Order.PermissionCode.CreateUser => Domain.Entities.Dictionaries.Permission.CreateUser,
+            Dtos.Order.PermissionCode.UpdateOrder => Domain.Entities.Dictionaries.Permission.UpdateOrder,
+            Dtos.Order.PermissionCode.GetOrder => Domain.Entities.Dictionaries.Permission.GetOrder,
+            Dtos.Order.PermissionCode.DeleteOrder => Domain.Entities.Dictionaries.Permission.DeleteOrder,
             _ => throw new ArgumentOutOfRangeException(nameof(code), code, "Не поддерживаемое значение доступа.")
         };
     #endregion

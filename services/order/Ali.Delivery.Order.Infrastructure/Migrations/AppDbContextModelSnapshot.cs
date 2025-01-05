@@ -178,10 +178,8 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         .HasColumnName("id")
                         .HasComment("Уникальный идентификатор");
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
+                    b.Property<int>("Code")
+                        .HasColumnType("integer")
                         .HasColumnName("code")
                         .HasComment("Код");
 
@@ -230,25 +228,25 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("3a166cc9-799c-27fb-42d7-c1cc8512aeef"),
-                            Code = "createUser",
+                            Code = 1000,
                             Name = "Доступ создания пользователя"
                         },
                         new
                         {
                             Id = new Guid("3a166cc9-7999-9fc9-2798-85b0ef75288d"),
-                            Code = "updateOrder",
+                            Code = 1003,
                             Name = "Доступ обновления заказа"
                         },
                         new
                         {
                             Id = new Guid("3a166cc9-799d-6b4b-087a-93e047e60d91"),
-                            Code = "getOrder",
+                            Code = 1002,
                             Name = "Доступ просмотра заказа"
                         },
                         new
                         {
                             Id = new Guid("3a166cc9-799b-7735-e11f-57780f8b0f28"),
-                            Code = "deleteOrder",
+                            Code = 1001,
                             Name = "Доступ удаления заказа"
                         });
                 });

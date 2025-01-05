@@ -27,8 +27,7 @@ internal class PermissionConfiguration : EntityTypeConfigurationBase<Permission>
 
         builder.Property(p => p.Code)
                .IsRequired()
-               .HasMaxLength(PermissionCode.MaxLength)
-               .HasConversion(p => (string)p, p => new PermissionCode(p))
+               .HasConversion(p => (int)p, p => new PermissionCode(p))
                .HasComment("Код");
 
         builder.HasIndex(p => p.Code)

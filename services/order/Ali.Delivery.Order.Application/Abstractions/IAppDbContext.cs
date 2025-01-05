@@ -17,7 +17,7 @@ public interface IAppDbContext
     /// </value>
     DbSet<Domain.Entities.Order> Orders { get; }
 
-    DbSet<Permission> Permissions { get; }
+    DbSet<Domain.Entities.Dictionaries.Permission> Permissions { get; }
     DbSet<RolePermission> RolePermissions { get; }
     DbSet<Role> Roles { get; }
 

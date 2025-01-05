@@ -26,14 +26,14 @@ public class JwtProvider
     /// <param name="user">Пользователь, для которого создается токен.</param>
     /// <param name="permissions"></param>
     /// <returns>JWT в виде строки.</returns>
-    public string GenerateToken(User user, List<string> permissions)
+    public string GenerateToken(User user, IEnumerable<int> permissions)
     {
         var claims = new List<Claim>
         {
             new("userId", user.Id.ToString())
         };
 
-        claims.AddRange(permissions.Select(permission => new Claim("userPermissions", permission)));
+        claims.AddRange(permissions.Select(permission => new Claim("userPermissions", permission.ToString())));
 
         var signingCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey)), SecurityAlgorithms.HmacSha256Signature);
         var token = new JwtSecurityToken(claims: claims, signingCredentials: signingCredentials, expires: DateTime.Now.AddHours(_options.ExpiresHours));

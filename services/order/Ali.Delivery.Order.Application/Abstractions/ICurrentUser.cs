@@ -23,5 +23,5 @@ public interface ICurrentUser
     /// <returns>
     /// <c>true</c> если пользователь содержит разрешение(я); в противном случае, <c>false</c>.
     /// </returns>
-    bool HasPermission(params Permission[] permissions);
+    bool HasPermission(params UserPermissionCode[] permissions);
 }

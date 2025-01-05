@@ -1,4 +1,5 @@
-﻿using Ali.Delivery.Order.Application.Dtos.Order;
+﻿using Ali.Delivery.Order.Application;
+using Ali.Delivery.Order.Application.Dtos.Order;
 using Ali.Delivery.Order.Application.UseCases.CreateOrder;
 using Ali.Delivery.Order.Application.UseCases.DeleteOrder;
 using Ali.Delivery.Order.Application.UseCases.GetAllOrders;
@@ -6,7 +7,6 @@ using Ali.Delivery.Order.Application.UseCases.GetOrder;
 using Ali.Delivery.Order.Application.UseCases.UpdateOrder;
 using Ali.Delivery.Order.WebApi.Attribute;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ali.Delivery.Order.WebApi.Controllers;
@@ -64,7 +64,7 @@ public class OrderController : ControllerBase
     /// <param name="cancellationToken">Маркер отмены.</param>
     /// <returns>Список всех заказов.</returns>
     [HttpGet]
-    [UserPermission("getOrder")]
+    [UserPermission(UserPermissionCode.CreateUser)]
     [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllOrders(CancellationToken cancellationToken)
@@ -78,7 +78,7 @@ public class OrderController : ControllerBase
     /// </summary>
     /// <param name="orderId">Идентификатор заказа.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
-    [HttpGet("{orderId:guid}")]
+    [HttpGet("{orderId}")]
     [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetOrder(Guid orderId, CancellationToken cancellationToken)
