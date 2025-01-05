@@ -3,7 +3,6 @@ using Ali.Delivery.Domain.Core;
 
 namespace Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.Permission;
 
-
 /// <summary>
 /// Представляет код разрешения.
 /// </summary>
@@ -28,6 +27,9 @@ public class PermissionCode : ValueObject
 
     private int _value { get; }
 
+    /// <inheritdoc />
+    public override string ToString() => _value.ToString();
+
     /// <summary>
     /// Возвращает набор компонентов, участвующий в сравнении.
     /// </summary>
@@ -42,7 +44,4 @@ public class PermissionCode : ValueObject
     /// <param name="obj">Код разрешения</param>
     [return: NotNullIfNotNull(nameof(obj))]
     public static implicit operator int?(PermissionCode? obj) => obj?._value;
-
-    /// <inheritdoc />
-    public override string ToString() => _value.ToString();
 }

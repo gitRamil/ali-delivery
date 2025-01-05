@@ -17,7 +17,7 @@ public class UserPermissionAttribute(params UserPermissionCode[] permissions) : 
     /// <param name="next"></param>
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
-         var tokenString = context.HttpContext.Request.Cookies["token"];
+        var tokenString = context.HttpContext.Request.Cookies["token"];
 
         if (tokenString == null)
         {
@@ -35,7 +35,8 @@ public class UserPermissionAttribute(params UserPermissionCode[] permissions) : 
 
         var jwtToken = tokenHandler.ReadJwtToken(tokenString);
 
-        var userPermission = jwtToken.Claims.Where(c => c.Type == "userPermissions").Select(c=> c.Value)
+        var userPermission = jwtToken.Claims.Where(c => c.Type == "userPermissions")
+                                     .Select(c => c.Value)
                                      .ToList();
 
         if (!permissions.Any(permission => userPermission.Contains(((int)permission).ToString())))

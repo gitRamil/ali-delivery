@@ -1,12 +1,14 @@
-using Ali.Delivery.Order.Domain.Entities.Dictionaries;
-
 namespace Ali.Delivery.Order.Application.Abstractions;
 
+/// <summary>
+/// qwe
+/// </summary>
 public interface ICurrentUser
 {
     /// <summary>Возвращает идентификатор текущего пользователя.</summary>
     /// <returns>
-    /// Идентификатор текущего пользователя или <see cref="F:System.Guid.Empty" />, если пользователь является неаутентифицированным.
+    /// Идентификатор текущего пользователя или <see cref="F:System.Guid.Empty" />, если пользователь является
+    /// неаутентифицированным.
     /// </returns>
     Guid Id { get; }
 

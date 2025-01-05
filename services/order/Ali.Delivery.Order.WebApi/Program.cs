@@ -21,7 +21,7 @@ try
     builder.Services.AddDefaultCorsPolicy();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
-    builder.Services.AddDateTimeService();        
+    builder.Services.AddDateTimeService();
     builder.Services.AddDefaultProblemDetails();
     builder.Services.AddScoped<JwtProvider>();
     builder.Services.Configure<JwtOptions>(config.GetSection(nameof(JwtOptions)));
@@ -29,7 +29,7 @@ try
     var jwtOptions = builder.Services.BuildServiceProvider()
                             .GetRequiredService<IOptions<JwtOptions>>();
     builder.Services.AddApiAuthentication(jwtOptions);
-    
+
     builder.Services.AddHttpContextAccessor();
     builder.Services.AddTransient<ICurrentUser, CurrentUserService>();
 

@@ -1,6 +1,5 @@
 using Ali.Delivery.Order.Application.Abstractions;
 using Ali.Delivery.Order.Application.Dtos.Order;
-using Ali.Delivery.Order.Domain.Entities.Dictionaries;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,7 +32,7 @@ public class GetAllOrdersCommandHandler : IRequestHandler<GetAllOrders, List<Ord
         var qwe = _currentUser.Id;
         var qwe2 = _currentUser.IsAuthenticated;
         var qwe3 = _currentUser.HasPermission(UserPermissionCode.CreateUser);
-        
+
         var orders = await _context.Orders.Include(o => o.OrderStatus)
                                    .Include(o => o.OrderInfo)
                                    .Select(order => new OrderDto(order.Id,

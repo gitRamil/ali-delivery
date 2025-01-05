@@ -46,7 +46,6 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, string>
             throw new UnauthorizedAccessException("Неверный пароль");
         }
 
-        // Генерация JWT-токена
         return _jwtProvider.GenerateToken(user, permissions);
     }
 }

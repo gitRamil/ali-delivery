@@ -1,6 +1,5 @@
 using System.Security.Claims;
 using Ali.Delivery.Order.Application.Abstractions;
-using Ali.Delivery.Order.Domain.Entities.Dictionaries;
 using Microsoft.AspNetCore.Http;
 
 namespace Ali.Delivery.Order.Application.Services;
@@ -11,7 +10,6 @@ public class CurrentUserService : ICurrentUser
     private readonly ClaimsPrincipal _user;
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="httpContextAccessor"></param>
     public CurrentUserService(IHttpContextAccessor httpContextAccessor)
@@ -19,6 +17,7 @@ public class CurrentUserService : ICurrentUser
         _user = httpContextAccessor.HttpContext?.User ?? new ClaimsPrincipal();
 
         var userIdClaim = _user.Claims.FirstOrDefault(c => c.Type == "userId");
+
         if (userIdClaim != null && Guid.TryParse(userIdClaim.Value, out var id))
         {
             Id = id;
@@ -28,12 +27,6 @@ public class CurrentUserService : ICurrentUser
     }
 
     /// <inheritdoc />
-    public Guid Id { get; }
-
-    /// <inheritdoc />
-    public bool IsAuthenticated { get; }
-
-    /// <inheritdoc />
     public bool HasPermission(params UserPermissionCode[] permissions)
     {
         if (!IsAuthenticated)
@@ -41,11 +34,16 @@ public class CurrentUserService : ICurrentUser
             return false;
         }
 
-        var userPermissions = _user.Claims
-                                   .Where(c => c.Type == "userPermissions")
+        var userPermissions = _user.Claims.Where(c => c.Type == "userPermissions")
                                    .Select(c => c.Value)
                                    .ToList();
 
         return permissions.Any(permission => userPermissions.Contains(((int)permission).ToString()));
     }
+
+    /// <inheritdoc />
+    public Guid Id { get; }
+
+    /// <inheritdoc />
+    public bool IsAuthenticated { get; }
 }
