@@ -4,27 +4,13 @@ using Ali.Delivery.Domain.Core;
 
 namespace Ali.Delivery.Order.Domain.ValueObjects.User;
 
-/// <summary>
-/// Представляет пароль пользователя.
-/// </summary>
 [DebuggerDisplay("{_password}")]
 public class UserPassword: ValueObject
 {
-    /// <summary>
-    /// Представляет максимальную длину имени пользователя.
-    /// </summary>
     public const int MaxLength = 100;
 
     private readonly string _password;
-
-    /// <summary>
-    /// Инициализирует новый экземпляр типа <see cref="UserPassword" />.
-    /// </summary>
-    /// <param name="password">Пароль пользователя.</param>
-    /// <exception cref="ArgumentException">
-    /// Возникает, если <paramref name="password" /> является <c>null</c>,
-    /// <c>whitespace</c> или его длина превышает <see cref="MaxLength" />.
-    /// </exception>
+    
     public UserPassword(string password)
     {
         if (string.IsNullOrWhiteSpace(password))
@@ -44,22 +30,15 @@ public class UserPassword: ValueObject
 
     private static string GenerateHash(string password) => BCrypt.Net.BCrypt.EnhancedHashPassword(password);
 
-    private bool VerifyPassword(string password, string hashedPassword) => BCrypt.Net.BCrypt.EnhancedVerify(password, hashedPassword);
+    public bool IsValidPassword(string password) => BCrypt.Net.BCrypt.EnhancedVerify(password, _password);
 
-    /// <inheritdoc />
     public override string ToString() => _password;
 
-    /// <summary>
-    /// Возвращает набор компонентов, участвующий в сравнении.
-    /// </summary>
     protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return _password;
     }
-
-    /// <summary>
-    /// Выполняет неявное преобразование из <see cref="UserPassword" /> в <see cref="string" />.
-    /// </summary>
+    
     [return: NotNullIfNotNull(nameof(obj))]
     public static implicit operator string?(UserPassword? obj) => obj?._password;
 }

@@ -14,6 +14,8 @@ public class User : Entity<SequentialGuid>
     /// Инициализирует новый экземпляр типа <see cref="User" />.
     /// </summary>
     /// <param name="id">Идентификатор пользователя.</param>
+    /// <param name="login">Логин.</param>
+    /// <param name="password">Пароль.</param>
     /// <param name="userFirstName">Имя пользователя.</param>
     /// <param name="userLastName">Фамилия пользователя.</param>
     /// <param name="passportInfo">Информация о паспорте пользователя</param>
@@ -24,9 +26,11 @@ public class User : Entity<SequentialGuid>
     /// <paramref name="userLastName" />, <paramref name="passportInfo" />,
     /// <paramref name="role" /> или <paramref name="userBirthDay" /> равен <c>null</c>.
     /// </exception>
-    public User(SequentialGuid id, UserFirstName userFirstName, UserLastName userLastName, PassportInfo passportInfo, Role role, UserBirthDay userBirthDay)
+    public User(SequentialGuid id, UserLogin login, UserPassword password, UserFirstName userFirstName, UserLastName userLastName, PassportInfo passportInfo, Role role, UserBirthDay userBirthDay)
         : base(id)
     {
+        Login = login ?? throw new ArgumentNullException(nameof(login));
+        Password = password ?? throw new ArgumentNullException(nameof(password));
         UserFirstName = userFirstName ?? throw new ArgumentNullException(nameof(userFirstName));
         UserLastName = userLastName ?? throw new ArgumentNullException(nameof(userLastName));
         PassportInfo = passportInfo ?? throw new ArgumentNullException(nameof(passportInfo));
@@ -67,6 +71,11 @@ public class User : Entity<SequentialGuid>
     /// Имя пользователя.
     /// </summary>
     public UserFirstName UserFirstName { get; private set; }
+    
+    /// <summary>
+    /// Логин пользователя.
+    /// </summary>
+    public UserLogin Login { get; private set; }
 
     /// <summary>
     /// Пароль пользователя.

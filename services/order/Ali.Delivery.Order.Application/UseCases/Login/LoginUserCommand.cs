@@ -5,4 +5,5 @@ namespace Ali.Delivery.Order.Application.UseCases.Login;
 /// <summary>
 /// </summary>
 /// <param name="FirstName"></param>
-public record LoginCommand(string FirstName) : IRequest<string>;
+/// <param name="Password"></param>
+public record LoginCommand(string Login, string Password) : IRequest<string>;

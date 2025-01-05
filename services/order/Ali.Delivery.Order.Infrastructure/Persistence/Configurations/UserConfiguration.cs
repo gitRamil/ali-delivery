@@ -29,6 +29,11 @@ internal class UserConfiguration : EntityTypeConfigurationBase<User>
                .HasConversion(l => (string)l, s => new UserLastName(s))
                .HasComment("Фамилия пользователя");
         
+        builder.Property(u => u.Login)
+               .HasMaxLength(UserLastName.MaxLength)
+               .HasConversion(l => (string)l, s => new UserLogin(s))
+               .HasComment("Логин пользователя");
+        
         builder.Property(u => u.Password)
                .HasMaxLength(UserLastName.MaxLength)
                .HasConversion(l => (string)l, s => new UserPassword(s))

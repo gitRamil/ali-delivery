@@ -6,6 +6,7 @@ using Ali.Delivery.Order.Application.UseCases.GetUser;
 using Ali.Delivery.Order.Application.UseCases.Login;
 using Ali.Delivery.Order.Application.UseCases.UpdateUser;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ali.Delivery.Order.WebApi.Controllers;
@@ -34,6 +35,7 @@ public class UserController : ControllerBase
     /// </summary>
     /// <param name="command">Пользователь.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
+    [Authorize]
     [HttpPost]
     [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -88,15 +90,15 @@ public class UserController : ControllerBase
     /// <summary>
     /// Авторизует пользователя.
     /// </summary>
-    /// <param name="login">Логин пользователя.</param>
+    /// <param name="command">Логин пользователя.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
     /// <returns>JWT-токен.</returns>
     [HttpPost("login")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> Login(string login, CancellationToken cancellationToken)
+    public async Task<IActionResult> Login(LoginCommand command, CancellationToken cancellationToken)
     {
-        var token = await _mediator.Send(new LoginCommand(login), cancellationToken);
+        var token = await _mediator.Send(command, cancellationToken);
 
         HttpContext.Response.Cookies.Append("tasty-cookies", token);
 

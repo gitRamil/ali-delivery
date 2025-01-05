@@ -24,29 +24,16 @@ try
     builder.Services.AddDateTimeService();
     builder.Services.AddDefaultProblemDetails();
     builder.Services.AddScoped<JwtProvider>();
+    builder.Services.Configure<JwtOptions>(config.GetSection(nameof(JwtOptions)));
+    var jwtOptions = builder.Services.BuildServiceProvider().GetRequiredService<IOptions<JwtOptions>>();
+    builder.Services.AddApiAuthentication(jwtOptions);
 
-    builder.Services.AddAuthentication("Bearer")
-           .AddJwtBearer(options =>
-           {
-               options.TokenValidationParameters = new TokenValidationParameters
-               {
-                   ValidateIssuerSigningKey = true,
-                   ValidateLifetime = true,
-                   IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"] ?? string.Empty)),
-                   ValidateIssuer = false,
-                   ValidateAudience = false
-               };
-
-               options.Events = new JwtBearerEvents
-               {
-                   OnMessageReceived = context =>
-                   {
-                       context.Token = context.Request.Cookies["tasty-cookies"];
-                       return Task.CompletedTask;
-                   }
-               };
-           });
-    builder.Services.AddAuthorization();
+    builder.Services.AddSwaggerGen(c =>
+    {
+        c.CustomSchemaIds(type => type.FullName); // Избегает конфликтов имен схем
+        c.IgnoreObsoleteProperties(); // Игнорирует устаревшие свойства
+        c.MapType<IFeatureCollection>(() => null); // Исключение типа
+    });
 
     var app = builder.Build();
     app.AddAutomaticMigrations();
@@ -72,6 +59,7 @@ try
     app.UseAuthentication();
     app.UseAuthorization();
     app.MapControllers();
+    
     app.Run();
 
     return 0;

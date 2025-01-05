@@ -1,4 +1,6 @@
 using Ali.Delivery.Order.Application.Abstractions;
+using Ali.Delivery.Order.Application.Exceptions;
+using Ali.Delivery.Order.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,14 +35,16 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, string>
     public async Task<string> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
         // Поиск пользователя по логину
-        var user = await _dbcontext.Users.FirstOrDefaultAsync(u => u.UserFirstName == request.FirstName, cancellationToken);
+        var user = await _dbcontext.Users.FirstOrDefaultAsync(u => u.Login == request.Login, cancellationToken) ?? throw new NotFoundException(typeof(User), request.Login);
 
-        if (user == null)
+        var permissions = await _dbcontext.RolePermissions.Where(p => p.Role == user.Role).Select(p=> (string)p.Permission.Code)
+                                          .ToListAsync(cancellationToken);
+
+        if (user.Password.IsValidPassword(request.Password))
         {
-            throw new UnauthorizedAccessException("Invalid login.");
+            throw new UnauthorizedAccessException("Неверный пароль");
         }
-
         // Генерация JWT-токена
-        return _jwtProvider.GenerateToken(user);
+        return _jwtProvider.GenerateToken(user, permissions);
     }
 }

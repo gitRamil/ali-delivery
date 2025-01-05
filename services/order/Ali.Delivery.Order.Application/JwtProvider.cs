@@ -12,7 +12,7 @@ namespace Ali.Delivery.Order.Application;
 /// </summary>
 public class JwtProvider
 {
-    private readonly JwtSettings _settings;
+    private readonly JwtOptions _options;
 
     /// <summary>
     /// Инициализирует новый экземпляр класса <see cref="JwtProvider"/>.
@@ -27,7 +27,15 @@ public class JwtProvider
     /// <returns>JWT в виде строки.</returns>
     public string GenerateToken(User user)
     {
-        Claim[] claims = [new Claim("userId", user.Id.ToString())];
+        var claims = new List<Claim>
+        {
+            new("userId", user.Id.ToString()),
+        };
+        
+        foreach (var permission in permissions)
+        {
+            claims.Add(new Claim("userPermissions", permission));
+        }
 
         var signingCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.Key)),
                                                         SecurityAlgorithms.HmacSha256Signature);
