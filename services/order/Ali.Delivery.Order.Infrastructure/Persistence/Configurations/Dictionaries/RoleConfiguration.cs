@@ -34,18 +34,6 @@ internal class RoleConfiguration : EntityTypeConfigurationBase<Role>
         builder.HasIndex(p => p.Code)
                .IsUnique();
 
-        // builder.HasMany(r => r.RolePermissions)
-        //        .WithOne(rp => rp.Role)
-        //        .HasForeignKey(rp => rp.RoleId)
-        //        .HasConstraintName("role_permission_id")
-        //        .OnDelete(DeleteBehavior.Cascade);    
-        // builder.HasOne(r => r.RolePermissions)
-        //        .WithMany()
-        //        .HasForeignKey("role_permission_id");
-        //
-        // builder.Property("role_permission_id")
-        //        .HasComment("Идентификатор доступов по роли");
-        
         builder.HasData(Role.GetAllValues());
     }
 }

@@ -21,22 +21,25 @@ internal class UserConfiguration : EntityTypeConfigurationBase<User>
 
         builder.Property(u => u.UserFirstName)
                .HasMaxLength(UserFirstName.MaxLength)
+               .HasColumnName("first_name")
                .HasConversion(f => (string)f, s => new UserFirstName(s))
                .HasComment("Имя пользователя");
 
         builder.Property(u => u.UserLastName)
                .HasMaxLength(UserLastName.MaxLength)
+               .HasColumnName("last_name")
                .HasConversion(l => (string)l!, s => new UserLastName(s))
                .HasComment("Фамилия пользователя");
 
         builder.HasOne(p => p.PassportInfo)
                .WithMany()
-               .HasForeignKey("passport_info_id");
+               .HasForeignKey("passport_id");
 
-        builder.Property("passport_info_id")
+        builder.Property("passport_id")
                .HasComment("Информация о паспорте");
 
         builder.Property(u => u.UserBirthDay)
+               .HasColumnName("birth_day")
                .HasConversion(b => (DateTime)b!, s => new UserBirthDay(s))
                .HasComment("Дата рождения пользователя");
 
