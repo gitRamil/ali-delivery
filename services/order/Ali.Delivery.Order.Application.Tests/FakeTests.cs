@@ -7,7 +7,7 @@ public class FakeTests
     public void FakeTest()
     {
         // Arrange.
-        var value = 1;
+        var value = 2;
 
         // Act.
         var result = value + 1;
