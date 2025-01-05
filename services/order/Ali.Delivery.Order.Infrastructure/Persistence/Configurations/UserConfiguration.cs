@@ -26,8 +26,13 @@ internal class UserConfiguration : EntityTypeConfigurationBase<User>
 
         builder.Property(u => u.UserLastName)
                .HasMaxLength(UserLastName.MaxLength)
-               .HasConversion(l => (string)l!, s => new UserLastName(s))
+               .HasConversion(l => (string)l, s => new UserLastName(s))
                .HasComment("Фамилия пользователя");
+        
+        builder.Property(u => u.Password)
+               .HasMaxLength(UserLastName.MaxLength)
+               .HasConversion(l => (string)l, s => new UserPassword(s))
+               .HasComment("Пароль пользователя");
 
         builder.HasOne(p => p.PassportInfo)
                .WithMany()
@@ -37,7 +42,7 @@ internal class UserConfiguration : EntityTypeConfigurationBase<User>
                .HasComment("Информация о паспорте");
 
         builder.Property(u => u.UserBirthDay)
-               .HasConversion(b => (DateTime)b!, s => new UserBirthDay(s))
+               .HasConversion(b => (DateTime)b, s => new UserBirthDay(s))
                .HasComment("Дата рождения пользователя");
 
         builder.HasOne(u => u.Role)

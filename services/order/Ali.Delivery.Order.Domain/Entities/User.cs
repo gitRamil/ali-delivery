@@ -69,6 +69,11 @@ public class User : Entity<SequentialGuid>
     public UserFirstName UserFirstName { get; private set; }
 
     /// <summary>
+    /// Пароль пользователя.
+    /// </summary>
+    public UserPassword Password { get; private set; }
+
+    /// <summary>
     /// Фамилия пользователя.
     /// </summary>
     public UserLastName UserLastName { get; private set; }
