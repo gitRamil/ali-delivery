@@ -59,11 +59,6 @@ public class Role : Entity<SequentialGuid>
     /// </summary>
     public RoleName Name { get; }
 
-    // /// <summary>
-    // /// Коллекция разрешений для роли.
-    // /// </summary>
-    // public virtual ICollection<RolePermission> RolePermissions { get; private set; } = new List<RolePermission>();
-
     /// <summary>
     /// Возвращает все значения перечисления.
     /// </summary>

@@ -39,6 +39,7 @@ public class AppDbContext : DbContext, IAppDbContext
 
     public DbSet<Permission> Permissions => Set<Permission>();
     public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
+    public DbSet<Role> Roles => Set<Role>();
 
     /// <inheritdoc cref="DbContext" />
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -62,8 +63,6 @@ public class AppDbContext : DbContext, IAppDbContext
     /// Возвращает набор пользователей.
     /// </summary>
     public DbSet<User> Users => Set<User>();
-
-    public DbSet<Role> Roles => Set<Role>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

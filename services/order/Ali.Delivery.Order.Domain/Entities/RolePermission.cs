@@ -17,7 +17,8 @@ public class RolePermission : Entity<SequentialGuid>
     /// <param name="role">Идентификатор роли пользователя.</param>
     /// <param name="token">JWT токен.</param>
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если любой из параметров <paramref name="permission" />, <paramref name="role" /> или <paramref name="token" /> равен <c>null</c>.
+    /// Возникает, если любой из параметров <paramref name="permission" />, <paramref name="role" /> или
+    /// <paramref name="token" /> равен <c>null</c>.
     /// </exception>
     public RolePermission(SequentialGuid id, Permission permission, Role role, string token)
         : base(id)
@@ -49,11 +50,6 @@ public class RolePermission : Entity<SequentialGuid>
     /// </summary>
     public virtual Role Role { get; private set; }
 
-    // /// <summary>
-    // /// Идентификатор роли.
-    // /// </summary>
-    // public Guid RoleId { get; private set; }
-    
     /// <summary>
     /// JWT токен.
     /// </summary>

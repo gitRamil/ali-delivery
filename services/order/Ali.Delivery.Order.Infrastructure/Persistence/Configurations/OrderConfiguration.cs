@@ -25,16 +25,16 @@ internal class CourierConfiguration : EntityTypeConfigurationBase<Domain.Entitie
 
         builder.HasOne(p => p.OrderStatus)
                .WithMany()
-               .HasForeignKey("OrderStatusId");
+               .HasForeignKey("status_id");
 
-        builder.Property("OrderStatusId")
+        builder.Property("status_id")
                .HasComment("Статус заказа");
 
         builder.HasOne(p => p.OrderInfo)
                .WithMany()
-               .HasForeignKey("order_info_id");
+               .HasForeignKey("details_id");
 
-        builder.Property("order_info_id")
+        builder.Property("details_id")
                .HasComment("Информация о заказе");
 
         builder.HasOne(p => p.Sender)

@@ -37,6 +37,21 @@ public static class EnumDtoExtensions
         };
     #endregion
 
+    #region PermissionCode
+    /// <summary>
+    /// Преобразует значение перечисления в размер.
+    /// </summary>
+    public static Permission ToPermission(this PermissionCode code) =>
+        code switch
+        {
+            PermissionCode.CreateUser => Permission.CreateUser,
+            PermissionCode.UpdateOrder => Permission.UpdateOrder,
+            PermissionCode.GetOrder => Permission.GetOrder,
+            PermissionCode.DeleteOrder => Permission.DeleteOrder,
+            _ => throw new ArgumentOutOfRangeException(nameof(code), code, "Не поддерживаемое значение доступа.")
+        };
+    #endregion
+
     #region RoleCode
     /// <summary>
     /// Преобразует значение перечисления в роль.
@@ -64,20 +79,4 @@ public static class EnumDtoExtensions
             _ => throw new ArgumentOutOfRangeException(nameof(code), code, "Не поддерживаемое значение размера.")
         };
     #endregion
-    
-    #region PermissionCode
-    /// <summary>
-    /// Преобразует значение перечисления в размер.
-    /// </summary>
-    public static Permission ToPermission(this PermissionCode code) =>
-        code switch
-        {
-            PermissionCode.CreateUser => Permission.CreateUser,
-            PermissionCode.UpdateOrder => Permission.UpdateOrder,
-            PermissionCode.GetOrder => Permission.GetOrder,
-            PermissionCode.DeleteOrder => Permission.DeleteOrder,
-            _ => throw new ArgumentOutOfRangeException(nameof(code), code, "Не поддерживаемое значение доступа.")
-        };
-    #endregion
-    
 }

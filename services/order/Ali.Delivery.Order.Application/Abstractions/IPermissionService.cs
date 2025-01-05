@@ -12,13 +12,9 @@ public class PermissionService : IPermissionService
         "CreateOrder",
         "DeleteOrder",
         "UpdateOrder",
-        "TrackOrder",
+        "TrackOrder"
         // Добавьте другие пермишены
     };
 
-    public bool IsValidPermission(string permissionName)
-    {
-        return _validPermissions.Contains(permissionName);
-    }
+    public bool IsValidPermission(string permissionName) => _validPermissions.Contains(permissionName);
 }
-

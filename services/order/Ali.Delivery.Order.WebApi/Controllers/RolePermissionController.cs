@@ -18,10 +18,7 @@ public class RolePermissionsController : ControllerBase
     /// Инициализирует новый экземпляр контроллера <see cref="RolePermissionsController" />.
     /// </summary>
     /// <param name="mediator">Медиатор для обработки команд.</param>
-    public RolePermissionsController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
+    public RolePermissionsController(IMediator mediator) => _mediator = mediator;
 
     /// <summary>
     /// Создает связь между ролью и разрешением.
@@ -32,6 +29,10 @@ public class RolePermissionsController : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreateRolePermissionCommand command)
     {
         var rolePermissionId = await _mediator.Send(command);
-        return Ok(new { Id = rolePermissionId });
+
+        return Ok(new
+        {
+            Id = rolePermissionId
+        });
     }
 }

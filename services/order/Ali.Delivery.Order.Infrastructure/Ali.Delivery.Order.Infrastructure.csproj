@@ -20,7 +20,7 @@
 
     <ItemGroup>
         <Folder Include="Migrations\"/>
-        <Folder Include="Persistence\Converter\" />
+        <Folder Include="Persistence\Converter\"/>
     </ItemGroup>
 
 </Project>

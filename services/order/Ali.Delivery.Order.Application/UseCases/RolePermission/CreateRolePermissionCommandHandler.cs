@@ -15,11 +15,11 @@ namespace Ali.Delivery.Order.Application.UseCases.RolePermission;
 /// </summary>
 public class CreateRolePermissionCommandHandler : IRequestHandler<CreateRolePermissionCommand, Guid>
 {
-    private readonly IAppDbContext _context;
     private readonly IConfiguration _configuration;
+    private readonly IAppDbContext _context;
 
     /// <summary>
-    /// Конструктор обработчика команды <see cref="CreateRolePermissionCommandHandler"/>.
+    /// Конструктор обработчика команды <see cref="CreateRolePermissionCommandHandler" />.
     /// </summary>
     /// <param name="context">Контекст приложения.</param>
     /// <param name="configuration">Конфигурация приложения.</param>
@@ -53,18 +53,13 @@ public class CreateRolePermissionCommandHandler : IRequestHandler<CreateRolePerm
                 new Claim("permissionId", permission.Id.ToString())
             }),
             Expires = DateTime.UtcNow.AddDays(int.Parse(_configuration["JwtSettings:ExpirationDays"] ?? "7")),
-            SigningCredentials = new SigningCredentials(
-                new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
 
         var token = tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor));
 
         // Создание сущности RolePermission.
-        var rolePermission = new Domain.Entities.RolePermission(
-            SequentialGuid.Create(),
-            permission,
-            role,
-            token);
+        var rolePermission = new Domain.Entities.RolePermission(SequentialGuid.Create(), permission, role, token);
 
         _context.RolePermissions.Add(rolePermission);
         await _context.SaveChangesAsync(cancellationToken);

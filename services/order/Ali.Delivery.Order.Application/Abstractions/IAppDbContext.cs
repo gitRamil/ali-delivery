@@ -17,6 +17,10 @@ public interface IAppDbContext
     /// </value>
     DbSet<Domain.Entities.Order> Orders { get; }
 
+    DbSet<Permission> Permissions { get; }
+    DbSet<RolePermission> RolePermissions { get; }
+    DbSet<Role> Roles { get; }
+
     /// <summary>
     /// Возвращает набор пользователей.
     /// </summary>
@@ -24,12 +28,6 @@ public interface IAppDbContext
     /// Пользователи.
     /// </value>
     DbSet<User> Users { get; }
-    
-    DbSet<Role> Roles { get; }
-    
-    DbSet<Permission> Permissions { get; }
-    
-    DbSet<RolePermission> RolePermissions { get; }
 
     /// <summary>
     /// Сохраняет изменения.
