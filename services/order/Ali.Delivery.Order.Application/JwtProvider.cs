@@ -35,7 +35,7 @@ public class JwtProvider
 
         claims.AddRange(permissions.Select(permission => new Claim("userPermissions", permission.ToString())));
 
-        var signingCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey)), SecurityAlgorithms.HmacSha256Signature);
+        var signingCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey)), SecurityAlgorithms.HmacSha256);
         var token = new JwtSecurityToken(claims: claims, signingCredentials: signingCredentials, expires: DateTime.Now.AddHours(_options.ExpiresHours));
         var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
 
