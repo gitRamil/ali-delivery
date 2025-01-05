@@ -24,7 +24,7 @@ public class JwtProvider
     /// Генерирует JSON Web Token (JWT) для указанного пользователя.
     /// </summary>
     /// <param name="user">Пользователь, для которого создается токен.</param>
-    /// <param name="permissions"></param>
+    /// <param name="permissions">Список разрешений пользователя.</param>
     /// <returns>JWT в виде строки.</returns>
     public string GenerateToken(User user, IEnumerable<int> permissions)
     {

@@ -5,7 +5,7 @@ using Ali.Delivery.Domain.Core;
 namespace Ali.Delivery.Order.Domain.ValueObjects.User;
 
 /// <summary>
-/// Представляет фамилию пользователя.
+/// Представляет логин пользователя.
 /// </summary>
 [DebuggerDisplay("{_login}")]
 public class UserLogin : ValueObject
@@ -16,7 +16,7 @@ public class UserLogin : ValueObject
     /// <summary>
     /// Инициализирует новый экземпляр типа <see cref="UserLogin" />.
     /// </summary>
-    /// <param name="login">Фамилия пользователя.</param>
+    /// <param name="login">Логин пользователя.</param>
     /// <exception cref="ArgumentException">
     /// Возникает, если <paramref name="login" /> является <c>null</c>,
     /// <c>whitespace</c> или его длина превышает <see cref="MaxLength" />.
@@ -25,14 +25,14 @@ public class UserLogin : ValueObject
     {
         if (string.IsNullOrWhiteSpace(login))
         {
-            throw new ArgumentException("Фамилия не может быть пустой или null.", nameof(login));
+            throw new ArgumentException("Логин не может быть пустой или null.", nameof(login));
         }
 
         login = login.Trim();
 
         if (login.Length > MaxLength)
         {
-            throw new ArgumentException($"Фамилия не может быть длиннее {MaxLength} символов.", nameof(login));
+            throw new ArgumentException($"Логин не может быть длиннее {MaxLength} символов.", nameof(login));
         }
 
         _login = login;

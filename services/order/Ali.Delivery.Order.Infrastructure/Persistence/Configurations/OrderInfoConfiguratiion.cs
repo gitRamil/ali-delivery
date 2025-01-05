@@ -7,12 +7,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Ali.Delivery.Order.Infrastructure.Persistence.Configurations;
 
 /// <summary>
-/// Представляет настройку конфигурации для типа <see cref="Domain.Entities.OrderInfo" />.
+/// Представляет настройку конфигурации для типа <see cref="OrderInfo" />.
 /// </summary>
 internal class OrderInfoConfiguration : EntityTypeConfigurationBase<OrderInfo>
 {
        /// <summary>
-       /// Вызывается при выполнении конфигурации сущности типа <see cref="Domain.Entities.OrderInfo" />.
+       /// Вызывается при выполнении конфигурации сущности типа <see cref="OrderInfo" />.
        /// </summary>
        /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
        protected override void OnConfigure(EntityTypeBuilder<OrderInfo> builder)

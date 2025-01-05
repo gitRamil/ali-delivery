@@ -10,8 +10,9 @@ public class CurrentUserService : ICurrentUser
     private readonly ClaimsPrincipal _user;
 
     /// <summary>
+    /// Служба для получения информации о текущем пользователе.
     /// </summary>
-    /// <param name="httpContextAccessor"></param>
+    /// <param name="httpContextAccessor">Служба для доступа к текущему HTTP-контексту.</param>
     public CurrentUserService(IHttpContextAccessor httpContextAccessor)
     {
         _user = httpContextAccessor.HttpContext?.User ?? new ClaimsPrincipal();

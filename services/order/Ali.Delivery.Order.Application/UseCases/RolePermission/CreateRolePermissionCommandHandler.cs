@@ -37,11 +37,9 @@ public class CreateRolePermissionCommandHandler : IRequestHandler<CreateRolePerm
     /// <returns>Идентификатор созданной связи.</returns>
     public async Task<Guid> Handle(CreateRolePermissionCommand request, CancellationToken cancellationToken)
     {
-        // Преобразуем код разрешения и роли в доменные сущности.
         var permission = request.Permission.ToPermission();
         var role = request.Role.ToRole();
 
-        // Генерация JWT токена для роли и разрешения.
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"] ?? string.Empty);
 
@@ -58,7 +56,6 @@ public class CreateRolePermissionCommandHandler : IRequestHandler<CreateRolePerm
 
         var token = tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor));
 
-        // Создание сущности RolePermission.
         var rolePermission = new Domain.Entities.RolePermission(SequentialGuid.Create(), permission, role, token);
 
         _context.RolePermissions.Add(rolePermission);

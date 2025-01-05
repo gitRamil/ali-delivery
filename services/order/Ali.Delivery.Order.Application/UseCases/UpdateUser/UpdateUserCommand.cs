@@ -15,12 +15,13 @@ namespace Ali.Delivery.Order.Application.UseCases.UpdateUser;
 /// <param name="ExpirationDate">Дата окончания действия паспорта.</param>
 /// <param name="Role">Идентификатор роли пользователя.</param>
 /// <param name="Birthdate">Дата рождения пользователя.</param>
-public record UpdateUserCommand(Guid UserId,
-                                string FirstName,
-                                string LastName,
-                                PassportType PassportType,
-                                string PassportNumber,
-                                DateTime RegDate,
-                                DateTime ExpirationDate,
-                                RoleCode Role,
-                                DateTime Birthdate) : IRequest<UserDto>;
+public record UpdateUserCommand(
+    Guid UserId,
+    string FirstName,
+    string LastName,
+    PassportType PassportType,
+    string PassportNumber,
+    DateTime RegDate,
+    DateTime ExpirationDate,
+    RoleCode Role,
+    DateTime Birthdate) : IRequest<UserDto>;

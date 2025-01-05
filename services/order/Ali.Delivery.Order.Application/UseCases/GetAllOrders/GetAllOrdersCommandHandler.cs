@@ -17,6 +17,7 @@ public class GetAllOrdersCommandHandler : IRequestHandler<GetAllOrders, List<Ord
     /// Инициализирует новый экземпляр типа <see cref="GetAllOrdersCommandHandler" />.
     /// </summary>
     /// <param name="context">Контекст БД.</param>
+    /// <param name="currentUser">Текущий пользователь.</param>
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="context" /> равен <c>null</c>.
     /// </exception>

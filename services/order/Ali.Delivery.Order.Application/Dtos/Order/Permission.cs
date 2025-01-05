@@ -3,29 +3,30 @@ using System.Runtime.Serialization;
 namespace Ali.Delivery.Order.Application.Dtos.Order;
 
 /// <summary>
+/// Коды доступов.
 /// </summary>
 public enum PermissionCode
 {
     /// <summary>
-    /// Пользователь.
+    /// Создать пользователя.
     /// </summary>
     [EnumMember(Value = "createUser")]
     CreateUser,
 
     /// <summary>
-    /// Курьер.
+    /// Обновить заказ.
     /// </summary>
     [EnumMember(Value = "updateOrder")]
     UpdateOrder,
 
     /// <summary>
-    /// Неавторизованный пользователь.
+    /// Получить заказ.
     /// </summary>
     [EnumMember(Value = "getOrder")]
     GetOrder,
 
     /// <summary>
-    /// Неавторизованный пользователь.
+    /// Удалить заказ.
     /// </summary>
     [EnumMember(Value = "deleteOrder")]
     DeleteOrder

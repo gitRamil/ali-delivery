@@ -6,15 +6,17 @@ using Microsoft.AspNetCore.Mvc.Filters;
 namespace Ali.Delivery.Order.WebApi.Attribute;
 
 /// <summary>
+/// Атрибут для проверки разрешений пользователя на основе предоставленных кодов разрешений.
 /// </summary>
-/// <param name="permissions"></param>
+/// <param name="permissions">Массив кодов разрешений пользователя.</param>
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
 public class UserPermissionAttribute(params UserPermissionCode[] permissions) : System.Attribute, IAsyncActionFilter
 {
     /// <summary>
+    /// Асинхронно выполняет проверку разрешений пользователя перед выполнением действия.
     /// </summary>
-    /// <param name="context"></param>
-    /// <param name="next"></param>
+    /// <param name="context">Контекст выполнения действия.</param>
+    /// <param name="next">Делегат для продолжения выполнения действия.</param>
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
         var tokenString = context.HttpContext.Request.Cookies["token"];

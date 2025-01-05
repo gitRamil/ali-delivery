@@ -37,8 +37,19 @@ public class AppDbContext : DbContext, IAppDbContext
     /// </summary>
     public DbSet<Domain.Entities.Order> Orders => Set<Domain.Entities.Order>();
 
+    /// <summary>
+    /// Возвращает набор доступов.
+    /// </summary>
     public DbSet<Permission> Permissions => Set<Permission>();
+
+    /// <summary>
+    /// Возвращает набор доступов по ролям.
+    /// </summary>
     public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
+
+    /// <summary>
+    /// Возвращает набор ролей.
+    /// </summary>
     public DbSet<Role> Roles => Set<Role>();
 
     /// <inheritdoc cref="DbContext" />

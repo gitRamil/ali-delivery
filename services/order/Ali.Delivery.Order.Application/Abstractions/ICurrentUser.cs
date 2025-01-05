@@ -1,7 +1,7 @@
 namespace Ali.Delivery.Order.Application.Abstractions;
 
 /// <summary>
-/// qwe
+/// Описывает текущего пользователя в системе, предоставляя доступ к его данным и правам.
 /// </summary>
 public interface ICurrentUser
 {
@@ -20,7 +20,7 @@ public interface ICurrentUser
     /// </returns>
     bool IsAuthenticated { get; }
 
-    /// <summary>Определяет содержит ли пользователь разрешение(я).</summary>
+    /// <summary>Определяет, содержит ли пользователь разрешение(я).</summary>
     /// <param name="permissions">Разрешения.</param>
     /// <returns>
     /// <c>true</c> если пользователь содержит разрешение(я); в противном случае, <c>false</c>.

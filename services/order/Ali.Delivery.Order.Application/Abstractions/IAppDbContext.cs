@@ -17,8 +17,28 @@ public interface IAppDbContext
     /// </value>
     DbSet<Domain.Entities.Order> Orders { get; }
 
+    /// <summary>
+    /// Возвращает набор доступов.
+    /// </summary>
+    /// <value>
+    /// Доступы.
+    /// </value>
     DbSet<Permission> Permissions { get; }
+
+    /// <summary>
+    /// Возвращает набор доступов по ролям.
+    /// </summary>
+    /// <value>
+    /// Доступы по ролям.
+    /// </value>
     DbSet<RolePermission> RolePermissions { get; }
+
+    /// <summary>
+    /// Возвращает набор ролей.
+    /// </summary>
+    /// <value>
+    /// Роли.
+    /// </value>
     DbSet<Role> Roles { get; }
 
     /// <summary>

@@ -1,27 +1,27 @@
 namespace Ali.Delivery.Order.Application;
 
 /// <summary>
-/// q
+/// Представляет коды разрешений пользователя для управления доступом к функциям системы.
 /// </summary>
 public enum UserPermissionCode
 {
     /// <summary>
-    /// q
+    /// Разрешение на создание нового пользователя.
     /// </summary>
     CreateUser = 1000,
 
     /// <summary>
-    /// q
+    /// Разрешение на удаление заказа.
     /// </summary>
     DeleteOrder = 1001,
 
     /// <summary>
-    /// q
+    /// Разрешение на получение информации о заказе.
     /// </summary>
     GetOrder = 1002,
 
     /// <summary>
-    /// q
+    /// Разрешение на обновление информации о заказе.
     /// </summary>
     UpdateOrder = 1003
 }
