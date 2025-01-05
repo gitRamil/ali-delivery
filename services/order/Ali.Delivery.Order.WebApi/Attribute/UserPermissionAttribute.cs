@@ -5,20 +5,19 @@ using Microsoft.AspNetCore.Mvc.Filters;
 namespace Ali.Delivery.Order.WebApi.Attribute;
 
 /// <summary>
-/// 
 /// </summary>
 /// <param name="permission"></param>
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
 public class UserPermissionAttribute(string permission) : System.Attribute, IAsyncActionFilter
 {
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="context"></param>
     /// <param name="next"></param>
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
         var tokenString = context.HttpContext.Request.Cookies["tasty-cookies"];
+
         if (tokenString == null)
         {
             context.Result = new UnauthorizedResult();
@@ -34,7 +33,9 @@ public class UserPermissionAttribute(string permission) : System.Attribute, IAsy
         }
 
         var jwtToken = tokenHandler.ReadJwtToken(tokenString);
-        var userPermission = jwtToken.Claims.FirstOrDefault(c => c.Type == "userPermissions")?.Value;
+
+        var userPermission = jwtToken.Claims.FirstOrDefault(c => c.Type == "userPermissions")
+                                     ?.Value;
 
         if (userPermission != permission)
         {

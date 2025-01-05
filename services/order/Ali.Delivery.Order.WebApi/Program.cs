@@ -1,11 +1,9 @@
-using System.Text;
 using Ali.Delivery.Order.Application;
 using Ali.Delivery.Order.WebApi.Infrastructure.IoC;
 using Ali.Delivery.Order.WebApi.IoC;
 using Hellang.Middleware.ProblemDetails;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.CookiePolicy;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Options;
 using Serilog;
 
 try
@@ -24,16 +22,11 @@ try
     builder.Services.AddDateTimeService();
     builder.Services.AddDefaultProblemDetails();
     builder.Services.AddScoped<JwtProvider>();
-    builder.Services.Configure<JwtOptions>(config.GetSection(nameof(JwtOptions)));
-    var jwtOptions = builder.Services.BuildServiceProvider().GetRequiredService<IOptions<JwtOptions>>();
-    builder.Services.AddApiAuthentication(jwtOptions);
+    builder.Services.Configure<JwtSettings>(config.GetSection(nameof(JwtSettings)));
 
-    builder.Services.AddSwaggerGen(c =>
-    {
-        c.CustomSchemaIds(type => type.FullName); // Избегает конфликтов имен схем
-        c.IgnoreObsoleteProperties(); // Игнорирует устаревшие свойства
-        c.MapType<IFeatureCollection>(() => null); // Исключение типа
-    });
+    var jwtOptions = builder.Services.BuildServiceProvider()
+                            .GetRequiredService<IOptions<JwtSettings>>();
+    builder.Services.AddApiAuthentication(jwtOptions);
 
     var app = builder.Build();
     app.AddAutomaticMigrations();
@@ -59,7 +52,7 @@ try
     app.UseAuthentication();
     app.UseAuthorization();
     app.MapControllers();
-    
+
     app.Run();
 
     return 0;

@@ -37,13 +37,15 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, string>
         // Поиск пользователя по логину
         var user = await _dbcontext.Users.FirstOrDefaultAsync(u => u.Login == request.Login, cancellationToken) ?? throw new NotFoundException(typeof(User), request.Login);
 
-        var permissions = await _dbcontext.RolePermissions.Where(p => p.Role == user.Role).Select(p=> (string)p.Permission.Code)
+        var permissions = await _dbcontext.RolePermissions.Where(p => p.Role == user.Role)
+                                          .Select(p => (string)p.Permission.Code)
                                           .ToListAsync(cancellationToken);
 
         if (user.Password.IsValidPassword(request.Password))
         {
             throw new UnauthorizedAccessException("Неверный пароль");
         }
+
         // Генерация JWT-токена
         return _jwtProvider.GenerateToken(user, permissions);
     }

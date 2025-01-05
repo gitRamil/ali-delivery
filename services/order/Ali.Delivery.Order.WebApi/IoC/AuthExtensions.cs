@@ -8,28 +8,29 @@ namespace Ali.Delivery.Order.WebApi.IoC;
 
 public static class AuthExtensions
 {
-    public static void AddApiAuthentication(this IServiceCollection services, IOptions<JwtOptions> jwtOptions)
+    public static void AddApiAuthentication(this IServiceCollection services, IOptions<JwtSettings> jwtOptions)
     {
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Value.SecretKey))
-                    };
-    
-                    options.Events = new JwtBearerEvents
-                    {
-                        OnMessageReceived = context =>
-                        {
-                            context.Token = context.Request.Cookies["tasty-cookies"];
-                            return Task.CompletedTask;
-                        }
-                    };
-                });
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,
+                              options =>
+                              {
+                                  options.TokenValidationParameters = new TokenValidationParameters
+                                  {
+                                      ValidateIssuer = false,
+                                      ValidateAudience = false,
+                                      ValidateLifetime = true,
+                                      ValidateIssuerSigningKey = true,
+                                      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Value.SecretKey))
+                                  };
+
+                                  options.Events = new JwtBearerEvents
+                                  {
+                                      OnMessageReceived = context =>
+                                      {
+                                          context.Token = context.Request.Cookies["tasty-cookies"];
+                                          return Task.CompletedTask;
+                                      }
+                                  };
+                              });
     }
 }

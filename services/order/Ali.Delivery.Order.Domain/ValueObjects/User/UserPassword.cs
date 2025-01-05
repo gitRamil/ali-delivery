@@ -5,12 +5,11 @@ using Ali.Delivery.Domain.Core;
 namespace Ali.Delivery.Order.Domain.ValueObjects.User;
 
 [DebuggerDisplay("{_password}")]
-public class UserPassword: ValueObject
+public class UserPassword : ValueObject
 {
     public const int MaxLength = 100;
-
     private readonly string _password;
-    
+
     public UserPassword(string password)
     {
         if (string.IsNullOrWhiteSpace(password))
@@ -28,8 +27,6 @@ public class UserPassword: ValueObject
         _password = GenerateHash(password);
     }
 
-    private static string GenerateHash(string password) => BCrypt.Net.BCrypt.EnhancedHashPassword(password);
-
     public bool IsValidPassword(string password) => BCrypt.Net.BCrypt.EnhancedVerify(password, _password);
 
     public override string ToString() => _password;
@@ -38,7 +35,9 @@ public class UserPassword: ValueObject
     {
         yield return _password;
     }
-    
+
+    private static string GenerateHash(string password) => BCrypt.Net.BCrypt.EnhancedHashPassword(password);
+
     [return: NotNullIfNotNull(nameof(obj))]
     public static implicit operator string?(UserPassword? obj) => obj?._password;
 }

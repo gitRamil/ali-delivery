@@ -4,7 +4,6 @@ using Ali.Delivery.Order.Application.UseCases.DeleteOrder;
 using Ali.Delivery.Order.Application.UseCases.GetAllOrders;
 using Ali.Delivery.Order.Application.UseCases.GetOrder;
 using Ali.Delivery.Order.Application.UseCases.UpdateOrder;
-using Ali.Delivery.Order.Domain.Entities.Dictionaries;
 using Ali.Delivery.Order.WebApi.Attribute;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

@@ -26,7 +26,14 @@ public class User : Entity<SequentialGuid>
     /// <paramref name="userLastName" />, <paramref name="passportInfo" />,
     /// <paramref name="role" /> или <paramref name="userBirthDay" /> равен <c>null</c>.
     /// </exception>
-    public User(SequentialGuid id, UserLogin login, UserPassword password, UserFirstName userFirstName, UserLastName userLastName, PassportInfo passportInfo, Role role, UserBirthDay userBirthDay)
+    public User(SequentialGuid id,
+                UserLogin login,
+                UserPassword password,
+                UserFirstName userFirstName,
+                UserLastName userLastName,
+                PassportInfo passportInfo,
+                Role role,
+                UserBirthDay userBirthDay)
         : base(id)
     {
         Login = login ?? throw new ArgumentNullException(nameof(login));
@@ -53,9 +60,19 @@ public class User : Entity<SequentialGuid>
     }
 
     /// <summary>
+    /// Логин пользователя.
+    /// </summary>
+    public UserLogin Login { get; private set; }
+
+    /// <summary>
     /// Информация о паспорте пользователя.
     /// </summary>
     public virtual PassportInfo PassportInfo { get; private set; }
+
+    /// <summary>
+    /// Пароль пользователя.
+    /// </summary>
+    public UserPassword Password { get; private set; }
 
     /// <summary>
     /// Идентификатор роли пользователя.
@@ -71,16 +88,6 @@ public class User : Entity<SequentialGuid>
     /// Имя пользователя.
     /// </summary>
     public UserFirstName UserFirstName { get; private set; }
-    
-    /// <summary>
-    /// Логин пользователя.
-    /// </summary>
-    public UserLogin Login { get; private set; }
-
-    /// <summary>
-    /// Пароль пользователя.
-    /// </summary>
-    public UserPassword Password { get; private set; }
 
     /// <summary>
     /// Фамилия пользователя.

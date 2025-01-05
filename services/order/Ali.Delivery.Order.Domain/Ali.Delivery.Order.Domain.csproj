@@ -8,12 +8,12 @@
 
     <ItemGroup>
         <PackageReference Include="Ali.Delivery.Domain.Core" Version="1.0.0"/>
+        <PackageReference Include="BCrypt.Net-Next" Version="4.0.3"/>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11"/>
     </ItemGroup>
 
     <ItemGroup>
         <Folder Include="Core\"/>
-        <Folder Include="ValueObjects\RolePermission\"/>
     </ItemGroup>
 
 </Project>
