@@ -178,10 +178,8 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         .HasColumnName("id")
                         .HasComment("Уникальный идентификатор");
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
+                    b.Property<int>("Code")
+                        .HasColumnType("integer")
                         .HasColumnName("code")
                         .HasComment("Код");
 
@@ -230,25 +228,25 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("3a166cc9-799c-27fb-42d7-c1cc8512aeef"),
-                            Code = "createUser",
+                            Code = 1000,
                             Name = "Доступ создания пользователя"
                         },
                         new
                         {
                             Id = new Guid("3a166cc9-7999-9fc9-2798-85b0ef75288d"),
-                            Code = "updateOrder",
+                            Code = 1003,
                             Name = "Доступ обновления заказа"
                         },
                         new
                         {
                             Id = new Guid("3a166cc9-799d-6b4b-087a-93e047e60d91"),
-                            Code = "getOrder",
+                            Code = 1002,
                             Name = "Доступ просмотра заказа"
                         },
                         new
                         {
                             Id = new Guid("3a166cc9-799b-7735-e11f-57780f8b0f28"),
-                            Code = "deleteOrder",
+                            Code = 1001,
                             Name = "Доступ удаления заказа"
                         });
                 });
@@ -430,11 +428,6 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         .HasColumnName("name")
                         .HasComment("Наименование заказа");
 
-                    b.Property<Guid>("OrderStatusId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("order_status_id")
-                        .HasComment("Статус заказа");
-
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
@@ -446,26 +439,31 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         .HasDefaultValue(new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)))
                         .HasColumnName("updated_date");
 
-                    b.Property<Guid>("order_info_id")
+                    b.Property<Guid>("details_id")
                         .HasColumnType("uuid")
-                        .HasColumnName("order_info_id")
+                        .HasColumnName("details_id")
                         .HasComment("Информация о заказе");
 
                     b.Property<Guid?>("sender_id")
                         .HasColumnType("uuid")
                         .HasColumnName("sender_id");
 
+                    b.Property<Guid>("status_id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("status_id")
+                        .HasComment("Статус заказа");
+
                     b.HasKey("Id")
                         .HasName("pk_orders");
 
-                    b.HasIndex("OrderStatusId")
-                        .HasDatabaseName("ix_orders_order_status_id");
-
-                    b.HasIndex("order_info_id")
-                        .HasDatabaseName("ix_orders_order_info_id");
+                    b.HasIndex("details_id")
+                        .HasDatabaseName("ix_orders_details_id");
 
                     b.HasIndex("sender_id")
                         .HasDatabaseName("ix_orders_sender_id");
+
+                    b.HasIndex("status_id")
+                        .HasDatabaseName("ix_orders_status_id");
 
                     b.ToTable("orders", null, t =>
                         {
@@ -495,24 +493,24 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("character varying(250)")
-                        .HasColumnName("order_info_address_from")
+                        .HasColumnName("address_from")
                         .HasComment("Адрес отправления");
 
                     b.Property<string>("OrderInfoAddressTo")
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("character varying(250)")
-                        .HasColumnName("order_info_address_to")
+                        .HasColumnName("address_to")
                         .HasComment("Адрес доставки");
 
                     b.Property<decimal>("OrderInfoPrice")
                         .HasColumnType("numeric")
-                        .HasColumnName("order_info_price")
+                        .HasColumnName("price")
                         .HasComment("Цена заказа");
 
                     b.Property<decimal>("OrderInfoWeight")
                         .HasColumnType("numeric")
-                        .HasColumnName("order_info_weight")
+                        .HasColumnName("weight")
                         .HasComment("Вес заказа");
 
                     b.Property<string>("UpdatedBy")
@@ -532,12 +530,12 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         .HasComment("Идентификационный номер размера");
 
                     b.HasKey("Id")
-                        .HasName("pk_order_info");
+                        .HasName("pk_order_details");
 
                     b.HasIndex("size_id")
-                        .HasDatabaseName("ix_order_info_size_id");
+                        .HasDatabaseName("ix_order_details_size_id");
 
-                    b.ToTable("order_info", null, t =>
+                    b.ToTable("order_details", null, t =>
                         {
                             t.HasComment("Информация о заказе");
                         });
@@ -563,19 +561,19 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
 
                     b.Property<DateTime>("PassportInfoExpirationDate")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("passport_info_expiration_date")
+                        .HasColumnName("expiration_date")
                         .HasComment("Дата истечения срока действия паспорта");
 
                     b.Property<string>("PassportInfoPassportNumber")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)")
-                        .HasColumnName("passport_info_passport_number")
+                        .HasColumnName("passport_number")
                         .HasComment("Номер паспорта");
 
                     b.Property<DateTime>("PassportInfoRegDate")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("passport_info_reg_date")
+                        .HasColumnName("registration_date")
                         .HasComment("Дата регистрации");
 
                     b.Property<string>("UpdatedBy")
@@ -589,18 +587,18 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         .HasDefaultValue(new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)))
                         .HasColumnName("updated_date");
 
-                    b.Property<Guid>("passport_type_id")
+                    b.Property<Guid>("type_id")
                         .HasColumnType("uuid")
-                        .HasColumnName("passport_type_id")
+                        .HasColumnName("type_id")
                         .HasComment("Идентификационный номер типа паспорта");
 
                     b.HasKey("Id")
-                        .HasName("pk_passport_info");
+                        .HasName("pk_passport");
 
-                    b.HasIndex("passport_type_id")
-                        .HasDatabaseName("ix_passport_info_passport_type_id");
+                    b.HasIndex("type_id")
+                        .HasDatabaseName("ix_passport_type_id");
 
-                    b.ToTable("passport_info", null, t =>
+                    b.ToTable("passport", null, t =>
                         {
                             t.HasComment("Информация о паспортах");
                         });
@@ -682,6 +680,20 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         .HasDefaultValue(new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)))
                         .HasColumnName("created_date");
 
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("login")
+                        .HasComment("Логин пользователя");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("password")
+                        .HasComment("Пароль пользователя");
+
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
@@ -739,24 +751,24 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
 
             modelBuilder.Entity("Ali.Delivery.Order.Domain.Entities.Order", b =>
                 {
-                    b.HasOne("Ali.Delivery.Order.Domain.Entities.Dictionaries.OrderStatus", "OrderStatus")
-                        .WithMany()
-                        .HasForeignKey("OrderStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_orders_order_status_order_status_id");
-
                     b.HasOne("Ali.Delivery.Order.Domain.Entities.OrderInfo", "OrderInfo")
                         .WithMany()
-                        .HasForeignKey("order_info_id")
+                        .HasForeignKey("details_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_orders_order_info_order_info_id");
+                        .HasConstraintName("fk_orders_order_info_details_id");
 
                     b.HasOne("Ali.Delivery.Order.Domain.Entities.User", "Sender")
                         .WithMany()
                         .HasForeignKey("sender_id")
                         .HasConstraintName("fk_orders_users_sender_id");
+
+                    b.HasOne("Ali.Delivery.Order.Domain.Entities.Dictionaries.OrderStatus", "OrderStatus")
+                        .WithMany()
+                        .HasForeignKey("status_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_orders_order_status_status_id");
 
                     b.Navigation("OrderInfo");
 
@@ -772,7 +784,7 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         .HasForeignKey("size_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_order_info_sizes_size_id");
+                        .HasConstraintName("fk_order_details_sizes_size_id");
 
                     b.Navigation("Size");
                 });
@@ -781,10 +793,10 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                 {
                     b.HasOne("Ali.Delivery.Order.Domain.Entities.Dictionaries.PassportType", "PassportType")
                         .WithMany()
-                        .HasForeignKey("passport_type_id")
+                        .HasForeignKey("type_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_passport_info_passport_types_passport_type_id");
+                        .HasConstraintName("fk_passport_passport_types_type_id");
 
                     b.Navigation("PassportType");
                 });
@@ -817,7 +829,7 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         .HasForeignKey("passport_info_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_users_passport_info_passport_info_id");
+                        .HasConstraintName("fk_users_passport_passport_info_id");
 
                     b.HasOne("Ali.Delivery.Order.Domain.Entities.Dictionaries.Role", "Role")
                         .WithMany()

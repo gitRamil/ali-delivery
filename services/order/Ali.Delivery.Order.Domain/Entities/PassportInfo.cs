@@ -51,20 +51,20 @@ public class PassportInfo : Entity<SequentialGuid>
     /// <summary>
     /// Возвращает дату окончания действия паспорта.
     /// </summary>
-    public PassportInfoExpirationDate PassportInfoExpirationDate { get; }
+    public virtual PassportInfoExpirationDate PassportInfoExpirationDate { get; set; }
 
     /// <summary>
     /// Возвращает номер паспорта.
     /// </summary>
-    public PassportInfoPassportNumber PassportInfoPassportNumber { get; }
+    public virtual PassportInfoPassportNumber PassportInfoPassportNumber { get; set; }
 
     /// <summary>
     /// Возвращает дату регистрации паспорта.
     /// </summary>
-    public PassportInfoRegDate PassportInfoRegDate { get; }
+    public virtual PassportInfoRegDate PassportInfoRegDate { get; set; }
 
     /// <summary>
     /// Возвращает идентификатор типа паспорта.
     /// </summary>
-    public virtual PassportType PassportType { get; }
+    public virtual PassportType PassportType { get; set; }
 }

@@ -1,4 +1,5 @@
 ﻿using Ali.Delivery.Order.Domain.Entities;
+using Ali.Delivery.Order.Domain.Entities.Dictionaries;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ali.Delivery.Order.Application.Abstractions;
@@ -15,6 +16,30 @@ public interface IAppDbContext
     /// Заказы.
     /// </value>
     DbSet<Domain.Entities.Order> Orders { get; }
+
+    /// <summary>
+    /// Возвращает набор доступов.
+    /// </summary>
+    /// <value>
+    /// Доступы.
+    /// </value>
+    DbSet<Permission> Permissions { get; }
+
+    /// <summary>
+    /// Возвращает набор доступов по ролям.
+    /// </summary>
+    /// <value>
+    /// Доступы по ролям.
+    /// </value>
+    DbSet<RolePermission> RolePermissions { get; }
+
+    /// <summary>
+    /// Возвращает набор ролей.
+    /// </summary>
+    /// <value>
+    /// Роли.
+    /// </value>
+    DbSet<Role> Roles { get; }
 
     /// <summary>
     /// Возвращает набор пользователей.

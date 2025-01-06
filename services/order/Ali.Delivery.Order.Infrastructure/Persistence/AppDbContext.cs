@@ -32,14 +32,25 @@ public class AppDbContext : DbContext, IAppDbContext
         AttachDictionaryValues();
     }
 
-    public DbSet<Permission> Permissions => Set<Permission>();
-    public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
-    public DbSet<Role> Roles => Set<Role>();
-
     /// <summary>
     /// Возвращает набор заказов.
     /// </summary>
     public DbSet<Domain.Entities.Order> Orders => Set<Domain.Entities.Order>();
+
+    /// <summary>
+    /// Возвращает набор доступов.
+    /// </summary>
+    public DbSet<Permission> Permissions => Set<Permission>();
+
+    /// <summary>
+    /// Возвращает набор доступов по ролям.
+    /// </summary>
+    public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
+
+    /// <summary>
+    /// Возвращает набор ролей.
+    /// </summary>
+    public DbSet<Role> Roles => Set<Role>();
 
     /// <inheritdoc cref="DbContext" />
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

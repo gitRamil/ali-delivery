@@ -10,7 +10,11 @@ namespace Ali.Delivery.Order.Infrastructure.Persistence.Configurations;
 /// </summary>
 internal class RolePermissionConfiguration : EntityTypeConfigurationBase<RolePermission>
 {
-    protected override void OnConfigure(EntityTypeBuilder<RolePermission> builder)
+       /// <summary>
+       /// Вызывается при выполнении конфигурации сущности типа <see cref="RolePermission" />.
+       /// </summary>
+       /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
+       protected override void OnConfigure(EntityTypeBuilder<RolePermission> builder)
     {
         builder.ToTable("role_permissions");
 

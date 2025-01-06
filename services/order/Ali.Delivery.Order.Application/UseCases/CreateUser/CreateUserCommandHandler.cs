@@ -39,6 +39,8 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Guid>
                                             new PassportInfoExpirationDate(request.ExpirationDate));
 
         var user = new User(SequentialGuid.Create(),
+                            new UserLogin(request.Login),
+                            new UserPassword(request.Password),
                             new UserFirstName(request.FirstName),
                             new UserLastName(request.LastName),
                             passportInfo,
