@@ -87,6 +87,7 @@ public class AppDbContext : DbContext, IAppDbContext
         AttachRange(Size.GetAllValues());
         AttachRange(PassportType.GetAllValues());
         AttachRange(Permission.GetAllValues());
+        AttachRange(RolePermission.GetAllValues());
     }
 
     private void MarkCreated(EntityEntry entry)

@@ -54,9 +54,7 @@ public class CreateRolePermissionCommandHandler : IRequestHandler<CreateRolePerm
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
 
-        var token = tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor));
-
-        var rolePermission = new Domain.Entities.RolePermission(SequentialGuid.Create(), permission, role, token);
+        var rolePermission = new Domain.Entities.RolePermission(SequentialGuid.Create(), permission.Id, role.Id);
 
         _context.RolePermissions.Add(rolePermission);
         await _context.SaveChangesAsync(cancellationToken);
