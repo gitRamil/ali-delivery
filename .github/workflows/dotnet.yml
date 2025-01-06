@@ -1,0 +1,28 @@
+name: .NET Build
+
+on:
+  push:
+    branches:
+      - '**' # Listen to pushes on all branches
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4.2.2
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x' # Specify desired .NET version
+
+    - name: Restore dependencies
+      run: dotnet restore ./services/order
+
+    - name: Build
+      run: dotnet build ./services/order --configuration Release
+
+    - name: Test
+      run: dotnet test ./services/order --configuration Release --no-build --verbosity normal
