@@ -44,10 +44,10 @@ public static class EnumDtoExtensions
     public static Permission ToPermission(this PermissionCode code) =>
         code switch
         {
-            PermissionCode.CreateUser => Permission.CreateUser,
-            PermissionCode.UpdateOrder => Permission.UpdateOrder,
-            PermissionCode.GetOrder => Permission.GetOrder,
-            PermissionCode.DeleteOrder => Permission.DeleteOrder,
+            PermissionCode.CreateUser => Permission.UserManagement,
+            PermissionCode.UpdateOrder => Permission.FullAccess,
+            PermissionCode.GetOrder => Permission.Tracking,
+            PermissionCode.DeleteOrder => Permission.OrderManagement,
             _ => throw new ArgumentOutOfRangeException(nameof(code), code, "Не поддерживаемое значение доступа.")
         };
     #endregion

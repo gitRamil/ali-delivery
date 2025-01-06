@@ -32,9 +32,7 @@ internal class RolePermissionConfiguration : EntityTypeConfigurationBase<RolePer
 
         builder.Property("permission_id")
                .HasComment("Идентификатор разрешения");
-
-        builder.Property(r => r.Token)
-               .HasMaxLength(500)
-               .HasComment("JWT токен, связанный с разрешением роли");
     }
+        
+    
 }

@@ -64,7 +64,7 @@ public class OrderController : ControllerBase
     /// <param name="cancellationToken">Маркер отмены.</param>
     /// <returns>Список всех заказов.</returns>
     [HttpGet]
-    [UserPermission(UserPermissionCode.CreateUser)]
+    [UserPermission(UserPermissionCode.OrderManagement)]
     [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllOrders(CancellationToken cancellationToken)

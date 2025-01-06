@@ -32,7 +32,7 @@ public class GetAllOrdersCommandHandler : IRequestHandler<GetAllOrders, List<Ord
     {
         var qwe = _currentUser.Id;
         var qwe2 = _currentUser.IsAuthenticated;
-        var qwe3 = _currentUser.HasPermission(UserPermissionCode.CreateUser);
+        var qwe3 = _currentUser.HasPermission(UserPermissionCode.OrderManagement);
 
         var orders = await _context.Orders.Include(o => o.OrderStatus)
                                    .Include(o => o.OrderInfo)
