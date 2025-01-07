@@ -9,5 +9,7 @@ services:
       target: final
     environment:
       AliDeliveryOrderService_ConnectionStrings__DefaultConnection: "${APP_DB_CONNECTION_STRING}"
+      AliDeliveryOrderService_Serilog__WriteTo__2__Args__serverUrl: "${SEQ_SERVER_URL}"
+      AliDeliveryOrderService_JwtOptions__SecretKey: "${JWT_SECRET_KEY}"
     ports:
       - "${APP_PORT}"

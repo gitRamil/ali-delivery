@@ -51,37 +51,12 @@ services:
       - ed
     volumes:
       - rmq-data:/var/lib/rabbitmq
-
-  #######################################################
-  # mailpit
-  #######################################################
-  mailpit:
-    image: axllent/mailpit:latest
-    hostname: "ed-mailpit"
-    container_name: "ed-mailpit"
-    restart: unless-stopped
-    environment:
-      MP_DATA_FILE: /data/mailpit.db
-      TZ: Europe/Moscow
-      MP_SMTP_AUTH_ACCEPT_ANY: 1
-      MP_SMTP_AUTH_ALLOW_INSECURE: 1
-      MP_WEBROOT: /mail
-      MP_MAX_MESSAGES: 50000
-    ports:
-      - "9062:1025" # smtp server
-      - "9063:8025" # web ui
-    networks:
-      - ed
-    volumes:
-      - mailpit-data:/data
   
 volumes:
   db-data:
     name: ed-postgres-data
   rmq-data:
     name: ed-rabbitmq-data
-  mailpit-data:
-    name: ed-mailpit-data
 
 networks:
   ed:
