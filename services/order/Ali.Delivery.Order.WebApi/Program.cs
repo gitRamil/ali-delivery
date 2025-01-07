@@ -5,12 +5,14 @@ using Ali.Delivery.Order.WebApi.Infrastructure.IoC;
 using Ali.Delivery.Order.WebApi.IoC;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.CookiePolicy;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Options;
 using Serilog;
 
 try
 {
     var builder = WebApplication.CreateBuilder(args);
+    builder.Configuration.AddEnvironmentVariables("AliDeliveryOrderService_");
     var config = builder.Configuration;
     builder.AddDefaultSerilog();
     builder.Services.AddControllers();
@@ -36,11 +38,11 @@ try
     var app = builder.Build();
     app.AddAutomaticMigrations();
 
-    if (app.Environment.IsDevelopment())
-    {
+    //if (app.Environment.IsDevelopment())
+    //{
         app.UseSwagger();
         app.UseSwaggerUI();
-    }
+    //}
 
     app.UseSerilogRequestLogging();
     app.UseHttpsRedirection();

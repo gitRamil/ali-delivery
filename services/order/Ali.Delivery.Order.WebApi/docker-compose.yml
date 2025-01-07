@@ -1,0 +1,13 @@
+﻿version: "3.8"
+services:
+  ali-delivery-service:
+    container_name: "${APP_NAME}"
+    image: "${APP_NAME}"
+    build:
+      context: ../
+      dockerfile: ./Ali.Delivery.Order.WebApi/Dockerfile
+      target: final
+    environment:
+      AliDeliveryOrderService_ConnectionStrings__DefaultConnection: "${APP_DB_CONNECTION_STRING}"
+    ports:
+      - "${APP_PORT}"

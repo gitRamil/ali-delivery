@@ -12,6 +12,7 @@
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <DebugSymbols>true</DebugSymbols>
+        <DocumentationFile>bin\Release\Ali.Delivery.Order.Application.xml</DocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
