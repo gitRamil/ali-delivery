@@ -25,11 +25,7 @@ try
     builder.Services.AddDefaultProblemDetails();
     builder.Services.AddScoped<JwtProvider>();
     builder.Services.Configure<JwtOptions>(config.GetSection(nameof(JwtOptions)));
-
-    var jwtOptions = builder.Services.BuildServiceProvider()
-                            .GetRequiredService<IOptions<JwtOptions>>();
-    builder.Services.AddApiAuthentication(jwtOptions);
-
+    builder.Services.AddApiAuthentication();
     builder.Services.AddHttpContextAccessor();
     builder.Services.AddTransient<ICurrentUser, CurrentUserService>();
 
@@ -38,8 +34,8 @@ try
 
     //if (app.Environment.IsDevelopment())
     //{
-        app.UseSwagger();
-        app.UseSwaggerUI();
+    app.UseSwagger();
+    app.UseSwaggerUI();
     //}
 
     app.UseSerilogRequestLogging();

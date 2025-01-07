@@ -52,6 +52,8 @@ public class User : Entity<SequentialGuid>
     protected User()
         : base(SequentialGuid.Empty)
     {
+        Login = null!;
+        Password = null!;
         UserFirstName = null!;
         UserLastName = null!;
         PassportInfo = null!;

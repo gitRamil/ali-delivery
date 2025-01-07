@@ -10,6 +10,9 @@ namespace Ali.Delivery.Order.Domain.ValueObjects.User;
 [DebuggerDisplay("{_name}")]
 public class UserLastName : ValueObject
 {
+    /// <summary>
+    /// Максимальная длина фамилии.
+    /// </summary>
     public const int MaxLength = 100;
     private readonly string _name;
 

@@ -13,13 +13,15 @@ public static class AuthExtensions
     /// <summary>
     /// </summary>
     /// <param name="services"></param>
-    /// <param name="jwtOptions"></param>
-    public static void AddApiAuthentication(this IServiceCollection services, IOptions<JwtOptions> jwtOptions)
+    public static void AddApiAuthentication(this IServiceCollection services)
     {
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,
                               options =>
                               {
+                                  var serviceProvider = services.BuildServiceProvider();
+                                  var jwtOptions = serviceProvider.GetRequiredService<IOptions<JwtOptions>>();
+
                                   options.TokenValidationParameters = new TokenValidationParameters
                                   {
                                       ValidateIssuer = false,

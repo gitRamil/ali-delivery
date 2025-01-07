@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Ali.Delivery.Order.Infrastructure.Persistence.Configurations.Base;
 
 /// <summary>
-/// Представляет базовую реализацию для настройки конфигурации объектно реляционного отображения для типа <see cref="T" />.
+/// Представляет базовую реализацию для настройки конфигурации объектно-реляционного отображения для заданного типа сущности.
 /// </summary>
 /// <typeparam name="T">Тип сущности.</typeparam>
 internal abstract class EntityConfigurationBase<T> : IEntityTypeConfiguration<T> where T : class
 {
        /// <summary>
-       /// Вызывается при выполнении конфигурации базовой сущности типа <see cref="T" />.
+       /// Вызывается при выполнении конфигурации базовой сущности для заданного типа.
        /// </summary>
        /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
        protected abstract void OnBaseConfigure(EntityTypeBuilder<T> builder);
