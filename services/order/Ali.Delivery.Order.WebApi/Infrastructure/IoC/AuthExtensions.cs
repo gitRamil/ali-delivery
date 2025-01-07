@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Ali.Delivery.Order.WebApi.IoC;
+namespace Ali.Delivery.Order.WebApi.Infrastructure.IoC;
 
 /// <summary>
 /// </summary>

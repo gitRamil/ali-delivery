@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Ali.Delivery.Order.WebApi.IoC;
+namespace Ali.Delivery.Order.WebApi.Infrastructure.IoC;
 
 /// <summary>
 /// Содержит набор методов расширения для регистрации служб Swagger в контейнере внедрения зависимостей.

@@ -2,7 +2,7 @@ using Ali.Delivery.Order.Application.Exceptions;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Ali.Delivery.Order.WebApi.IoC;
+namespace Ali.Delivery.Order.WebApi.Infrastructure.IoC;
 
 /// <summary>
 /// Содержит набор методов расширения для регистрации служб ProblemDetails в контейнере внедрения зависимостей.
