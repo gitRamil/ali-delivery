@@ -33,14 +33,14 @@ jobs:
         chmod 600 ~/.ssh/ali-delivery_ssh_key
         scp -o StrictHostKeyChecking=no -i ~/.ssh/ali-delivery_ssh_key ali-delivery-order-service-0.0.1.tar root@185.156.108.45:/ali-delivery/order-service
 
-    # - name: Deploy on VPS
-    #   env:
-    #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-    #   run: |
-    #     cd ./services/order
-    #     ssh -o StrictHostKeyChecking=no root@185.156.108.45 << 'EOF'
-    #       docker load -i /ali-delivery/order-service/ali-delivery-order-service-0.0.1.tar
-    #       docker stop ali-delivery-order-service || true
-    #       docker rm ali-delivery-order-service || true
-    #       docker run -d --name ali-delivery-order-service -p 8080:80 ali-delivery-order-service:0.0.1
-    #     EOF
+    - name: Deploy on VPS
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      run: |
+        cd ./services/order
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/ali-delivery_ssh_key root@185.156.108.45 << 'EOF'
+          docker load -i /ali-delivery/order-service/ali-delivery-order-service-0.0.1.tar
+          docker stop ali-delivery-order-service || true
+          docker rm ali-delivery-order-service || true
+          docker run -d --name ali-delivery-order-service -p 8080:80 ali-delivery-order-service:0.0.1
+        EOF
