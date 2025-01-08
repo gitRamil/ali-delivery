@@ -1,0 +1,54 @@
+name: Deploy Docker Image to VPS
+
+on:
+  push:
+    branches:
+      - main # Запускать только при пуше в ветку main (можно поменять ветку)
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4.2.2
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x' # Specify desired .NET version
+
+    - name: Restore dependencies
+      run: dotnet restore ./services/order
+
+    - name: Build
+      run: dotnet build ./services/order --configuration Release
+
+    - name: Test
+      run: dotnet test ./services/order --configuration Release --no-build --verbosity normal
+
+    - name: Build Docker image
+      run: docker build -f Ali.Delivery.Order.WebApi/Dockerfile -t ali-delivery-order-service:0.0.1 .
+    
+    - name: Save Docker image to file
+      run: docker save -o ali-delivery-order-service-0.0.1.tar ali-delivery-order-service:0.0.1
+
+    - name: Copy image to VPS
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      run: |
+        mkdir -p ~/.ssh
+        echo "${SSH_PRIVATE_KEY}" > ~/.ssh/ali-delivery_ssh_key
+        chmod 600 ~/.ssh/ali-delivery_ssh_key
+        scp -o StrictHostKeyChecking=no ali-delivery-order-service-0.0.1.tar root@185.156.108.45:/ali-delivery/order-service
+
+    - name: Deploy on VPS
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      run: |
+        ssh -o StrictHostKeyChecking=no root@185.156.108.45 << 'EOF'
+          docker load -i /ali-delivery/order-service/ali-delivery-order-service-0.0.1.tar
+          docker stop ali-delivery-order-service || true
+          docker rm ali-delivery-order-service || true
+          docker run -d --name ali-delivery-order-service -p 8080:80 ali-delivery-order-service:0.0.1
+        EOF
