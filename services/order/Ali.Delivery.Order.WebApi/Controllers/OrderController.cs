@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Ali.Delivery.Order.WebApi.Controllers;
 
 /// <summary>
-/// Контроллер для управления действиями с заказами.
+/// Контроллер для управления действиями с заказами.2
 /// </summary>
 [ApiController]
 [Route("api/v{version:apiVersion}/[controller]")]
