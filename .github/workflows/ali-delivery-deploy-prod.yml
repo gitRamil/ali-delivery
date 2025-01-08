@@ -23,15 +23,15 @@ jobs:
         cd ./services/order
         docker save -o ali-delivery-order-service-0.0.1.tar ali-delivery-order-service:0.0.1
 
-    # - name: Copy image to VPS
-    #   env:
-    #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-    #   run: |
-    #     cd ./services/order
-    #     mkdir -p ~/.ssh
-    #     echo "${SSH_PRIVATE_KEY}" > ~/.ssh/ali-delivery_ssh_key
-    #     chmod 600 ~/.ssh/ali-delivery_ssh_key
-    #     scp -o StrictHostKeyChecking=no ali-delivery-order-service-0.0.1.tar root@185.156.108.45:/ali-delivery/order-service
+    - name: Copy image to VPS
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      run: |
+        cd ./services/order
+        mkdir -p ~/.ssh
+        echo "${SSH_PRIVATE_KEY}" > ~/.ssh/ali-delivery_ssh_key
+        chmod 600 ~/.ssh/ali-delivery_ssh_key
+        scp -o StrictHostKeyChecking=no ali-delivery-order-service-0.0.1.tar root@185.156.108.45:/ali-delivery/order-service
 
     # - name: Deploy on VPS
     #   env:
