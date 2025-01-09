@@ -35,11 +35,14 @@ jobs:
         scp -o StrictHostKeyChecking=no -i ~/.ssh/ali-delivery_ssh_key ali-delivery-order-service-0.0.1.tar root@${VPS_IP}:/ali-delivery/order-service
 
     - name: Deploy on VPS
+      env:
+        VPS_IP: ${{ secrets.VPS_IP }}
+        APP_PORT: ${{ secrets.APP_PORT }}
       run: |
         cd ./services/order
-        ssh -o StrictHostKeyChecking=no -i ~/.ssh/ali-delivery_ssh_key root@185.156.108.45 << 'EOF'
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/ali-delivery_ssh_key root@${VPS_IP} << 'EOF'
           docker load -i /ali-delivery/order-service/ali-delivery-order-service-0.0.1.tar
           docker stop ali-delivery-order-service || true
           docker rm ali-delivery-order-service || true
-          docker run -d --name ali-delivery-order-service --env-file /ali-delivery/order-service/.env -p 5091:8080 ali-delivery-order-service:0.0.1
+          docker run -d --name ali-delivery-order-service --env-file /ali-delivery/order-service/.env -p ${APP_PORT} ali-delivery-order-service:0.0.1
         EOF
