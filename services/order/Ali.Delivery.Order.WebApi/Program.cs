@@ -48,7 +48,7 @@ try
     {
         MinimumSameSitePolicy = SameSiteMode.Strict,
         HttpOnly = HttpOnlyPolicy.Always,
-        Secure = CookieSecurePolicy.Always
+        Secure = CookieSecurePolicy.None // для http
     });
     app.UseAuthentication();
     app.UseAuthorization();
