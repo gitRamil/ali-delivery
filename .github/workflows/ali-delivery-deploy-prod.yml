@@ -1,9 +1,9 @@
-name: Deploy Docker Image to VPS
+name: Deploy to prod
 
 on:
   push:
     branches:
-      - main # Запускать только при пуше в ветку main (можно поменять ветку)
+      - main
 
 jobs:
   build-and-deploy:
@@ -13,29 +13,28 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4.2.2
 
-    - name: Build Docker image
+    - name: Build docker image
       run: |
         cd ./services/order
         docker build -f Ali.Delivery.Order.WebApi/Dockerfile -t ali-delivery-order-service:0.0.1 .
     
-    - name: Save Docker image to file
+    - name: Save docker image to file
       run: |
         cd ./services/order
         docker save -o ali-delivery-order-service-0.0.1.tar ali-delivery-order-service:0.0.1
 
-    - name: Copy image to VPS
+    - name: Copy docker image to VPS
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        HOST: ${{ variables.host }}
       run: |
         cd ./services/order
         mkdir -p ~/.ssh
         echo "${SSH_PRIVATE_KEY}" > ~/.ssh/ali-delivery_ssh_key
         chmod 600 ~/.ssh/ali-delivery_ssh_key
-        scp -o StrictHostKeyChecking=no -i ~/.ssh/ali-delivery_ssh_key ali-delivery-order-service-0.0.1.tar root@185.156.108.45:/ali-delivery/order-service
+        scp -o StrictHostKeyChecking=no -i ~/.ssh/ali-delivery_ssh_key ali-delivery-order-service-0.0.1.tar root@"${HOST}":/ali-delivery/order-service
 
     - name: Deploy on VPS
-      #env:
-        #SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       run: |
         cd ./services/order
         ssh -o StrictHostKeyChecking=no -i ~/.ssh/ali-delivery_ssh_key root@185.156.108.45 << 'EOF'
