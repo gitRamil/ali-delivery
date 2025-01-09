@@ -1,3 +1,4 @@
+using Ali.Delivery.Order.Application;
 using Ali.Delivery.Order.Application.Dtos.Order;
 using Ali.Delivery.Order.Application.UseCases.CreateUser;
 using Ali.Delivery.Order.Application.UseCases.DeleteUser;
@@ -5,6 +6,7 @@ using Ali.Delivery.Order.Application.UseCases.GetAllUsers;
 using Ali.Delivery.Order.Application.UseCases.GetUser;
 using Ali.Delivery.Order.Application.UseCases.Login;
 using Ali.Delivery.Order.Application.UseCases.UpdateUser;
+using Ali.Delivery.Order.WebApi.Attribute;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,9 +37,9 @@ public class UserController : ControllerBase
     /// <param name="command">Пользователь.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
     [HttpPost]
-    [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> CreateOrder([FromBody] CreateUserCommand command, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateUser([FromBody] CreateUserCommand command, CancellationToken cancellationToken)
     {
         await _mediator.Send(command, cancellationToken);
         return Ok();
@@ -49,6 +51,7 @@ public class UserController : ControllerBase
     /// <param name="userId">Идентификатор пользователя.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
     [HttpDelete]
+    [UserPermission(UserPermissionCode.UserManagement)]
     [ProducesResponseType(typeof(List<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteUser(Guid userId, CancellationToken cancellationToken)
@@ -63,6 +66,7 @@ public class UserController : ControllerBase
     /// <param name="cancellationToken">Маркер отмены.</param>
     /// <returns>Список всех пользователей.</returns>
     [HttpGet]
+    [UserPermission(UserPermissionCode.UserManagement)]
     [ProducesResponseType(typeof(List<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllUsers(CancellationToken cancellationToken)

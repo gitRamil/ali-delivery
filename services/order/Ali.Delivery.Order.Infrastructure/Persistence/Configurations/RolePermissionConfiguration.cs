@@ -5,36 +5,38 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ali.Delivery.Order.Infrastructure.Persistence.Configurations;
 
-/// <summary>
-/// Конфигурация для сущности RolePermission.
-/// </summary>
 internal class RolePermissionConfiguration : EntityTypeConfigurationBase<RolePermission>
 {
-       /// <summary>
-       /// Вызывается при выполнении конфигурации сущности типа <see cref="RolePermission" />.
-       /// </summary>
-       /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
        protected override void OnConfigure(EntityTypeBuilder<RolePermission> builder)
     {
-        builder.ToTable("role_permissions");
+           builder.ToTable("role_permissions", tableBuilder => tableBuilder.HasComment("Отношение м:м ролей к разрешениям"));
 
-        builder.HasOne(r => r.Role)
-               .WithMany()
-               .HasForeignKey("role_id"); // Используем свойство RoleId как внешний ключ
+           builder.HasOne(p => p.Role)
+                  .WithMany()
+                  .HasForeignKey(p => p.RoleId)
+                  .OnDelete(DeleteBehavior.Cascade);
 
-        builder.Property("role_id")
-               .HasColumnName("role_id")
-               .HasComment("Идентификатор роли");
+           builder.Property(p => p.RoleId)
+                  .HasColumnOrder(1)
+                  .HasConversion(p => (Guid)p, p => p)
+                  .HasComment("Идентификатор роли");
 
-        builder.HasOne(r => r.Permission)
-               .WithMany()
-               .HasForeignKey("permission_id");
+           builder.HasOne(p => p.Permission)
+                  .WithMany()
+                  .HasForeignKey(p => p.PermissionId)
+                  .OnDelete(DeleteBehavior.Cascade);
 
-        builder.Property("permission_id")
-               .HasComment("Идентификатор разрешения");
+           builder.Property(p => p.PermissionId)
+                  .HasColumnOrder(2)
+                  .HasConversion(p => (Guid)p, p => p)
+                  .HasComment("Идентификатор разрешения");
 
-        builder.Property(r => r.Token)
-               .HasMaxLength(500)
-               .HasComment("JWT токен, связанный с разрешением роли");
+           builder.HasKey(i => new
+           {
+                  i.RoleId,
+                  i.PermissionId
+           });
+
+           builder.HasData(RolePermission.GetAllValues());
     }
 }
