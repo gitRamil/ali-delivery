@@ -26,7 +26,7 @@ jobs:
     - name: Copy docker image to VPS
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        VPS_IP: ${{ secrets.VPS_IP }}
+        VPS_IP: ${{ vars.VPS_IP }}
       run: |
         cd ./services/order
         mkdir -p ~/.ssh
@@ -36,7 +36,7 @@ jobs:
 
     - name: Deploy on VPS
       env:
-        VPS_IP: ${{ secrets.VPS_IP }}
+        VPS_IP: ${{ vars.VPS_IP }}
       run: |
         cd ./services/order
         ssh -o StrictHostKeyChecking=no -i ~/.ssh/ali-delivery_ssh_key root@${VPS_IP} << 'EOF'
