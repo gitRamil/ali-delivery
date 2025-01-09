@@ -26,13 +26,13 @@ jobs:
     - name: Copy docker image to VPS
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        HOST: ${{ variables.host }}
+        VPS_IP: ${{ secrets.VPS_IP }}
       run: |
         cd ./services/order
         mkdir -p ~/.ssh
         echo "${SSH_PRIVATE_KEY}" > ~/.ssh/ali-delivery_ssh_key
         chmod 600 ~/.ssh/ali-delivery_ssh_key
-        scp -o StrictHostKeyChecking=no -i ~/.ssh/ali-delivery_ssh_key ali-delivery-order-service-0.0.1.tar root@"${HOST}":/ali-delivery/order-service
+        scp -o StrictHostKeyChecking=no -i ~/.ssh/ali-delivery_ssh_key ali-delivery-order-service-0.0.1.tar root@${VPS_IP}:/ali-delivery/order-service
 
     - name: Deploy on VPS
       run: |
