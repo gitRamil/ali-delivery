@@ -21,12 +21,14 @@ public class Order : Entity<SequentialGuid>
     /// Возникает, если любой из параметров <paramref name="orderName" />,
     /// <paramref name="orderInfo" />, <paramref name="orderStatus" /> равен <c>null</c>.
     /// </exception>
-    public Order(SequentialGuid id, OrderName orderName, OrderInfo orderInfo, OrderStatus orderStatus)
-        : base(id)
+    public Order(SequentialGuid id, OrderName orderName, OrderInfo orderInfo, OrderStatus orderStatus, User sender, User receiver, User? courier = null) : base(id)
     {
         Name = orderName ?? throw new ArgumentNullException(nameof(orderName));
         OrderInfo = orderInfo ?? throw new ArgumentNullException(nameof(orderInfo));
         OrderStatus = orderStatus ?? throw new ArgumentNullException(nameof(orderStatus));
+        Sender = sender ?? throw new ArgumentNullException(nameof(sender));
+        Receiver = receiver ?? throw new ArgumentNullException(nameof(receiver));
+        Courier = courier ;
     }
 
     /// <summary>
@@ -39,8 +41,11 @@ public class Order : Entity<SequentialGuid>
         Name = null!;
         OrderStatus = null!;
         OrderInfo = null!;
+        Sender = null!;
+        Receiver = null!;
+        Courier = null!;
     }
-
+    
     /// <summary>
     /// Возвращает наименование заказа.
     /// </summary>
@@ -56,10 +61,14 @@ public class Order : Entity<SequentialGuid>
     /// </summary>
     public virtual OrderStatus OrderStatus { get; private set; }
 
-    /// <summary>
-    /// Возвращает информацию о пользователе.
-    /// </summary>
+    // /// <summary>
+    // /// Возвращает информацию о пользователе.
+    // /// </summary>
     public virtual User? Sender { get; }
+    
+    public virtual User? Receiver { get; }
+    
+    public virtual User? Courier { get; }
 
     /// <summary>
     /// Обновляет наименование заказа.
