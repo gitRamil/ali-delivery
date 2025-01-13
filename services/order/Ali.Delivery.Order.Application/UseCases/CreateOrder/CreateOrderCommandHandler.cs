@@ -16,7 +16,7 @@ namespace Ali.Delivery.Order.Application.UseCases.CreateOrder;
 public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Guid>
 {
     private readonly IAppDbContext _context;
-    private readonly ICurrentUser _currentuser;
+    private readonly ICurrentUser _currentUser;
 
     /// <summary>
     /// Инициализирует новый экземпляр типа <see cref="CreateOrderCommandHandler" />.
@@ -29,7 +29,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Gui
     public CreateOrderCommandHandler(IAppDbContext context, ICurrentUser currentUser)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
-        _currentuser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
+        _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
     }
 
     /// <inheritdoc />
@@ -40,8 +40,17 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Gui
     {
         ArgumentNullException.ThrowIfNull(request);
         
-        var sender = await _context.Users.FirstOrDefaultAsync(u=>(Guid)u.Id == request.SenderId , cancellationToken)
-                     ?? throw new NotFoundException(typeof(User), request.SenderId);
+        // var senderId = _currentUser.Id;
+        // if (senderId == Guid.Empty)
+        // {
+        //     throw new UnauthorizedAccessException("Не удалось получить идентификатор текущего пользователя.");
+        // }
+        
+        var sender = await _context.Users
+                                   .FirstOrDefaultAsync(u => (Guid)u.Id == _currentUser.Id, cancellationToken)
+                     ?? throw new NotFoundException(typeof(User), _currentUser.Id);
+
+        
         var receiver = await _context.Users.FirstOrDefaultAsync(u=> (Guid)u.Id == request.ReceiverId, cancellationToken)
                        ?? throw new NotFoundException(typeof(User), request.ReceiverId);
 

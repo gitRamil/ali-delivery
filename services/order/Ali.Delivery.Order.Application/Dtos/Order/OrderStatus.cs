@@ -12,6 +12,12 @@ public enum OrderStatus
     /// </summary>
     [EnumMember(Value = "created")]
     Created,
+    
+    /// <summary>
+    /// Создан.
+    /// </summary>
+    [EnumMember(Value = "inProgress")]
+    InProgress,
 
     /// <summary>
     /// Завершен.

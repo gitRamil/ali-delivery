@@ -3,6 +3,7 @@ using System;
 using Ali.Delivery.Order.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ali.Delivery.Order.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250113125745_NewOrderStatuses")]
+    partial class NewOrderStatuses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -416,6 +419,10 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         .HasColumnName("id")
                         .HasComment("Уникальный идентификатор");
 
+                    b.Property<Guid?>("CourierId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("courier_id");
+
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
@@ -445,18 +452,10 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         .HasDefaultValue(new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)))
                         .HasColumnName("updated_date");
 
-                    b.Property<Guid?>("courier_id")
-                        .HasColumnType("uuid")
-                        .HasColumnName("courier_id");
-
                     b.Property<Guid>("details_id")
                         .HasColumnType("uuid")
                         .HasColumnName("details_id")
                         .HasComment("Информация о заказе");
-
-                    b.Property<Guid?>("receiver_id")
-                        .HasColumnType("uuid")
-                        .HasColumnName("receiver_id");
 
                     b.Property<Guid?>("sender_id")
                         .HasColumnType("uuid")
@@ -470,14 +469,11 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("pk_orders");
 
-                    b.HasIndex("courier_id")
+                    b.HasIndex("CourierId")
                         .HasDatabaseName("ix_orders_courier_id");
 
                     b.HasIndex("details_id")
                         .HasDatabaseName("ix_orders_details_id");
-
-                    b.HasIndex("receiver_id")
-                        .HasDatabaseName("ix_orders_receiver_id");
 
                     b.HasIndex("sender_id")
                         .HasDatabaseName("ix_orders_sender_id");
@@ -800,7 +796,7 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                 {
                     b.HasOne("Ali.Delivery.Order.Domain.Entities.User", "Courier")
                         .WithMany()
-                        .HasForeignKey("courier_id")
+                        .HasForeignKey("CourierId")
                         .HasConstraintName("fk_orders_users_courier_id");
 
                     b.HasOne("Ali.Delivery.Order.Domain.Entities.OrderInfo", "OrderInfo")
@@ -809,11 +805,6 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_orders_order_info_details_id");
-
-                    b.HasOne("Ali.Delivery.Order.Domain.Entities.User", "Receiver")
-                        .WithMany()
-                        .HasForeignKey("receiver_id")
-                        .HasConstraintName("fk_orders_users_receiver_id");
 
                     b.HasOne("Ali.Delivery.Order.Domain.Entities.User", "Sender")
                         .WithMany()
@@ -832,8 +823,6 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                     b.Navigation("OrderInfo");
 
                     b.Navigation("OrderStatus");
-
-                    b.Navigation("Receiver");
 
                     b.Navigation("Sender");
                 });

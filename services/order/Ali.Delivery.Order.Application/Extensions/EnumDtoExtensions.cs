@@ -18,6 +18,7 @@ public static class EnumDtoExtensions
         codeEnum switch
         {
             Dtos.Order.OrderStatus.Created => OrderStatus.Created,
+            Dtos.Order.OrderStatus.InProgress => OrderStatus.InProgress,
             Dtos.Order.OrderStatus.Finished => OrderStatus.Finished,
             _ => throw new ArgumentOutOfRangeException(nameof(codeEnum), codeEnum, "Не поддерживаемое значение статуса заказа.")
         };

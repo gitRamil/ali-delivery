@@ -59,7 +59,7 @@ public class Order : Entity<SequentialGuid>
     /// <summary>
     /// Возвращает статус заказа.
     /// </summary>
-    public virtual OrderStatus OrderStatus { get; private set; }
+    public virtual OrderStatus OrderStatus { get; set; }
 
     // /// <summary>
     // /// Возвращает информацию о пользователе.
@@ -68,7 +68,7 @@ public class Order : Entity<SequentialGuid>
     
     public virtual User? Receiver { get; }
     
-    public virtual User? Courier { get; }
+    public virtual User? Courier { get; set; }
 
     /// <summary>
     /// Обновляет наименование заказа.
