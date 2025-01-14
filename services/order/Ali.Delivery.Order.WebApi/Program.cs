@@ -39,7 +39,7 @@ try
     //}
 
     app.UseSerilogRequestLogging();
-    app.UseHttpsRedirection();
+    // app.UseHttpsRedirection();
     app.UseProblemDetails();
     app.UseRouting();
     app.UseCors();

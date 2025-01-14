@@ -1,9 +1,11 @@
 ﻿using Ali.Delivery.Order.Application;
 using Ali.Delivery.Order.Application.Dtos.Order;
+using Ali.Delivery.Order.Application.UseCases.AssignCourier;
 using Ali.Delivery.Order.Application.UseCases.CreateOrder;
 using Ali.Delivery.Order.Application.UseCases.DeleteOrder;
 using Ali.Delivery.Order.Application.UseCases.GetAllOrders;
 using Ali.Delivery.Order.Application.UseCases.GetOrder;
+using Ali.Delivery.Order.Application.UseCases.UnassignCourier;
 using Ali.Delivery.Order.Application.UseCases.UpdateOrder;
 using Ali.Delivery.Order.WebApi.Attribute;
 using MediatR;
@@ -75,6 +77,41 @@ public class OrderController : ControllerBase
         return Ok(result);
     }
 
+    /// <summary>
+    /// Назначает курьера на заказ.
+    /// </summary>
+    /// <param name="orderId">Номер заказа.</param>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    /// <returns>ID заказа.</returns>
+    [HttpPut("assign-courier")]
+    [UserPermission(UserPermissionCode.OrderManagement)]
+    [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> AssignCourier(Guid orderId,CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new AssignCourierCommand(orderId), cancellationToken);
+        return Ok(result);
+    }
+    
+    /// <summary>
+    /// Снимает курьера с заказа.
+    /// </summary>
+    /// <param name="orderId">Номер заказа.</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>ID заказа</returns>
+    [HttpPut("unassign-courier")]
+    [UserPermission(UserPermissionCode.OrderManagement)]
+    [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UnassignCourier(Guid orderId,CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new UnassignCourierCommand(orderId), cancellationToken);
+        return Ok(result);
+    }
+    
+    
+    
+    
     /// <summary>
     /// Получает заказ.
     /// </summary>

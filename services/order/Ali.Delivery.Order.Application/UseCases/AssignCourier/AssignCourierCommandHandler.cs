@@ -8,33 +8,42 @@ using Microsoft.EntityFrameworkCore;
 namespace Ali.Delivery.Order.Application.UseCases.AssignCourier;
 
 /// <summary>
-/// Обработчик команды назначения курьера.
+/// Представляет обработчик команды назначения курьера.
 /// </summary>
 public class AssignCourierCommandHandler : IRequestHandler<AssignCourierCommand, Guid>
 {
     private readonly IAppDbContext _context;
     private readonly ICurrentUser _currentUser;
 
+    /// <summary>
+    /// Инициализирует новый экземпляр типа <see cref="AssignCourierCommandHandler" />.
+    /// </summary>
+    /// <param name="context">Контекст БД.</param>
+    /// <param name="currentUser">Текущий пользователь</param>
+    /// <exception cref="ArgumentNullException">
+    /// Возникает, если <paramref name="context" /> равен <c>null</c>.
+    /// </exception>
     public AssignCourierCommandHandler(IAppDbContext context, ICurrentUser currentUser)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
         _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
     }
 
+    /// <inheritdoc />
+    /// <exception cref="ArgumentNullException">
+    /// Возникает, если <paramref name="request" /> равен <c>null</c>.
+    /// </exception>
     public async Task<Guid> Handle(AssignCourierCommand request, CancellationToken cancellationToken)
     {
-        // Проверяем роль текущего пользователя
         if (!_currentUser.HasPermission(UserPermissionCode.OrderManagement))
         {
             throw new UnauthorizedAccessException("Текущий пользователь не является курьером.");
         }
 
-        // Ищем заказ
         var order = await _context.Orders
                                   .FirstOrDefaultAsync(o => (Guid)o.Id == request.OrderId, cancellationToken)
                     ?? throw new NotFoundException(typeof(Domain.Entities.Order), request.OrderId);
-
-        // Назначаем курьера и меняем статус
+        
         order.Courier = await _context.Users
                                       .FirstOrDefaultAsync(u => (Guid)u.Id == _currentUser.Id, cancellationToken)
                         ?? throw new NotFoundException(typeof(User), _currentUser.Id);

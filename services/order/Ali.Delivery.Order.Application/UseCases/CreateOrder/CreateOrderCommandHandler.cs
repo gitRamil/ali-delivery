@@ -1,5 +1,6 @@
 ﻿using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.Application.Abstractions;
+using Ali.Delivery.Order.Application.Dtos.Order;
 using Ali.Delivery.Order.Application.Exceptions;
 using Ali.Delivery.Order.Application.Extensions;
 using Ali.Delivery.Order.Domain.Entities;
@@ -40,12 +41,6 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Gui
     {
         ArgumentNullException.ThrowIfNull(request);
         
-        // var senderId = _currentUser.Id;
-        // if (senderId == Guid.Empty)
-        // {
-        //     throw new UnauthorizedAccessException("Не удалось получить идентификатор текущего пользователя.");
-        // }
-        
         var sender = await _context.Users
                                    .FirstOrDefaultAsync(u => (Guid)u.Id == _currentUser.Id, cancellationToken)
                      ?? throw new NotFoundException(typeof(User), _currentUser.Id);
@@ -62,8 +57,12 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Gui
                                       new OrderInfoAddressFrom(request.AddressFrom),
                                       new OrderInfoAddressTo(request.AddressTo));
 
-        var order = new Domain.Entities.Order(SequentialGuid.Create(), new OrderName(request.OrderName), orderInfo, request.OrderStatus.ToOrderStatus(), sender, receiver);
-
+        
+        
+        var order = new Domain.Entities.Order(SequentialGuid.Create(), new OrderName(request.OrderName), orderInfo, OrderStatus.Created.ToOrderStatus(), sender, receiver);
+        
+        
+        
         _context.Orders.Add(order);
 
         await _context.SaveChangesAsync(cancellationToken);
