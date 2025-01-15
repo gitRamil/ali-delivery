@@ -4,6 +4,7 @@ using Ali.Delivery.Order.Application.UseCases.AssignCourier;
 using Ali.Delivery.Order.Application.UseCases.CreateOrder;
 using Ali.Delivery.Order.Application.UseCases.DeleteOrder;
 using Ali.Delivery.Order.Application.UseCases.GetAllOrders;
+using Ali.Delivery.Order.Application.UseCases.GetAllOrdersByUserId;
 using Ali.Delivery.Order.Application.UseCases.GetOrder;
 using Ali.Delivery.Order.Application.UseCases.UnassignCourier;
 using Ali.Delivery.Order.Application.UseCases.UpdateOrder;
@@ -77,6 +78,22 @@ public class OrderController : ControllerBase
         return Ok(result);
     }
 
+    
+    /// <summary>
+    /// Получает все заказы курьера со статусом в работе.
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns>Список заказов</returns>
+    [HttpGet("couriers-orders-in-progress")]
+    [UserPermission(UserPermissionCode.OrderManagement)]
+    [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetAllCourierOrdersInProgress(CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetAllCourierOrdersInProgressCommand(), cancellationToken);
+        return Ok(result);
+    }
+    
     /// <summary>
     /// Назначает курьера на заказ.
     /// </summary>

@@ -10,24 +10,24 @@ public enum PermissionCode
     /// <summary>
     /// Создать пользователя.
     /// </summary>
-    [EnumMember(Value = "createUser")]
-    CreateUser,
+    [EnumMember(Value = "userManagement")]
+    UserManagement,
 
     /// <summary>
     /// Обновить заказ.
     /// </summary>
-    [EnumMember(Value = "updateOrder")]
-    UpdateOrder,
+    [EnumMember(Value = "orderManagement")]
+    OrderManagement,
 
     /// <summary>
     /// Получить заказ.
     /// </summary>
-    [EnumMember(Value = "getOrder")]
-    GetOrder,
+    [EnumMember(Value = "fullAccess")]
+    FullAccess,
 
     /// <summary>
     /// Удалить заказ.
     /// </summary>
-    [EnumMember(Value = "deleteOrder")]
-    DeleteOrder
+    [EnumMember(Value = "tracking")]
+    Tracking
 }
