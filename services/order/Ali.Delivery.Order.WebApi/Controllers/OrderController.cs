@@ -1,12 +1,9 @@
 ﻿using Ali.Delivery.Order.Application;
 using Ali.Delivery.Order.Application.Dtos.Order;
-using Ali.Delivery.Order.Application.UseCases.AssignCourier;
 using Ali.Delivery.Order.Application.UseCases.CreateOrder;
 using Ali.Delivery.Order.Application.UseCases.DeleteOrder;
 using Ali.Delivery.Order.Application.UseCases.GetAllOrders;
-using Ali.Delivery.Order.Application.UseCases.GetAllOrdersByUserId;
 using Ali.Delivery.Order.Application.UseCases.GetOrder;
-using Ali.Delivery.Order.Application.UseCases.UnassignCourier;
 using Ali.Delivery.Order.Application.UseCases.UpdateOrder;
 using Ali.Delivery.Order.WebApi.Attribute;
 using MediatR;
@@ -15,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Ali.Delivery.Order.WebApi.Controllers;
 
 /// <summary>
-/// Контроллер для управления действиями с заказами.8
+/// Контроллер для управления действиями с заказами.
 /// </summary>
 [ApiController]
 [Route("api/v{version:apiVersion}/[controller]")]
@@ -77,57 +74,6 @@ public class OrderController : ControllerBase
         var result = await _mediator.Send(new GetAllOrders(), cancellationToken);
         return Ok(result);
     }
-
-    
-    /// <summary>
-    /// Получает все заказы курьера со статусом в работе.
-    /// </summary>
-    /// <param name="cancellationToken"></param>
-    /// <returns>Список заказов</returns>
-    [HttpGet("couriers-orders-in-progress")]
-    [UserPermission(UserPermissionCode.OrderManagement)]
-    [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAllCourierOrdersInProgress(CancellationToken cancellationToken)
-    {
-        var result = await _mediator.Send(new GetAllCourierOrdersInProgressCommand(), cancellationToken);
-        return Ok(result);
-    }
-    
-    /// <summary>
-    /// Назначает курьера на заказ.
-    /// </summary>
-    /// <param name="orderId">Номер заказа.</param>
-    /// <param name="cancellationToken">Маркер отмены.</param>
-    /// <returns>ID заказа.</returns>
-    [HttpPut("assign-courier")]
-    [UserPermission(UserPermissionCode.OrderManagement)]
-    [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> AssignCourier(Guid orderId,CancellationToken cancellationToken)
-    {
-        var result = await _mediator.Send(new AssignCourierCommand(orderId), cancellationToken);
-        return Ok(result);
-    }
-    
-    /// <summary>
-    /// Снимает курьера с заказа.
-    /// </summary>
-    /// <param name="orderId">Номер заказа.</param>
-    /// <param name="cancellationToken"></param>
-    /// <returns>ID заказа</returns>
-    [HttpPut("unassign-courier")]
-    [UserPermission(UserPermissionCode.OrderManagement)]
-    [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UnassignCourier(Guid orderId,CancellationToken cancellationToken)
-    {
-        var result = await _mediator.Send(new UnassignCourierCommand(orderId), cancellationToken);
-        return Ok(result);
-    }
-    
-    
-    
     
     /// <summary>
     /// Получает заказ.

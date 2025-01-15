@@ -22,7 +22,7 @@ public class GetAllUsersCommandHandler : IRequestHandler<GetAllUsers, List<UserD
     public GetAllUsersCommandHandler(IAppDbContext context) => _context = context ?? throw new ArgumentNullException(nameof(context));
 
     /// <inheritdoc />
-    public async Task<List<UserDto>> Handle(GetAllUsers query, CancellationToken cancellationToken)
+    public async Task<List<UserDto>> Handle(GetAllUsers request, CancellationToken cancellationToken)
     {
         var users = await _context.Users.Select(user => new UserDto(user.Id,
                                                                     user.UserFirstName,

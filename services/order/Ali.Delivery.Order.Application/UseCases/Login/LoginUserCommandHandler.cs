@@ -38,7 +38,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, string>
         var user = await _dbcontext.Users.FirstOrDefaultAsync(u => u.Login == request.Login, cancellationToken) ?? throw new NotFoundException(typeof(User), request.Login);
 
         var permissions = await _dbcontext.RolePermissions.Where(p => p.Role == user.Role)
-                                          .Select(p => (int)p.Permission.Code)
+                                          .Select(p => (int)p.Permission!.Code)
                                           .ToListAsync(cancellationToken);
 
         if (user.Password.IsValidPassword(request.Password))

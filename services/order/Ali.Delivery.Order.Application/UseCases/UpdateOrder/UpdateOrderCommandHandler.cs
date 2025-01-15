@@ -27,27 +27,27 @@ public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand, Ord
 
     /// <inheritdoc />
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если <paramref name="command" /> равен <c>null</c>.
+    /// Возникает, если <paramref name="request" /> равен <c>null</c>.
     /// </exception>
-    public async Task<OrderDto> Handle(UpdateOrderCommand command, CancellationToken cancellationToken)
+    public async Task<OrderDto> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(command);
+        ArgumentNullException.ThrowIfNull(request);
 
         var order = await _context.Orders.Include(o => o.OrderInfo)
                                   .Include(o => o.OrderStatus)
-                                  .FirstOrDefaultAsync(o => (Guid)o.Id == command.OrderId, cancellationToken) ??
-                    throw new NotFoundException(typeof(Domain.Entities.Order), command.OrderId);
+                                  .FirstOrDefaultAsync(o => (Guid)o.Id == request.OrderId, cancellationToken) ??
+                    throw new NotFoundException(typeof(Domain.Entities.Order), request.OrderId);
 
-        order.UpdateOrderName(new OrderName(command.OrderName));
+        order.UpdateOrderName(new OrderName(request.OrderName));
 
         var orderInfo = order.OrderInfo;
-        orderInfo.OrderInfoWeight = new OrderInfoWeight(command.Weight);
-        orderInfo.OrderInfoPrice = new OrderInfoPrice(command.Price);
-        orderInfo.OrderInfoAddressTo = new OrderInfoAddressTo(command.AddressTo);
-        orderInfo.OrderInfoAddressFrom = new OrderInfoAddressFrom(command.AddressFrom);
-        orderInfo.Size = command.Size.ToSize();
+        orderInfo.OrderInfoWeight = new OrderInfoWeight(request.Weight);
+        orderInfo.OrderInfoPrice = new OrderInfoPrice(request.Price);
+        orderInfo.OrderInfoAddressTo = new OrderInfoAddressTo(request.AddressTo);
+        orderInfo.OrderInfoAddressFrom = new OrderInfoAddressFrom(request.AddressFrom);
+        orderInfo.Size = request.Size.ToSize();
 
-        order.UpdateOrderStatus(command.OrderStatus.ToOrderStatus());
+        order.UpdateOrderStatus(request.OrderStatus.ToOrderStatus());
 
         await _context.SaveChangesAsync(cancellationToken);
 

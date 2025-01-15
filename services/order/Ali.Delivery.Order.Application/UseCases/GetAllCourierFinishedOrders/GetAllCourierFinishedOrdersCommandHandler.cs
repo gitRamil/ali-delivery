@@ -1,14 +1,15 @@
-namespace Ali.Delivery.Order.Application.UseCases.GetAllOrdersByUserId;
-
-using Abstractions;
+using Ali.Delivery.Order.Application.Abstractions;
 using Ali.Delivery.Order.Application.Dtos.Order;
+using Ali.Delivery.Order.Application.UseCases.GetAllOrdersByUserId;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
+namespace Ali.Delivery.Order.Application.UseCases.GetAllCourierFinishedOrders;
+
 /// <summary>
-/// Представляет обработчик запроса на получение списка всех заказов курьера со статусом "inprogress".
+/// Представляет обработчик запроса на получение списка всех заказов курьера со статусом "finished".
 /// </summary>
-public class GetAllCourierOrdersInProgressCommandHandler : IRequestHandler<GetAllCourierOrdersInProgressCommand, List<OrderDto>>
+public class GetAllCourierFinishedOrdersCommandHandler : IRequestHandler<GetAllCourierFinishedOrdersCommand, List<OrderDto>>
 {
     private readonly IAppDbContext _context;
     private readonly ICurrentUser _currentUser;
@@ -21,31 +22,21 @@ public class GetAllCourierOrdersInProgressCommandHandler : IRequestHandler<GetAl
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="context" /> или <paramref name="currentUser" /> равен <c>null</c>.
     /// </exception>
-    public GetAllCourierOrdersInProgressCommandHandler(IAppDbContext context, ICurrentUser currentUser)
+    public GetAllCourierFinishedOrdersCommandHandler(IAppDbContext context, ICurrentUser currentUser)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
         _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
     }
 
     /// <inheritdoc />
-    public async Task<List<OrderDto>> Handle(GetAllCourierOrdersInProgressCommand request, CancellationToken cancellationToken)
+    public async Task<List<OrderDto>> Handle(GetAllCourierFinishedOrdersCommand request, CancellationToken cancellationToken)
     {
-        if (!_currentUser.IsAuthenticated)
-        {
-            throw new UnauthorizedAccessException("Пользователь не авторизован.");
-        }
-
-        if (!_currentUser.HasPermission(UserPermissionCode.OrderManagement))
-        {
-            throw new UnauthorizedAccessException("У пользователя нет прав на управление заказами.");
-        }
-
-        var courierId = _currentUser.Id;
-
+       var courierId = _currentUser.Id;
+       
         var orders = await _context.Orders
             .Include(o => o.OrderStatus)
             .Include(o => o.OrderInfo)
-            .Where(o=>o.Courier != null && (Guid)o.Courier.Id == courierId && o.OrderStatus.Code == "inProgress" )
+            .Where(o=>o.Courier != null && (Guid)o.Courier.Id == courierId && o.OrderStatus.Code == "finished" )
             .Select(order => new OrderDto(
                 order.Id,
                 order.Name,

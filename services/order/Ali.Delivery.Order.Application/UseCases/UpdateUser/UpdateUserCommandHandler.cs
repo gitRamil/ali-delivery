@@ -28,28 +28,28 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserD
 
     /// <inheritdoc />
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если <paramref name="command" /> равен <c>null</c>.
+    /// Возникает, если <paramref name="request" /> равен <c>null</c>.
     /// </exception>
-    public async Task<UserDto> Handle(UpdateUserCommand command, CancellationToken cancellationToken)
+    public async Task<UserDto> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(command);
+        ArgumentNullException.ThrowIfNull(request);
 
         var user = await _context.Users.Include(u => u.Role)
                                  .Include(u => u.PassportInfo)
-                                 .FirstOrDefaultAsync(u => (Guid)u.Id == command.UserId, cancellationToken) ??
-                   throw new NotFoundException(typeof(User), command.UserId);
+                                 .FirstOrDefaultAsync(u => (Guid)u.Id == request.UserId, cancellationToken) ??
+                   throw new NotFoundException(typeof(User), request.UserId);
 
-        user.UpdateName(new UserFirstName(command.FirstName), new UserLastName(command.LastName));
+        user.UpdateName(new UserFirstName(request.FirstName), new UserLastName(request.LastName));
 
         var passportInfo = user.PassportInfo;
-        passportInfo.PassportType = command.PassportType.ToPassportType();
-        passportInfo.PassportInfoPassportNumber = new PassportInfoPassportNumber(command.PassportNumber);
-        passportInfo.PassportInfoRegDate = new PassportInfoRegDate(command.RegDate);
-        passportInfo.PassportInfoExpirationDate = new PassportInfoExpirationDate(command.ExpirationDate);
+        passportInfo.PassportType = request.PassportType.ToPassportType();
+        passportInfo.PassportInfoPassportNumber = new PassportInfoPassportNumber(request.PassportNumber);
+        passportInfo.PassportInfoRegDate = new PassportInfoRegDate(request.RegDate);
+        passportInfo.PassportInfoExpirationDate = new PassportInfoExpirationDate(request.ExpirationDate);
 
-        user.UpdateRole(command.Role.ToRole());
+        user.UpdateRole(request.Role.ToRole());
 
-        user.UpdateBirthDay(new UserBirthDay(command.Birthdate));
+        user.UpdateBirthDay(new UserBirthDay(request.Birthdate));
 
         await _context.SaveChangesAsync(cancellationToken);
 

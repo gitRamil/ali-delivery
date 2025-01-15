@@ -28,7 +28,7 @@ public class GetAllOrdersCommandHandler : IRequestHandler<GetAllOrders, List<Ord
     }
 
     /// <inheritdoc />
-    public async Task<List<OrderDto>> Handle(GetAllOrders query, CancellationToken cancellationToken)
+    public async Task<List<OrderDto>> Handle(GetAllOrders request, CancellationToken cancellationToken)
     {
         var qwe = _currentUser.Id;
         var qwe2 = _currentUser.IsAuthenticated;
