@@ -2,6 +2,8 @@
 using Ali.Delivery.Order.Application.Dtos.Order;
 using Ali.Delivery.Order.Application.UseCases.CreateOrder;
 using Ali.Delivery.Order.Application.UseCases.DeleteOrder;
+using Ali.Delivery.Order.Application.UseCases.GetAllCreatedOrders;
+using Ali.Delivery.Order.Application.UseCases.GetAllCurrentUserOrders;
 using Ali.Delivery.Order.Application.UseCases.GetAllOrders;
 using Ali.Delivery.Order.Application.UseCases.GetOrder;
 using Ali.Delivery.Order.Application.UseCases.UpdateOrder;
@@ -72,6 +74,36 @@ public class OrderController : ControllerBase
     public async Task<IActionResult> GetAllOrders(CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetAllOrders(), cancellationToken);
+        return Ok(result);
+    }
+    
+    /// <summary>
+    /// Получает список всех созданных заказов.
+    /// </summary>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    /// <returns>Список всех заказов.</returns>
+    [HttpGet("created-orders")]
+    [UserPermission(UserPermissionCode.OrderManagement)]
+    [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetAllCreatedOrders(CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetAllCreatedOrdersCommand(), cancellationToken);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Получает список всех созданных заказов текущего пользователя.
+    /// </summary>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    /// <returns>Список всех заказов.</returns>
+    [HttpGet("currentUser-created-orders")]
+    [UserPermission(UserPermissionCode.OrderManagement)]
+    [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetAllCurrentUserCreatedOrders(CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetAllCurrentUserOrdersCommand(), cancellationToken);
         return Ok(result);
     }
     

@@ -32,18 +32,11 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Guid>
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var passportInfo = new PassportInfo(SequentialGuid.Create(),
-                                            request.PassportType.ToPassportType(),
-                                            new PassportInfoPassportNumber(request.PassportNumber),
-                                            new PassportInfoRegDate(request.RegDate),
-                                            new PassportInfoExpirationDate(request.ExpirationDate));
-
         var user = new User(SequentialGuid.Create(),
                             new UserLogin(request.Login),
                             new UserPassword(request.Password),
                             new UserFirstName(request.FirstName),
                             new UserLastName(request.LastName),
-                            passportInfo,
                             request.Role.ToRole(),
                             new UserBirthDay(request.Birthday));
 

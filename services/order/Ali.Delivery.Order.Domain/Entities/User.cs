@@ -18,9 +18,9 @@ public class User : Entity<SequentialGuid>
     /// <param name="password">Пароль.</param>
     /// <param name="userFirstName">Имя пользователя.</param>
     /// <param name="userLastName">Фамилия пользователя.</param>
-    /// <param name="passportInfo">Информация о паспорте пользователя</param>
     /// <param name="role">Идентификатор роли пользователя.</param>
     /// <param name="userBirthDay">Дата рождения пользователя.</param>
+    /// <param name="passportInfo">Информация о паспорте пользователя</param>
     /// <exception cref="ArgumentNullException">
     /// Возникает, если любой из параметров <paramref name="userFirstName" />,
     /// <paramref name="userLastName" />, <paramref name="passportInfo" />,
@@ -31,16 +31,16 @@ public class User : Entity<SequentialGuid>
                 UserPassword password,
                 UserFirstName userFirstName,
                 UserLastName userLastName,
-                PassportInfo passportInfo,
                 Role role,
-                UserBirthDay userBirthDay)
+                UserBirthDay userBirthDay,
+                PassportInfo? passportInfo = null)
         : base(id)
     {
         Login = login ?? throw new ArgumentNullException(nameof(login));
         Password = password ?? throw new ArgumentNullException(nameof(password));
         UserFirstName = userFirstName ?? throw new ArgumentNullException(nameof(userFirstName));
         UserLastName = userLastName ?? throw new ArgumentNullException(nameof(userLastName));
-        PassportInfo = passportInfo ?? throw new ArgumentNullException(nameof(passportInfo));
+        PassportInfo = passportInfo ;
         Role = role ?? throw new ArgumentNullException(nameof(role));
         UserBirthDay = userBirthDay ?? throw new ArgumentNullException(nameof(userBirthDay));
     }
@@ -69,7 +69,7 @@ public class User : Entity<SequentialGuid>
     /// <summary>
     /// Информация о паспорте пользователя.
     /// </summary>
-    public virtual PassportInfo PassportInfo { get; private set; }
+    public virtual PassportInfo? PassportInfo { get; set; }
 
     /// <summary>
     /// Пароль пользователя.

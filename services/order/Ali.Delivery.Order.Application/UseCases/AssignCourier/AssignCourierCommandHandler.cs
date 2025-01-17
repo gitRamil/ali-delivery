@@ -35,10 +35,6 @@ public class AssignCourierCommandHandler : IRequestHandler<AssignCourierCommand,
     /// </exception>
     public async Task<Guid> Handle(AssignCourierCommand request, CancellationToken cancellationToken)
     {
-        if (!_currentUser.HasPermission(UserPermissionCode.OrderManagement))
-        {
-            throw new UnauthorizedAccessException("Текущий пользователь не является курьером.");
-        }
 
         var order = await _context.Orders
                                   .FirstOrDefaultAsync(o => (Guid)o.Id == request.OrderId, cancellationToken)

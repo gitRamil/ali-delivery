@@ -30,16 +30,7 @@ public class GetAllCourierOrdersInProgressCommandHandler : IRequestHandler<GetAl
     /// <inheritdoc />
     public async Task<List<OrderDto>> Handle(GetAllCourierOrdersInProgressCommand request, CancellationToken cancellationToken)
     {
-        if (!_currentUser.IsAuthenticated)
-        {
-            throw new UnauthorizedAccessException("Пользователь не авторизован.");
-        }
-
-        if (!_currentUser.HasPermission(UserPermissionCode.OrderManagement))
-        {
-            throw new UnauthorizedAccessException("У пользователя нет прав на управление заказами.");
-        }
-
+        
         var courierId = _currentUser.Id;
 
         var orders = await _context.Orders

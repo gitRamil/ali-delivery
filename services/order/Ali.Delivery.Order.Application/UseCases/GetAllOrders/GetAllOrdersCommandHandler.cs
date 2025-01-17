@@ -11,28 +11,24 @@ namespace Ali.Delivery.Order.Application.UseCases.GetAllOrders;
 public class GetAllOrdersCommandHandler : IRequestHandler<GetAllOrders, List<OrderDto>>
 {
     private readonly IAppDbContext _context;
-    private readonly ICurrentUser _currentUser;
+    // private readonly ICurrentUser _currentUser;
 
     /// <summary>
     /// Инициализирует новый экземпляр типа <see cref="GetAllOrdersCommandHandler" />.
     /// </summary>
     /// <param name="context">Контекст БД.</param>
-    /// <param name="currentUser">Текущий пользователь.</param>
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="context" /> равен <c>null</c>.
     /// </exception>
-    public GetAllOrdersCommandHandler(IAppDbContext context, ICurrentUser currentUser)
+    public GetAllOrdersCommandHandler(IAppDbContext context)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
-        _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
+        // _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
     }
 
     /// <inheritdoc />
     public async Task<List<OrderDto>> Handle(GetAllOrders request, CancellationToken cancellationToken)
     {
-        var qwe = _currentUser.Id;
-        var qwe2 = _currentUser.IsAuthenticated;
-        var qwe3 = _currentUser.HasPermission(UserPermissionCode.OrderManagement);
 
         var orders = await _context.Orders.Include(o => o.OrderStatus)
                                    .Include(o => o.OrderInfo)
