@@ -40,7 +40,7 @@ public class User : Entity<SequentialGuid>
         Password = password ?? throw new ArgumentNullException(nameof(password));
         UserFirstName = userFirstName ?? throw new ArgumentNullException(nameof(userFirstName));
         UserLastName = userLastName ?? throw new ArgumentNullException(nameof(userLastName));
-        PassportInfo = passportInfo ?? throw new ArgumentNullException(nameof(passportInfo));
+        PassportInfo = passportInfo;
         Role = role ?? throw new ArgumentNullException(nameof(role));
         UserBirthDay = userBirthDay ?? throw new ArgumentNullException(nameof(userBirthDay));
     }
@@ -69,7 +69,7 @@ public class User : Entity<SequentialGuid>
     /// <summary>
     /// Информация о паспорте пользователя.
     /// </summary>
-    public virtual PassportInfo PassportInfo { get; set; }
+    public virtual PassportInfo? PassportInfo { get; set; }
 
     /// <summary>
     /// Пароль пользователя.

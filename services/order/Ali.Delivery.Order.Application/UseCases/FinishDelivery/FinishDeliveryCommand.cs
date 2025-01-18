@@ -6,5 +6,4 @@ namespace Ali.Delivery.Order.Application.UseCases.FinishDelivery;
 /// Представляет команду для завершения заказа курьером.
 /// </summary>
 /// <param name="OrderId"></param>
-public record  FinishDeliveryCommand(Guid OrderId) : IRequest<Guid>;
-
+public record FinishDeliveryCommand(Guid OrderId) : IRequest<Guid>;

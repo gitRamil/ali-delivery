@@ -31,38 +31,6 @@ public class CourierController : ControllerBase
     public CourierController(IMediator mediator) => _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
     /// <summary>
-    /// Получает все заказы курьера со статусом в работе.
-    /// </summary>
-    /// <param name="cancellationToken">Маркер отмены.</param>
-    /// <returns>Список заказов</returns>
-    [HttpGet("couriers-orders-in-progress")]
-    [UserPermission(UserPermissionCode.OrderManagement)]
-    [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAllCourierOrdersInProgress(CancellationToken cancellationToken)
-    {
-        var result = await _mediator.Send(new GetAllCourierOrdersInProgressCommand(), cancellationToken);
-        return Ok(result);
-    }
-    
-    /// <summary>
-    /// Получает все заказы курьера со статусом завершено.
-    /// </summary>
-    /// <param name="cancellationToken">Маркер отмены.</param>
-    /// <returns>Список заказов</returns>
-    [HttpGet("couriers-orders-finished")]
-    [UserPermission(UserPermissionCode.OrderManagement)]
-    [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAllCourierFinishedOrders(CancellationToken cancellationToken)
-    {
-        var result = await _mediator.Send(new GetAllCourierFinishedOrdersCommand(), cancellationToken);
-        return Ok(result);
-    }
-    
-    
-
-    /// <summary>
     /// Назначает курьера на заказ.
     /// </summary>
     /// <param name="orderId">Номер заказа.</param>
@@ -79,23 +47,6 @@ public class CourierController : ControllerBase
     }
 
     /// <summary>
-    /// Снимает курьера с заказа.
-    /// </summary>
-    /// <param name="orderId">Номер заказа.</param>
-    /// <param name="cancellationToken">Маркер отмены.</param>
-    /// <returns>ID заказа</returns>
-    [HttpPut("unassign-courier")]
-    [UserPermission(UserPermissionCode.OrderManagement)]
-    [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UnassignCourier(Guid orderId, CancellationToken cancellationToken)
-    {
-        var result = await _mediator.Send(new UnassignCourierCommand(orderId), cancellationToken);
-        return Ok(result);
-    }
-
-
-    /// <summary>
     /// Завершение заказа курьером.
     /// </summary>
     /// <param name="orderId">Номер заказа.</param>
@@ -108,6 +59,52 @@ public class CourierController : ControllerBase
     public async Task<IActionResult> FinishDelivery(Guid orderId, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new FinishDeliveryCommand(orderId), cancellationToken);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Получает все заказы курьера со статусом завершено.
+    /// </summary>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    /// <returns>Список заказов</returns>
+    [HttpGet("couriers-orders-finished")]
+    [UserPermission(UserPermissionCode.OrderManagement)]
+    [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetAllCourierFinishedOrders(CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetAllCourierFinishedOrdersCommand(), cancellationToken);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Получает все заказы курьера со статусом в работе.
+    /// </summary>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    /// <returns>Список заказов</returns>
+    [HttpGet("couriers-orders-in-progress")]
+    [UserPermission(UserPermissionCode.OrderManagement)]
+    [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetAllCourierOrdersInProgress(CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetAllCourierOrdersInProgressCommand(), cancellationToken);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Снимает курьера с заказа.
+    /// </summary>
+    /// <param name="orderId">Номер заказа.</param>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    /// <returns>ID заказа</returns>
+    [HttpPut("unassign-courier")]
+    [UserPermission(UserPermissionCode.OrderManagement)]
+    [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UnassignCourier(Guid orderId, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new UnassignCourierCommand(orderId), cancellationToken);
         return Ok(result);
     }
 }

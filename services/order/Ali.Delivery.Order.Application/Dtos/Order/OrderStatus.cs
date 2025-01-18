@@ -12,7 +12,7 @@ public enum OrderStatus
     /// </summary>
     [EnumMember(Value = "created")]
     Created,
-    
+
     /// <summary>
     /// Создан.
     /// </summary>

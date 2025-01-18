@@ -9,9 +9,8 @@ namespace Ali.Delivery.Order.Application.UseCases.GetAllCurrentUserOrders;
 /// <summary>
 /// Представляет обработчик команды получения всех созданных заказов пользователя.
 /// </summary>
-public class GetAllCurrentUserOrdersCommandHandler: IRequestHandler<GetAllCurrentUserOrdersCommand,List<OrderDto>>
+public class GetAllCurrentUserOrdersCommandHandler : IRequestHandler<GetAllCurrentUserOrdersCommand, List<OrderDto>>
 {
-    
     private readonly IAppDbContext _context;
     private readonly ICurrentUser _currentUser;
 
@@ -21,7 +20,7 @@ public class GetAllCurrentUserOrdersCommandHandler: IRequestHandler<GetAllCurren
     /// <param name="context">Контекст БД.</param>
     /// <param name="currentUser">Текущий пользователь.</param>
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если <paramref name="context"/> равен <c>null</c>.
+    /// Возникает, если <paramref name="context" /> равен <c>null</c>.
     /// </exception>
     public GetAllCurrentUserOrdersCommandHandler(IAppDbContext context, ICurrentUser currentUser)
     {
@@ -32,19 +31,16 @@ public class GetAllCurrentUserOrdersCommandHandler: IRequestHandler<GetAllCurren
     /// <inheritdoc />
     public async Task<List<OrderDto>> Handle(GetAllCurrentUserOrdersCommand request, CancellationToken cancellationToken)
     {
-        var orders = await _context.Orders
-                                   .Include(o => o.OrderStatus)
+        var orders = await _context.Orders.Include(o => o.OrderStatus)
                                    .Include(o => o.OrderInfo)
-                                   .Where(o=>o.OrderStatus.Code == "created" && o.Sender != null && (Guid)o.Sender.Id == _currentUser.Id )
-                                   .Select(order => new OrderDto(
-                                               order.Id,
-                                               order.Name,
-                                               order.OrderStatus.Name,
-                                               order.OrderInfo.OrderInfoPrice,
-                                               order.OrderInfo.OrderInfoWeight,
-                                               order.OrderInfo.OrderInfoAddressFrom,
-                                               order.OrderInfo.OrderInfoAddressTo))
-                
+                                   .Where(o => o.OrderStatus.Code == "created" && o.Sender != null && (Guid)o.Sender.Id == _currentUser.Id)
+                                   .Select(order => new OrderDto(order.Id,
+                                                                 order.Name,
+                                                                 order.OrderStatus.Name,
+                                                                 order.OrderInfo.OrderInfoPrice,
+                                                                 order.OrderInfo.OrderInfoWeight,
+                                                                 order.OrderInfo.OrderInfoAddressFrom,
+                                                                 order.OrderInfo.OrderInfoAddressTo))
                                    .ToListAsync(cancellationToken);
 
         return orders;

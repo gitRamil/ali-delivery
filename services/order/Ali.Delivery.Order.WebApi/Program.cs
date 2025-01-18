@@ -4,7 +4,6 @@ using Ali.Delivery.Order.Application.Services;
 using Ali.Delivery.Order.WebApi.Infrastructure.IoC;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.CookiePolicy;
-using Microsoft.Extensions.Options;
 using Serilog;
 
 try

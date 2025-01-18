@@ -34,6 +34,20 @@ public class UserController : ControllerBase
     public UserController(IMediator mediator) => _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
     /// <summary>
+    /// Заполнение данных паспорта пользователя.
+    /// </summary>
+    /// <param name="command">Команда заполнения данных паспорта пользователя.</param>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    [HttpPut("complete-passport")]
+    [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> CompletePassport([FromBody] CompletePassportCommand command, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(command, cancellationToken);
+        return Ok(result);
+    }
+
+    /// <summary>
     /// Создает пользователя.
     /// </summary>
     /// <param name="command">Пользователь.</param>
@@ -63,6 +77,20 @@ public class UserController : ControllerBase
     }
 
     /// <summary>
+    /// Получает список всех ролей для пользователей.
+    /// </summary>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    /// <returns>Список всех ролей.</returns>
+    [HttpGet("get-roles")]
+    [ProducesResponseType(typeof(List<UserDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetAllRoles(CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetRolesForUserRegistrationCommand(), cancellationToken);
+        return Ok(result);
+    }
+
+    /// <summary>
     /// Получает список всех пользователей.
     /// </summary>
     /// <param name="cancellationToken">Маркер отмены.</param>
@@ -74,20 +102,6 @@ public class UserController : ControllerBase
     public async Task<IActionResult> GetAllUsers(CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetAllUsers(), cancellationToken);
-        return Ok(result);
-    }
-    
-    /// <summary>
-    /// Получает список всех ролей для пользователей.
-    /// </summary>
-    /// <param name="cancellationToken">Маркер отмены.</param>
-    /// <returns>Список всех ролей.</returns>
-    [HttpGet("get-roles")]
-    [ProducesResponseType(typeof(List<UserDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAllRoles(CancellationToken cancellationToken)
-    {
-        var result = await _mediator.Send(new GetRolesForUserRegistrationCommand(), cancellationToken);
         return Ok(result);
     }
 
@@ -122,7 +136,7 @@ public class UserController : ControllerBase
 
         return Ok(token);
     }
-    
+
     /// <summary>
     /// Выполняет выход пользователя из системы.
     /// </summary>
@@ -149,22 +163,6 @@ public class UserController : ControllerBase
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateUser([FromBody] UpdateUserCommand command, CancellationToken cancellationToken)
-    {
-        var result = await _mediator.Send(command, cancellationToken);
-        return Ok(result);
-    }
-    
-    
-    
-    /// <summary>
-    /// Заполнение данных паспорта пользователя.
-    /// </summary>
-    /// <param name="command">Команда заполнения данных паспорта пользователя.</param>
-    /// <param name="cancellationToken">Маркер отмены.</param>
-    [HttpPut("complete-passport")]
-    [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> CompletePassport([FromBody] CompletePassportCommand command, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(command, cancellationToken);
         return Ok(result);

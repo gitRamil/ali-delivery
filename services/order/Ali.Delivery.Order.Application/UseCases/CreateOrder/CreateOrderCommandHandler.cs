@@ -40,18 +40,13 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Gui
     public async Task<Guid> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        
-        
-        var sender = await _context.Users
-                                   .FirstOrDefaultAsync(u => (Guid)u.Id == _currentUser.Id, cancellationToken)
-                     ?? throw new NotFoundException(typeof(User), _currentUser.Id);
+
+        var sender = await _context.Users.FirstOrDefaultAsync(u => (Guid)u.Id == _currentUser.Id, cancellationToken) ?? throw new NotFoundException(typeof(User), _currentUser.Id);
 
         if (sender.PassportInfo != null)
         {
-
             var receiver = await _context.Users.FirstOrDefaultAsync(u => (Guid)u.Id == request.ReceiverId, cancellationToken) ??
                            throw new NotFoundException(typeof(User), request.ReceiverId);
-
 
             var orderInfo = new OrderInfo(SequentialGuid.Create(),
                                           new OrderInfoWeight(request.Weight),
@@ -60,11 +55,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Gui
                                           new OrderInfoAddressFrom(request.AddressFrom),
                                           new OrderInfoAddressTo(request.AddressTo));
 
-
-
             var order = new Domain.Entities.Order(SequentialGuid.Create(), new OrderName(request.OrderName), orderInfo, OrderStatus.Created.ToOrderStatus(), sender, receiver);
-
-
 
             _context.Orders.Add(order);
 
@@ -72,9 +63,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Gui
 
             return order.Id;
         }
-        else
-        {
-            throw new InvalidOperationException("Пожалуйста заполните паспортные данные для создания заказа");
-        }
+
+        throw new InvalidOperationException("Пожалуйста заполните паспортные данные для создания заказа");
     }
 }

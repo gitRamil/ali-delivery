@@ -13,4 +13,4 @@ namespace Ali.Delivery.Order.Application.UseCases.CreateOrder;
 /// <param name="AddressFrom">Адрес отправления.</param>
 /// <param name="AddressTo">Адрес доставки.</param>
 /// <param name="ReceiverId">ID получателя.</param>
-public record CreateOrderCommand(string OrderName, decimal Weight, SizeCode Size, decimal Price, string AddressFrom, string AddressTo, Guid ReceiverId ) : IRequest<Guid>;
+public record CreateOrderCommand(string OrderName, decimal Weight, SizeCode Size, decimal Price, string AddressFrom, string AddressTo, Guid ReceiverId) : IRequest<Guid>;

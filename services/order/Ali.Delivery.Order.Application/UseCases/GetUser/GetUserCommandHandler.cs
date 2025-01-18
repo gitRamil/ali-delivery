@@ -33,6 +33,6 @@ public class GetUserCommandHandler : IRequestHandler<GetUserCommand, UserDto>
 
         var user = await _context.Users.FirstOrDefaultAsync(o => (Guid)o.Id == request.UserId, cancellationToken) ?? throw new NotFoundException(typeof(User), request.UserId);
 
-        return new UserDto(user.Id, user.UserFirstName, user.UserLastName, user.PassportInfo.PassportInfoPassportNumber, user.PassportInfo.PassportType.Name, user.Role.Name);
+        return new UserDto(user.Id, user.UserFirstName, user.UserLastName, user.PassportInfo!.PassportInfoPassportNumber, user.PassportInfo.PassportType.Name, user.Role.Name);
     }
 }

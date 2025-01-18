@@ -5,11 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ali.Delivery.Order.Application.UseCases.GetRolesForUserRegistration;
 
-
 /// <summary>
 /// Представляет обработчик команды получения всех ролей для регистрации пользователя.
 /// </summary>
-public class GetRolesCommandHandler : IRequestHandler<GetRolesForUserRegistrationCommand , List<RoleDto>>
+public class GetRolesCommandHandler : IRequestHandler<GetRolesForUserRegistrationCommand, List<RoleDto>>
 {
     private readonly IAppDbContext _context;
 
@@ -17,16 +16,12 @@ public class GetRolesCommandHandler : IRequestHandler<GetRolesForUserRegistratio
     /// Инициализирует новый экземпляр <see cref="GetRolesCommandHandler" />.
     /// </summary>
     /// <param name="context">Контекст БД.</param>
-    public GetRolesCommandHandler(IAppDbContext context)
-    {
-        _context = context ?? throw new ArgumentNullException(nameof(context));
-    }
+    public GetRolesCommandHandler(IAppDbContext context) => _context = context ?? throw new ArgumentNullException(nameof(context));
 
     /// <inheritdoc />
-    public async Task<List<RoleDto>> Handle(GetRolesForUserRegistrationCommand  request, CancellationToken cancellationToken)
+    public async Task<List<RoleDto>> Handle(GetRolesForUserRegistrationCommand request, CancellationToken cancellationToken)
     {
-        var roles = await _context.Roles
-                                  .Where(role => role.Code == "basicUser" && role.Code == "courier")
+        var roles = await _context.Roles.Where(role => role.Code == "basicUser" && role.Code == "courier")
                                   .Select(role => new RoleDto
                                   {
                                       Code = role.Code,

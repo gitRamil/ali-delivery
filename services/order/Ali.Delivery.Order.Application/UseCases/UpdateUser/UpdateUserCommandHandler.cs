@@ -42,10 +42,14 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserD
         user.UpdateName(new UserFirstName(request.FirstName), new UserLastName(request.LastName));
 
         var passportInfo = user.PassportInfo;
-        passportInfo.PassportType = request.PassportType.ToPassportType();
-        passportInfo.PassportInfoPassportNumber = new PassportInfoPassportNumber(request.PassportNumber);
-        passportInfo.PassportInfoRegDate = new PassportInfoRegDate(request.RegDate);
-        passportInfo.PassportInfoExpirationDate = new PassportInfoExpirationDate(request.ExpirationDate);
+
+        if (passportInfo != null)
+        {
+            passportInfo.PassportType = request.PassportType.ToPassportType();
+            passportInfo.PassportInfoPassportNumber = new PassportInfoPassportNumber(request.PassportNumber);
+            passportInfo.PassportInfoRegDate = new PassportInfoRegDate(request.RegDate);
+            passportInfo.PassportInfoExpirationDate = new PassportInfoExpirationDate(request.ExpirationDate);
+        }
 
         user.UpdateRole(request.Role.ToRole());
 
@@ -53,6 +57,6 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserD
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return new UserDto(user.Id, user.UserFirstName, user.UserLastName, user.PassportInfo.PassportInfoPassportNumber, user.PassportInfo.PassportType.Name, user.Role.Name);
+        return new UserDto(user.Id, user.UserFirstName, user.UserLastName, user.PassportInfo!.PassportInfoPassportNumber, user.PassportInfo.PassportType.Name, user.Role.Name);
     }
 }

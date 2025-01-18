@@ -19,15 +19,11 @@ public class GetAllOrdersCommandHandler : IRequestHandler<GetAllOrders, List<Ord
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="context" /> равен <c>null</c>.
     /// </exception>
-    public GetAllOrdersCommandHandler(IAppDbContext context)
-    {
-        _context = context ?? throw new ArgumentNullException(nameof(context));
-    }
+    public GetAllOrdersCommandHandler(IAppDbContext context) => _context = context ?? throw new ArgumentNullException(nameof(context));
 
     /// <inheritdoc />
     public async Task<List<OrderDto>> Handle(GetAllOrders request, CancellationToken cancellationToken)
     {
-
         var orders = await _context.Orders.Include(o => o.OrderStatus)
                                    .Include(o => o.OrderInfo)
                                    .Select(order => new OrderDto(order.Id,

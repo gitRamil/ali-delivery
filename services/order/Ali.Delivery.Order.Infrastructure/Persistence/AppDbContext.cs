@@ -74,7 +74,7 @@ public class AppDbContext : DbContext, IAppDbContext
     /// Возвращает набор пользователей.
     /// </summary>
     public DbSet<User> Users => Set<User>();
-    
+
     /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

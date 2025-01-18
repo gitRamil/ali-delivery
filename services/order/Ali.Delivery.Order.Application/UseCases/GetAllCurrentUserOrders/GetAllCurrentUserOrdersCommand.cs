@@ -7,4 +7,3 @@ namespace Ali.Delivery.Order.Application.UseCases.GetAllCurrentUserOrders;
 /// Представляет команду получения всех созданных заказов пользователя.
 /// </summary>
 public record GetAllCurrentUserOrdersCommand : IRequest<List<OrderDto>>;
-

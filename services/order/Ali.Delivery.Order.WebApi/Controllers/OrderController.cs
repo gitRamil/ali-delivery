@@ -63,21 +63,6 @@ public class OrderController : ControllerBase
     }
 
     /// <summary>
-    /// Получает список всех заказов.
-    /// </summary>
-    /// <param name="cancellationToken">Маркер отмены.</param>
-    /// <returns>Список всех заказов.</returns>
-    [HttpGet]
-    [UserPermission(UserPermissionCode.OrderManagement)]
-    [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAllOrders(CancellationToken cancellationToken)
-    {
-        var result = await _mediator.Send(new GetAllOrders(), cancellationToken);
-        return Ok(result);
-    }
-    
-    /// <summary>
     /// Получает список всех созданных заказов.
     /// </summary>
     /// <param name="cancellationToken">Маркер отмены.</param>
@@ -106,7 +91,22 @@ public class OrderController : ControllerBase
         var result = await _mediator.Send(new GetAllCurrentUserOrdersCommand(), cancellationToken);
         return Ok(result);
     }
-    
+
+    /// <summary>
+    /// Получает список всех заказов.
+    /// </summary>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    /// <returns>Список всех заказов.</returns>
+    [HttpGet]
+    [UserPermission(UserPermissionCode.OrderManagement)]
+    [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetAllOrders(CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetAllOrders(), cancellationToken);
+        return Ok(result);
+    }
+
     /// <summary>
     /// Получает заказ.
     /// </summary>

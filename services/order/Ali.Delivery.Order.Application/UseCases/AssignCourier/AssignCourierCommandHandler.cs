@@ -1,4 +1,5 @@
 using Ali.Delivery.Order.Application.Abstractions;
+using Ali.Delivery.Order.Application.Dtos.Order;
 using Ali.Delivery.Order.Application.Exceptions;
 using Ali.Delivery.Order.Application.Extensions;
 using Ali.Delivery.Order.Domain.Entities;
@@ -35,15 +36,17 @@ public class AssignCourierCommandHandler : IRequestHandler<AssignCourierCommand,
     /// </exception>
     public async Task<Guid> Handle(AssignCourierCommand request, CancellationToken cancellationToken)
     {
+        var order = await _context.Orders.FirstOrDefaultAsync(o => (Guid)o.Id == request.OrderId, cancellationToken) ??
+                    throw new NotFoundException(typeof(Domain.Entities.Order), request.OrderId);
 
-        var order = await _context.Orders
-                                  .FirstOrDefaultAsync(o => (Guid)o.Id == request.OrderId, cancellationToken)
-                    ?? throw new NotFoundException(typeof(Domain.Entities.Order), request.OrderId);
-        
-        order.Courier = await _context.Users
-                                      .FirstOrDefaultAsync(u => (Guid)u.Id == _currentUser.Id, cancellationToken)
-                        ?? throw new NotFoundException(typeof(User), _currentUser.Id);
-        order.OrderStatus = Dtos.Order.OrderStatus.InProgress.ToOrderStatus();
+        if (order.OrderStatus.Code == "inProgress" || order.OrderStatus.Code == "finished")
+        {
+            throw new InvalidOperationException(order.OrderStatus.Code == "inProgress" ? "Заказ уже назначен на другого курьера" : "Заказ уже завершен");
+        }
+
+        order.Courier = await _context.Users.FirstOrDefaultAsync(u => (Guid)u.Id == _currentUser.Id, cancellationToken) ??
+                        throw new NotFoundException(typeof(User), _currentUser.Id);
+        order.OrderStatus = OrderStatus.InProgress.ToOrderStatus();
 
         await _context.SaveChangesAsync(cancellationToken);
         return order.Id;

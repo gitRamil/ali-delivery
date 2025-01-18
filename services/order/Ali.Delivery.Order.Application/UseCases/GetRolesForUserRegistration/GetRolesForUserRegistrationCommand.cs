@@ -7,4 +7,3 @@ namespace Ali.Delivery.Order.Application.UseCases.GetRolesForUserRegistration;
 /// Представляет команду получения всех ролей для регистрации пользователя.
 /// </summary>
 public record GetRolesForUserRegistrationCommand : IRequest<List<RoleDto>>;
-

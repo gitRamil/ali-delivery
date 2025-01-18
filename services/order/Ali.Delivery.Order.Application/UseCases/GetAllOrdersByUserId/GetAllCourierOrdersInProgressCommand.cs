@@ -7,4 +7,3 @@ namespace Ali.Delivery.Order.Application.UseCases.GetAllOrdersByUserId;
 /// Команда получения всех заказов курьера "в работе".
 /// </summary>
 public class GetAllCourierOrdersInProgressCommand : IRequest<List<OrderDto>>;
-

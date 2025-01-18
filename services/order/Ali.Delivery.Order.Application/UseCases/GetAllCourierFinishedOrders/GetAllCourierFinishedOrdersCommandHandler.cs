@@ -31,21 +31,17 @@ public class GetAllCourierFinishedOrdersCommandHandler : IRequestHandler<GetAllC
     /// <inheritdoc />
     public async Task<List<OrderDto>> Handle(GetAllCourierFinishedOrdersCommand request, CancellationToken cancellationToken)
     {
-       
-        var orders = await _context.Orders
-            .Include(o => o.OrderStatus)
-            .Include(o => o.OrderInfo)
-            .Where(o=>o.Courier != null && (Guid)o.Courier.Id == _currentUser.Id && o.OrderStatus.Code == "finished" )
-            .Select(order => new OrderDto(
-                order.Id,
-                order.Name,
-                order.OrderStatus.Name,
-                order.OrderInfo.OrderInfoPrice,
-                order.OrderInfo.OrderInfoWeight,
-                order.OrderInfo.OrderInfoAddressFrom,
-                order.OrderInfo.OrderInfoAddressTo))
-            
-            .ToListAsync(cancellationToken);
+        var orders = await _context.Orders.Include(o => o.OrderStatus)
+                                   .Include(o => o.OrderInfo)
+                                   .Where(o => o.Courier != null && (Guid)o.Courier.Id == _currentUser.Id && o.OrderStatus.Code == "finished")
+                                   .Select(order => new OrderDto(order.Id,
+                                                                 order.Name,
+                                                                 order.OrderStatus.Name,
+                                                                 order.OrderInfo.OrderInfoPrice,
+                                                                 order.OrderInfo.OrderInfoWeight,
+                                                                 order.OrderInfo.OrderInfoAddressFrom,
+                                                                 order.OrderInfo.OrderInfoAddressTo))
+                                   .ToListAsync(cancellationToken);
 
         return orders;
     }

@@ -24,14 +24,15 @@ public class Order : Entity<SequentialGuid>
     /// Возникает, если любой из параметров <paramref name="orderName" />,
     /// <paramref name="orderInfo" />, <paramref name="orderStatus" /> равен <c>null</c>.
     /// </exception>
-    public Order(SequentialGuid id, OrderName orderName, OrderInfo orderInfo, OrderStatus orderStatus, User sender, User receiver, User? courier = null) : base(id)
+    public Order(SequentialGuid id, OrderName orderName, OrderInfo orderInfo, OrderStatus orderStatus, User sender, User receiver, User? courier = null)
+        : base(id)
     {
         Name = orderName ?? throw new ArgumentNullException(nameof(orderName));
         OrderInfo = orderInfo ?? throw new ArgumentNullException(nameof(orderInfo));
         OrderStatus = orderStatus ?? throw new ArgumentNullException(nameof(orderStatus));
         Sender = sender ?? throw new ArgumentNullException(nameof(sender));
         Receiver = receiver ?? throw new ArgumentNullException(nameof(receiver));
-        Courier = courier ;
+        Courier = courier;
     }
 
     /// <summary>
@@ -48,7 +49,12 @@ public class Order : Entity<SequentialGuid>
         Receiver = null!;
         Courier = null!;
     }
-    
+
+    /// <summary>
+    /// Возвращает курьера.
+    /// </summary>
+    public virtual User? Courier { get; set; }
+
     /// <summary>
     /// Возвращает наименование заказа.
     /// </summary>
@@ -64,21 +70,15 @@ public class Order : Entity<SequentialGuid>
     /// </summary>
     public virtual OrderStatus OrderStatus { get; set; }
 
-    
-    /// <summary>
-    /// Возвращает отправителя.
-    /// </summary>
-    public virtual User? Sender { get; }
-    
     /// <summary>
     /// Возвращает получателя.
     /// </summary>
     public virtual User? Receiver { get; }
-    
+
     /// <summary>
-    /// Возвращает курьера.
+    /// Возвращает отправителя.
     /// </summary>
-    public virtual User? Courier { get; set; }
+    public virtual User? Sender { get; }
 
     /// <summary>
     /// Обновляет наименование заказа.

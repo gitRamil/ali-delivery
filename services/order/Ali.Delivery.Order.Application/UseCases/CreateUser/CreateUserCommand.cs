@@ -12,10 +12,4 @@ namespace Ali.Delivery.Order.Application.UseCases.CreateUser;
 /// <param name="LastName">Фамилия пользователя.</param>
 /// <param name="Role">Код роли пользователя.</param>
 /// <param name="Birthday">Дата рождения пользователя.</param>
-public record CreateUserCommand(
-    string Login,
-    string Password,
-    string FirstName,
-    string LastName,
-    RoleCode Role,
-    DateTime Birthday) : IRequest<Guid>;
+public record CreateUserCommand(string Login, string Password, string FirstName, string LastName, RoleCode Role, DateTime Birthday) : IRequest<Guid>;

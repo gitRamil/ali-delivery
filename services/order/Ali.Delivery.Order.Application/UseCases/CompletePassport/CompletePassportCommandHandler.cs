@@ -11,7 +11,7 @@ namespace Ali.Delivery.Order.Application.UseCases.CompletePassport;
 /// <summary>
 /// Представляет обработчик команды заполнения паспорта.
 /// </summary>
-public class CompletePassportCommandHandler : IRequestHandler<CompletePassportCommand,Guid>
+public class CompletePassportCommandHandler : IRequestHandler<CompletePassportCommand, Guid>
 {
     private readonly IAppDbContext _context;
     private readonly ICurrentUser _currentUser;
@@ -31,23 +31,22 @@ public class CompletePassportCommandHandler : IRequestHandler<CompletePassportCo
     public async Task<Guid> Handle(CompletePassportCommand request, CancellationToken cancellationToken)
     {
         var userId = _currentUser.Id;
-        
-        var user = await _context.Users
-                                  .Include(u => u.PassportInfo)
-                                  .FirstOrDefaultAsync(u => (Guid)u.Id == userId, cancellationToken);
+
+        var user = await _context.Users.Include(u => u.PassportInfo)
+                                 .FirstOrDefaultAsync(u => (Guid)u.Id == userId, cancellationToken);
 
         if (user == null)
         {
             throw new InvalidOperationException("Пользователь не найден.");
         }
-        
+
         if (user.PassportInfo == null)
         {
-            user.PassportInfo = new PassportInfo(SequentialGuid.Create(),request.PassportType.ToPassportType(),
+            user.PassportInfo = new PassportInfo(SequentialGuid.Create(),
+                                                 request.PassportType.ToPassportType(),
                                                  new PassportInfoPassportNumber(request.PassportNumber),
                                                  new PassportInfoRegDate(request.RegDate),
-                                                 new PassportInfoExpirationDate(request.ExpirationDate) )
-            ;
+                                                 new PassportInfoExpirationDate(request.ExpirationDate));
         }
         else
         {

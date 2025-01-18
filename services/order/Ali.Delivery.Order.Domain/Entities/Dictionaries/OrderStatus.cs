@@ -15,14 +15,14 @@ public class OrderStatus : Entity<SequentialGuid>
     public static readonly OrderStatus Created = new(new Guid("3a174d9d-c0e0-b9f8-286f-aa381bbf2d0a"), new OrderStatusCode("created"), new OrderStatusName("Создана"));
 
     /// <summary>
-    /// Возвращает статус заказа: Создан.
-    /// </summary>
-    public static readonly OrderStatus InProgress = new(new Guid("3a174d9d-c0e1-358f-01db-927e1290e9f1"), new OrderStatusCode("inProgress"), new OrderStatusName("В процессе"));
-    
-    /// <summary>
     /// Возвращает статус заказа: Завершен.
     /// </summary>
     public static readonly OrderStatus Finished = new(new Guid("3a174d9d-c0df-65fa-4178-e9b514ce133d"), new OrderStatusCode("finished"), new OrderStatusName("Завершена"));
+
+    /// <summary>
+    /// Возвращает статус заказа: Создан.
+    /// </summary>
+    public static readonly OrderStatus InProgress = new(new Guid("3a174d9d-c0e1-358f-01db-927e1290e9f1"), new OrderStatusCode("inProgress"), new OrderStatusName("В процессе"));
 
     private static readonly Dictionary<OrderStatusCode, OrderStatus> OrderStatuses = new()
     {

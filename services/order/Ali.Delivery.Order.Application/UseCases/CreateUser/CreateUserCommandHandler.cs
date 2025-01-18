@@ -2,7 +2,6 @@ using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.Application.Abstractions;
 using Ali.Delivery.Order.Application.Extensions;
 using Ali.Delivery.Order.Domain.Entities;
-using Ali.Delivery.Order.Domain.ValueObjects.PassportInfo;
 using Ali.Delivery.Order.Domain.ValueObjects.User;
 using MediatR;
 
