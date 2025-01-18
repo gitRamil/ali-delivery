@@ -11,7 +11,6 @@ namespace Ali.Delivery.Order.Application.UseCases.GetAllOrders;
 public class GetAllOrdersCommandHandler : IRequestHandler<GetAllOrders, List<OrderDto>>
 {
     private readonly IAppDbContext _context;
-    // private readonly ICurrentUser _currentUser;
 
     /// <summary>
     /// Инициализирует новый экземпляр типа <see cref="GetAllOrdersCommandHandler" />.
@@ -23,7 +22,6 @@ public class GetAllOrdersCommandHandler : IRequestHandler<GetAllOrders, List<Ord
     public GetAllOrdersCommandHandler(IAppDbContext context)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
-        // _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
     }
 
     /// <inheritdoc />

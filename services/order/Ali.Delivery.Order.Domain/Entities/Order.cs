@@ -17,6 +17,9 @@ public class Order : Entity<SequentialGuid>
     /// <param name="orderName">Наименование заказа.</param>
     /// <param name="orderInfo">Информация о заказе.</param>
     /// <param name="orderStatus">Статус заказа.</param>
+    /// <param name="sender">Отправитель.</param>
+    /// <param name="receiver">Получатель.</param>
+    /// <param name="courier">Курьер.</param>
     /// <exception cref="ArgumentNullException">
     /// Возникает, если любой из параметров <paramref name="orderName" />,
     /// <paramref name="orderInfo" />, <paramref name="orderStatus" /> равен <c>null</c>.
@@ -61,13 +64,20 @@ public class Order : Entity<SequentialGuid>
     /// </summary>
     public virtual OrderStatus OrderStatus { get; set; }
 
-    // /// <summary>
-    // /// Возвращает информацию о пользователе.
-    // /// </summary>
+    
+    /// <summary>
+    /// Возвращает отправителя.
+    /// </summary>
     public virtual User? Sender { get; }
     
+    /// <summary>
+    /// Возвращает получателя.
+    /// </summary>
     public virtual User? Receiver { get; }
     
+    /// <summary>
+    /// Возвращает курьера.
+    /// </summary>
     public virtual User? Courier { get; set; }
 
     /// <summary>

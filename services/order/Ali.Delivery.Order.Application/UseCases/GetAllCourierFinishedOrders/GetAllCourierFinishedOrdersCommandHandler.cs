@@ -31,12 +31,11 @@ public class GetAllCourierFinishedOrdersCommandHandler : IRequestHandler<GetAllC
     /// <inheritdoc />
     public async Task<List<OrderDto>> Handle(GetAllCourierFinishedOrdersCommand request, CancellationToken cancellationToken)
     {
-       var courierId = _currentUser.Id;
        
         var orders = await _context.Orders
             .Include(o => o.OrderStatus)
             .Include(o => o.OrderInfo)
-            .Where(o=>o.Courier != null && (Guid)o.Courier.Id == courierId && o.OrderStatus.Code == "finished" )
+            .Where(o=>o.Courier != null && (Guid)o.Courier.Id == _currentUser.Id && o.OrderStatus.Code == "finished" )
             .Select(order => new OrderDto(
                 order.Id,
                 order.Name,
