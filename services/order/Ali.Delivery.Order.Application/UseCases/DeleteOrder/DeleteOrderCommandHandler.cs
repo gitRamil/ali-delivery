@@ -9,7 +9,7 @@ namespace Ali.Delivery.Order.Application.UseCases.DeleteOrder;
 /// <summary>
 /// Представляет обработчик команды для удаления заказа.
 /// </summary>
-public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand, OrderDto>
+public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand, Guid>
 {
     private readonly IAppDbContext _context;
 
@@ -26,27 +26,19 @@ public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand, Ord
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="request" /> равен <c>null</c>.
     /// </exception>
-    public async Task<OrderDto> Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var order = await _context.Orders.Include(o => o.OrderStatus)
-                                  .Include(o => o.OrderInfo)
+        var order = await _context.Orders
                                   .FirstOrDefaultAsync(o => (Guid)o.Id == request.OrderId, cancellationToken) ??
                     throw new NotFoundException(typeof(Domain.Entities.Order), request.OrderId);
 
-        var orderDto = new OrderDto(order.Id,
-                                    order.Name,
-                                    order.OrderStatus.Name,
-                                    order.OrderInfo.OrderInfoWeight,
-                                    order.OrderInfo.OrderInfoPrice,
-                                    order.OrderInfo.OrderInfoAddressFrom,
-                                    order.OrderInfo.OrderInfoAddressTo);
-
+        
         _context.Orders.Remove(order);
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return orderDto;
+        return order.Id;
     }
 }

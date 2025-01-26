@@ -90,6 +90,62 @@ public class Order : Entity<SequentialGuid>
     }
 
     /// <summary>
+    /// Назначить курьера на заказ.
+    /// </summary>
+    /// <param name="orderStatus">Статус заказа.</param>
+    /// <param name="courier">Курьер.</param>
+    /// <exception cref="InvalidOperationException"></exception>
+    public void SetCourier(OrderStatus orderStatus, User courier)
+    {
+        ArgumentNullException.ThrowIfNull(orderStatus);
+
+        var notAllowedOrderStatuses = new List<OrderStatus>
+        {
+            OrderStatus.InProgress,
+            OrderStatus.Finished
+        };
+        
+        if (notAllowedOrderStatuses.Contains(orderStatus))
+        {
+            throw new InvalidOperationException($"Нельзя назначить курьера, если заказ находится в статусах: {string.Join(", ", notAllowedOrderStatuses.Select(s => s.Name))}");
+        }
+
+        OrderStatus = orderStatus;
+        Courier = courier;
+    }
+    
+    /// <summary>
+    /// Снять курьера с заказа. 
+    /// </summary>
+    /// <param name="currentUserId">ID текущего пользователя. </param>
+    /// <exception cref="UnauthorizedAccessException"></exception>
+    public void UnassignCourier(Guid currentUserId)
+    {
+        if (Courier != null && (Guid)Courier.Id != currentUserId)
+        {
+            throw new UnauthorizedAccessException("Текущий пользователь не является назначенным курьером для этого заказа.");
+        }
+
+        Courier = null;
+        OrderStatus = OrderStatus.Created;
+    }
+    
+    /// <summary>
+    /// Завершить заказ.
+    /// </summary>
+    /// <param name="currentUserId">Текущий пользователь.</param>
+    /// <exception cref="UnauthorizedAccessException"></exception>
+    public void FinishDelivery(Guid currentUserId)
+    {
+        if (Courier != null && (Guid)Courier.Id != currentUserId)
+        {
+            throw new UnauthorizedAccessException("Текущий пользователь не является назначенным курьером для этого заказа.");
+        }
+
+        OrderStatus = OrderStatus.Finished;
+    }
+    
+    /// <summary>
     /// Обновляет статус заказа.
     /// </summary>
     /// <param name="orderStatus"></param>

@@ -34,13 +34,7 @@ public class GetAllCurrentUserOrdersCommandHandler : IRequestHandler<GetAllCurre
         var orders = await _context.Orders.Include(o => o.OrderStatus)
                                    .Include(o => o.OrderInfo)
                                    .Where(o => o.OrderStatus.Code == "created" && o.Sender != null && (Guid)o.Sender.Id == _currentUser.Id)
-                                   .Select(order => new OrderDto(order.Id,
-                                                                 order.Name,
-                                                                 order.OrderStatus.Name,
-                                                                 order.OrderInfo.OrderInfoPrice,
-                                                                 order.OrderInfo.OrderInfoWeight,
-                                                                 order.OrderInfo.OrderInfoAddressFrom,
-                                                                 order.OrderInfo.OrderInfoAddressTo))
+                                   .Select(order => OrderDto.FromOrder(order))
                                    .ToListAsync(cancellationToken);
 
         return orders;

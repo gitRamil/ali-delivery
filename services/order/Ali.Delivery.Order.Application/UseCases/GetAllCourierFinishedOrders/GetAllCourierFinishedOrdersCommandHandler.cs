@@ -1,8 +1,10 @@
 using Ali.Delivery.Order.Application.Abstractions;
 using Ali.Delivery.Order.Application.Dtos.Order;
+using Ali.Delivery.Order.Application.Extensions;
 using Ali.Delivery.Order.Application.UseCases.GetAllOrdersByUserId;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using OrderStatus = Ali.Delivery.Order.Domain.Entities.Dictionaries.OrderStatus;
 
 namespace Ali.Delivery.Order.Application.UseCases.GetAllCourierFinishedOrders;
 
@@ -31,16 +33,9 @@ public class GetAllCourierFinishedOrdersCommandHandler : IRequestHandler<GetAllC
     /// <inheritdoc />
     public async Task<List<OrderDto>> Handle(GetAllCourierFinishedOrdersCommand request, CancellationToken cancellationToken)
     {
-        var orders = await _context.Orders.Include(o => o.OrderStatus)
-                                   .Include(o => o.OrderInfo)
-                                   .Where(o => o.Courier != null && (Guid)o.Courier.Id == _currentUser.Id && o.OrderStatus.Code == "finished")
-                                   .Select(order => new OrderDto(order.Id,
-                                                                 order.Name,
-                                                                 order.OrderStatus.Name,
-                                                                 order.OrderInfo.OrderInfoPrice,
-                                                                 order.OrderInfo.OrderInfoWeight,
-                                                                 order.OrderInfo.OrderInfoAddressFrom,
-                                                                 order.OrderInfo.OrderInfoAddressTo))
+        var orders = await _context.Orders
+                                   .CheckOrderStatusForCourier(OrderStatus.Finished.Code, _currentUser.Id)
+                                   .Select(order => OrderDto.FromOrder(order))
                                    .ToListAsync(cancellationToken);
 
         return orders;

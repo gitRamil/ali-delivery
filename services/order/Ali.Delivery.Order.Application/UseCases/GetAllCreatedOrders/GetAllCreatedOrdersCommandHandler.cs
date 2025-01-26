@@ -1,7 +1,9 @@
 using Ali.Delivery.Order.Application.Abstractions;
 using Ali.Delivery.Order.Application.Dtos.Order;
+using Ali.Delivery.Order.Application.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using OrderStatus = Ali.Delivery.Order.Domain.Entities.Dictionaries.OrderStatus;
 
 namespace Ali.Delivery.Order.Application.UseCases.GetAllCreatedOrders;
 
@@ -24,16 +26,9 @@ public class GetAllCreatedOrdersCommandHandler : IRequestHandler<GetAllCreatedOr
     /// <inheritdoc />
     public async Task<List<OrderDto>> Handle(GetAllCreatedOrdersCommand request, CancellationToken cancellationToken)
     {
-        var orders = await _context.Orders.Include(o => o.OrderStatus)
-                                   .Include(o => o.OrderInfo)
-                                   .Where(o => o.OrderStatus.Code == "created")
-                                   .Select(order => new OrderDto(order.Id,
-                                                                 order.Name,
-                                                                 order.OrderStatus.Name,
-                                                                 order.OrderInfo.OrderInfoPrice,
-                                                                 order.OrderInfo.OrderInfoWeight,
-                                                                 order.OrderInfo.OrderInfoAddressFrom,
-                                                                 order.OrderInfo.OrderInfoAddressTo))
+        var orders = await _context.Orders
+                                   .CheckOrderStatusForCourier(OrderStatus.Created.Code)
+                                   .Select(order => OrderDto.FromOrder(order))
                                    .ToListAsync(cancellationToken);
 
         return orders;

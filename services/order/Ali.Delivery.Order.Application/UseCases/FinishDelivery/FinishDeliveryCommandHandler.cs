@@ -37,12 +37,7 @@ public class FinishDeliveryCommandHandler : IRequestHandler<FinishDeliveryComman
         var order = await _context.Orders.FirstOrDefaultAsync(o => (Guid)o.Id == request.OrderId, cancellationToken) ??
                     throw new NotFoundException(typeof(Domain.Entities.Order), request.OrderId);
 
-        if (order.Courier != null && (Guid)order.Courier.Id != _currentUser.Id)
-        {
-            throw new UnauthorizedAccessException("Текущий пользователь не является назначенным курьером для этого заказа.");
-        }
-
-        order.OrderStatus = OrderStatus.Finished.ToOrderStatus();
+        order.FinishDelivery(_currentUser.Id);
 
         await _context.SaveChangesAsync(cancellationToken);
         return order.Id;

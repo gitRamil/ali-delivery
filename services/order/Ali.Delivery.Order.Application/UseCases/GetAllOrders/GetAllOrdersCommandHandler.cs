@@ -26,13 +26,7 @@ public class GetAllOrdersCommandHandler : IRequestHandler<GetAllOrders, List<Ord
     {
         var orders = await _context.Orders.Include(o => o.OrderStatus)
                                    .Include(o => o.OrderInfo)
-                                   .Select(order => new OrderDto(order.Id,
-                                                                 order.Name,
-                                                                 order.OrderStatus.Name,
-                                                                 order.OrderInfo.OrderInfoPrice,
-                                                                 order.OrderInfo.OrderInfoWeight,
-                                                                 order.OrderInfo.OrderInfoAddressFrom,
-                                                                 order.OrderInfo.OrderInfoAddressTo))
+                                   .Select(order => OrderDto.FromOrder(order))
                                    .ToListAsync(cancellationToken);
         return orders;
     }
