@@ -88,7 +88,7 @@ public class OrderController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllCurrentUserCreatedOrders(CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new GetAllCurrentUserOrdersCommand(), cancellationToken);
+        var result = await _mediator.Send(new GetAllCurrentUserCreatedOrdersCommand(), cancellationToken);
         return Ok(result);
     }
 
@@ -113,7 +113,6 @@ public class OrderController : ControllerBase
     /// <param name="orderId">Идентификатор заказа.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
     [HttpGet("{orderId}")]
-    [UserPermission(UserPermissionCode.OrderManagement)]
     [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetOrder(Guid orderId, CancellationToken cancellationToken)
@@ -128,7 +127,7 @@ public class OrderController : ControllerBase
     /// <param name="command">Команда обновления заказа.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
     [HttpPut]
-    [UserPermission(UserPermissionCode.OrderManagement)]
+    // [UserPermission(UserPermissionCode.OrderManagement)]
     [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateOrder([FromBody] UpdateOrderCommand command, CancellationToken cancellationToken)

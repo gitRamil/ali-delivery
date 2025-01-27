@@ -77,4 +77,24 @@ public class OrderInfo : Entity<SequentialGuid>
     /// Размер заказа.
     /// </summary>
     public virtual Size Size { get; set; }
+
+    /// <summary>
+    /// Обновляет информацию заказа.
+    /// </summary>
+    /// <inheritdoc cref="OrderInfo"/>
+    public void UpdateOrderInfo(
+        OrderInfoWeight weight,
+        OrderInfoPrice price,
+        OrderInfoAddressFrom addressFrom,
+        OrderInfoAddressTo addressTo,
+        Size size)
+    {
+        OrderInfoWeight = weight;
+        OrderInfoPrice = price;
+        OrderInfoAddressFrom = addressFrom;
+        OrderInfoAddressTo = addressTo;
+        Size = size;
+    }
+    
+    
 }

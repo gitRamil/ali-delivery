@@ -12,7 +12,7 @@ public static class OrderQueryExtensions
     /// <param name="orderStatus"></param>
     /// <param name="userId"></param>
     /// <returns></returns>
-    public static IQueryable<Domain.Entities.Order> CheckOrderStatusForCourier(this IQueryable<Domain.Entities.Order> query, string orderStatus, Guid? userId = null)
+    public static IQueryable<Domain.Entities.Order> CheckOrderStatusForCurrentUser(this IQueryable<Domain.Entities.Order> query, string orderStatus, Guid? userId = null)
     {
         return userId.HasValue
                    ? query.Where(o => o.Courier != null && (Guid)o.Courier.Id == userId.Value && o.OrderStatus.Code == orderStatus)

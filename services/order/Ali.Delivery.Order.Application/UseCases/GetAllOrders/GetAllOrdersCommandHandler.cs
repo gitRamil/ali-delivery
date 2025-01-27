@@ -24,8 +24,7 @@ public class GetAllOrdersCommandHandler : IRequestHandler<GetAllOrders, List<Ord
     /// <inheritdoc />
     public async Task<List<OrderDto>> Handle(GetAllOrders request, CancellationToken cancellationToken)
     {
-        var orders = await _context.Orders.Include(o => o.OrderStatus)
-                                   .Include(o => o.OrderInfo)
+        var orders = await _context.Orders
                                    .Select(order => OrderDto.FromOrder(order))
                                    .ToListAsync(cancellationToken);
         return orders;
