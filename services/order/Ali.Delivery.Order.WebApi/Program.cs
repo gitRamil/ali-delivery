@@ -1,3 +1,4 @@
+using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.Application;
 using Ali.Delivery.Order.Application.Abstractions;
 using Ali.Delivery.Order.Application.Services;
@@ -8,6 +9,13 @@ using Serilog;
 
 try
 {
+
+    for (var x = 0; x < 10; x++)
+    {
+        Console.WriteLine(SequentialGuid.Create());
+    }
+    
+    
     var builder = WebApplication.CreateBuilder(args);
     builder.Configuration.AddEnvironmentVariables("AliDeliveryOrderService_");
     var config = builder.Configuration;

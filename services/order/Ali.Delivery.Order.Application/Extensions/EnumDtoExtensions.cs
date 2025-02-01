@@ -49,6 +49,8 @@ public static class EnumDtoExtensions
             PermissionCode.FullAccess => Permission.FullAccess,
             PermissionCode.Tracking => Permission.Tracking,
             PermissionCode.OrderManagement => Permission.OrderManagement,
+            PermissionCode.UserOrderManagement => Permission.UserOrderManagement,
+            PermissionCode.CourierOrderManagement => Permission.CourierOrderManagement,
             _ => throw new ArgumentOutOfRangeException(nameof(code), code, "Не поддерживаемое значение доступа.")
         };
     #endregion

@@ -1,7 +1,7 @@
 namespace Ali.Delivery.Order.Application.Dtos.Order;
 
 /// <summary>
-/// Представляет роли.
+/// Представляет роль.
 /// </summary>
 public class RoleDto
 {

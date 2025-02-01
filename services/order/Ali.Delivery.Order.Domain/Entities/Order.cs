@@ -110,18 +110,18 @@ public class Order : Entity<SequentialGuid>
             throw new InvalidOperationException($"Нельзя назначить курьера, если заказ находится в статусах: {string.Join(", ", notAllowedOrderStatuses.Select(s => s.Name))}");
         }
 
-        OrderStatus = orderStatus;
+        OrderStatus = OrderStatus.InProgress;
         Courier = courier;
     }
     
     /// <summary>
     /// Снять курьера с заказа. 
     /// </summary>
-    /// <param name="currentUserId">ID текущего пользователя. </param>
+    /// <param name="currentUser">ID текущего пользователя. </param>
     /// <exception cref="UnauthorizedAccessException"></exception>
-    public void UnassignCourier(Guid currentUserId)
+    public void UnassignCourier(User currentUser)
     {
-        if (Courier != null && (Guid)Courier.Id != currentUserId)
+        if (Courier != null && Courier != currentUser)
         {
             throw new UnauthorizedAccessException("Текущий пользователь не является назначенным курьером для этого заказа.");
         }
@@ -133,11 +133,11 @@ public class Order : Entity<SequentialGuid>
     /// <summary>
     /// Завершить заказ.
     /// </summary>
-    /// <param name="currentUserId">Текущий пользователь.</param>
+    /// <param name="currentUser">Текущий пользователь.</param>
     /// <exception cref="UnauthorizedAccessException"></exception>
-    public void FinishDelivery(Guid currentUserId)
+    public void FinishDelivery(User currentUser)
     {
-        if (Courier != null && (Guid)Courier.Id != currentUserId)
+        if (Courier != null && Courier != currentUser)
         {
             throw new UnauthorizedAccessException("Текущий пользователь не является назначенным курьером для этого заказа.");
         }
@@ -148,7 +148,7 @@ public class Order : Entity<SequentialGuid>
     /// <summary>
     /// Обновляет статус заказа.
     /// </summary>
-    /// <param name="orderStatus"></param>
+    /// <param name="orderStatus">Статус заказа.</param>
     public void UpdateOrderStatus(OrderStatus orderStatus)
     {
         OrderStatus = orderStatus ?? throw new ArgumentNullException(nameof(orderStatus));

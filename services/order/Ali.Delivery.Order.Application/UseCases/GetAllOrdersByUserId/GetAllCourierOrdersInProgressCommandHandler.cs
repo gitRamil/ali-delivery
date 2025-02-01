@@ -35,7 +35,7 @@ public class GetAllCourierOrdersInProgressCommandHandler : IRequestHandler<GetAl
         var courierId = _currentUser.Id;
 
         var orders = await _context.Orders
-                                   .CheckOrderStatusForCurrentUser( OrderStatus.InProgress.Code, courierId)
+                                   .Where(o=>o.OrderStatus == OrderStatus.InProgress)
                                    .Select(order => OrderDto.FromOrder(order))
                                            .ToListAsync(cancellationToken);
 

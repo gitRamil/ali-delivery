@@ -14,7 +14,7 @@ public enum OrderStatus
     Created,
 
     /// <summary>
-    /// Создан.
+    /// В процессе.
     /// </summary>
     [EnumMember(Value = "inProgress")]
     InProgress,

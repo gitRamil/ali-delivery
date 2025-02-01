@@ -1,5 +1,6 @@
 using Ali.Delivery.Order.Application.Abstractions;
 using Ali.Delivery.Order.Application.Exceptions;
+using Ali.Delivery.Order.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,7 +37,12 @@ public class UnassignCourierCommandHandler : IRequestHandler<UnassignCourierComm
         var order = await _context.Orders.FirstOrDefaultAsync(o => (Guid)o.Id == request.OrderId, cancellationToken) ??
                     throw new NotFoundException(typeof(Domain.Entities.Order), request.OrderId);
 
-        order.UnassignCourier(_currentUser.Id);
+        var currentUser = await _context.Users
+                                        .FirstOrDefaultAsync(u => (Guid)u.Id == _currentUser.Id, cancellationToken)
+                          ?? throw new NotFoundException(typeof(User), _currentUser.Id);
+        
+        
+        order.UnassignCourier(currentUser);
 
         await _context.SaveChangesAsync(cancellationToken);
         return order.Id;

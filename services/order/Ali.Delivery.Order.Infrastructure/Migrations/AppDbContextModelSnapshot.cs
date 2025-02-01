@@ -233,27 +233,39 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3a166cc9-799c-27fb-42d7-c1cc8512aeef"),
+                            Id = new Guid("3a17be54-4e84-3e77-9188-a292bac6366c"),
                             Code = 1000,
-                            Name = "Доступ создания пользователя"
+                            Name = "Доступ для работы с сущностью пользователя"
                         },
                         new
                         {
-                            Id = new Guid("3a166cc9-7999-9fc9-2798-85b0ef75288d"),
+                            Id = new Guid("3a17be54-4e65-5dca-866e-f7cd3b8c49bb"),
                             Code = 1003,
-                            Name = "Доступ обновления заказа"
+                            Name = "Полный доступ"
                         },
                         new
                         {
-                            Id = new Guid("3a166cc9-799d-6b4b-087a-93e047e60d91"),
+                            Id = new Guid("3a17be54-4e81-b978-5d49-940a8c2da6ab"),
                             Code = 1002,
-                            Name = "Доступ просмотра заказа"
+                            Name = "Доступ отслеживания заказов"
                         },
                         new
                         {
-                            Id = new Guid("3a166cc9-799b-7735-e11f-57780f8b0f28"),
+                            Id = new Guid("3a17be54-4e80-5c77-723b-dc0991c878da"),
                             Code = 1001,
-                            Name = "Доступ удаления заказа"
+                            Name = "Доступ для работы с заказами"
+                        },
+                        new
+                        {
+                            Id = new Guid("3a17be54-4e82-4bfb-f422-2caeb3389561"),
+                            Code = 1004,
+                            Name = "Доступ пользователя к работе с заказами"
+                        },
+                        new
+                        {
+                            Id = new Guid("3a17be54-4e83-e173-197a-4a19535ed222"),
+                            Code = 1005,
+                            Name = "Доступ курьера к работе с заказами"
                         });
                 });
 
@@ -680,32 +692,44 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         new
                         {
                             RoleId = new Guid("3a1537c0-11f8-d788-90d9-ced196c63397"),
-                            PermissionId = new Guid("3a166cc9-799d-6b4b-087a-93e047e60d91"),
-                            Id = new Guid("3a174d9d-c0dd-8c7a-dd0b-1aa0c32ce21a")
+                            PermissionId = new Guid("3a17be54-4e81-b978-5d49-940a8c2da6ab"),
+                            Id = new Guid("3a17be5f-7bc6-ba8e-0f5d-b7192c99492b")
                         },
                         new
                         {
                             RoleId = new Guid("3a1537bf-cabc-d70c-f42c-012821b898b1"),
-                            PermissionId = new Guid("3a166cc9-799c-27fb-42d7-c1cc8512aeef"),
-                            Id = new Guid("3a174d9d-c0db-4d94-ec59-c6cf4e208981")
+                            PermissionId = new Guid("3a17be54-4e82-4bfb-f422-2caeb3389561"),
+                            Id = new Guid("3a17be5f-7b9c-0bc4-a94f-b0bba09fd370")
                         },
                         new
                         {
                             RoleId = new Guid("3a1537bf-cabc-d70c-f42c-012821b898b1"),
-                            PermissionId = new Guid("3a166cc9-799b-7735-e11f-57780f8b0f28"),
-                            Id = new Guid("3a174d9d-c0d6-4039-8fc1-bd00fe7d8724")
+                            PermissionId = new Guid("3a17be54-4e81-b978-5d49-940a8c2da6ab"),
+                            Id = new Guid("3a17be5f-7bbe-2559-4048-48a0196e0f25")
+                        },
+                        new
+                        {
+                            RoleId = new Guid("3a1537bf-cabc-d70c-f42c-012821b898b1"),
+                            PermissionId = new Guid("3a17be54-4e84-3e77-9188-a292bac6366c"),
+                            Id = new Guid("3a17be5f-7bbf-849a-7d45-02bd0f50536d")
                         },
                         new
                         {
                             RoleId = new Guid("3a1537be-fa32-3962-f94d-62f95e6ffcad"),
-                            PermissionId = new Guid("3a166cc9-799b-7735-e11f-57780f8b0f28"),
-                            Id = new Guid("3a174d9d-c0d9-1ae6-97f3-4cf384519fe5")
+                            PermissionId = new Guid("3a17be54-4e83-e173-197a-4a19535ed222"),
+                            Id = new Guid("3a17be5f-7bc0-509f-e1ec-2f10d0cebef0")
                         },
                         new
                         {
                             RoleId = new Guid("3a1537be-fa32-3962-f94d-62f95e6ffcad"),
-                            PermissionId = new Guid("3a166cc9-799c-27fb-42d7-c1cc8512aeef"),
-                            Id = new Guid("3a174d9d-c0da-816f-c8bc-d870eec16d5b")
+                            PermissionId = new Guid("3a17be54-4e84-3e77-9188-a292bac6366c"),
+                            Id = new Guid("3a17be5f-7bc1-6952-64c0-1c9ca8881fd0")
+                        },
+                        new
+                        {
+                            RoleId = new Guid("3a1537be-fa32-3962-f94d-62f95e6ffcad"),
+                            PermissionId = new Guid("3a17be54-4e81-b978-5d49-940a8c2da6ab"),
+                            Id = new Guid("3a17be5f-7bc2-9c5b-8a73-bcd6ce135188")
                         });
                 });
 

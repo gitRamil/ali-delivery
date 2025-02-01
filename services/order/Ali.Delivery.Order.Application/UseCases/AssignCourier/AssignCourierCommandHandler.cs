@@ -42,7 +42,7 @@ public class AssignCourierCommandHandler : IRequestHandler<AssignCourierCommand,
         var courier = await _context.Users.FirstOrDefaultAsync(u => (Guid)u.Id == _currentUser.Id, cancellationToken) ??
                         throw new NotFoundException(typeof(User), _currentUser.Id);
         
-        order.SetCourier(OrderStatus.InProgress.ToOrderStatus(), courier);
+        order.SetCourier(order.OrderStatus, courier);
 
         await _context.SaveChangesAsync(cancellationToken);
         return order.Id;

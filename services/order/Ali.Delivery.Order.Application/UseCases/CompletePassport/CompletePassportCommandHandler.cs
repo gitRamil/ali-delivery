@@ -33,26 +33,18 @@ public class CompletePassportCommandHandler : IRequestHandler<CompletePassportCo
         var userId = _currentUser.Id;
 
         var user = await _context.Users.Include(u => u.PassportInfo)
-                                 .FirstOrDefaultAsync(u => (Guid)u.Id == userId, cancellationToken);
-
-        if (user == null)
-        {
-            throw new InvalidOperationException("Пользователь не найден.");
-        }
-
-        if (user.PassportInfo == null)
-        {
-            user.PassportInfo = new PassportInfo(SequentialGuid.Create(),
-                                                 request.PassportType.ToPassportType(),
-                                                 new PassportInfoPassportNumber(request.PassportNumber),
-                                                 new PassportInfoRegDate(request.RegDate),
-                                                 new PassportInfoExpirationDate(request.ExpirationDate));
-        }
-        else
+                                 .FirstOrDefaultAsync(u => (Guid)u.Id == userId, cancellationToken) ??  throw new InvalidOperationException("Пользователь не найден.");
+        
+        if (user.PassportInfo != null)
         {
             throw new InvalidOperationException("Паспортные данные уже заполнены, для изменения паспортных данных обратитесь в поддержку");
         }
-
+        
+        user.PassportInfo = new PassportInfo(SequentialGuid.Create(),
+                                             request.PassportType.ToPassportType(),
+                                             new PassportInfoPassportNumber(request.PassportNumber),
+                                             new PassportInfoRegDate(request.RegDate),
+                                             new PassportInfoExpirationDate(request.ExpirationDate));
         await _context.SaveChangesAsync(cancellationToken);
 
         return user.Id;

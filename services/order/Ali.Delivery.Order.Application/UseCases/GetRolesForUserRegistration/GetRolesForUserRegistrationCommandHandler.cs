@@ -1,5 +1,6 @@
 using Ali.Delivery.Order.Application.Abstractions;
 using Ali.Delivery.Order.Application.Dtos.Order;
+using Ali.Delivery.Order.Domain.Entities.Dictionaries;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,7 +22,7 @@ public class GetRolesCommandHandler : IRequestHandler<GetRolesForUserRegistratio
     /// <inheritdoc />
     public async Task<List<RoleDto>> Handle(GetRolesForUserRegistrationCommand request, CancellationToken cancellationToken)
     {
-        var roles = await _context.Roles.Where(role => role.Code == "basicUser" && role.Code == "courier")
+        var roles = await _context.Roles.Where(role => role == Role.BasicUser && role == Role.Courier)
                                   .Select(role => new RoleDto
                                   {
                                       Code = role.Code,

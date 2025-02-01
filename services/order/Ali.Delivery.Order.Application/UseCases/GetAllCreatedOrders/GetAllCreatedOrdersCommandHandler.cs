@@ -27,7 +27,7 @@ public class GetAllCreatedOrdersCommandHandler : IRequestHandler<GetAllCreatedOr
     public async Task<List<OrderDto>> Handle(GetAllCreatedOrdersCommand request, CancellationToken cancellationToken)
     {
         var orders = await _context.Orders
-                                   .CheckOrderStatusForCurrentUser(OrderStatus.Created.Code)
+                                   .Where(o=> o.OrderStatus == OrderStatus.Created)
                                    .Select(order => OrderDto.FromOrder(order))
                                    .ToListAsync(cancellationToken);
 

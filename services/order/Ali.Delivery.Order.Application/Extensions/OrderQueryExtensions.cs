@@ -1,21 +1,22 @@
+using Ali.Delivery.Order.Domain.Entities.Dictionaries;
+
 namespace Ali.Delivery.Order.Application.Extensions;
 
 /// <summary>
-/// 
+/// Содержит набор методов расширения для работы с заказами.
 /// </summary>
 public static class OrderQueryExtensions
 {
     /// <summary>
-    /// 
+    /// Представляет метод расширения для проверки статуса заказа для сущности курьера. 
     /// </summary>
-    /// <param name="query"></param>
-    /// <param name="orderStatus"></param>
-    /// <param name="userId"></param>
+    /// <param name="query">Запрос.</param>
+    /// <param name="orderStatus">Статус заказа.</param>
+    /// <param name="courierId">Id курьера.</param>
     /// <returns></returns>
-    public static IQueryable<Domain.Entities.Order> CheckOrderStatusForCurrentUser(this IQueryable<Domain.Entities.Order> query, string orderStatus, Guid? userId = null)
+    public static IQueryable<Domain.Entities.Order> CheckOrderStatusForCourier(this IQueryable<Domain.Entities.Order> query, OrderStatus orderStatus, Guid courierId )
     {
-        return userId.HasValue
-                   ? query.Where(o => o.Courier != null && (Guid)o.Courier.Id == userId.Value && o.OrderStatus.Code == orderStatus)
-                   : query.Where(o => o.OrderStatus.Code == orderStatus);
+        return query.Where(o => o.Courier != null && (Guid)o.Courier.Id == courierId && o.OrderStatus == orderStatus);
+
     }
 }

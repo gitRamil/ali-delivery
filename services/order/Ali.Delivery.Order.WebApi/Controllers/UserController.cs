@@ -39,6 +39,7 @@ public class UserController : ControllerBase
     /// <param name="command">Команда заполнения данных паспорта пользователя.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
     [HttpPut("complete-passport")]
+    [UserPermission(UserPermissionCode.UserManagement)]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CompletePassport([FromBody] CompletePassportCommand command, CancellationToken cancellationToken)
@@ -145,7 +146,6 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult Logout()
     {
-        // Удаляем куки с токеном
         if (HttpContext.Request.Cookies.ContainsKey("token"))
         {
             HttpContext.Response.Cookies.Delete("token");

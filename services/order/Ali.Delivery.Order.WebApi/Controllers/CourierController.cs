@@ -37,7 +37,7 @@ public class CourierController : ControllerBase
     /// <param name="cancellationToken">Маркер отмены.</param>
     /// <returns>ID заказа.</returns>
     [HttpPut("assign-courier")]
-    [UserPermission(UserPermissionCode.OrderManagement)]
+    [UserPermission(UserPermissionCode.CourierOrderManagement)]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> AssignCourier(Guid orderId, CancellationToken cancellationToken)
@@ -53,7 +53,7 @@ public class CourierController : ControllerBase
     /// <param name="cancellationToken">Маркер отмены.</param>
     /// <returns>ID заказа</returns>
     [HttpPut("finish-delivery")]
-    [UserPermission(UserPermissionCode.OrderManagement)]
+    [UserPermission(UserPermissionCode.CourierOrderManagement)]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> FinishDelivery(Guid orderId, CancellationToken cancellationToken)
@@ -68,7 +68,7 @@ public class CourierController : ControllerBase
     /// <param name="cancellationToken">Маркер отмены.</param>
     /// <returns>Список заказов</returns>
     [HttpGet("couriers-orders-finished")]
-    [UserPermission(UserPermissionCode.OrderManagement)]
+    [UserPermission(UserPermissionCode.CourierOrderManagement)]
     [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllCourierFinishedOrders(CancellationToken cancellationToken)
@@ -83,7 +83,7 @@ public class CourierController : ControllerBase
     /// <param name="cancellationToken">Маркер отмены.</param>
     /// <returns>Список заказов</returns>
     [HttpGet("couriers-orders-in-progress")]
-    [UserPermission(UserPermissionCode.OrderManagement)]
+    [UserPermission(UserPermissionCode.CourierOrderManagement)]
     [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllCourierOrdersInProgress(CancellationToken cancellationToken)
@@ -99,7 +99,7 @@ public class CourierController : ControllerBase
     /// <param name="cancellationToken">Маркер отмены.</param>
     /// <returns>ID заказа</returns>
     [HttpPut("unassign-courier")]
-    [UserPermission(UserPermissionCode.OrderManagement)]
+    [UserPermission(UserPermissionCode.CourierOrderManagement)]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UnassignCourier(Guid orderId, CancellationToken cancellationToken)
