@@ -48,7 +48,6 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Gui
             throw new InvalidOperationException("Пожалуйста заполните паспортные данные для создания заказа");
         }
 
-        
         var receiver = await _context.Users.FirstOrDefaultAsync(u => (Guid)u.Id == request.ReceiverId, cancellationToken) ??
                        throw new NotFoundException(typeof(User), request.ReceiverId);
 
@@ -66,6 +65,5 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Gui
         await _context.SaveChangesAsync(cancellationToken);
 
         return order.Id;
-
     }
 }

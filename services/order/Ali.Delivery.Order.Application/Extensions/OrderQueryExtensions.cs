@@ -8,15 +8,14 @@ namespace Ali.Delivery.Order.Application.Extensions;
 public static class OrderQueryExtensions
 {
     /// <summary>
-    /// Представляет метод расширения для проверки статуса заказа для сущности курьера. 
+    /// Представляет метод расширения для проверки статуса заказа для сущности курьера.
     /// </summary>
     /// <param name="query">Запрос.</param>
     /// <param name="orderStatus">Статус заказа.</param>
     /// <param name="courierId">Id курьера.</param>
     /// <returns></returns>
-    public static IQueryable<Domain.Entities.Order> CheckOrderStatusForCourier(this IQueryable<Domain.Entities.Order> query, OrderStatus orderStatus, Guid courierId )
+    public static IQueryable<Domain.Entities.Order> CheckOrderStatusForCourier(this IQueryable<Domain.Entities.Order> query, OrderStatus orderStatus, Guid courierId)
     {
         return query.Where(o => o.Courier != null && (Guid)o.Courier.Id == courierId && o.OrderStatus == orderStatus);
-
     }
 }

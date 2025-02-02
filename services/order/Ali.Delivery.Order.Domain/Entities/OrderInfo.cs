@@ -81,13 +81,8 @@ public class OrderInfo : Entity<SequentialGuid>
     /// <summary>
     /// Обновляет информацию заказа.
     /// </summary>
-    /// <inheritdoc cref="OrderInfo"/>
-    public void UpdateOrderInfo(
-        OrderInfoWeight weight,
-        OrderInfoPrice price,
-        OrderInfoAddressFrom addressFrom,
-        OrderInfoAddressTo addressTo,
-        Size size)
+    /// <inheritdoc cref="OrderInfo" />
+    public void UpdateOrderInfo(OrderInfoWeight weight, OrderInfoPrice price, OrderInfoAddressFrom addressFrom, OrderInfoAddressTo addressTo, Size size)
     {
         OrderInfoWeight = weight;
         OrderInfoPrice = price;
@@ -95,6 +90,4 @@ public class OrderInfo : Entity<SequentialGuid>
         OrderInfoAddressTo = addressTo;
         Size = size;
     }
-    
-    
 }

@@ -1,5 +1,4 @@
 using Ali.Delivery.Order.Application.Abstractions;
-using Ali.Delivery.Order.Application.Dtos.Order;
 using Ali.Delivery.Order.Application.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -30,11 +29,9 @@ public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand, Gui
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var order = await _context.Orders
-                                  .FirstOrDefaultAsync(o => (Guid)o.Id == request.OrderId, cancellationToken) ??
+        var order = await _context.Orders.FirstOrDefaultAsync(o => (Guid)o.Id == request.OrderId, cancellationToken) ??
                     throw new NotFoundException(typeof(Domain.Entities.Order), request.OrderId);
 
-        
         _context.Orders.Remove(order);
 
         await _context.SaveChangesAsync(cancellationToken);

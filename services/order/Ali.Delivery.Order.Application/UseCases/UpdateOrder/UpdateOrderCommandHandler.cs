@@ -33,26 +33,23 @@ public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand, Ord
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var order = await _context.Orders
-                                  .FirstOrDefaultAsync(o => (Guid)o.Id == request.OrderId, cancellationToken) ??
+        var order = await _context.Orders.FirstOrDefaultAsync(o => (Guid)o.Id == request.OrderId, cancellationToken) ??
                     throw new NotFoundException(typeof(Domain.Entities.Order), request.OrderId);
 
         order.UpdateOrderName(new OrderName(request.OrderName));
-        
+
         var orderInfo = order.OrderInfo;
-        
-        orderInfo.UpdateOrderInfo(
-            new OrderInfoWeight(request.Weight),
-            new OrderInfoPrice(request.Price),
-            new OrderInfoAddressFrom(request.AddressFrom),
-            new OrderInfoAddressTo(request.AddressTo),
-            request.Size.ToSize()
-        );
-        
+
+        orderInfo.UpdateOrderInfo(new OrderInfoWeight(request.Weight),
+                                  new OrderInfoPrice(request.Price),
+                                  new OrderInfoAddressFrom(request.AddressFrom),
+                                  new OrderInfoAddressTo(request.AddressTo),
+                                  request.Size.ToSize());
+
         order.UpdateOrderStatus(request.OrderStatus.ToOrderStatus());
-        
+
         await _context.SaveChangesAsync(cancellationToken);
-        
+
         return OrderDto.FromOrder(order);
     }
 }

@@ -30,13 +30,13 @@ public enum PermissionCode
     /// </summary>
     [EnumMember(Value = "tracking")]
     Tracking,
-    
+
     /// <summary>
     /// Управление заказами для пользователя.
     /// </summary>
     [EnumMember(Value = "UserOrderManagement")]
     UserOrderManagement,
-    
+
     /// <summary>
     /// Управления заказами для курьера.
     /// </summary>

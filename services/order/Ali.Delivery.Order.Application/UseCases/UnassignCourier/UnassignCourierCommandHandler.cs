@@ -37,11 +37,9 @@ public class UnassignCourierCommandHandler : IRequestHandler<UnassignCourierComm
         var order = await _context.Orders.FirstOrDefaultAsync(o => (Guid)o.Id == request.OrderId, cancellationToken) ??
                     throw new NotFoundException(typeof(Domain.Entities.Order), request.OrderId);
 
-        var currentUser = await _context.Users
-                                        .FirstOrDefaultAsync(u => (Guid)u.Id == _currentUser.Id, cancellationToken)
-                          ?? throw new NotFoundException(typeof(User), _currentUser.Id);
-        
-        
+        var currentUser = await _context.Users.FirstOrDefaultAsync(u => (Guid)u.Id == _currentUser.Id, cancellationToken) ??
+                          throw new NotFoundException(typeof(User), _currentUser.Id);
+
         order.UnassignCourier(currentUser);
 
         await _context.SaveChangesAsync(cancellationToken);

@@ -1,6 +1,5 @@
 using Ali.Delivery.Order.Application.Abstractions;
 using Ali.Delivery.Order.Application.Dtos.Order;
-using Ali.Delivery.Order.Application.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using OrderStatus = Ali.Delivery.Order.Domain.Entities.Dictionaries.OrderStatus;
@@ -34,10 +33,9 @@ public class GetAllCourierOrdersInProgressCommandHandler : IRequestHandler<GetAl
     {
         var courierId = _currentUser.Id;
 
-        var orders = await _context.Orders
-                                   .Where(o=>o.OrderStatus == OrderStatus.InProgress)
+        var orders = await _context.Orders.Where(o => o.OrderStatus == OrderStatus.InProgress)
                                    .Select(order => OrderDto.FromOrder(order))
-                                           .ToListAsync(cancellationToken);
+                                   .ToListAsync(cancellationToken);
 
         return orders;
     }

@@ -1,6 +1,5 @@
 using Ali.Delivery.Order.Application.Abstractions;
 using Ali.Delivery.Order.Application.Dtos.Order;
-using Ali.Delivery.Order.Application.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using OrderStatus = Ali.Delivery.Order.Domain.Entities.Dictionaries.OrderStatus;
@@ -26,8 +25,7 @@ public class GetAllCreatedOrdersCommandHandler : IRequestHandler<GetAllCreatedOr
     /// <inheritdoc />
     public async Task<List<OrderDto>> Handle(GetAllCreatedOrdersCommand request, CancellationToken cancellationToken)
     {
-        var orders = await _context.Orders
-                                   .Where(o=> o.OrderStatus == OrderStatus.Created)
+        var orders = await _context.Orders.Where(o => o.OrderStatus == OrderStatus.Created)
                                    .Select(order => OrderDto.FromOrder(order))
                                    .ToListAsync(cancellationToken);
 

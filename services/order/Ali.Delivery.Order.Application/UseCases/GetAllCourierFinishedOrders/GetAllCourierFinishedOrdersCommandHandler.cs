@@ -33,8 +33,7 @@ public class GetAllCourierFinishedOrdersCommandHandler : IRequestHandler<GetAllC
     /// <inheritdoc />
     public async Task<List<OrderDto>> Handle(GetAllCourierFinishedOrdersCommand request, CancellationToken cancellationToken)
     {
-        var orders = await _context.Orders
-                                   .CheckOrderStatusForCourier(OrderStatus.Finished, _currentUser.Id)
+        var orders = await _context.Orders.CheckOrderStatusForCourier(OrderStatus.Finished, _currentUser.Id)
                                    .Select(order => OrderDto.FromOrder(order))
                                    .ToListAsync(cancellationToken);
 

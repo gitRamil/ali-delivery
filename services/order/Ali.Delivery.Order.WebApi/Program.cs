@@ -9,13 +9,11 @@ using Serilog;
 
 try
 {
-
     for (var x = 0; x < 10; x++)
     {
         Console.WriteLine(SequentialGuid.Create());
     }
-    
-    
+
     var builder = WebApplication.CreateBuilder(args);
     builder.Configuration.AddEnvironmentVariables("AliDeliveryOrderService_");
     var config = builder.Configuration;

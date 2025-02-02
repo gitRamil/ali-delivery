@@ -24,14 +24,14 @@ public enum UserPermissionCode
     /// Разрешение на обновление информации о заказе.
     /// </summary>
     FullAccess = 1003,
-    
+
     /// <summary>
     /// Разрешение на удаление заказа.
     /// </summary>
     UserOrderManagement = 1004,
-    
+
     /// <summary>
     /// Разрешение на удаление заказа.
     /// </summary>
-    CourierOrderManagement = 1005,
+    CourierOrderManagement = 1005
 }

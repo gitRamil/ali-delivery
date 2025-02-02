@@ -1,7 +1,5 @@
 using Ali.Delivery.Order.Application.Abstractions;
-using Ali.Delivery.Order.Application.Dtos.Order;
 using Ali.Delivery.Order.Application.Exceptions;
-using Ali.Delivery.Order.Application.Extensions;
 using Ali.Delivery.Order.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -38,10 +36,9 @@ public class FinishDeliveryCommandHandler : IRequestHandler<FinishDeliveryComman
         var order = await _context.Orders.FirstOrDefaultAsync(o => (Guid)o.Id == request.OrderId, cancellationToken) ??
                     throw new NotFoundException(typeof(Domain.Entities.Order), request.OrderId);
 
-        var currentUser = await _context.Users
-                                        .FirstOrDefaultAsync(u => (Guid)u.Id == _currentUser.Id, cancellationToken)
-                          ?? throw new NotFoundException(typeof(User), _currentUser.Id);
-        
+        var currentUser = await _context.Users.FirstOrDefaultAsync(u => (Guid)u.Id == _currentUser.Id, cancellationToken) ??
+                          throw new NotFoundException(typeof(User), _currentUser.Id);
+
         order.FinishDelivery(currentUser);
 
         await _context.SaveChangesAsync(cancellationToken);
