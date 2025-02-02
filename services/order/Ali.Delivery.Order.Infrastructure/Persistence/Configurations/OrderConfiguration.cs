@@ -40,5 +40,13 @@ internal class CourierConfiguration : EntityTypeConfigurationBase<Domain.Entitie
         builder.HasOne(p => p.Sender)
                .WithMany()
                .HasForeignKey("sender_id");
+
+        builder.HasOne(p => p.Receiver)
+               .WithMany()
+               .HasForeignKey("receiver_id");
+
+        builder.HasOne(p => p.Courier)
+               .WithMany()
+               .HasForeignKey("courier_id");
     }
 }

@@ -26,6 +26,7 @@ internal static class CorsExtensions
                              .AllowAnyMethod();
             });
         });
+
         return services;
     }
 }

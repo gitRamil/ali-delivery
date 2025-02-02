@@ -14,6 +14,7 @@ public class UserLastName : ValueObject
     /// Максимальная длина фамилии.
     /// </summary>
     public const int MaxLength = 100;
+
     private readonly string _name;
 
     /// <summary>

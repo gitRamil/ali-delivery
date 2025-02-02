@@ -1,8 +1,10 @@
 using Ali.Delivery.Order.Application;
 using Ali.Delivery.Order.Application.Dtos.Order;
+using Ali.Delivery.Order.Application.UseCases.CompletePassport;
 using Ali.Delivery.Order.Application.UseCases.CreateUser;
 using Ali.Delivery.Order.Application.UseCases.DeleteUser;
 using Ali.Delivery.Order.Application.UseCases.GetAllUsers;
+using Ali.Delivery.Order.Application.UseCases.GetRolesForUserRegistration;
 using Ali.Delivery.Order.Application.UseCases.GetUser;
 using Ali.Delivery.Order.Application.UseCases.Login;
 using Ali.Delivery.Order.Application.UseCases.UpdateUser;
@@ -32,6 +34,21 @@ public class UserController : ControllerBase
     public UserController(IMediator mediator) => _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
     /// <summary>
+    /// Заполнение данных паспорта пользователя.
+    /// </summary>
+    /// <param name="command">Команда заполнения данных паспорта пользователя.</param>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    [HttpPut("complete-passport")]
+    [UserPermission(UserPermissionCode.UserManagement)]
+    [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> CompletePassport([FromBody] CompletePassportCommand command, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(command, cancellationToken);
+        return Ok(result);
+    }
+
+    /// <summary>
     /// Создает пользователя.
     /// </summary>
     /// <param name="command">Пользователь.</param>
@@ -57,6 +74,20 @@ public class UserController : ControllerBase
     public async Task<IActionResult> DeleteUser(Guid userId, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new DeleteUserCommand(userId), cancellationToken);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Получает список всех ролей для пользователей.
+    /// </summary>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    /// <returns>Список всех ролей.</returns>
+    [HttpGet("get-roles")]
+    [ProducesResponseType(typeof(List<UserDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetAllRoles(CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetRolesForUserRegistrationCommand(), cancellationToken);
         return Ok(result);
     }
 
@@ -105,6 +136,22 @@ public class UserController : ControllerBase
         HttpContext.Response.Cookies.Append("token", token);
 
         return Ok(token);
+    }
+
+    /// <summary>
+    /// Выполняет выход пользователя из системы.
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost("logout")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult Logout()
+    {
+        if (HttpContext.Request.Cookies.ContainsKey("token"))
+        {
+            HttpContext.Response.Cookies.Delete("token");
+        }
+
+        return Ok("Вы успешно вышли из системы.");
     }
 
     /// <summary>

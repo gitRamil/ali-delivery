@@ -4,14 +4,12 @@ using Ali.Delivery.Order.Application.Services;
 using Ali.Delivery.Order.WebApi.Infrastructure.IoC;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.CookiePolicy;
-using Microsoft.Extensions.Options;
 using Serilog;
 
 try
 {
     var builder = WebApplication.CreateBuilder(args);
     builder.Configuration.AddEnvironmentVariables("AliDeliveryOrderService_");
-    var config = builder.Configuration;
     builder.AddDefaultSerilog();
     builder.Services.AddControllers();
     builder.Services.AddDefaultApiVersioning();
@@ -24,7 +22,7 @@ try
     builder.Services.AddDateTimeService();
     builder.Services.AddDefaultProblemDetails();
     builder.Services.AddScoped<JwtProvider>();
-    builder.Services.Configure<JwtOptions>(config.GetSection(nameof(JwtOptions)));
+    builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(nameof(JwtOptions)));
     builder.Services.AddApiAuthentication();
     builder.Services.AddHttpContextAccessor();
     builder.Services.AddTransient<ICurrentUser, CurrentUserService>();
@@ -39,7 +37,7 @@ try
     //}
 
     app.UseSerilogRequestLogging();
-    app.UseHttpsRedirection();
+    // app.UseHttpsRedirection();
     app.UseProblemDetails();
     app.UseRouting();
     app.UseCors();

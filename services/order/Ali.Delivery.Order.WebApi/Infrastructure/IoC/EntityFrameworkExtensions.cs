@@ -45,8 +45,10 @@ internal static class EntityFrameworkExtensions
             builder.UseLazyLoadingProxies();
             builder.UseSnakeCaseNamingConvention();
             builder.UseNpgsql(connectionString, optionsBuilder => optionsBuilder.EnableRetryOnFailure());
+            builder.UseLoggerFactory(LoggerFactory.Create(l => l.AddConsole()));
         });
         services.AddScoped<IAppDbContext, AppDbContext>();
+
         return services;
     }
 }

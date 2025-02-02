@@ -18,6 +18,7 @@ public static class EnumDtoExtensions
         codeEnum switch
         {
             Dtos.Order.OrderStatus.Created => OrderStatus.Created,
+            Dtos.Order.OrderStatus.InProgress => OrderStatus.InProgress,
             Dtos.Order.OrderStatus.Finished => OrderStatus.Finished,
             _ => throw new ArgumentOutOfRangeException(nameof(codeEnum), codeEnum, "Не поддерживаемое значение статуса заказа.")
         };
@@ -44,10 +45,12 @@ public static class EnumDtoExtensions
     public static Permission ToPermission(this PermissionCode code) =>
         code switch
         {
-            PermissionCode.CreateUser => Permission.UserManagement,
-            PermissionCode.UpdateOrder => Permission.FullAccess,
-            PermissionCode.GetOrder => Permission.Tracking,
-            PermissionCode.DeleteOrder => Permission.OrderManagement,
+            PermissionCode.UserManagement => Permission.UserManagement,
+            PermissionCode.FullAccess => Permission.FullAccess,
+            PermissionCode.Tracking => Permission.Tracking,
+            PermissionCode.OrderManagement => Permission.OrderManagement,
+            PermissionCode.UserOrderManagement => Permission.UserOrderManagement,
+            PermissionCode.CourierOrderManagement => Permission.CourierOrderManagement,
             _ => throw new ArgumentOutOfRangeException(nameof(code), code, "Не поддерживаемое значение доступа.")
         };
     #endregion

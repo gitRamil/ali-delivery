@@ -8,26 +8,38 @@ namespace Ali.Delivery.Order.Application.Dtos.Order;
 public enum PermissionCode
 {
     /// <summary>
-    /// Создать пользователя.
+    /// Управление пользователем.
     /// </summary>
-    [EnumMember(Value = "createUser")]
-    CreateUser,
+    [EnumMember(Value = "userManagement")]
+    UserManagement,
 
     /// <summary>
-    /// Обновить заказ.
+    /// Управление заказами.
     /// </summary>
-    [EnumMember(Value = "updateOrder")]
-    UpdateOrder,
+    [EnumMember(Value = "orderManagement")]
+    OrderManagement,
 
     /// <summary>
-    /// Получить заказ.
+    /// Полный доступ.
     /// </summary>
-    [EnumMember(Value = "getOrder")]
-    GetOrder,
+    [EnumMember(Value = "fullAccess")]
+    FullAccess,
 
     /// <summary>
-    /// Удалить заказ.
+    /// Отслеживание.
     /// </summary>
-    [EnumMember(Value = "deleteOrder")]
-    DeleteOrder
+    [EnumMember(Value = "tracking")]
+    Tracking,
+
+    /// <summary>
+    /// Управление заказами для пользователя.
+    /// </summary>
+    [EnumMember(Value = "UserOrderManagement")]
+    UserOrderManagement,
+
+    /// <summary>
+    /// Управления заказами для курьера.
+    /// </summary>
+    [EnumMember(Value = "courierOrderManagement")]
+    CourierOrderManagement
 }

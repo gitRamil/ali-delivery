@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
@@ -57,6 +56,4 @@
         <ProjectReference Include="..\Ali.Delivery.Order.Application\Ali.Delivery.Order.Application.csproj"/>
         <ProjectReference Include="..\Ali.Delivery.Order.Infrastructure\Ali.Delivery.Order.Infrastructure.csproj"/>
     </ItemGroup>
-
-
 </Project>

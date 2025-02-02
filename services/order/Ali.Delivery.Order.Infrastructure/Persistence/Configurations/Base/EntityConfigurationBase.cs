@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Ali.Delivery.Order.Infrastructure.Persistence.Configurations.Base;
 
 /// <summary>
-/// Представляет базовую реализацию для настройки конфигурации объектно-реляционного отображения для заданного типа сущности.
+/// Представляет базовую реализацию для настройки конфигурации объектно-реляционного отображения для заданного типа
+/// сущности.
 /// </summary>
 /// <typeparam name="T">Тип сущности.</typeparam>
 internal abstract class EntityConfigurationBase<T> : IEntityTypeConfiguration<T> where T : class

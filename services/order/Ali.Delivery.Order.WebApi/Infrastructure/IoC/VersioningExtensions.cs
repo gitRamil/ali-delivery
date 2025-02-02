@@ -19,6 +19,7 @@ internal static class VersioningExtensions
     public static IServiceCollection AddDefaultApiVersioning(this IServiceCollection services)
     {
         ArgumentNullException.ThrowIfNull(nameof(services));
+
         services.AddRouting(options => options.LowercaseUrls = true);
 
         services.AddApiVersioning(options =>
@@ -29,6 +30,7 @@ internal static class VersioningExtensions
             options.ErrorResponses = new ProblemDetailsErrorResponseProvider();
         });
         services.AddVersionedApiExplorer(setup => setup.SubstituteApiVersionInUrl = true);
+
         return services;
     }
 }

@@ -2,6 +2,8 @@
 using Ali.Delivery.Order.Application.Dtos.Order;
 using Ali.Delivery.Order.Application.UseCases.CreateOrder;
 using Ali.Delivery.Order.Application.UseCases.DeleteOrder;
+using Ali.Delivery.Order.Application.UseCases.GetAllCreatedOrders;
+using Ali.Delivery.Order.Application.UseCases.GetAllCurrentUserOrders;
 using Ali.Delivery.Order.Application.UseCases.GetAllOrders;
 using Ali.Delivery.Order.Application.UseCases.GetOrder;
 using Ali.Delivery.Order.Application.UseCases.UpdateOrder;
@@ -12,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Ali.Delivery.Order.WebApi.Controllers;
 
 /// <summary>
-/// Контроллер для управления действиями с заказами.8
+/// Контроллер для управления действиями с заказами.
 /// </summary>
 [ApiController]
 [Route("api/v{version:apiVersion}/[controller]")]
@@ -36,7 +38,7 @@ public class OrderController : ControllerBase
     /// <param name="command">Заказ.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
     [HttpPost]
-    [UserPermission(UserPermissionCode.OrderManagement)]
+    [UserPermission(UserPermissionCode.UserOrderManagement)]
     [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CreateOrder([FromBody] CreateOrderCommand command, CancellationToken cancellationToken)
@@ -57,6 +59,36 @@ public class OrderController : ControllerBase
     public async Task<IActionResult> DeleteOrder(Guid orderId, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new DeleteOrderCommand(orderId), cancellationToken);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Получает список всех созданных заказов.
+    /// </summary>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    /// <returns>Список всех заказов.</returns>
+    [HttpGet("created-orders")]
+    [UserPermission(UserPermissionCode.CourierOrderManagement)]
+    [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetAllCreatedOrders(CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetAllCreatedOrdersCommand(), cancellationToken);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Получает список всех созданных заказов текущего пользователя.
+    /// </summary>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    /// <returns>Список всех заказов.</returns>
+    [HttpGet("currentUser-created-orders")]
+    [UserPermission(UserPermissionCode.UserOrderManagement)]
+    [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetAllCurrentUserCreatedOrders(CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetAllCurrentUserCreatedOrdersCommand(), cancellationToken);
         return Ok(result);
     }
 

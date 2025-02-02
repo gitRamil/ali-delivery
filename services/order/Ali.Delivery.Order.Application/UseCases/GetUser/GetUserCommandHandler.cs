@@ -25,13 +25,18 @@ public class GetUserCommandHandler : IRequestHandler<GetUserCommand, UserDto>
 
     /// <inheritdoc />
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если <paramref name="query" /> равен <c>null</c>.
+    /// Возникает, если <paramref name="request" /> равен <c>null</c>.
     /// </exception>
-    public async Task<UserDto> Handle(GetUserCommand query, CancellationToken cancellationToken)
+    public async Task<UserDto> Handle(GetUserCommand request, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(query);
+        ArgumentNullException.ThrowIfNull(request);
 
-        var user = await _context.Users.FirstOrDefaultAsync(o => (Guid)o.Id == query.UserId, cancellationToken) ?? throw new NotFoundException(typeof(User), query.UserId);
+        var user = await _context.Users.FirstOrDefaultAsync(o => (Guid)o.Id == request.UserId, cancellationToken) ?? throw new NotFoundException(typeof(User), request.UserId);
+
+        if (user.PassportInfo == null)
+        {
+            throw new ArgumentNullException(nameof(user.PassportInfo));
+        }
 
         return new UserDto(user.Id, user.UserFirstName, user.UserLastName, user.PassportInfo.PassportInfoPassportNumber, user.PassportInfo.PassportType.Name, user.Role.Name);
     }

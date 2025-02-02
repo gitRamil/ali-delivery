@@ -19,10 +19,7 @@ internal static class ProblemDetailsExtensions
     /// <returns>Коллекция дескрипторов службы.</returns>
     public static IServiceCollection AddDefaultProblemDetails(this IServiceCollection services)
     {
-        if (services == null)
-        {
-            throw new ArgumentNullException(nameof(services));
-        }
+        ArgumentNullException.ThrowIfNull(services);
 
         // Todo Локализация ответов стандартных ProblemDetails.
         services.AddProblemDetails(options =>
@@ -77,6 +74,7 @@ internal static class ProblemDetailsExtensions
                                                        };
                                                    });
         });
+
         return services;
     }
 }

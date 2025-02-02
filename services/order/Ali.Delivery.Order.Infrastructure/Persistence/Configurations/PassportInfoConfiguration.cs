@@ -20,20 +20,17 @@ internal class PassportInfoConfiguration : EntityTypeConfigurationBase<PassportI
         builder.ToTable("passport", t => t.HasComment("Информация о паспортах"));
 
         builder.Property(p => p.PassportInfoPassportNumber)
-               .IsRequired()
                .HasColumnName("passport_number")
                .HasMaxLength(PassportInfoPassportNumber.MaxLength)
                .HasConversion(b => (string)b, s => new PassportInfoPassportNumber(s))
                .HasComment("Номер паспорта");
 
         builder.Property(p => p.PassportInfoRegDate)
-               .IsRequired()
                .HasColumnName("registration_date")
                .HasConversion(b => (DateTime)b, s => new PassportInfoRegDate(s))
                .HasComment("Дата регистрации");
 
         builder.Property(p => p.PassportInfoExpirationDate)
-               .IsRequired()
                .HasColumnName("expiration_date")
                .HasConversion(b => (DateTime)b, s => new PassportInfoExpirationDate(s))
                .HasComment("Дата истечения срока действия паспорта");

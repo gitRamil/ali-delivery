@@ -17,16 +17,22 @@ public class Order : Entity<SequentialGuid>
     /// <param name="orderName">Наименование заказа.</param>
     /// <param name="orderInfo">Информация о заказе.</param>
     /// <param name="orderStatus">Статус заказа.</param>
+    /// <param name="sender">Отправитель.</param>
+    /// <param name="receiver">Получатель.</param>
+    /// <param name="courier">Курьер.</param>
     /// <exception cref="ArgumentNullException">
     /// Возникает, если любой из параметров <paramref name="orderName" />,
     /// <paramref name="orderInfo" />, <paramref name="orderStatus" /> равен <c>null</c>.
     /// </exception>
-    public Order(SequentialGuid id, OrderName orderName, OrderInfo orderInfo, OrderStatus orderStatus)
+    public Order(SequentialGuid id, OrderName orderName, OrderInfo orderInfo, OrderStatus orderStatus, User sender, User receiver, User? courier = null)
         : base(id)
     {
         Name = orderName ?? throw new ArgumentNullException(nameof(orderName));
         OrderInfo = orderInfo ?? throw new ArgumentNullException(nameof(orderInfo));
         OrderStatus = orderStatus ?? throw new ArgumentNullException(nameof(orderStatus));
+        Sender = sender ?? throw new ArgumentNullException(nameof(sender));
+        Receiver = receiver ?? throw new ArgumentNullException(nameof(receiver));
+        Courier = courier;
     }
 
     /// <summary>
@@ -39,7 +45,15 @@ public class Order : Entity<SequentialGuid>
         Name = null!;
         OrderStatus = null!;
         OrderInfo = null!;
+        Sender = null!;
+        Receiver = null!;
+        Courier = null!;
     }
+
+    /// <summary>
+    /// Возвращает курьера.
+    /// </summary>
+    public virtual User? Courier { get; set; }
 
     /// <summary>
     /// Возвращает наименование заказа.
@@ -54,12 +68,73 @@ public class Order : Entity<SequentialGuid>
     /// <summary>
     /// Возвращает статус заказа.
     /// </summary>
-    public virtual OrderStatus OrderStatus { get; private set; }
+    public virtual OrderStatus OrderStatus { get; set; }
 
     /// <summary>
-    /// Возвращает информацию о пользователе.
+    /// Возвращает получателя.
+    /// </summary>
+    public virtual User? Receiver { get; }
+
+    /// <summary>
+    /// Возвращает отправителя.
     /// </summary>
     public virtual User? Sender { get; }
+
+    /// <summary>
+    /// Завершить заказ.
+    /// </summary>
+    /// <param name="currentUser">Текущий пользователь.</param>
+    /// <exception cref="UnauthorizedAccessException"></exception>
+    public void FinishDelivery(User currentUser)
+    {
+        if (Courier != null && Courier != currentUser)
+        {
+            throw new UnauthorizedAccessException("Текущий пользователь не является назначенным курьером для этого заказа.");
+        }
+
+        OrderStatus = OrderStatus.Finished;
+    }
+
+    /// <summary>
+    /// Назначить курьера на заказ.
+    /// </summary>
+    /// <param name="orderStatus">Статус заказа.</param>
+    /// <param name="courier">Курьер.</param>
+    /// <exception cref="InvalidOperationException"></exception>
+    public void SetCourier(OrderStatus orderStatus, User courier)
+    {
+        ArgumentNullException.ThrowIfNull(orderStatus);
+
+        var notAllowedOrderStatuses = new List<OrderStatus>
+        {
+            OrderStatus.InProgress,
+            OrderStatus.Finished
+        };
+
+        if (notAllowedOrderStatuses.Contains(orderStatus))
+        {
+            throw new InvalidOperationException($"Нельзя назначить курьера, если заказ находится в статусах: {string.Join(", ", notAllowedOrderStatuses.Select(s => s.Name))}");
+        }
+
+        OrderStatus = OrderStatus.InProgress;
+        Courier = courier;
+    }
+
+    /// <summary>
+    /// Снять курьера с заказа.
+    /// </summary>
+    /// <param name="currentUser">ID текущего пользователя. </param>
+    /// <exception cref="UnauthorizedAccessException"></exception>
+    public void UnassignCourier(User currentUser)
+    {
+        if (Courier != null && Courier != currentUser)
+        {
+            throw new UnauthorizedAccessException("Текущий пользователь не является назначенным курьером для этого заказа.");
+        }
+
+        Courier = null;
+        OrderStatus = OrderStatus.Created;
+    }
 
     /// <summary>
     /// Обновляет наименование заказа.
@@ -73,7 +148,7 @@ public class Order : Entity<SequentialGuid>
     /// <summary>
     /// Обновляет статус заказа.
     /// </summary>
-    /// <param name="orderStatus"></param>
+    /// <param name="orderStatus">Статус заказа.</param>
     public void UpdateOrderStatus(OrderStatus orderStatus)
     {
         OrderStatus = orderStatus ?? throw new ArgumentNullException(nameof(orderStatus));

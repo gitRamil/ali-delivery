@@ -24,23 +24,15 @@ public class GetOrderCommandHandler : IRequestHandler<GetOrderCommand, OrderDto>
 
     /// <inheritdoc />
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если <paramref name="query" /> равен <c>null</c>.
+    /// Возникает, если <paramref name="request" /> равен <c>null</c>.
     /// </exception>
-    public async Task<OrderDto> Handle(GetOrderCommand query, CancellationToken cancellationToken)
+    public async Task<OrderDto> Handle(GetOrderCommand request, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(query);
+        ArgumentNullException.ThrowIfNull(request);
 
-        var order = await _context.Orders.Include(o => o.OrderStatus)
-                                  .Include(o => o.OrderInfo)
-                                  .FirstOrDefaultAsync(o => (Guid)o.Id == query.OrderId, cancellationToken) ??
-                    throw new NotFoundException(typeof(Domain.Entities.Order), query.OrderId);
+        var order = await _context.Orders.FirstOrDefaultAsync(o => (Guid)o.Id == request.OrderId, cancellationToken) ??
+                    throw new NotFoundException(typeof(Domain.Entities.Order), request.OrderId);
 
-        return new OrderDto(order.Id,
-                            order.Name,
-                            order.OrderStatus.Name,
-                            order.OrderInfo.OrderInfoWeight,
-                            order.OrderInfo.OrderInfoPrice,
-                            order.OrderInfo.OrderInfoAddressFrom,
-                            order.OrderInfo.OrderInfoAddressTo);
+        return OrderDto.FromOrder(order);
     }
 }
