@@ -43,6 +43,7 @@ public class UnassignCourierCommandHandler : IRequestHandler<UnassignCourierComm
         order.UnassignCourier(currentUser);
 
         await _context.SaveChangesAsync(cancellationToken);
+
         return order.Id;
     }
 }

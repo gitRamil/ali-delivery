@@ -42,6 +42,7 @@ public class FinishDeliveryCommandHandler : IRequestHandler<FinishDeliveryComman
         order.FinishDelivery(currentUser);
 
         await _context.SaveChangesAsync(cancellationToken);
+
         return order.Id;
     }
 }

@@ -42,6 +42,7 @@ public class AssignCourierCommandHandler : IRequestHandler<AssignCourierCommand,
         order.SetCourier(order.OrderStatus, courier);
 
         await _context.SaveChangesAsync(cancellationToken);
+
         return order.Id;
     }
 }

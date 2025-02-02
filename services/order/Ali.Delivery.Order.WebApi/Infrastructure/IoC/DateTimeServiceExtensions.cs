@@ -20,6 +20,7 @@ public static class DateTimeServiceExtensions
         ArgumentNullException.ThrowIfNull(services);
 
         services.AddTransient<IDateTimeService, DateTimeService>();
+
         return services;
     }
 }

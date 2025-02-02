@@ -17,10 +17,7 @@ internal static class SerilogExtensions
     /// <returns>Коллекция дескрипторов службы.</returns>
     public static IServiceCollection AddDefaultSerilog(this WebApplicationBuilder builder)
     {
-        if (builder == null)
-        {
-            throw new ArgumentNullException(nameof(builder));
-        }
+        ArgumentNullException.ThrowIfNull(builder);
 
         Environment.SetEnvironmentVariable(nameof(AppDomain.CurrentDomain.BaseDirectory), AppDomain.CurrentDomain.BaseDirectory);
 
@@ -28,6 +25,7 @@ internal static class SerilogExtensions
                                               .Enrich.FromLogContext()
                                               .CreateLogger();
         builder.Host.UseSerilog();
+
         return builder.Services;
     }
 }

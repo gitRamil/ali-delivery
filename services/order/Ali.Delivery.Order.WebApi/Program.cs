@@ -1,4 +1,3 @@
-using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.Application;
 using Ali.Delivery.Order.Application.Abstractions;
 using Ali.Delivery.Order.Application.Services;
@@ -9,14 +8,8 @@ using Serilog;
 
 try
 {
-    for (var x = 0; x < 10; x++)
-    {
-        Console.WriteLine(SequentialGuid.Create());
-    }
-
     var builder = WebApplication.CreateBuilder(args);
     builder.Configuration.AddEnvironmentVariables("AliDeliveryOrderService_");
-    var config = builder.Configuration;
     builder.AddDefaultSerilog();
     builder.Services.AddControllers();
     builder.Services.AddDefaultApiVersioning();
@@ -29,7 +22,7 @@ try
     builder.Services.AddDateTimeService();
     builder.Services.AddDefaultProblemDetails();
     builder.Services.AddScoped<JwtProvider>();
-    builder.Services.Configure<JwtOptions>(config.GetSection(nameof(JwtOptions)));
+    builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(nameof(JwtOptions)));
     builder.Services.AddApiAuthentication();
     builder.Services.AddHttpContextAccessor();
     builder.Services.AddTransient<ICurrentUser, CurrentUserService>();

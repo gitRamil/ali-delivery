@@ -48,6 +48,7 @@ internal static class EntityFrameworkExtensions
             builder.UseLoggerFactory(LoggerFactory.Create(l => l.AddConsole()));
         });
         services.AddScoped<IAppDbContext, AppDbContext>();
+
         return services;
     }
 }

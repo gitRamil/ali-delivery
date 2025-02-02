@@ -20,9 +20,11 @@ internal static class SwaggerExtensions
     public static IServiceCollection AddDefaultSwagger(this IServiceCollection services)
     {
         ArgumentNullException.ThrowIfNull(services);
+
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
         services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerGenOptionsConfigure>();
+
         return services;
     }
 }

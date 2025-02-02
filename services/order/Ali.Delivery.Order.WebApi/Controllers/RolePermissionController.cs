@@ -28,11 +28,8 @@ public class RolePermissionsController : ControllerBase
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     public async Task<IActionResult> Create([FromBody] CreateRolePermissionCommand command)
     {
-        var rolePermissionId = await _mediator.Send(command);
+        var result = await _mediator.Send(command);
 
-        return Ok(new
-        {
-            Id = rolePermissionId
-        });
+        return Ok(result);
     }
 }

@@ -11,18 +11,18 @@ namespace Ali.Delivery.Order.Application.UseCases.Login;
 /// </summary>
 public class LoginCommandHandler : IRequestHandler<LoginCommand, string>
 {
-    private readonly IAppDbContext _dbcontext;
+    private readonly IAppDbContext _dbContext;
     private readonly JwtProvider _jwtProvider;
 
     /// <summary>
     /// Инициализирует новый экземпляр класса <see cref="LoginCommandHandler" />.
     /// </summary>
     /// <param name="jwtProvider">Провайдер для генерации JWT-токенов.</param>
-    /// <param name="dbcontext">Контекст взаимодействия с базой данных.</param>
-    public LoginCommandHandler(JwtProvider jwtProvider, IAppDbContext dbcontext)
+    /// <param name="dbContext">Контекст взаимодействия с базой данных.</param>
+    public LoginCommandHandler(JwtProvider jwtProvider, IAppDbContext dbContext)
     {
         _jwtProvider = jwtProvider;
-        _dbcontext = dbcontext;
+        _dbContext = dbContext;
     }
 
     /// <summary>
@@ -35,9 +35,9 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, string>
     /// <exception cref="NotFoundException">Выбрасывается, если пользователь не найден.</exception>
     public async Task<string> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        var user = await _dbcontext.Users.FirstOrDefaultAsync(u => u.Login == request.Login, cancellationToken) ?? throw new NotFoundException(typeof(User), request.Login);
+        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Login == request.Login, cancellationToken) ?? throw new NotFoundException(typeof(User), request.Login);
 
-        var permissions = await _dbcontext.RolePermissions.Where(p => p.Role == user.Role)
+        var permissions = await _dbContext.RolePermissions.Where(p => p.Role == user.Role)
                                           .Select(p => (int)p.Permission!.Code)
                                           .ToListAsync(cancellationToken);
 
