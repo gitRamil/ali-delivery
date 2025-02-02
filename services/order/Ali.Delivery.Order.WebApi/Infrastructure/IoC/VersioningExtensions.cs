@@ -21,6 +21,7 @@ internal static class VersioningExtensions
         ArgumentNullException.ThrowIfNull(nameof(services));
 
         services.AddRouting(options => options.LowercaseUrls = true);
+
         services.AddApiVersioning(options =>
         {
             options.AssumeDefaultVersionWhenUnspecified = true;
