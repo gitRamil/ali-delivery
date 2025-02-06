@@ -12,7 +12,7 @@ namespace Ali.Delivery.Order.Application.UseCases.UpdateUser;
 /// <param name="PassportType">Тип паспорта пользователя.</param>
 /// <param name="PassportNumber">Номер паспорта.</param>
 /// <param name="RegDate">Дата регистрации паспорта.</param>
-/// <param name="ExpirationDate">Дата окончания действия паспорта.</param>
+/// <param name="IssuedBy">Кем выдан.</param>
 /// <param name="Role">Идентификатор роли пользователя.</param>
 /// <param name="Birthdate">Дата рождения пользователя.</param>
 public record UpdateUserCommand(
@@ -22,6 +22,6 @@ public record UpdateUserCommand(
     PassportType PassportType,
     string PassportNumber,
     DateTime RegDate,
-    DateTime ExpirationDate,
+    string IssuedBy,
     RoleCode Role,
     DateTime Birthdate) : IRequest<UserDto>;

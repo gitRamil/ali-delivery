@@ -30,10 +30,12 @@ internal class PassportInfoConfiguration : EntityTypeConfigurationBase<PassportI
                .HasConversion(b => (DateTime)b, s => new PassportInfoRegDate(s))
                .HasComment("Дата регистрации");
 
-        builder.Property(p => p.PassportInfoExpirationDate)
-               .HasColumnName("expiration_date")
-               .HasConversion(b => (DateTime)b, s => new PassportInfoExpirationDate(s))
-               .HasComment("Дата истечения срока действия паспорта");
+        builder.Property(p => p.PassportInfoIssuedBy)
+               .HasMaxLength(PassportInfoIssuedBy.MaxLength)
+               .IsRequired()
+               .HasConversion(p => (string)p, s => new PassportInfoIssuedBy(s))
+               .HasColumnName("issued_by")
+               .HasComment("Кем выдан");
 
         builder.HasOne(p => p.PassportType)
                .WithMany()

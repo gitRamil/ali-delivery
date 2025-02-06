@@ -4,6 +4,7 @@ using Ali.Delivery.Order.Application.UseCases.CompletePassport;
 using Ali.Delivery.Order.Application.UseCases.CreateUser;
 using Ali.Delivery.Order.Application.UseCases.DeleteUser;
 using Ali.Delivery.Order.Application.UseCases.GetAllUsers;
+using Ali.Delivery.Order.Application.UseCases.GetCurrentUser;
 using Ali.Delivery.Order.Application.UseCases.GetRolesForUserRegistration;
 using Ali.Delivery.Order.Application.UseCases.GetUser;
 using Ali.Delivery.Order.Application.UseCases.Login;
@@ -88,6 +89,20 @@ public class UserController : ControllerBase
     public async Task<IActionResult> GetAllRoles(CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetRolesForUserRegistrationCommand(), cancellationToken);
+        return Ok(result);
+    }
+    
+    /// <summary>
+    /// Получает текущего пользователя.
+    /// </summary>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    /// <returns>Список всех ролей.</returns>
+    [HttpGet("get-current-user")]
+    [ProducesResponseType(typeof(List<UserDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetCurrentUser(CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetCurrentUserCommand(), cancellationToken);
         return Ok(result);
     }
 

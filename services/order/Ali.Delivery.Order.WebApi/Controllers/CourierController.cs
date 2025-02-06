@@ -65,15 +65,16 @@ public class CourierController : ControllerBase
     /// <summary>
     /// Получает все заказы курьера со статусом завершено.
     /// </summary>
+    /// <param name="orderStatus">Статус заказа.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
     /// <returns>Список заказов</returns>
     [HttpGet("couriers-orders-finished")]
     [UserPermission(UserPermissionCode.CourierOrderManagement)]
     [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAllCourierFinishedOrders(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllCourierFinishedOrders(OrderStatus orderStatus,CancellationToken  cancellationToken)
     {
-        var result = await _mediator.Send(new GetAllCourierFinishedOrdersCommand(), cancellationToken);
+        var result = await _mediator.Send(new GetAllCourierOrdersByOrderStatus(orderStatus), cancellationToken);
         return Ok(result);
     }
 

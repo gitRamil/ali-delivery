@@ -6,4 +6,4 @@ namespace Ali.Delivery.Order.Application.UseCases.GetAllCourierFinishedOrders;
 /// <summary>
 /// Представляет команду для удаления пользователя.
 /// </summary>
-public record GetAllCourierFinishedOrdersCommand : IRequest<List<OrderDto>>;
+public record GetAllCourierOrdersByOrderStatus(OrderStatus OrderStatus) : IRequest<List<OrderDto>>;

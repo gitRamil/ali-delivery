@@ -29,10 +29,10 @@ public class User : Entity<SequentialGuid>
     public User(SequentialGuid id,
                 UserLogin login,
                 UserPassword password,
-                UserFirstName userFirstName,
-                UserLastName userLastName,
                 Role role,
                 UserBirthDay userBirthDay,
+                UserFirstName? userFirstName = null,
+                UserLastName? userLastName = null,
                 PassportInfo? passportInfo = null)
         : base(id)
     {

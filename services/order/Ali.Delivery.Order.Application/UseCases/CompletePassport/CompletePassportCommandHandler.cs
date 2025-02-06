@@ -45,7 +45,7 @@ public class CompletePassportCommandHandler : IRequestHandler<CompletePassportCo
                                              request.PassportType.ToPassportType(),
                                              new PassportInfoPassportNumber(request.PassportNumber),
                                              new PassportInfoRegDate(request.RegDate),
-                                             new PassportInfoExpirationDate(request.ExpirationDate));
+                                             new PassportInfoIssuedBy(request.IssuedBy));
         await _context.SaveChangesAsync(cancellationToken);
 
         return user.Id;

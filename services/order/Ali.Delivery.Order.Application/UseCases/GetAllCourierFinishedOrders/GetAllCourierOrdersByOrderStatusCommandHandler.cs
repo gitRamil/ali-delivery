@@ -11,7 +11,7 @@ namespace Ali.Delivery.Order.Application.UseCases.GetAllCourierFinishedOrders;
 /// <summary>
 /// Представляет обработчик запроса на получение списка всех заказов курьера со статусом "finished".
 /// </summary>
-public class GetAllCourierFinishedOrdersCommandHandler : IRequestHandler<GetAllCourierFinishedOrdersCommand, List<OrderDto>>
+public class GetAllCourierOrdersByOrderStatusCommandHandler : IRequestHandler<GetAllCourierOrdersByOrderStatus, List<OrderDto>>
 {
     private readonly IAppDbContext _context;
     private readonly ICurrentUser _currentUser;
@@ -24,16 +24,26 @@ public class GetAllCourierFinishedOrdersCommandHandler : IRequestHandler<GetAllC
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="context" /> или <paramref name="currentUser" /> равен <c>null</c>.
     /// </exception>
-    public GetAllCourierFinishedOrdersCommandHandler(IAppDbContext context, ICurrentUser currentUser)
+    public GetAllCourierOrdersByOrderStatusCommandHandler(IAppDbContext context, ICurrentUser currentUser)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
         _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
     }
 
     /// <inheritdoc />
-    public async Task<List<OrderDto>> Handle(GetAllCourierFinishedOrdersCommand request, CancellationToken cancellationToken)
+    public async Task<List<OrderDto>> Handle(GetAllCourierOrdersByOrderStatus request, CancellationToken cancellationToken)
     {
-        var orders = await _context.Orders.CheckOrderStatusForCourier(OrderStatus.Finished, _currentUser.Id)
+        var courierId = _currentUser.Id;
+        var allowedStatuses = new[] { OrderStatus.Created, OrderStatus.InProgress };
+
+        // Проверяем, разрешен ли переданный статус
+        if (!allowedStatuses.Contains(request.OrderStatus.ToOrderStatus()))
+        {
+            throw new ArgumentException($"Статус {request.OrderStatus.ToOrderStatus()} недоступен для запроса.");
+        }
+        
+        var orders = await _context.Orders
+                                   .Where(o=>o.OrderStatus == request.OrderStatus.ToOrderStatus() && (Guid)o.Courier!.Id == courierId)
                                    .Select(order => OrderDto.FromOrder(order))
                                    .ToListAsync(cancellationToken);
 
