@@ -1,7 +1,6 @@
 using Ali.Delivery.Order.Application.Abstractions;
 using Ali.Delivery.Order.Application.Dtos.Order;
 using Ali.Delivery.Order.Application.UseCases.GetAllCreatedOrders;
-using Ali.Delivery.Order.Application.UseCases.GetAllCurrentUserOrders;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using OrderStatus = Ali.Delivery.Order.Domain.Entities.Dictionaries.OrderStatus;

@@ -34,8 +34,6 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Guid>
         var user = new User(SequentialGuid.Create(),
                             new UserLogin(request.Login),
                             new UserPassword(request.Password),
-                            // new UserFirstName(request.FirstName),
-                            // new UserLastName(request.LastName),
                             request.Role.ToRole(),
                             new UserBirthDay(request.Birthday));
 

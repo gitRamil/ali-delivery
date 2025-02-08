@@ -3,6 +3,7 @@ using Ali.Delivery.Order.Application.Abstractions;
 using Ali.Delivery.Order.Application.Extensions;
 using Ali.Delivery.Order.Domain.Entities;
 using Ali.Delivery.Order.Domain.ValueObjects.PassportInfo;
+using Ali.Delivery.Order.Domain.ValueObjects.User;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,7 +41,8 @@ public class CompletePassportCommandHandler : IRequestHandler<CompletePassportCo
         {
             throw new InvalidOperationException("Паспортные данные уже заполнены, для изменения паспортных данных обратитесь в поддержку");
         }
-
+        
+        user.UpdateName(new UserFirstName(request.FirstName),new UserLastName(request.LastName));
         user.PassportInfo = new PassportInfo(SequentialGuid.Create(),
                                              request.PassportType.ToPassportType(),
                                              new PassportInfoPassportNumber(request.PassportNumber),

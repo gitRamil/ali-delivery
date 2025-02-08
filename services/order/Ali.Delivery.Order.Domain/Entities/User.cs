@@ -38,8 +38,8 @@ public class User : Entity<SequentialGuid>
     {
         Login = login ?? throw new ArgumentNullException(nameof(login));
         Password = password ?? throw new ArgumentNullException(nameof(password));
-        UserFirstName = userFirstName ?? throw new ArgumentNullException(nameof(userFirstName));
-        UserLastName = userLastName ?? throw new ArgumentNullException(nameof(userLastName));
+        UserFirstName = userFirstName;
+        UserLastName = userLastName;
         PassportInfo = passportInfo;
         Role = role ?? throw new ArgumentNullException(nameof(role));
         UserBirthDay = userBirthDay ?? throw new ArgumentNullException(nameof(userBirthDay));
@@ -64,7 +64,7 @@ public class User : Entity<SequentialGuid>
     /// <summary>
     /// Логин пользователя.
     /// </summary>
-    public UserLogin Login { get; private set; }
+    public virtual UserLogin Login { get; private set; }
 
     /// <summary>
     /// Информация о паспорте пользователя.
@@ -89,12 +89,12 @@ public class User : Entity<SequentialGuid>
     /// <summary>
     /// Имя пользователя.
     /// </summary>
-    public UserFirstName UserFirstName { get; private set; }
+    public virtual UserFirstName? UserFirstName { get;  set; }
 
     /// <summary>
     /// Фамилия пользователя.
     /// </summary>
-    public UserLastName UserLastName { get; private set; }
+    public virtual UserLastName? UserLastName { get;  set; }
 
     /// <summary>
     /// Обновляет дату рождения пользователя.
@@ -115,6 +115,16 @@ public class User : Entity<SequentialGuid>
         UserFirstName = userFirstName ?? throw new ArgumentNullException(nameof(userFirstName));
         UserLastName = userLastName ?? throw new ArgumentNullException(nameof(userLastName));
     }
+
+    /// <summary>
+    /// Обновляет логин пользователя.
+    /// </summary>
+    /// <param name="login">Новый логин пользователя.</param>
+    public void UpdateLogin(UserLogin login)
+    {
+        Login= login?? throw new ArgumentNullException(nameof(login));
+    }
+    
 
     /// <summary>
     /// Обновляет роль пользователя.

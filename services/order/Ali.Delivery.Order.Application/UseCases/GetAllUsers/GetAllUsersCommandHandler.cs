@@ -19,19 +19,21 @@ public class GetAllUsersCommandHandler : IRequestHandler<GetAllUsers, List<UserD
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="context" /> равен <c>null</c>.
     /// </exception>
-    public GetAllUsersCommandHandler(IAppDbContext context) => _context = context ?? throw new ArgumentNullException(nameof(context));
+    public GetAllUsersCommandHandler(IAppDbContext context) => _context = context != null ? context : throw new ArgumentNullException(nameof(context));
 
     /// <inheritdoc />
     public async Task<List<UserDto>> Handle(GetAllUsers request, CancellationToken cancellationToken)
     {
-        var users = await _context.Users.Select(user => new UserDto(user.Id,
-                                                                    user.UserFirstName,
-                                                                    user.UserLastName,
-                                                                    user.PassportInfo!.PassportInfoPassportNumber,
-                                                                    user.PassportInfo.PassportType.Name,
-                                                                    user.Role.Name))
-                                  .ToListAsync(cancellationToken);
+        var users = await _context.Users.ToListAsync(cancellationToken); // Сначала загружаем данные из БД
 
-        return users;
+        return users.Select(user => new UserDto(
+                                user.Id,
+                                user.Login,
+                                user.UserFirstName != null ? user.UserFirstName.ToString() : "",  
+                                user.UserLastName != null ? user.UserLastName.ToString() : "",   
+                                user.PassportInfo != null ? user.PassportInfo.PassportInfoPassportNumber : "",  
+                                user.PassportInfo != null ? user.PassportInfo.PassportType.Name : "",  
+                                user.Role.Name
+                            )).ToList();
     }
 }

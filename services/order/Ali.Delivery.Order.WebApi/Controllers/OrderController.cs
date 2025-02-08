@@ -3,7 +3,7 @@ using Ali.Delivery.Order.Application.Dtos.Order;
 using Ali.Delivery.Order.Application.UseCases.CreateOrder;
 using Ali.Delivery.Order.Application.UseCases.DeleteOrder;
 using Ali.Delivery.Order.Application.UseCases.GetAllCreatedOrders;
-using Ali.Delivery.Order.Application.UseCases.GetAllCurrentUserOrders;
+using Ali.Delivery.Order.Application.UseCases.GetAllCurrentUserCreatedOrders;
 using Ali.Delivery.Order.Application.UseCases.GetAllOrders;
 using Ali.Delivery.Order.Application.UseCases.GetOrder;
 using Ali.Delivery.Order.Application.UseCases.UpdateOrder;
@@ -63,11 +63,11 @@ public class OrderController : ControllerBase
     }
 
     /// <summary>
-    /// Получает список всех созданных заказов.
+    /// Получает список всех активных заказов.
     /// </summary>
     /// <param name="cancellationToken">Маркер отмены.</param>
-    /// <returns>Список всех заказов.</returns>
-    [HttpGet("created-orders")]
+    /// <returns>Список всех активных заказов.</returns>
+    [HttpGet("active-orders")]
     [UserPermission(UserPermissionCode.CourierOrderManagement)]
     [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

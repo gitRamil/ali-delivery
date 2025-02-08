@@ -51,6 +51,8 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserD
             passportInfo.PassportInfoIssuedBy = new PassportInfoIssuedBy(request.IssuedBy);
         }
 
+        user.UpdateLogin(new UserLogin(request.Login)); 
+        
         user.UpdateRole(request.Role.ToRole());
 
         user.UpdateBirthDay(new UserBirthDay(request.Birthdate));
@@ -62,6 +64,12 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserD
             throw new ArgumentNullException(nameof(user.PassportInfo));
         }
 
-        return new UserDto(user.Id, user.UserFirstName, user.UserLastName, user.PassportInfo.PassportInfoPassportNumber, user.PassportInfo.PassportType.Name, user.Role.Name);
+        return new UserDto(user.Id,
+                           user.Login,
+                           user.UserFirstName?.ToString() ?? "", 
+                           user.UserLastName?.ToString() ?? "", 
+                           user.PassportInfo?.PassportInfoPassportNumber ?? "", 
+                           user.PassportInfo?.PassportType?.Name ?? "", 
+                           user.Role.Name);
     }
 }

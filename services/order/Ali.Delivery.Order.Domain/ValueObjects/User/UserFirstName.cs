@@ -27,11 +27,6 @@ public class UserFirstName : ValueObject
     /// </exception>
     public UserFirstName(string name)
     {
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            throw new ArgumentException("Имя не может быть пустым или null.", nameof(name));
-        }
-
         name = name.Trim();
 
         if (name.Length > MaxLength)

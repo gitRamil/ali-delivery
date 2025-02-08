@@ -7,6 +7,7 @@ namespace Ali.Delivery.Order.Application.UseCases.UpdateUser;
 /// Представляет команду обновления данных пользователя.
 /// </summary>
 /// <param name="UserId">Идентификатор пользователя.</param>
+/// <param name="Login">Логин пользователя.</param>
 /// <param name="FirstName">Имя пользователя.</param>
 /// <param name="LastName">Фамилия пользователя.</param>
 /// <param name="PassportType">Тип паспорта пользователя.</param>
@@ -17,6 +18,7 @@ namespace Ali.Delivery.Order.Application.UseCases.UpdateUser;
 /// <param name="Birthdate">Дата рождения пользователя.</param>
 public record UpdateUserCommand(
     Guid UserId,
+    string Login,
     string FirstName,
     string LastName,
     PassportType PassportType,

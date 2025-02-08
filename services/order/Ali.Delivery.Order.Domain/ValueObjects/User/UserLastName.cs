@@ -27,11 +27,6 @@ public class UserLastName : ValueObject
     /// </exception>
     public UserLastName(string name)
     {
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            throw new ArgumentException("Фамилия не может быть пустой или null.", nameof(name));
-        }
-
         name = name.Trim();
 
         if (name.Length > MaxLength)
