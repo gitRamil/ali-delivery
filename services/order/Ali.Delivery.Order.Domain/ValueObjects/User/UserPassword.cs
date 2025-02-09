@@ -13,7 +13,7 @@ public class UserPassword : ValueObject
     /// <summary>
     /// Максимальная длина пароля.
     /// </summary>
-    private const int MaxLength = 100;
+    public const int MaxLength = 100;
 
     private readonly string _password;
 

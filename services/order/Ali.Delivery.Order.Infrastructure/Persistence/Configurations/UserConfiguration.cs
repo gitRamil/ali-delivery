@@ -30,7 +30,7 @@ internal class UserConfiguration : EntityTypeConfigurationBase<User>
                .HasComment("Фамилия пользователя");
 
         builder.Property(u => u.Login)
-               .HasMaxLength(UserLastName.MaxLength)
+               .HasMaxLength(UserLogin.MaxLength)
                .HasConversion(l => (string)l, s => new UserLogin(s))
                .HasComment("Логин пользователя")
                .IsRequired(); 
@@ -39,7 +39,7 @@ internal class UserConfiguration : EntityTypeConfigurationBase<User>
                .IsUnique();
 
         builder.Property(u => u.Password)
-               .HasMaxLength(UserLastName.MaxLength)
+               .HasMaxLength(UserPassword.MaxLength)
                .HasConversion(l => (string)l, s => new UserPassword(s))
                .HasComment("Пароль пользователя");
 

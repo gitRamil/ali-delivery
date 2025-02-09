@@ -1,6 +1,7 @@
 using Ali.Delivery.Order.Application;
 using Ali.Delivery.Order.Application.Dtos.Order;
 using Ali.Delivery.Order.Application.UseCases.CompletePassport;
+using Ali.Delivery.Order.Application.UseCases.CreateNotAuthUser;
 using Ali.Delivery.Order.Application.UseCases.CreateUser;
 using Ali.Delivery.Order.Application.UseCases.DeleteUser;
 using Ali.Delivery.Order.Application.UseCases.GetAllUsers;
@@ -59,6 +60,20 @@ public class UserController : ControllerBase
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CreateUser([FromBody] CreateUserCommand command, CancellationToken cancellationToken)
+    {
+        await _mediator.Send(command, cancellationToken);
+        return Ok();
+    }
+    
+    /// <summary>
+    /// Создает незарегистрированного пользователя.
+    /// </summary>
+    /// <param name="command">Пользователь.</param>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    [HttpPost("create-not-auth-user")]
+    [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> CreateNotAuthUser([FromBody] CreateNotAuthUserCommand command, CancellationToken cancellationToken)
     {
         await _mediator.Send(command, cancellationToken);
         return Ok();

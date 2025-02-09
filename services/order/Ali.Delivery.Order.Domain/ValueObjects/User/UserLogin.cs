@@ -13,7 +13,7 @@ public class UserLogin : ValueObject
     /// <summary>
     /// Максимальная длина логина
     /// </summary>
-    private const int MaxLength = 100;
+    public const int MaxLength = 100;
 
     private readonly string _login;
 

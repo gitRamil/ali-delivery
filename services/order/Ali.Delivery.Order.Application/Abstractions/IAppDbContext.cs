@@ -48,6 +48,14 @@ public interface IAppDbContext
     /// Пользователи.
     /// </value>
     DbSet<User> Users { get; }
+    
+    /// <summary>
+    /// Возвращает набор незарегистрированных пользователей.
+    /// </summary>
+    /// <value>
+    /// Незарегистрированные пользователи.
+    /// </value>
+    DbSet<NotAuthUser> NotAuthUsers { get; }
 
     /// <summary>
     /// Сохраняет изменения.
