@@ -1,17 +1,8 @@
 namespace Ali.Delivery.Order.Application.Dtos.Order;
 
 /// <summary>
-/// Представляет роль.
+/// Представляет набор значений, описывающих роли пользователей.
 /// </summary>
-public class RoleDto
-{
-    /// <summary>
-    /// Код роли.
-    /// </summary>
-    public string Code { get; set; }
-
-    /// <summary>
-    /// Описание роли.
-    /// </summary>
-    public string Description { get; set; }
-}
+/// <param name="Code">Код роли.</param>
+/// <param name="Name">Наименование роли.</param>
+public sealed record RoleDto(string Code, string Name);

@@ -5,6 +5,7 @@ using Ali.Delivery.Order.Application.UseCases.CreateUser;
 using Ali.Delivery.Order.Application.UseCases.DeleteUser;
 using Ali.Delivery.Order.Application.UseCases.GetAllUsers;
 using Ali.Delivery.Order.Application.UseCases.GetCurrentUser;
+using Ali.Delivery.Order.Application.UseCases.GetIsUserExist;
 using Ali.Delivery.Order.Application.UseCases.GetRolesForUserRegistration;
 using Ali.Delivery.Order.Application.UseCases.GetUser;
 using Ali.Delivery.Order.Application.UseCases.Login;
@@ -106,6 +107,22 @@ public class UserController : ControllerBase
         return Ok(result);
     }
 
+    /// <summary>
+    /// Проверяет, существует ли пользователь в системе.
+    /// </summary>
+    /// <param name="userId">Id пользователя.</param>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    /// <returns>True если пользователь существует, либо False.</returns>
+    [HttpGet("is-user-exist")]
+    [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetIsUserExist(Guid userId, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetIsUserExistCommand(userId), cancellationToken);
+        return Ok(result);
+    }
+    
+    
     /// <summary>
     /// Получает список всех пользователей.
     /// </summary>
