@@ -72,7 +72,7 @@ public class CourierController : ControllerBase
     [UserPermission(UserPermissionCode.CourierOrderManagement)]
     [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAllCourierOrdersByOrderStatus(OrderStatus orderStatus,CancellationToken  cancellationToken)
+    public async Task<IActionResult> GetAllCourierOrdersByOrderStatus(OrderStatus orderStatus, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetAllCourierOrdersByOrderStatus(orderStatus), cancellationToken);
         return Ok(result);

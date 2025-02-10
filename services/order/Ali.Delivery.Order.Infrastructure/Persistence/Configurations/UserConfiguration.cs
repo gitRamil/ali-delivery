@@ -33,8 +33,8 @@ internal class UserConfiguration : EntityTypeConfigurationBase<User>
                .HasMaxLength(UserLogin.MaxLength)
                .HasConversion(l => (string)l, s => new UserLogin(s))
                .HasComment("Логин пользователя")
-               .IsRequired(); 
-        
+               .IsRequired();
+
         builder.HasIndex(u => u.Login)
                .IsUnique();
 

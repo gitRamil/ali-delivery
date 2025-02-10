@@ -32,7 +32,8 @@ public class NotAuthUserPhoneNumber : ValueObject
 
         if (phoneNumber.Length > MaxLength || !IsValidPhoneNumber(phoneNumber))
         {
-            throw new ArgumentException($"Некорректный номер телефона. Длина не должна превышать {MaxLength} символов и должен соответствовать формату +7XXXXXXXXXX.", nameof(phoneNumber));
+            throw new ArgumentException($"Некорректный номер телефона. Длина не должна превышать {MaxLength} символов и должен соответствовать формату +7XXXXXXXXXX.",
+                                        nameof(phoneNumber));
         }
 
         _phoneNumber = phoneNumber;
@@ -50,16 +51,13 @@ public class NotAuthUserPhoneNumber : ValueObject
     }
 
     /// <summary>
+    /// Проверяет, является ли строка корректным номером телефона.
+    /// </summary>
+    private static bool IsValidPhoneNumber(string phoneNumber) => Regex.IsMatch(phoneNumber, @"^\+7\d{10}$");
+
+    /// <summary>
     /// Выполняет неявное преобразование из <see cref="NotAuthUserPhoneNumber" /> в <see cref="string" />.
     /// </summary>
     [return: NotNullIfNotNull(nameof(obj))]
     public static implicit operator string?(NotAuthUserPhoneNumber? obj) => obj?._phoneNumber;
-
-    /// <summary>
-    /// Проверяет, является ли строка корректным номером телефона.
-    /// </summary>
-    private static bool IsValidPhoneNumber(string phoneNumber)
-    {
-        return Regex.IsMatch(phoneNumber, @"^\+7\d{10}$");
-    }
 }

@@ -10,4 +10,4 @@ namespace Ali.Delivery.Order.Application.Dtos.Order;
 /// <param name="PassportInfoPassportNumber">Номер паспорта.</param>
 /// <param name="PassportType">Тип паспорта.</param>
 /// <param name="Role">Роль пользователя.</param>
-public sealed record UserDto(Guid Id,string Login, string FirstName, string LastName, string PassportInfoPassportNumber, string PassportType, string Role);
+public sealed record UserDto(Guid Id, string Login, string FirstName, string LastName, string PassportInfoPassportNumber, string PassportType, string Role);

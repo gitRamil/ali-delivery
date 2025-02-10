@@ -45,13 +45,13 @@ public class PassportInfo : Entity<SequentialGuid>
         PassportType = null!;
         PassportInfoPassportNumber = null!;
         PassportInfoRegDate = null!;
-        PassportInfoIssuedBy  = null!;
+        PassportInfoIssuedBy = null!;
     }
 
     /// <summary>
     /// Возвращает строку "кем выдан".
     /// </summary>
-    public virtual PassportInfoIssuedBy PassportInfoIssuedBy{ get; set; }
+    public virtual PassportInfoIssuedBy PassportInfoIssuedBy { get; set; }
 
     /// <summary>
     /// Возвращает номер паспорта.

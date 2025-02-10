@@ -45,6 +45,10 @@ internal class CourierConfiguration : EntityTypeConfigurationBase<Domain.Entitie
                .WithMany()
                .HasForeignKey("receiver_id");
 
+        builder.HasOne(p => p.NotAuthReceiver)
+               .WithMany()
+               .HasForeignKey("not_auth_receiver_id");
+
         builder.HasOne(p => p.Courier)
                .WithMany()
                .HasForeignKey("courier_id");

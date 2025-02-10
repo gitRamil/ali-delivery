@@ -52,6 +52,21 @@ public class UserController : ControllerBase
     }
 
     /// <summary>
+    /// Создает незарегистрированного пользователя.
+    /// </summary>
+    /// <param name="command">Пользователь.</param>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    [HttpPost("create-not-auth-user")]
+    [UserPermission(UserPermissionCode.UserManagement)]
+    [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> CreateNotAuthUser([FromBody] CreateNotAuthUserCommand command, CancellationToken cancellationToken)
+    {
+        await _mediator.Send(command, cancellationToken);
+        return Ok();
+    }
+
+    /// <summary>
     /// Создает пользователя.
     /// </summary>
     /// <param name="command">Пользователь.</param>
@@ -60,20 +75,6 @@ public class UserController : ControllerBase
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CreateUser([FromBody] CreateUserCommand command, CancellationToken cancellationToken)
-    {
-        await _mediator.Send(command, cancellationToken);
-        return Ok();
-    }
-    
-    /// <summary>
-    /// Создает незарегистрированного пользователя.
-    /// </summary>
-    /// <param name="command">Пользователь.</param>
-    /// <param name="cancellationToken">Маркер отмены.</param>
-    [HttpPost("create-not-auth-user")]
-    [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> CreateNotAuthUser([FromBody] CreateNotAuthUserCommand command, CancellationToken cancellationToken)
     {
         await _mediator.Send(command, cancellationToken);
         return Ok();
@@ -107,7 +108,22 @@ public class UserController : ControllerBase
         var result = await _mediator.Send(new GetRolesForUserRegistrationCommand(), cancellationToken);
         return Ok(result);
     }
-    
+
+    /// <summary>
+    /// Получает список всех пользователей.
+    /// </summary>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    /// <returns>Список всех пользователей.</returns>
+    [HttpGet]
+    [UserPermission(UserPermissionCode.UserManagement)]
+    [ProducesResponseType(typeof(List<UserDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetAllUsers(CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetAllUsers(), cancellationToken);
+        return Ok(result);
+    }
+
     /// <summary>
     /// Получает текущего пользователя.
     /// </summary>
@@ -134,22 +150,6 @@ public class UserController : ControllerBase
     public async Task<IActionResult> GetIsUserExist(Guid userId, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetIsUserExistCommand(userId), cancellationToken);
-        return Ok(result);
-    }
-    
-    
-    /// <summary>
-    /// Получает список всех пользователей.
-    /// </summary>
-    /// <param name="cancellationToken">Маркер отмены.</param>
-    /// <returns>Список всех пользователей.</returns>
-    [HttpGet]
-    [UserPermission(UserPermissionCode.UserManagement)]
-    [ProducesResponseType(typeof(List<UserDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAllUsers(CancellationToken cancellationToken)
-    {
-        var result = await _mediator.Send(new GetAllUsers(), cancellationToken);
         return Ok(result);
     }
 

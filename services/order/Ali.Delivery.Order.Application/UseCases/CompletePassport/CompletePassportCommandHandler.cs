@@ -41,8 +41,9 @@ public class CompletePassportCommandHandler : IRequestHandler<CompletePassportCo
         {
             throw new InvalidOperationException("Паспортные данные уже заполнены, для изменения паспортных данных обратитесь в поддержку");
         }
-        
-        user.UpdateName(new UserFirstName(request.FirstName),new UserLastName(request.LastName));
+
+        user.UpdateName(new UserFirstName(request.FirstName), new UserLastName(request.LastName));
+
         user.PassportInfo = new PassportInfo(SequentialGuid.Create(),
                                              request.PassportType.ToPassportType(),
                                              new PassportInfoPassportNumber(request.PassportNumber),

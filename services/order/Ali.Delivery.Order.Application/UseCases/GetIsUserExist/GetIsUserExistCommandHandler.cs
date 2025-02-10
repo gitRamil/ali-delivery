@@ -1,15 +1,10 @@
 using Ali.Delivery.Order.Application.Abstractions;
-using Ali.Delivery.Order.Application.Dtos.Order;
-using Ali.Delivery.Order.Application.Exceptions;
-using Ali.Delivery.Order.Application.UseCases.GetCurrentUser;
-using Ali.Delivery.Order.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ali.Delivery.Order.Application.UseCases.GetIsUserExist;
 
 /// <summary>
-/// 
 /// </summary>
 public class GetIsUserExistCommandHandler : IRequestHandler<GetIsUserExistCommand, bool>
 {
@@ -19,14 +14,10 @@ public class GetIsUserExistCommandHandler : IRequestHandler<GetIsUserExistComman
     /// Инициализирует новый экземпляр типа <see cref="GetIsUserExistCommandHandler" />.
     /// </summary>
     /// <param name="context">Контекст БД.</param>
-    
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="context" /> равен <c>null</c>.
     /// </exception>
-    public GetIsUserExistCommandHandler(IAppDbContext context)
-    {
-        _context = context ?? throw new ArgumentNullException(nameof(context));
-    }
+    public GetIsUserExistCommandHandler(IAppDbContext context) => _context = context ?? throw new ArgumentNullException(nameof(context));
 
     /// <inheritdoc />
     /// <exception cref="ArgumentNullException">
@@ -37,7 +28,5 @@ public class GetIsUserExistCommandHandler : IRequestHandler<GetIsUserExistComman
         ArgumentNullException.ThrowIfNull(request);
 
         return await _context.Users.AnyAsync(u => (Guid)u.Id == request.UserId, cancellationToken);
-
     }
-
 }

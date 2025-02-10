@@ -26,14 +26,13 @@ public class GetAllUsersCommandHandler : IRequestHandler<GetAllUsers, List<UserD
     {
         var users = await _context.Users.ToListAsync(cancellationToken); // Сначала загружаем данные из БД
 
-        return users.Select(user => new UserDto(
-                                user.Id,
-                                user.Login,
-                                user.UserFirstName != null ? user.UserFirstName.ToString() : "",  
-                                user.UserLastName != null ? user.UserLastName.ToString() : "",   
-                                user.PassportInfo != null ? user.PassportInfo.PassportInfoPassportNumber : "",  
-                                user.PassportInfo != null ? user.PassportInfo.PassportType.Name : "",  
-                                user.Role.Name
-                            )).ToList();
+        return users.Select(user => new UserDto(user.Id,
+                                                user.Login,
+                                                user.UserFirstName != null ? user.UserFirstName.ToString() : "",
+                                                user.UserLastName != null ? user.UserLastName.ToString() : "",
+                                                user.PassportInfo != null ? user.PassportInfo.PassportInfoPassportNumber : "",
+                                                user.PassportInfo != null ? user.PassportInfo.PassportType.Name : "",
+                                                user.Role.Name))
+                    .ToList();
     }
 }

@@ -19,7 +19,8 @@ public sealed class NotFoundException : Exception
     /// Инициализирует новый экземпляр типа <see cref="NotFoundException" />.
     /// </summary>
     /// <param name="message">Сообщение с описанием ошибки.</param>
-    public NotFoundException(string? message)
+    /// <param name="requestReceiverId"></param>
+    public NotFoundException(string? message, Guid requestReceiverId)
         : base(message)
     {
     }

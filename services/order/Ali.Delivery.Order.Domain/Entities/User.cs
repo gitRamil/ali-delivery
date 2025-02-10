@@ -89,12 +89,12 @@ public class User : Entity<SequentialGuid>
     /// <summary>
     /// Имя пользователя.
     /// </summary>
-    public virtual UserFirstName? UserFirstName { get;  set; }
+    public virtual UserFirstName? UserFirstName { get; set; }
 
     /// <summary>
     /// Фамилия пользователя.
     /// </summary>
-    public virtual UserLastName? UserLastName { get;  set; }
+    public virtual UserLastName? UserLastName { get; set; }
 
     /// <summary>
     /// Обновляет дату рождения пользователя.
@@ -103,6 +103,15 @@ public class User : Entity<SequentialGuid>
     public void UpdateBirthDay(UserBirthDay birthDay)
     {
         UserBirthDay = birthDay ?? throw new ArgumentNullException(nameof(birthDay));
+    }
+
+    /// <summary>
+    /// Обновляет логин пользователя.
+    /// </summary>
+    /// <param name="login">Новый логин пользователя.</param>
+    public void UpdateLogin(UserLogin login)
+    {
+        Login = login ?? throw new ArgumentNullException(nameof(login));
     }
 
     /// <summary>
@@ -115,16 +124,6 @@ public class User : Entity<SequentialGuid>
         UserFirstName = userFirstName ?? throw new ArgumentNullException(nameof(userFirstName));
         UserLastName = userLastName ?? throw new ArgumentNullException(nameof(userLastName));
     }
-
-    /// <summary>
-    /// Обновляет логин пользователя.
-    /// </summary>
-    /// <param name="login">Новый логин пользователя.</param>
-    public void UpdateLogin(UserLogin login)
-    {
-        Login= login?? throw new ArgumentNullException(nameof(login));
-    }
-    
 
     /// <summary>
     /// Обновляет роль пользователя.

@@ -33,11 +33,11 @@ internal class NotAuthUserConfiguration : EntityTypeConfigurationBase<NotAuthUse
                .HasMaxLength(NotAuthUserPhoneNumber.MaxLength)
                .HasConversion(p => (string)p!, s => new NotAuthUserPhoneNumber(s))
                .HasComment("Телефонный номер незарегистрированного пользователя");
-        
+
         builder.HasOne(p => p.Creator)
                .WithMany()
                .HasForeignKey("creator_id");
-        
+
         builder.HasOne(u => u.Role)
                .WithMany()
                .HasForeignKey("role_id");

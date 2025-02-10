@@ -23,7 +23,12 @@ public class NotAuthUser : Entity<SequentialGuid>
     /// Возникает, если любой из параметров <paramref name="notAuthUserFirstName" />,
     /// <paramref name="notAuthUserLastName" /> или <paramref name="role" />  равен <c>null</c>.
     /// </exception>
-    public NotAuthUser(SequentialGuid id, Role role, User creator, NotAuthUserFirstName? notAuthUserFirstName = null, NotAuthUserLastName? notAuthUserLastName = null, NotAuthUserPhoneNumber? notAuthUserPhoneNumber = null )
+    public NotAuthUser(SequentialGuid id,
+                       Role role,
+                       User creator,
+                       NotAuthUserFirstName? notAuthUserFirstName = null,
+                       NotAuthUserLastName? notAuthUserLastName = null,
+                       NotAuthUserPhoneNumber? notAuthUserPhoneNumber = null)
         : base(id)
     {
         NotAuthUserFirstName = notAuthUserFirstName;
@@ -41,22 +46,21 @@ public class NotAuthUser : Entity<SequentialGuid>
         : base(SequentialGuid.Empty)
     {
         NotAuthUserFirstName = null!;
-        NotAuthUserLastName  = null!;
+        NotAuthUserLastName = null!;
         Role = null!;
         NotAuthPhoneNumber = null!;
         Creator = null!;
     }
 
-
     /// <summary>
-    /// Идентификатор роли незарегистрированного пользователя.
+    /// Возвращает создателя незарегистрированного пользователя.
     /// </summary>
-    public virtual Role Role { get; private set; }
+    public virtual User? Creator { get; set; }
 
     /// <summary>
     /// Телефонный номер незарегистрированного пользователя.
     /// </summary>
-    public virtual NotAuthUserPhoneNumber? NotAuthPhoneNumber { get;  set; }
+    public virtual NotAuthUserPhoneNumber? NotAuthPhoneNumber { get; set; }
 
     /// <summary>
     /// Имя незарегистрированного пользователя.
@@ -67,11 +71,9 @@ public class NotAuthUser : Entity<SequentialGuid>
     /// Фамилия незарегистрированного пользователя.
     /// </summary>
     public virtual NotAuthUserLastName? NotAuthUserLastName { get; set; }
-    
-    /// <summary>
-    /// Возвращает создателя незарегистрированного пользователя.
-    /// </summary>
-    public virtual User? Creator { get; set; }
-    
-}
 
+    /// <summary>
+    /// Идентификатор роли незарегистрированного пользователя.
+    /// </summary>
+    public virtual Role Role { get; private set; }
+}

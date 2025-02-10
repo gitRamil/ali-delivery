@@ -38,8 +38,10 @@ public class CreateNotAuthUserCommandHandler : IRequestHandler<CreateNotAuthUser
     public async Task<Guid> Handle(CreateNotAuthUserCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        
-        var currentUser = await _context.Users.FirstOrDefaultAsync(u => (Guid)u.Id == _currentUser.Id, cancellationToken) ?? throw new NotFoundException(typeof(User), _currentUser.Id);
+
+        var currentUser = await _context.Users.FirstOrDefaultAsync(u => (Guid)u.Id == _currentUser.Id, cancellationToken) ??
+                          throw new NotFoundException(typeof(User), _currentUser.Id);
+
         if (currentUser.Role == null || currentUser.Role != Role.BasicUser)
         {
             throw new UnauthorizedAccessException("Текущий пользователь не является базовым пользователем системы.");

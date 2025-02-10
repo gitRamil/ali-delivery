@@ -34,15 +34,19 @@ public class GetAllCourierOrdersByOrderStatusCommandHandler : IRequestHandler<Ge
     public async Task<List<OrderDto>> Handle(GetAllCourierOrdersByOrderStatus request, CancellationToken cancellationToken)
     {
         var courierId = _currentUser.Id;
-        var allowedStatuses = new[] { OrderStatus.Finished, OrderStatus.InProgress };
-        
+
+        var allowedStatuses = new[]
+        {
+            OrderStatus.Finished,
+            OrderStatus.InProgress
+        };
+
         if (!allowedStatuses.Contains(request.OrderStatus.ToOrderStatus()))
         {
-            throw new ArgumentException($"Статус 'Создан' недоступен для запроса.");
+            throw new ArgumentException("Статус 'Создан' недоступен для запроса.");
         }
-        
-        var orders = await _context.Orders
-                                   .Where(o=>o.OrderStatus == request.OrderStatus.ToOrderStatus() && (Guid)o.Courier!.Id == courierId)
+
+        var orders = await _context.Orders.Where(o => o.OrderStatus == request.OrderStatus.ToOrderStatus() && (Guid)o.Courier!.Id == courierId)
                                    .Select(order => OrderDto.FromOrder(order))
                                    .ToListAsync(cancellationToken);
 
