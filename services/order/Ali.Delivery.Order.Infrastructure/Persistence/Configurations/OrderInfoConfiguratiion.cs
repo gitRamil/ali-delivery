@@ -50,6 +50,6 @@ internal class OrderInfoConfiguration : EntityTypeConfigurationBase<OrderInfo>
                .HasForeignKey("size_id");
 
         builder.Property("size_id")
-               .HasComment("Идентификационный номер размера");
+               .HasComment("Идентификатор размера");
     }
 }

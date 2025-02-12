@@ -42,6 +42,6 @@ internal class PassportInfoConfiguration : EntityTypeConfigurationBase<PassportI
                .HasForeignKey("type_id");
 
         builder.Property("type_id")
-               .HasComment("Идентификационный номер типа паспорта");
+               .HasComment("Идентификатор типа паспорта");
     }
 }

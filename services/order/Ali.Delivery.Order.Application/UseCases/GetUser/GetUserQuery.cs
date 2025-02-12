@@ -7,4 +7,4 @@ namespace Ali.Delivery.Order.Application.UseCases.GetUser;
 /// Представляет запрос на получение пользователя.
 /// </summary>
 /// <param name="UserId">Идентификатор пользователя.</param>
-public sealed record GetUserCommand(Guid UserId) : IRequest<UserDto>;
+public sealed record GetUserQuery(Guid UserId) : IRequest<UserDto>;

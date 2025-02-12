@@ -28,48 +28,40 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserD
 
     /// <inheritdoc />
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если <paramref name="request" /> равен <c>null</c>.
+    /// Возникает, если <paramref name="command" /> равен <c>null</c>.
     /// </exception>
-    public async Task<UserDto> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+    public async Task<UserDto> Handle(UpdateUserCommand command, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(command);
 
         var user = await _context.Users.Include(u => u.Role)
                                  .Include(u => u.PassportInfo)
-                                 .FirstOrDefaultAsync(u => (Guid)u.Id == request.UserId, cancellationToken) ??
-                   throw new NotFoundException(typeof(User), request.UserId);
+                                 .FirstOrDefaultAsync(u => (Guid)u.Id == command.UserId, cancellationToken) ??
+                   throw new NotFoundException(typeof(User), command.UserId);
 
-        user.UpdateName(new UserFirstName(request.FirstName), new UserLastName(request.LastName));
+        user.UpdateName(new UserFirstName(command.FirstName), new UserLastName(command.LastName));
 
-        var passportInfo = user.PassportInfo;
+        user.PassportInfo?.UpdatePassport(new PassportInfoPassportNumber(command.PassportNumber),
+                                          new PassportInfoRegDate(command.RegDate),
+                                          new PassportInfoIssuedBy(command.IssuedBy),
+                                          command.PassportType.ToPassportType());
 
-        if (passportInfo != null)
-        {
-            passportInfo.PassportType = request.PassportType.ToPassportType();
-            passportInfo.PassportInfoPassportNumber = new PassportInfoPassportNumber(request.PassportNumber);
-            passportInfo.PassportInfoRegDate = new PassportInfoRegDate(request.RegDate);
-            passportInfo.PassportInfoIssuedBy = new PassportInfoIssuedBy(request.IssuedBy);
-        }
+        user.UpdateLogin(new UserLogin(command.Login));
 
-        user.UpdateLogin(new UserLogin(request.Login)); 
-        
-        user.UpdateRole(request.Role.ToRole());
+        user.UpdateRole(command.Role.ToRole());
 
-        user.UpdateBirthDay(new UserBirthDay(request.Birthdate));
+        user.UpdateBirthDay(new UserBirthDay(command.Birthdate));
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        if (user.PassportInfo == null)
-        {
-            throw new ArgumentNullException(nameof(user.PassportInfo));
-        }
-
         return new UserDto(user.Id,
                            user.Login,
-                           user.UserFirstName?.ToString() ?? "", 
-                           user.UserLastName?.ToString() ?? "", 
-                           user.PassportInfo?.PassportInfoPassportNumber ?? "", 
-                           user.PassportInfo?.PassportType?.Name ?? "", 
-                           user.Role.Name);
+                           user.UserFirstName,
+                           user.UserLastName,
+                           (string?)user.PassportInfo?.PassportInfoPassportNumber,
+                           user.PassportInfo?.PassportType.Name,
+                           user.Role.Name,
+                           user.PassportInfo?.PassportInfoRegDate, 
+                           user.PassportInfo?.PassportInfoIssuedBy);
     }
 }

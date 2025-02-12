@@ -1,6 +1,7 @@
 using Ali.Delivery.Domain.Core;
 using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.Domain.Entities.Dictionaries;
+using Ali.Delivery.Order.Domain.ValueObjects.PassportInfo;
 using Ali.Delivery.Order.Domain.ValueObjects.User;
 
 namespace Ali.Delivery.Order.Domain.Entities;
@@ -64,12 +65,12 @@ public class User : Entity<SequentialGuid>
     /// <summary>
     /// Логин пользователя.
     /// </summary>
-    public virtual UserLogin Login { get; private set; }
+    public UserLogin Login { get; private set; }
 
     /// <summary>
     /// Информация о паспорте пользователя.
     /// </summary>
-    public virtual PassportInfo? PassportInfo { get; set; }
+    public virtual PassportInfo? PassportInfo { get; private set; }
 
     /// <summary>
     /// Пароль пользователя.
@@ -89,12 +90,35 @@ public class User : Entity<SequentialGuid>
     /// <summary>
     /// Имя пользователя.
     /// </summary>
-    public virtual UserFirstName? UserFirstName { get;  set; }
+    public UserFirstName? UserFirstName { get; private set; }
 
     /// <summary>
     /// Фамилия пользователя.
     /// </summary>
-    public virtual UserLastName? UserLastName { get;  set; }
+    public UserLastName? UserLastName { get; private set; }
+
+    /// <summary>
+    /// Создаёт паспортную информацию для пользователя.
+    /// </summary>
+    /// <param name="passportId">Идентификатор паспорта.</param>
+    /// <param name="typeId">Тип паспорта.</param>
+    /// <param name="passportNumber">Номер паспорта.</param>
+    /// <param name="regDate">Дата регистрации.</param>
+    /// <param name="issuedBy">Кем выдан.</param>
+    /// <exception cref="InvalidOperationException">Выбрасывается, если у пользователя уже есть паспорт.</exception>
+    public void CreatePassportInfo(SequentialGuid passportId,
+                                   PassportType typeId,
+                                   PassportInfoPassportNumber passportNumber,
+                                   PassportInfoRegDate regDate,
+                                   PassportInfoIssuedBy issuedBy)
+    {
+        if (PassportInfo is not null)
+        {
+            throw new InvalidOperationException("Паспортные данные уже существуют.");
+        }
+
+        PassportInfo = new PassportInfo(passportId, typeId, passportNumber, regDate, issuedBy);
+    }
 
     /// <summary>
     /// Обновляет дату рождения пользователя.
@@ -103,6 +127,15 @@ public class User : Entity<SequentialGuid>
     public void UpdateBirthDay(UserBirthDay birthDay)
     {
         UserBirthDay = birthDay ?? throw new ArgumentNullException(nameof(birthDay));
+    }
+
+    /// <summary>
+    /// Обновляет логин пользователя.
+    /// </summary>
+    /// <param name="login">Новый логин пользователя.</param>
+    public void UpdateLogin(UserLogin login)
+    {
+        Login = login ?? throw new ArgumentNullException(nameof(login));
     }
 
     /// <summary>
@@ -115,16 +148,6 @@ public class User : Entity<SequentialGuid>
         UserFirstName = userFirstName ?? throw new ArgumentNullException(nameof(userFirstName));
         UserLastName = userLastName ?? throw new ArgumentNullException(nameof(userLastName));
     }
-
-    /// <summary>
-    /// Обновляет логин пользователя.
-    /// </summary>
-    /// <param name="login">Новый логин пользователя.</param>
-    public void UpdateLogin(UserLogin login)
-    {
-        Login= login?? throw new ArgumentNullException(nameof(login));
-    }
-    
 
     /// <summary>
     /// Обновляет роль пользователя.

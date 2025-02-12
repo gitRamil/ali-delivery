@@ -35,11 +35,11 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Gui
 
     /// <inheritdoc />
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если <paramref name="request" /> равен <c>null</c>.
+    /// Возникает, если <paramref name="command" /> равен <c>null</c>.
     /// </exception>
-    public async Task<Guid> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CreateOrderCommand command, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(command);
 
         var sender = await _context.Users.FirstOrDefaultAsync(u => (Guid)u.Id == _currentUser.Id, cancellationToken) ?? throw new NotFoundException(typeof(User), _currentUser.Id);
 
@@ -48,17 +48,17 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Gui
             throw new InvalidOperationException("Пожалуйста заполните паспортные данные для создания заказа");
         }
 
-        var receiver = await _context.Users.FirstOrDefaultAsync(u => (Guid)u.Id == request.ReceiverId, cancellationToken) ??
-                       throw new NotFoundException(typeof(User), request.ReceiverId);
+        var receiver = await _context.Users.FirstOrDefaultAsync(u => (Guid)u.Id == command.ReceiverId, cancellationToken) ??
+                       throw new NotFoundException(typeof(User), command.ReceiverId);
 
         var orderInfo = new OrderInfo(SequentialGuid.Create(),
-                                      new OrderInfoWeight(request.Weight),
-                                      request.Size.ToSize(),
-                                      new OrderInfoPrice(request.Price),
-                                      new OrderInfoAddressFrom(request.AddressFrom),
-                                      new OrderInfoAddressTo(request.AddressTo));
+                                      new OrderInfoWeight(command.Weight),
+                                      command.Size.ToSize(),
+                                      new OrderInfoPrice(command.Price),
+                                      new OrderInfoAddressFrom(command.AddressFrom),
+                                      new OrderInfoAddressTo(command.AddressTo));
 
-        var order = new Domain.Entities.Order(SequentialGuid.Create(), new OrderName(request.OrderName), orderInfo, OrderStatus.Created.ToOrderStatus(), sender, receiver);
+        var order = new Domain.Entities.Order(SequentialGuid.Create(), new OrderName(command.OrderName), orderInfo, OrderStatus.Created.ToOrderStatus(), sender, receiver);
 
         _context.Orders.Add(order);
 

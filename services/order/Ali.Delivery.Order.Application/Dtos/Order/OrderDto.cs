@@ -3,13 +3,13 @@ namespace Ali.Delivery.Order.Application.Dtos.Order;
 /// <summary>
 /// Представляет заказ.
 /// </summary>
-/// <param name="Id">Идентификационный номер заказа.</param>
-/// <param name="Name">Наименование заказа.</param>
-/// <param name="OrderStatusName">Статус заказа.</param>
-/// <param name="Weight">Вес заказа.</param>
-/// <param name="Price">Цена заказа.</param>
-/// <param name="AddressFrom">Адрес забора заказа.</param>
-/// <param name="AddressTo">Адрес доставки заказа.</param>
+/// <param name="Id">Идентификатор.</param>
+/// <param name="Name">Наименование.</param>
+/// <param name="OrderStatusName">Статус.</param>
+/// <param name="Weight">Вес.</param>
+/// <param name="Price">Цена.</param>
+/// <param name="AddressFrom">Адрес отправления.</param>
+/// <param name="AddressTo">Адрес доставки.</param>
 public sealed record OrderDto(Guid Id, string Name, string OrderStatusName, decimal Weight, decimal Price, string AddressFrom, string AddressTo)
 {
     /// <summary>

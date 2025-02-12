@@ -24,13 +24,13 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Guid>
 
     /// <inheritdoc />
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если <paramref name="request" /> равен <c>null</c>.
+    /// Возникает, если <paramref name="command" /> равен <c>null</c>.
     /// </exception>
-    public async Task<Guid> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(DeleteUserCommand command, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(command);
 
-        var user = await _context.Users.FirstOrDefaultAsync(u => (Guid)u.Id == request.UserId, cancellationToken) ?? throw new NotFoundException(typeof(User), request.UserId);
+        var user = await _context.Users.FirstOrDefaultAsync(u => (Guid)u.Id == command.UserId, cancellationToken) ?? throw new NotFoundException(typeof(User), command.UserId);
 
         _context.Users.Remove(user);
 

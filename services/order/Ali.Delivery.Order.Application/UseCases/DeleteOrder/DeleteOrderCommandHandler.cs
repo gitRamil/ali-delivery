@@ -23,14 +23,14 @@ public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand, Gui
 
     /// <inheritdoc />
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если <paramref name="request" /> равен <c>null</c>.
+    /// Возникает, если <paramref name="command" /> равен <c>null</c>.
     /// </exception>
-    public async Task<Guid> Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(DeleteOrderCommand command, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(command);
 
-        var order = await _context.Orders.FirstOrDefaultAsync(o => (Guid)o.Id == request.OrderId, cancellationToken) ??
-                    throw new NotFoundException(typeof(Domain.Entities.Order), request.OrderId);
+        var order = await _context.Orders.FirstOrDefaultAsync(o => (Guid)o.Id == command.OrderId, cancellationToken) ??
+                    throw new NotFoundException(typeof(Domain.Entities.Order), command.OrderId);
 
         _context.Orders.Remove(order);
 

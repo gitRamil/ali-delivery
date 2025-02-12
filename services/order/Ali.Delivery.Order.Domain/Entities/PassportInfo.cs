@@ -45,26 +45,42 @@ public class PassportInfo : Entity<SequentialGuid>
         PassportType = null!;
         PassportInfoPassportNumber = null!;
         PassportInfoRegDate = null!;
-        PassportInfoIssuedBy  = null!;
+        PassportInfoIssuedBy = null!;
     }
 
     /// <summary>
     /// Возвращает строку "кем выдан".
     /// </summary>
-    public virtual PassportInfoIssuedBy PassportInfoIssuedBy{ get; set; }
+    public PassportInfoIssuedBy PassportInfoIssuedBy { get; set; }
 
     /// <summary>
     /// Возвращает номер паспорта.
     /// </summary>
-    public virtual PassportInfoPassportNumber PassportInfoPassportNumber { get; set; }
+    public PassportInfoPassportNumber PassportInfoPassportNumber { get; set; }
 
     /// <summary>
     /// Возвращает дату регистрации паспорта.
     /// </summary>
-    public virtual PassportInfoRegDate PassportInfoRegDate { get; set; }
+    public PassportInfoRegDate PassportInfoRegDate { get; set; }
 
     /// <summary>
     /// Возвращает идентификатор типа паспорта.
     /// </summary>
     public virtual PassportType PassportType { get; set; }
+
+    /// <summary>
+    /// Обновляет данные паспорта.
+    /// </summary>
+    /// <param name="typeId">Тип паспорта.</param>
+    /// <param name="passportNumber">Номер паспорта.</param>
+    /// <param name="regDate">Дата регистрации.</param>
+    /// <param name="issuedBy">Кем выдан.</param>
+    /// <exception cref="InvalidOperationException"></exception>
+    public void UpdatePassport(PassportInfoPassportNumber passportNumber, PassportInfoRegDate regDate, PassportInfoIssuedBy issuedBy, PassportType typeId)
+    {
+        PassportType = typeId;
+        PassportInfoPassportNumber = passportNumber;
+        PassportInfoRegDate = regDate;
+        PassportInfoIssuedBy = issuedBy;
+    }
 }
