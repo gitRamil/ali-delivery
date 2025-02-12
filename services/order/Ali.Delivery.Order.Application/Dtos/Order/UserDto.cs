@@ -12,4 +12,4 @@ namespace Ali.Delivery.Order.Application.Dtos.Order;
 /// <param name="Role">Роль.</param>
 /// <param name="RegDate">Дата регистрации..</param>
 /// <param name="IssuedBy">Кем выдан.</param>
-public sealed record UserDto(Guid Id, string Login, string? FirstName, string? LastName, string PassportInfoPassportNumber, string? PassportType, string? Role, DateTime? RegDate, string? IssuedBy);
+public sealed record UserDto(Guid Id, string Login, string? FirstName, string? LastName, string? PassportInfoPassportNumber, string? PassportType, string? Role, DateTime? RegDate, string? IssuedBy);

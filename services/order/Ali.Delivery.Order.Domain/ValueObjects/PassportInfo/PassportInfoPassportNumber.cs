@@ -48,7 +48,7 @@ public sealed class PassportInfoPassportNumber : ValueObject
     }
 
     /// <summary>
-    /// Выполняет неявное преобразование из <see cref="PassportInfoPassportNumber" /> в <see cref="String" />.
+    /// Выполняет неявное преобразование из <see cref="PassportInfoPassportNumber" /> в <see cref="string" />.
     /// </summary>
-    public static implicit operator string(PassportInfoPassportNumber obj) => obj._passportNumber;
+    public static implicit operator string?(PassportInfoPassportNumber? obj) => obj?._passportNumber ?? null;
 }
