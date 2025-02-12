@@ -31,7 +31,7 @@ public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsers, List<UserDto
                                                                user.PassportInfo.PassportInfoPassportNumber,
                                                                user.PassportInfo.PassportType.Name,
                                                                user.Role.Name,
-                                                               user.PassportInfo.PassportInfoRegDate, 
+                                                               user.PassportInfo.PassportInfoRegDate,
                                                                user.PassportInfo.PassportInfoIssuedBy))
                              .ToListAsync(cancellationToken);
     }

@@ -43,7 +43,7 @@ public class GetCurrentUserQueryHandler : IRequestHandler<GetCurrentUserQuery, U
                            user.Login,
                            user.UserFirstName,
                            user.UserLastName,
-                           user.PassportInfo?.PassportInfoPassportNumber!,
+                           user.PassportInfo?.PassportInfoPassportNumber,
                            user.PassportInfo?.PassportType.Name,
                            user.Role.Name,
                            user.PassportInfo?.PassportInfoRegDate,

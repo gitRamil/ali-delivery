@@ -50,5 +50,5 @@ public class PassportInfoIssuedBy : ValueObject
     /// <summary>
     /// Выполняет неявное преобразование из <see cref="PassportInfoIssuedBy" /> в <see cref="string" />.
     /// </summary>
-    public static implicit operator string(PassportInfoIssuedBy obj) => obj._issuedBy;
+    public static implicit operator string?(PassportInfoIssuedBy? obj) => obj?._issuedBy ?? null;
 }

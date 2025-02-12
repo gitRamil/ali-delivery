@@ -61,7 +61,7 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserD
                            user.PassportInfo?.PassportInfoPassportNumber,
                            user.PassportInfo?.PassportType.Name,
                            user.Role.Name,
-                           user.PassportInfo?.PassportInfoRegDate, 
+                           user.PassportInfo?.PassportInfoRegDate,
                            user.PassportInfo?.PassportInfoIssuedBy);
     }
 }
