@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Ali.Delivery.Order.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class NewPassportInfo : Migration
+    public partial class BaseFixes : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -39,6 +39,16 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                 oldMaxLength: 100,
                 oldComment: "Имя пользователя");
 
+            migrationBuilder.AlterColumn<Guid>(
+                name: "type_id",
+                table: "passport",
+                type: "uuid",
+                nullable: false,
+                comment: "Идентификатор типа паспорта",
+                oldClrType: typeof(Guid),
+                oldType: "uuid",
+                oldComment: "Идентификационный номер типа паспорта");
+
             migrationBuilder.AddColumn<string>(
                 name: "issued_by",
                 table: "passport",
@@ -47,6 +57,16 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                 nullable: false,
                 defaultValue: "",
                 comment: "Кем выдан");
+
+            migrationBuilder.AlterColumn<Guid>(
+                name: "size_id",
+                table: "order_details",
+                type: "uuid",
+                nullable: false,
+                comment: "Идентификатор размера",
+                oldClrType: typeof(Guid),
+                oldType: "uuid",
+                oldComment: "Идентификационный номер размера");
 
             migrationBuilder.CreateIndex(
                 name: "ix_users_login",
@@ -94,6 +114,16 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                 oldNullable: true,
                 oldComment: "Имя пользователя");
 
+            migrationBuilder.AlterColumn<Guid>(
+                name: "type_id",
+                table: "passport",
+                type: "uuid",
+                nullable: false,
+                comment: "Идентификационный номер типа паспорта",
+                oldClrType: typeof(Guid),
+                oldType: "uuid",
+                oldComment: "Идентификатор типа паспорта");
+
             migrationBuilder.AddColumn<DateTime>(
                 name: "expiration_date",
                 table: "passport",
@@ -101,6 +131,16 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                 comment: "Дата истечения срока действия паспорта");
+
+            migrationBuilder.AlterColumn<Guid>(
+                name: "size_id",
+                table: "order_details",
+                type: "uuid",
+                nullable: false,
+                comment: "Идентификационный номер размера",
+                oldClrType: typeof(Guid),
+                oldType: "uuid",
+                oldComment: "Идентификатор размера");
         }
     }
 }

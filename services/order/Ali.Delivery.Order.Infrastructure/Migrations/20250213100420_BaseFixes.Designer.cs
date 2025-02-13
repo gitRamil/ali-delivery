@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ali.Delivery.Order.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250208150115_NewPassportInfo")]
-    partial class NewPassportInfo
+    [Migration("20250213100420_BaseFixes")]
+    partial class BaseFixes
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -562,7 +562,7 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                     b.Property<Guid>("size_id")
                         .HasColumnType("uuid")
                         .HasColumnName("size_id")
-                        .HasComment("Идентификационный номер размера");
+                        .HasComment("Идентификатор размера");
 
                     b.HasKey("Id")
                         .HasName("pk_order_details");
@@ -627,7 +627,7 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                     b.Property<Guid>("type_id")
                         .HasColumnType("uuid")
                         .HasColumnName("type_id")
-                        .HasComment("Идентификационный номер типа паспорта");
+                        .HasComment("Идентификатор типа паспорта");
 
                     b.HasKey("Id")
                         .HasName("pk_passport");
