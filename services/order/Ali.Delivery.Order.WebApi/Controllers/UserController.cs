@@ -99,7 +99,6 @@ public class UserController : ControllerBase
     /// <param name="cancellationToken">Маркер отмены.</param>
     /// <returns>Список всех пользователей.</returns>
     [HttpGet]
-    // [UserPermission(UserPermissionCode.UserManagement)]
     [ProducesResponseType(typeof(List<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllUsers(CancellationToken cancellationToken)
