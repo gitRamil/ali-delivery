@@ -31,5 +31,5 @@ public sealed class PassportInfoRegDate : ValueObject
     /// <summary>
     /// Выполняет неявное преобразование из <see cref="PassportInfoRegDate" /> в <see cref="DateTime" />.
     /// </summary>
-    public static implicit operator DateTime(PassportInfoRegDate obj) => obj._regDate;
+    public static implicit operator DateTime?(PassportInfoRegDate? obj) => obj?._regDate;
 }

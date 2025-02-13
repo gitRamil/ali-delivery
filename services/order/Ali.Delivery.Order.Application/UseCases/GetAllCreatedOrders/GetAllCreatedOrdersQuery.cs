@@ -4,6 +4,6 @@ using MediatR;
 namespace Ali.Delivery.Order.Application.UseCases.GetAllCreatedOrders;
 
 /// <summary>
-/// Команда для получения всех созданных заказов.
+/// Команда для получения всех активных заказов.
 /// </summary>
-public class GetAllCreatedOrdersCommand : IRequest<List<OrderDto>>;
+public class GetAllCreatedOrdersQuery : IRequest<List<OrderDto>>;

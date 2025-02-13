@@ -3,6 +3,7 @@ using System;
 using Ali.Delivery.Order.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ali.Delivery.Order.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250208150115_NewPassportInfo")]
+    partial class NewPassportInfo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -559,7 +562,7 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                     b.Property<Guid>("size_id")
                         .HasColumnType("uuid")
                         .HasColumnName("size_id")
-                        .HasComment("Идентификатор размера");
+                        .HasComment("Идентификационный номер размера");
 
                     b.HasKey("Id")
                         .HasName("pk_order_details");
@@ -624,7 +627,7 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                     b.Property<Guid>("type_id")
                         .HasColumnType("uuid")
                         .HasColumnName("type_id")
-                        .HasComment("Идентификатор типа паспорта");
+                        .HasComment("Идентификационный номер типа паспорта");
 
                     b.HasKey("Id")
                         .HasName("pk_passport");

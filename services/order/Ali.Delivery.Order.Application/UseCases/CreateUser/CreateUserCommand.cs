@@ -6,10 +6,8 @@ namespace Ali.Delivery.Order.Application.UseCases.CreateUser;
 /// <summary>
 /// Представляет команду создания пользователя.
 /// </summary>
-/// <param name="Login">Логин пользователя.</param>
-/// <param name="Password">Пароль пользователя.</param>
-/// <param name="FirstName">Имя пользователя.</param>
-/// <param name="LastName">Фамилия пользователя.</param>
-/// <param name="Role">Код роли пользователя.</param>
-/// <param name="Birthday">Дата рождения пользователя.</param>
-public record CreateUserCommand(string Login, string Password, string FirstName, string LastName, RoleCode Role, DateTime Birthday) : IRequest<Guid>;
+/// <param name="Login">Логин.</param>
+/// <param name="Password">Пароль.</param>
+/// <param name="Role">Код роли.</param>
+/// <param name="Birthday">Дата рождения.</param>
+public record CreateUserCommand(string Login, string Password, RoleCode Role, DateTime Birthday) : IRequest<Guid>;

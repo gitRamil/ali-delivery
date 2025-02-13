@@ -25,19 +25,13 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Guid>
 
     /// <inheritdoc />
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если <paramref name="request" /> равен <c>null</c>.
+    /// Возникает, если <paramref name="command" /> равен <c>null</c>.
     /// </exception>
-    public async Task<Guid> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CreateUserCommand command, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(command);
 
-        var user = new User(SequentialGuid.Create(),
-                            new UserLogin(request.Login),
-                            new UserPassword(request.Password),
-                            new UserFirstName(request.FirstName),
-                            new UserLastName(request.LastName),
-                            request.Role.ToRole(),
-                            new UserBirthDay(request.Birthday));
+        var user = new User(SequentialGuid.Create(), new UserLogin(command.Login), new UserPassword(command.Password), command.Role.ToRole(), new UserBirthDay(command.Birthday));
 
         _context.Users.Add(user);
 

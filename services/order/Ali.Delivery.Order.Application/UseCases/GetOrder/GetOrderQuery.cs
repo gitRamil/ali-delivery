@@ -7,4 +7,4 @@ namespace Ali.Delivery.Order.Application.UseCases.GetOrder;
 /// Представляет запрос на получение заказа.
 /// </summary>
 /// <param name="OrderId">Идентификатор заказа.</param>
-public sealed record GetOrderCommand(Guid OrderId) : IRequest<OrderDto>;
+public sealed record GetOrderQuery(Guid OrderId) : IRequest<OrderDto>;

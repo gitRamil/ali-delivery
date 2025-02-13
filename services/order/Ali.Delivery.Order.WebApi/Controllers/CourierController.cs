@@ -2,8 +2,7 @@ using Ali.Delivery.Order.Application;
 using Ali.Delivery.Order.Application.Dtos.Order;
 using Ali.Delivery.Order.Application.UseCases.AssignCourier;
 using Ali.Delivery.Order.Application.UseCases.FinishDelivery;
-using Ali.Delivery.Order.Application.UseCases.GetAllCourierFinishedOrders;
-using Ali.Delivery.Order.Application.UseCases.GetAllOrdersByUserId;
+using Ali.Delivery.Order.Application.UseCases.GetAllCourierOrdersByOrderStatus;
 using Ali.Delivery.Order.Application.UseCases.UnassignCourier;
 using Ali.Delivery.Order.WebApi.Attribute;
 using MediatR;
@@ -63,32 +62,18 @@ public class CourierController : ControllerBase
     }
 
     /// <summary>
-    /// Получает все заказы курьера со статусом завершено.
+    /// Получает все заказы курьера по статусу заказа.
     /// </summary>
+    /// <param name="orderStatus">Статус заказа.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
     /// <returns>Список заказов</returns>
-    [HttpGet("couriers-orders-finished")]
+    [HttpGet("couriers-orders-by-status")]
     [UserPermission(UserPermissionCode.CourierOrderManagement)]
     [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAllCourierFinishedOrders(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllCourierOrdersByOrderStatus(OrderStatus orderStatus, CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new GetAllCourierFinishedOrdersCommand(), cancellationToken);
-        return Ok(result);
-    }
-
-    /// <summary>
-    /// Получает все заказы курьера со статусом в работе.
-    /// </summary>
-    /// <param name="cancellationToken">Маркер отмены.</param>
-    /// <returns>Список заказов</returns>
-    [HttpGet("couriers-orders-in-progress")]
-    [UserPermission(UserPermissionCode.CourierOrderManagement)]
-    [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAllCourierOrdersInProgress(CancellationToken cancellationToken)
-    {
-        var result = await _mediator.Send(new GetAllCourierOrdersInProgressCommand(), cancellationToken);
+        var result = await _mediator.Send(new GetAllCourierOrdersByOrderStatusQuery(orderStatus), cancellationToken);
         return Ok(result);
     }
 

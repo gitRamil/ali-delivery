@@ -1,8 +1,8 @@
 using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.Application.Abstractions;
 using Ali.Delivery.Order.Application.Extensions;
-using Ali.Delivery.Order.Domain.Entities;
 using Ali.Delivery.Order.Domain.ValueObjects.PassportInfo;
+using Ali.Delivery.Order.Domain.ValueObjects.User;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,24 +28,19 @@ public class CompletePassportCommandHandler : IRequestHandler<CompletePassportCo
     }
 
     /// <inheritdoc />
-    public async Task<Guid> Handle(CompletePassportCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CompletePassportCommand command, CancellationToken cancellationToken)
     {
-        var userId = _currentUser.Id;
-
         var user = await _context.Users.Include(u => u.PassportInfo)
-                                 .FirstOrDefaultAsync(u => (Guid)u.Id == userId, cancellationToken) ??
+                                 .FirstOrDefaultAsync(u => (Guid)u.Id == _currentUser.Id, cancellationToken) ??
                    throw new InvalidOperationException("Пользователь не найден.");
 
-        if (user.PassportInfo != null)
-        {
-            throw new InvalidOperationException("Паспортные данные уже заполнены, для изменения паспортных данных обратитесь в поддержку");
-        }
+        user.CreatePassportInfo(SequentialGuid.Create(),
+                                command.PassportType.ToPassportType(),
+                                new PassportInfoPassportNumber(command.PassportNumber),
+                                new PassportInfoRegDate(command.RegDate),
+                                new PassportInfoIssuedBy(command.IssuedBy));
+        user.UpdateName(new UserFirstName(command.FirstName), new UserLastName(command.LastName));
 
-        user.PassportInfo = new PassportInfo(SequentialGuid.Create(),
-                                             request.PassportType.ToPassportType(),
-                                             new PassportInfoPassportNumber(request.PassportNumber),
-                                             new PassportInfoRegDate(request.RegDate),
-                                             new PassportInfoExpirationDate(request.ExpirationDate));
         await _context.SaveChangesAsync(cancellationToken);
 
         return user.Id;

@@ -3,7 +3,7 @@ using Ali.Delivery.Order.Application.Dtos.Order;
 using Ali.Delivery.Order.Application.UseCases.CreateOrder;
 using Ali.Delivery.Order.Application.UseCases.DeleteOrder;
 using Ali.Delivery.Order.Application.UseCases.GetAllCreatedOrders;
-using Ali.Delivery.Order.Application.UseCases.GetAllCurrentUserOrders;
+using Ali.Delivery.Order.Application.UseCases.GetAllCurrentUserCreatedOrders;
 using Ali.Delivery.Order.Application.UseCases.GetAllOrders;
 using Ali.Delivery.Order.Application.UseCases.GetOrder;
 using Ali.Delivery.Order.Application.UseCases.UpdateOrder;
@@ -63,17 +63,17 @@ public class OrderController : ControllerBase
     }
 
     /// <summary>
-    /// Получает список всех созданных заказов.
+    /// Получает список всех активных заказов.
     /// </summary>
     /// <param name="cancellationToken">Маркер отмены.</param>
-    /// <returns>Список всех заказов.</returns>
-    [HttpGet("created-orders")]
+    /// <returns>Список всех активных заказов.</returns>
+    [HttpGet("active-orders")]
     [UserPermission(UserPermissionCode.CourierOrderManagement)]
     [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllCreatedOrders(CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new GetAllCreatedOrdersCommand(), cancellationToken);
+        var result = await _mediator.Send(new GetAllCreatedOrdersQuery(), cancellationToken);
         return Ok(result);
     }
 
@@ -88,7 +88,7 @@ public class OrderController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllCurrentUserCreatedOrders(CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new GetAllCurrentUserCreatedOrdersCommand(), cancellationToken);
+        var result = await _mediator.Send(new GetAllCurrentUserCreatedOrdersQuery(), cancellationToken);
         return Ok(result);
     }
 
@@ -118,7 +118,7 @@ public class OrderController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetOrder(Guid orderId, CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new GetOrderCommand(orderId), cancellationToken);
+        var result = await _mediator.Send(new GetOrderQuery(orderId), cancellationToken);
         return Ok(result);
     }
 

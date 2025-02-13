@@ -98,12 +98,16 @@ public class Order : Entity<SequentialGuid>
     /// <summary>
     /// Назначить курьера на заказ.
     /// </summary>
-    /// <param name="orderStatus">Статус заказа.</param>
     /// <param name="courier">Курьер.</param>
     /// <exception cref="InvalidOperationException"></exception>
-    public void SetCourier(OrderStatus orderStatus, User courier)
+    public void SetCourier(User courier)
     {
-        ArgumentNullException.ThrowIfNull(orderStatus);
+        if (courier.PassportInfo == null)
+        {
+            throw new InvalidOperationException("Пожалуйста заполните паспортные данные для продолжения работы");
+        }
+
+        ArgumentNullException.ThrowIfNull(OrderStatus);
 
         var notAllowedOrderStatuses = new List<OrderStatus>
         {
@@ -111,7 +115,7 @@ public class Order : Entity<SequentialGuid>
             OrderStatus.Finished
         };
 
-        if (notAllowedOrderStatuses.Contains(orderStatus))
+        if (notAllowedOrderStatuses.Contains(OrderStatus))
         {
             throw new InvalidOperationException($"Нельзя назначить курьера, если заказ находится в статусах: {string.Join(", ", notAllowedOrderStatuses.Select(s => s.Name))}");
         }
