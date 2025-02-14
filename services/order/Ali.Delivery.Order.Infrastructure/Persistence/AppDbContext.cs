@@ -33,6 +33,11 @@ public class AppDbContext : DbContext, IAppDbContext
     }
 
     /// <summary>
+    /// Возвращает набор незарегистрированных пользователей.
+    /// </summary>
+    public DbSet<NotAuthUser> NotAuthUsers => Set<NotAuthUser>();
+
+    /// <summary>
     /// Возвращает набор заказов.
     /// </summary>
     public DbSet<Domain.Entities.Order> Orders => Set<Domain.Entities.Order>();
@@ -74,11 +79,6 @@ public class AppDbContext : DbContext, IAppDbContext
     /// Возвращает набор пользователей.
     /// </summary>
     public DbSet<User> Users => Set<User>();
-    
-    /// <summary>
-    /// Возвращает набор незарегистрированных пользователей.
-    /// </summary>
-    public DbSet<NotAuthUser> NotAuthUsers => Set<NotAuthUser>();
 
     /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -10,6 +10,14 @@ namespace Ali.Delivery.Order.Application.Abstractions;
 public interface IAppDbContext
 {
     /// <summary>
+    /// Возвращает набор незарегистрированных пользователей.
+    /// </summary>
+    /// <value>
+    /// Незарегистрированные пользователи.
+    /// </value>
+    DbSet<NotAuthUser> NotAuthUsers { get; }
+
+    /// <summary>
     /// Возвращает набор заказов.
     /// </summary>
     /// <value>
@@ -48,14 +56,6 @@ public interface IAppDbContext
     /// Пользователи.
     /// </value>
     DbSet<User> Users { get; }
-    
-    /// <summary>
-    /// Возвращает набор  незарегистрированных пользователей.
-    /// </summary>
-    /// <value>
-    /// Незарегистрированные пользователи.
-    /// </value>
-    DbSet<NotAuthUser> NotAuthUsers { get; }
 
     /// <summary>
     /// Сохраняет изменения.

@@ -94,13 +94,7 @@ public class Order : Entity<SequentialGuid>
     /// Возвращает отправителя.
     /// </summary>
     public virtual User? Sender { get; }
-
-    /// <summary>
-    /// Завершить заказ.
-    /// </summary>
-    /// <param name="currentUser">Текущий пользователь.</param>
-    /// <exception cref="UnauthorizedAccessException"></exception>
-
+    
     /// <summary>
     /// Завершить заказ.
     /// </summary>

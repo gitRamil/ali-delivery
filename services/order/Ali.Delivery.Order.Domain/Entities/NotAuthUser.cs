@@ -12,10 +12,10 @@ public class NotAuthUser : Entity<SequentialGuid>
     /// <summary>
     /// Инициализирует новый экземпляр типа <see cref="NotAuthUser" />.
     /// </summary>
-    /// <param name="id">Идентификатор незарегистрированного пользователя.</param>
-    /// <param name="notAuthUserFirstName">Имя незарегистрированного пользователя.</param>
-    /// <param name="notAuthUserLastName">Фамилия незарегистрированного пользователя.</param>
-    /// <param name="notAuthUserPhoneNumber">Телефонный номер незарегистрированного пользователя.</param>
+    /// <param name="id">Идентификатор.</param>
+    /// <param name="notAuthUserFirstName">Имя.</param>
+    /// <param name="notAuthUserLastName">Фамилия.</param>
+    /// <param name="notAuthUserPhoneNumber">Телефонный номер.</param>
     /// <exception cref="ArgumentNullException">
     /// Возникает, если любой из параметров <paramref name="notAuthUserFirstName" />,
     /// <paramref name="notAuthUserLastName" />  равен <c>null</c>.
@@ -29,7 +29,6 @@ public class NotAuthUser : Entity<SequentialGuid>
         NotAuthUserFirstName = notAuthUserFirstName;
         NotAuthUserLastName = notAuthUserLastName;
         NotAuthPhoneNumber = notAuthUserPhoneNumber;
-        
     }
 
     /// <summary>
@@ -43,7 +42,7 @@ public class NotAuthUser : Entity<SequentialGuid>
         NotAuthUserLastName = null!;
         NotAuthPhoneNumber = null!;
     }
-    
+
     /// <summary>
     /// Телефонный номер незарегистрированного пользователя.
     /// </summary>
@@ -58,5 +57,4 @@ public class NotAuthUser : Entity<SequentialGuid>
     /// Фамилия незарегистрированного пользователя.
     /// </summary>
     public virtual NotAuthUserLastName? NotAuthUserLastName { get; set; }
-    
 }
