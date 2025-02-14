@@ -22,11 +22,13 @@ internal class UserConfiguration : EntityTypeConfigurationBase<User>
         builder.Property(u => u.UserFirstName)
                .HasMaxLength(UserFirstName.MaxLength)
                .HasConversion(f => (string)f!, s => new UserFirstName(s))
+               .HasColumnName("first_name")
                .HasComment("Имя пользователя");
 
         builder.Property(u => u.UserLastName)
                .HasMaxLength(UserLastName.MaxLength)
                .HasConversion(l => (string)l!, s => new UserLastName(s))
+               .HasColumnName("last_name")
                .HasComment("Фамилия пользователя");
 
         builder.Property(u => u.Login)
@@ -52,6 +54,7 @@ internal class UserConfiguration : EntityTypeConfigurationBase<User>
 
         builder.Property(u => u.UserBirthDay)
                .HasConversion(b => (DateTime)b, s => new UserBirthDay(s))
+               .HasColumnName("birth_day")
                .HasComment("Дата рождения пользователя");
 
         builder.HasOne(u => u.Role)

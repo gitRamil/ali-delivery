@@ -20,19 +20,28 @@ public class Order : Entity<SequentialGuid>
     /// <param name="sender">Отправитель.</param>
     /// <param name="receiver">Получатель.</param>
     /// <param name="courier">Курьер.</param>
+    /// <param name="notAuthReceiver">Незарегистрированный получатель.</param>
     /// <exception cref="ArgumentNullException">
     /// Возникает, если любой из параметров <paramref name="orderName" />,
     /// <paramref name="orderInfo" />, <paramref name="orderStatus" /> равен <c>null</c>.
     /// </exception>
-    public Order(SequentialGuid id, OrderName orderName, OrderInfo orderInfo, OrderStatus orderStatus, User sender, User receiver, User? courier = null)
+    public Order(SequentialGuid id,
+                 OrderName orderName,
+                 OrderInfo orderInfo,
+                 OrderStatus orderStatus,
+                 User sender,
+                 User? receiver = null,
+                 NotAuthUser? notAuthReceiver = null,
+                 User? courier = null)
         : base(id)
     {
         Name = orderName ?? throw new ArgumentNullException(nameof(orderName));
         OrderInfo = orderInfo ?? throw new ArgumentNullException(nameof(orderInfo));
         OrderStatus = orderStatus ?? throw new ArgumentNullException(nameof(orderStatus));
         Sender = sender ?? throw new ArgumentNullException(nameof(sender));
-        Receiver = receiver ?? throw new ArgumentNullException(nameof(receiver));
+        Receiver = receiver;
         Courier = courier;
+        NotAuthReceiver = notAuthReceiver;
     }
 
     /// <summary>
@@ -48,6 +57,7 @@ public class Order : Entity<SequentialGuid>
         Sender = null!;
         Receiver = null!;
         Courier = null!;
+        NotAuthReceiver = null!;
     }
 
     /// <summary>
@@ -59,6 +69,11 @@ public class Order : Entity<SequentialGuid>
     /// Возвращает наименование заказа.
     /// </summary>
     public OrderName Name { get; private set; }
+
+    /// <summary>
+    /// Возвращает незарегистрированного получателя.
+    /// </summary>
+    public virtual NotAuthUser? NotAuthReceiver { get; }
 
     /// <summary>
     /// Возвращает информацию заказа.
@@ -79,6 +94,12 @@ public class Order : Entity<SequentialGuid>
     /// Возвращает отправителя.
     /// </summary>
     public virtual User? Sender { get; }
+
+    /// <summary>
+    /// Завершить заказ.
+    /// </summary>
+    /// <param name="currentUser">Текущий пользователь.</param>
+    /// <exception cref="UnauthorizedAccessException"></exception>
 
     /// <summary>
     /// Завершить заказ.
