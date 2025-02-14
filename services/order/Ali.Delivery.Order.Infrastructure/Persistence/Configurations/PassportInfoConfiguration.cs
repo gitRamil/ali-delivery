@@ -22,18 +22,18 @@ internal class PassportInfoConfiguration : EntityTypeConfigurationBase<PassportI
         builder.Property(p => p.PassportInfoPassportNumber)
                .HasColumnName("passport_number")
                .HasMaxLength(PassportInfoPassportNumber.MaxLength)
-               .HasConversion(b => (string)b, s => new PassportInfoPassportNumber(s))
+               .HasConversion(b => (string)b!, s => new PassportInfoPassportNumber(s))
                .HasComment("Номер паспорта");
 
         builder.Property(p => p.PassportInfoRegDate)
                .HasColumnName("registration_date")
-               .HasConversion(b => (DateTime)b, s => new PassportInfoRegDate(s))
+               .HasConversion(b => (DateTime)b!, s => new PassportInfoRegDate(s))
                .HasComment("Дата регистрации");
 
         builder.Property(p => p.PassportInfoIssuedBy)
                .HasMaxLength(PassportInfoIssuedBy.MaxLength)
                .IsRequired()
-               .HasConversion(p => (string)p, s => new PassportInfoIssuedBy(s))
+               .HasConversion(p => (string)p!, s => new PassportInfoIssuedBy(s))
                .HasColumnName("issued_by")
                .HasComment("Кем выдан");
 
