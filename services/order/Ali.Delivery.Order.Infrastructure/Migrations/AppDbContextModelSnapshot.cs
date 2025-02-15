@@ -421,62 +421,6 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Ali.Delivery.Order.Domain.Entities.NotAuthUser", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid")
-                        .HasColumnName("id")
-                        .HasComment("Уникальный идентификатор");
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("created_by");
-
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)))
-                        .HasColumnName("created_date");
-
-                    b.Property<string>("NotAuthPhoneNumber")
-                        .HasMaxLength(15)
-                        .HasColumnType("character varying(15)")
-                        .HasColumnName("phone_number")
-                        .HasComment("Телефонный номер незарегистрированного пользователя");
-
-                    b.Property<string>("NotAuthUserFirstName")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("first_name")
-                        .HasComment("Имя незарегистрированного пользователя");
-
-                    b.Property<string>("NotAuthUserLastName")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("last_name")
-                        .HasComment("Фамилия незарегистрированного пользователя");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("updated_by");
-
-                    b.Property<DateTimeOffset>("UpdatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)))
-                        .HasColumnName("updated_date");
-
-                    b.HasKey("Id")
-                        .HasName("pk_not_auth_users");
-
-                    b.ToTable("not_auth_users", null, t =>
-                        {
-                            t.HasComment("Незарегистрированный пользователь");
-                        });
-                });
-
             modelBuilder.Entity("Ali.Delivery.Order.Domain.Entities.Order", b =>
                 {
                     b.Property<Guid>("Id")
@@ -522,10 +466,6 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         .HasColumnName("details_id")
                         .HasComment("Информация о заказе");
 
-                    b.Property<Guid?>("not_auth_receiver_id")
-                        .HasColumnType("uuid")
-                        .HasColumnName("not_auth_receiver_id");
-
                     b.Property<Guid?>("receiver_id")
                         .HasColumnType("uuid")
                         .HasColumnName("receiver_id");
@@ -547,9 +487,6 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
 
                     b.HasIndex("details_id")
                         .HasDatabaseName("ix_orders_details_id");
-
-                    b.HasIndex("not_auth_receiver_id")
-                        .HasDatabaseName("ix_orders_not_auth_receiver_id");
 
                     b.HasIndex("receiver_id")
                         .HasDatabaseName("ix_orders_receiver_id");
@@ -843,19 +780,19 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
 
                     b.Property<DateTime>("UserBirthDay")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("birth_day")
+                        .HasColumnName("user_birth_day")
                         .HasComment("Дата рождения пользователя");
 
                     b.Property<string>("UserFirstName")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
-                        .HasColumnName("first_name")
+                        .HasColumnName("user_first_name")
                         .HasComment("Имя пользователя");
 
                     b.Property<string>("UserLastName")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
-                        .HasColumnName("last_name")
+                        .HasColumnName("user_last_name")
                         .HasComment("Фамилия пользователя");
 
                     b.Property<Guid?>("passport_info_id")
@@ -901,11 +838,6 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_orders_order_info_details_id");
 
-                    b.HasOne("Ali.Delivery.Order.Domain.Entities.NotAuthUser", "NotAuthReceiver")
-                        .WithMany()
-                        .HasForeignKey("not_auth_receiver_id")
-                        .HasConstraintName("fk_orders_not_auth_users_not_auth_receiver_id");
-
                     b.HasOne("Ali.Delivery.Order.Domain.Entities.User", "Receiver")
                         .WithMany()
                         .HasForeignKey("receiver_id")
@@ -924,8 +856,6 @@ namespace Ali.Delivery.Order.Infrastructure.Migrations
                         .HasConstraintName("fk_orders_order_status_status_id");
 
                     b.Navigation("Courier");
-
-                    b.Navigation("NotAuthReceiver");
 
                     b.Navigation("OrderInfo");
 
