@@ -26,8 +26,9 @@ public class NotAuthUserPhoneNumber : ValueObject
     /// Возникает, если <paramref name="phoneNumber" /> является <c>null</c>,
     /// <c>whitespace</c>, не соответствует формату или его длина превышает <see cref="MaxLength" />.
     /// </exception>
-    public NotAuthUserPhoneNumber(string phoneNumber)
+    public NotAuthUserPhoneNumber(string? phoneNumber)
     {
+        _phoneNumber = phoneNumber ?? throw new ArgumentNullException(nameof(phoneNumber));
         phoneNumber = phoneNumber.Trim();
 
         if (phoneNumber.Length > MaxLength || !IsValidPhoneNumber(phoneNumber))
@@ -35,8 +36,6 @@ public class NotAuthUserPhoneNumber : ValueObject
             throw new ArgumentException($"Некорректный номер телефона. Длина не должна превышать {MaxLength} символов и должен соответствовать формату +7XXXXXXXXXX.",
                                         nameof(phoneNumber));
         }
-
-        _phoneNumber = phoneNumber;
     }
 
     /// <inheritdoc />

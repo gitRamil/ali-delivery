@@ -15,7 +15,7 @@ public sealed class PassportInfoRegDate : ValueObject
     /// Инициализирует новый экземпляр типа <see cref="PassportInfoRegDate" />.
     /// </summary>
     /// <param name="regDate">Дата регистрации паспорта.</param>
-    public PassportInfoRegDate(DateTime regDate) => _regDate = regDate;
+    public PassportInfoRegDate(DateTime? regDate) => _regDate = regDate ?? DateTime.MinValue;
 
     /// <inheritdoc />
     public override string ToString() => _regDate.ToString("yyyy-MM-dd");

@@ -25,16 +25,15 @@ public class NotAuthUserFirstName : ValueObject
     /// Возникает, если <paramref name="name" /> является <c>null</c>,
     /// <c>whitespace</c> или его длина превышает <see cref="MaxLength" />.
     /// </exception>
-    public NotAuthUserFirstName(string name)
+    public NotAuthUserFirstName(string? name)
     {
+        _name = name ?? throw new ArgumentNullException(nameof(name));
         name = name.Trim();
 
         if (name.Length > MaxLength)
         {
             throw new ArgumentException($"Имя не может быть длиннее {MaxLength} символов.", nameof(name));
         }
-
-        _name = name;
     }
 
     /// <inheritdoc />

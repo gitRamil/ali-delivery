@@ -21,17 +21,17 @@ internal class NotAuthUserConfiguration : EntityTypeConfigurationBase<NotAuthUse
 
         builder.Property(u => u.FirstName)
                .HasMaxLength(NotAuthUserFirstName.MaxLength)
-               .HasConversion(f => (string)f, s => new NotAuthUserFirstName(s))
+               .HasConversion(f => (string?)f, s => new NotAuthUserFirstName(s))
                .HasComment("Имя незарегистрированного пользователя");
 
         builder.Property(u => u.LastName)
                .HasMaxLength(NotAuthUserLastName.MaxLength)
-               .HasConversion(l => (string)l, s => new NotAuthUserLastName(s))
+               .HasConversion(l => (string?)l, s => new NotAuthUserLastName(s))
                .HasComment("Фамилия незарегистрированного пользователя");
 
         builder.Property(u => u.PhoneNumber)
                .HasMaxLength(NotAuthUserPhoneNumber.MaxLength)
-               .HasConversion(p => (string)p, s => new NotAuthUserPhoneNumber(s))
+               .HasConversion(p => (string?)p, s => new NotAuthUserPhoneNumber(s))
                .HasComment("Телефонный номер незарегистрированного пользователя");
     }
 }
