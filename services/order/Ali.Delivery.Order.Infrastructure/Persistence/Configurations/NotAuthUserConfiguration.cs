@@ -19,22 +19,19 @@ internal class NotAuthUserConfiguration : EntityTypeConfigurationBase<NotAuthUse
     {
         builder.ToTable("not_auth_users", t => t.HasComment("Незарегистрированный пользователь"));
 
-        builder.Property(u => u.NotAuthUserFirstName)
+        builder.Property(u => u.FirstName)
                .HasMaxLength(NotAuthUserFirstName.MaxLength)
-               .HasConversion(f => (string)f!, s => new NotAuthUserFirstName(s))
-               .HasColumnName("first_name")
+               .HasConversion(f => (string)f, s => new NotAuthUserFirstName(s))
                .HasComment("Имя незарегистрированного пользователя");
 
-        builder.Property(u => u.NotAuthUserLastName)
+        builder.Property(u => u.LastName)
                .HasMaxLength(NotAuthUserLastName.MaxLength)
-               .HasConversion(l => (string)l!, s => new NotAuthUserLastName(s))
-               .HasColumnName("last_name")
+               .HasConversion(l => (string)l, s => new NotAuthUserLastName(s))
                .HasComment("Фамилия незарегистрированного пользователя");
 
-        builder.Property(u => u.NotAuthPhoneNumber)
+        builder.Property(u => u.PhoneNumber)
                .HasMaxLength(NotAuthUserPhoneNumber.MaxLength)
-               .HasConversion(p => (string)p!, s => new NotAuthUserPhoneNumber(s))
-               .HasColumnName("phone_number")
+               .HasConversion(p => (string)p, s => new NotAuthUserPhoneNumber(s))
                .HasComment("Телефонный номер незарегистрированного пользователя");
     }
 }

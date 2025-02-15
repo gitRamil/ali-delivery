@@ -35,12 +35,12 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserDto>
 
         return new UserDto(user.Id,
                            user.Login,
-                           user.UserFirstName,
-                           user.UserLastName,
-                           user.PassportInfo?.PassportInfoPassportNumber!,
+                           user.FirstName,
+                           user.LastName,
+                           user.PassportInfo?.PassportNumber!,
                            user.PassportInfo?.PassportType.Name,
                            user.Role.Name,
-                           user.PassportInfo?.PassportInfoRegDate,
-                           user.PassportInfo?.PassportInfoIssuedBy);
+                           user.PassportInfo?.RegDate,
+                           user.PassportInfo?.IssuedBy);
     }
 }

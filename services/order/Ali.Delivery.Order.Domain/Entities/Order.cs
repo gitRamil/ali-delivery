@@ -35,6 +35,10 @@ public class Order : Entity<SequentialGuid>
                  User? courier = null)
         : base(id)
     {
+        if (receiver == null && notAuthReceiver == null)
+        {
+            throw new InvalidOperationException("Должен быть указан либо зарегистрированный, либо незарегистрированный получатель.");
+        }
         Name = orderName ?? throw new ArgumentNullException(nameof(orderName));
         OrderInfo = orderInfo ?? throw new ArgumentNullException(nameof(orderInfo));
         OrderStatus = orderStatus ?? throw new ArgumentNullException(nameof(orderStatus));
@@ -66,7 +70,7 @@ public class Order : Entity<SequentialGuid>
     public virtual User? Courier { get; set; }
 
     /// <summary>
-    /// Возвращает наименование заказа.
+    /// Возвращает наименование.
     /// </summary>
     public OrderName Name { get; private set; }
 
@@ -142,7 +146,7 @@ public class Order : Entity<SequentialGuid>
     /// <summary>
     /// Снять курьера с заказа.
     /// </summary>
-    /// <param name="currentUser">ID текущего пользователя. </param>
+    /// <param name="currentUser">Текущий пользователь. </param>
     /// <exception cref="UnauthorizedAccessException"></exception>
     public void UnassignCourier(User currentUser)
     {
@@ -158,7 +162,7 @@ public class Order : Entity<SequentialGuid>
     /// <summary>
     /// Обновляет наименование заказа.
     /// </summary>
-    /// <param name="name"></param>
+    /// <param name="name">Наименование.</param>
     public void UpdateOrderName(OrderName name)
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));

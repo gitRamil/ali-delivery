@@ -15,24 +15,24 @@ public class PassportInfo : Entity<SequentialGuid>
     /// </summary>
     /// <param name="id">Идентификатор.</param>
     /// <param name="typeId">Идентификатор типа паспорта.</param>
-    /// <param name="passportInfoPassportNumber">Номер паспорта.</param>
-    /// <param name="passportInfoRegDate">Дата регистрации паспорта.</param>
-    /// <param name="passportInfoIssuedBy">Кем выдан.</param>
+    /// <param name="passportNumber">Номер паспорта.</param>
+    /// <param name="regDate">Дата регистрации паспорта.</param>
+    /// <param name="issuedBy">Кем выдан.</param>
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если любой из параметров <paramref name="typeId" />, <paramref name="passportInfoPassportNumber" />,
-    /// <paramref name="passportInfoRegDate" /> или <paramref name="passportInfoIssuedBy" /> равен <c>null</c>.
+    /// Возникает, если любой из параметров <paramref name="typeId" />, <paramref name="passportNumber" />,
+    /// <paramref name="regDate" /> или <paramref name="issuedBy" /> равен <c>null</c>.
     /// </exception>
     public PassportInfo(SequentialGuid id,
                         PassportType typeId,
-                        PassportInfoPassportNumber passportInfoPassportNumber,
-                        PassportInfoRegDate passportInfoRegDate,
-                        PassportInfoIssuedBy passportInfoIssuedBy)
+                        PassportInfoPassportNumber passportNumber,
+                        PassportInfoRegDate regDate,
+                        PassportInfoIssuedBy issuedBy)
         : base(id)
     {
         PassportType = typeId ?? throw new ArgumentNullException(nameof(typeId));
-        PassportInfoPassportNumber = passportInfoPassportNumber ?? throw new ArgumentNullException(nameof(passportInfoPassportNumber));
-        PassportInfoRegDate = passportInfoRegDate ?? throw new ArgumentNullException(nameof(passportInfoRegDate));
-        PassportInfoIssuedBy = passportInfoIssuedBy ?? throw new ArgumentNullException(nameof(passportInfoIssuedBy));
+        PassportNumber = passportNumber ?? throw new ArgumentNullException(nameof(passportNumber));
+        RegDate = regDate ?? throw new ArgumentNullException(nameof(regDate));
+        IssuedBy = issuedBy ?? throw new ArgumentNullException(nameof(issuedBy));
     }
 
     /// <summary>
@@ -43,25 +43,25 @@ public class PassportInfo : Entity<SequentialGuid>
         : base(SequentialGuid.Empty)
     {
         PassportType = null!;
-        PassportInfoPassportNumber = null!;
-        PassportInfoRegDate = null!;
-        PassportInfoIssuedBy = null!;
+        PassportNumber = null!;
+        RegDate = null!;
+        IssuedBy = null!;
     }
 
     /// <summary>
     /// Возвращает строку "кем выдан".
     /// </summary>
-    public PassportInfoIssuedBy PassportInfoIssuedBy { get; set; }
+    public PassportInfoIssuedBy IssuedBy { get; set; }
 
     /// <summary>
     /// Возвращает номер паспорта.
     /// </summary>
-    public PassportInfoPassportNumber PassportInfoPassportNumber { get; set; }
+    public PassportInfoPassportNumber PassportNumber { get; set; }
 
     /// <summary>
     /// Возвращает дату регистрации паспорта.
     /// </summary>
-    public PassportInfoRegDate PassportInfoRegDate { get; set; }
+    public PassportInfoRegDate RegDate { get; set; }
 
     /// <summary>
     /// Возвращает идентификатор типа паспорта.
@@ -79,8 +79,8 @@ public class PassportInfo : Entity<SequentialGuid>
     public void UpdatePassport(PassportInfoPassportNumber passportNumber, PassportInfoRegDate regDate, PassportInfoIssuedBy issuedBy, PassportType typeId)
     {
         PassportType = typeId;
-        PassportInfoPassportNumber = passportNumber;
-        PassportInfoRegDate = regDate;
-        PassportInfoIssuedBy = issuedBy;
+        PassportNumber = passportNumber;
+        RegDate = regDate;
+        IssuedBy = issuedBy;
     }
 }

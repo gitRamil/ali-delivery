@@ -21,8 +21,8 @@ public sealed record OrderDto(Guid Id, string Name, string OrderStatusName, deci
         new(order.Id,
             order.Name,
             order.OrderStatus.Name,
-            order.OrderInfo.OrderInfoWeight,
-            order.OrderInfo.OrderInfoPrice,
-            order.OrderInfo.OrderInfoAddressFrom,
-            order.OrderInfo.OrderInfoAddressTo);
+            order.OrderInfo.Weight,
+            order.OrderInfo.Price,
+            order.OrderInfo.AddressFrom,
+            order.OrderInfo.AddressTo);
 }

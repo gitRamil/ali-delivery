@@ -14,29 +14,29 @@ public class OrderInfo : Entity<SequentialGuid>
     /// Инициализирует новый экземпляр типа <see cref="OrderInfo" />.
     /// </summary>
     /// <param name="id">Идентификатор.</param>
-    /// <param name="orderInfoWeight">Вес заказа.</param>
-    /// <param name="size">Размер заказа.</param>
-    /// <param name="orderInfoPrice">Цена заказа.</param>
-    /// <param name="orderInfoAddressFrom">Адрес отправления.</param>
-    /// <param name="orderInfoAddressTo">Адрес доставки.</param>
+    /// <param name="weight">Вес.</param>
+    /// <param name="size">Размер.</param>
+    /// <param name="price">Цена.</param>
+    /// <param name="addressFrom">Адрес отправления.</param>
+    /// <param name="addressTo">Адрес доставки.</param>
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если любой из параметров <paramref name="orderInfoWeight" />, <paramref name="size" />,
-    /// <paramref name="orderInfoPrice" />, <paramref name="orderInfoAddressFrom" /> или <paramref name="orderInfoAddressTo" />
+    /// Возникает, если любой из параметров <paramref name="weight" />, <paramref name="size" />,
+    /// <paramref name="price" />, <paramref name="addressFrom" /> или <paramref name="addressTo" />
     /// равен <c>null</c>.
     /// </exception>
     public OrderInfo(SequentialGuid id,
-                     OrderInfoWeight orderInfoWeight,
+                     OrderInfoWeight weight,
                      Size size,
-                     OrderInfoPrice orderInfoPrice,
-                     OrderInfoAddressFrom orderInfoAddressFrom,
-                     OrderInfoAddressTo orderInfoAddressTo)
+                     OrderInfoPrice price,
+                     OrderInfoAddressFrom addressFrom,
+                     OrderInfoAddressTo addressTo)
         : base(id)
     {
-        OrderInfoWeight = orderInfoWeight ?? throw new ArgumentNullException(nameof(orderInfoWeight));
+        Weight = weight ?? throw new ArgumentNullException(nameof(weight));
         Size = size ?? throw new ArgumentNullException(nameof(size));
-        OrderInfoPrice = orderInfoPrice ?? throw new ArgumentNullException(nameof(orderInfoPrice));
-        OrderInfoAddressFrom = orderInfoAddressFrom ?? throw new ArgumentNullException(nameof(orderInfoAddressFrom));
-        OrderInfoAddressTo = orderInfoAddressTo ?? throw new ArgumentNullException(nameof(orderInfoAddressTo));
+        Price = price ?? throw new ArgumentNullException(nameof(price));
+        AddressFrom = addressFrom ?? throw new ArgumentNullException(nameof(addressFrom));
+        AddressTo = addressTo ?? throw new ArgumentNullException(nameof(addressTo));
     }
 
     /// <summary>
@@ -46,35 +46,35 @@ public class OrderInfo : Entity<SequentialGuid>
     protected OrderInfo()
         : base(SequentialGuid.Empty)
     {
-        OrderInfoWeight = null!;
+        Weight = null!;
         Size = null!;
-        OrderInfoPrice = null!;
-        OrderInfoAddressFrom = null!;
-        OrderInfoAddressTo = null!;
+        Price = null!;
+        AddressFrom = null!;
+        AddressTo = null!;
     }
 
     /// <summary>
     /// Адрес отправления.
     /// </summary>
-    public OrderInfoAddressFrom OrderInfoAddressFrom { get; private set; }
+    public OrderInfoAddressFrom AddressFrom { get; private set; }
 
     /// <summary>
     /// Адрес доставки.
     /// </summary>
-    public OrderInfoAddressTo OrderInfoAddressTo { get; private set; }
+    public OrderInfoAddressTo AddressTo { get; private set; }
 
     /// <summary>
-    /// Цена заказа.
+    /// Цена.
     /// </summary>
-    public OrderInfoPrice OrderInfoPrice { get; private set; }
+    public OrderInfoPrice Price { get; private set; }
 
     /// <summary>
-    /// Вес заказа.
+    /// Вес.
     /// </summary>
-    public OrderInfoWeight OrderInfoWeight { get; private set; }
+    public OrderInfoWeight Weight { get; private set; }
 
     /// <summary>
-    /// Размер заказа.
+    /// Размер.
     /// </summary>
     public virtual Size Size { get; private set; }
 
@@ -84,10 +84,10 @@ public class OrderInfo : Entity<SequentialGuid>
     /// <inheritdoc cref="OrderInfo" />
     public void UpdateOrderInfo(OrderInfoWeight weight, OrderInfoPrice price, OrderInfoAddressFrom addressFrom, OrderInfoAddressTo addressTo, Size size)
     {
-        OrderInfoWeight = weight;
-        OrderInfoPrice = price;
-        OrderInfoAddressFrom = addressFrom;
-        OrderInfoAddressTo = addressTo;
+        Weight = weight;
+        Price = price;
+        AddressFrom = addressFrom;
+        AddressTo = addressTo;
         Size = size;
     }
 }
