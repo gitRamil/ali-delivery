@@ -17,31 +17,27 @@ internal class OrderInfoConfiguration : EntityTypeConfigurationBase<OrderInfo>
        /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
        protected override void OnConfigure(EntityTypeBuilder<OrderInfo> builder)
     {
-        builder.ToTable("order_details", t => t.HasComment("Информация о заказе"));
+        builder.ToTable("order_details", t => t.HasComment("Информация о заказах"));
 
-        builder.Property(p => p.OrderInfoWeight)
+        builder.Property(p => p.Weight)
                .IsRequired()
-               .HasColumnName("weight")
                .HasConversion(p => (decimal)p, s => new OrderInfoWeight(s))
                .HasComment("Вес заказа");
 
-        builder.Property(p => p.OrderInfoPrice)
+        builder.Property(p => p.Price)
                .IsRequired()
-               .HasColumnName("price")
                .HasConversion(p => (decimal)p, s => new OrderInfoPrice(s))
                .HasComment("Цена заказа");
 
-        builder.Property(p => p.OrderInfoAddressFrom)
+        builder.Property(p => p.AddressFrom)
                .HasMaxLength(OrderInfoAddressFrom.MaxLength)
                .IsRequired()
                .HasConversion(p => (string)p, s => new OrderInfoAddressFrom(s))
-               .HasColumnName("address_from")
                .HasComment("Адрес отправления");
 
-        builder.Property(p => p.OrderInfoAddressTo)
+        builder.Property(p => p.AddressTo)
                .HasMaxLength(OrderInfoAddressTo.MaxLength)
                .IsRequired()
-               .HasColumnName("address_to")
                .HasConversion(p => (string)p, s => new OrderInfoAddressTo(s))
                .HasComment("Адрес доставки");
 

@@ -21,7 +21,7 @@ public class PassportInfoIssuedBy : ValueObject
     /// </summary>
     /// <param name="issuedBy">Кем выдан.</param>
     /// <exception cref="ArgumentException">Возникает, если строка пуста или превышает максимальную длину.</exception>
-    public PassportInfoIssuedBy(string issuedBy)
+    public PassportInfoIssuedBy(string? issuedBy)
     {
         if (string.IsNullOrWhiteSpace(issuedBy))
         {

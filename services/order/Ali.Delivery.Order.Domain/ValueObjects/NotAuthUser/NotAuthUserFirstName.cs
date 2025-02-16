@@ -2,30 +2,30 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Ali.Delivery.Domain.Core;
 
-namespace Ali.Delivery.Order.Domain.ValueObjects.User;
+namespace Ali.Delivery.Order.Domain.ValueObjects.NotAuthUser;
 
 /// <summary>
-/// Представляет имя пользователя.
+/// Представляет имя незарегистрированного пользователя.
 /// </summary>
 [DebuggerDisplay("{_name}")]
-public class UserFirstName : ValueObject
+public class NotAuthUserFirstName : ValueObject
 {
     /// <summary>
-    /// Представляет максимальную длину имени пользователя.
+    /// Представляет максимальную длину имени незарегистрированного пользователя.
     /// </summary>
     public const int MaxLength = 100;
 
     private readonly string _name;
 
     /// <summary>
-    /// Инициализирует новый экземпляр типа <see cref="UserFirstName" />.
+    /// Инициализирует новый экземпляр типа <see cref="NotAuthUserFirstName" />.
     /// </summary>
-    /// <param name="name">Имя пользователя.</param>
+    /// <param name="name">Имя незарегистрированного пользователя.</param>
     /// <exception cref="ArgumentException">
     /// Возникает, если <paramref name="name" /> является <c>null</c>,
     /// <c>whitespace</c> или его длина превышает <see cref="MaxLength" />.
     /// </exception>
-    public UserFirstName(string? name)
+    public NotAuthUserFirstName(string? name)
     {
         _name = name ?? throw new ArgumentNullException(nameof(name));
         name = name.Trim();
@@ -48,8 +48,8 @@ public class UserFirstName : ValueObject
     }
 
     /// <summary>
-    /// Выполняет неявное преобразование из <see cref="UserFirstName" /> в <see cref="string" />.
+    /// Выполняет неявное преобразование из <see cref="NotAuthUserFirstName" /> в <see cref="string" />.
     /// </summary>
     [return: NotNullIfNotNull(nameof(obj))]
-    public static implicit operator string?(UserFirstName? obj) => obj?._name;
+    public static implicit operator string?(NotAuthUserFirstName? obj) => obj?._name;
 }

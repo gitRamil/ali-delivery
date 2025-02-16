@@ -12,9 +12,9 @@ public class RolePermission : Entity<SequentialGuid>
     /// <summary>
     /// Инициализирует новый экземпляр типа <see cref="RolePermission" />.
     /// </summary>
-    /// <param name="id">Идентификатор доступа.</param>
-    /// <param name="roleId">Доступ.</param>
-    /// <param name="permissionId">Идентификатор роли пользователя.</param>
+    /// <param name="id">Идентификатор.</param>
+    /// <param name="roleId">Идентификатор роли.</param>
+    /// <param name="permissionId">Идентификатор доступа.</param>
     /// <exception cref="ArgumentNullException">
     /// Возникает, если любой из параметров <paramref name="roleId" />,
     /// <paramref name="permissionId" /> равен <c>null</c>.

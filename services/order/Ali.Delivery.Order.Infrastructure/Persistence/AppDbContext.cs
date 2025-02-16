@@ -33,6 +33,11 @@ public class AppDbContext : DbContext, IAppDbContext
     }
 
     /// <summary>
+    /// Возвращает набор незарегистрированных пользователей.
+    /// </summary>
+    public DbSet<NotAuthUser> NotAuthUsers => Set<NotAuthUser>();
+
+    /// <summary>
     /// Возвращает набор заказов.
     /// </summary>
     public DbSet<Domain.Entities.Order> Orders => Set<Domain.Entities.Order>();

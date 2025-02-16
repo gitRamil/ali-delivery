@@ -19,22 +19,20 @@ internal class PassportInfoConfiguration : EntityTypeConfigurationBase<PassportI
     {
         builder.ToTable("passport", t => t.HasComment("Информация о паспортах"));
 
-        builder.Property(p => p.PassportInfoPassportNumber)
-               .HasColumnName("passport_number")
+        builder.Property(p => p.PassportNumber)
                .HasMaxLength(PassportInfoPassportNumber.MaxLength)
-               .HasConversion(b => (string)b, s => new PassportInfoPassportNumber(s))
+               .HasConversion(b => (string?)b, s => new PassportInfoPassportNumber(s))
                .HasComment("Номер паспорта");
 
-        builder.Property(p => p.PassportInfoRegDate)
+        builder.Property(p => p.RegDate)
                .HasColumnName("registration_date")
-               .HasConversion(b => (DateTime)b, s => new PassportInfoRegDate(s))
+               .HasConversion(b => (DateTime?)b, s => new PassportInfoRegDate(s))
                .HasComment("Дата регистрации");
 
-        builder.Property(p => p.PassportInfoIssuedBy)
+        builder.Property(p => p.IssuedBy)
                .HasMaxLength(PassportInfoIssuedBy.MaxLength)
                .IsRequired()
-               .HasConversion(p => (string)p, s => new PassportInfoIssuedBy(s))
-               .HasColumnName("issued_by")
+               .HasConversion(p => (string?)p, s => new PassportInfoIssuedBy(s))
                .HasComment("Кем выдан");
 
         builder.HasOne(p => p.PassportType)
