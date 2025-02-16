@@ -53,9 +53,19 @@ public class AppDbContext : DbContext, IAppDbContext
     public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
 
     /// <summary>
-    /// Возвращает набор ролей.
+    /// Возвращает набор ролей пользователя.
     /// </summary>
     public DbSet<Role> Roles => Set<Role>();
+    
+    /// <summary>
+    /// Возвращает набор типов паспорта.
+    /// </summary>
+    public DbSet<PassportType> Types => Set<PassportType>();
+    
+    /// <summary>
+    /// Возвращает набор размеров посылки.
+    /// </summary>
+    public DbSet<Size> Sizes => Set<Size>();
 
     /// <inheritdoc cref="DbContext" />
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

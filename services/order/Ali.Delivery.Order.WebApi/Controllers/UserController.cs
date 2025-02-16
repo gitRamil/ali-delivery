@@ -1,12 +1,14 @@
 using Ali.Delivery.Order.Application;
 using Ali.Delivery.Order.Application.Dtos.Order;
 using Ali.Delivery.Order.Application.UseCases.CompletePassport;
+using Ali.Delivery.Order.Application.UseCases.CreateNotAuthUser;
 using Ali.Delivery.Order.Application.UseCases.CreateUser;
 using Ali.Delivery.Order.Application.UseCases.DeleteUser;
+using Ali.Delivery.Order.Application.UseCases.GetAllPassportTypes;
+using Ali.Delivery.Order.Application.UseCases.GetAllRoles;
 using Ali.Delivery.Order.Application.UseCases.GetAllUsers;
 using Ali.Delivery.Order.Application.UseCases.GetCurrentUser;
 using Ali.Delivery.Order.Application.UseCases.GetIsUserExist;
-using Ali.Delivery.Order.Application.UseCases.GetRolesForUserRegistration;
 using Ali.Delivery.Order.Application.UseCases.GetUser;
 using Ali.Delivery.Order.Application.UseCases.Login;
 using Ali.Delivery.Order.Application.UseCases.UpdateUser;
@@ -63,6 +65,21 @@ public class UserController : ControllerBase
         await _mediator.Send(command, cancellationToken);
         return Ok();
     }
+    
+    /// <summary>
+    /// Создает незарегистрированного пользователя.
+    /// </summary>
+    /// <param name="command">Незарегистрированный пользователь.</param>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    [HttpPost("create-not-auth-user")]
+    [UserPermission(UserPermissionCode.UserManagement)]
+    [ProducesResponseType(typeof(NotAuthDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> CreateNotAuthUser([FromBody] CreateNotAuthUserCommand command, CancellationToken cancellationToken)
+    {
+        await _mediator.Send(command, cancellationToken);
+        return Ok();
+    }
 
     /// <summary>
     /// Удаляет пользователя.
@@ -85,11 +102,25 @@ public class UserController : ControllerBase
     /// <param name="cancellationToken">Маркер отмены.</param>
     /// <returns>Список всех ролей.</returns>
     [HttpGet("get-roles")]
-    [ProducesResponseType(typeof(List<UserDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<RoleDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllRoles(CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new GetRolesForUserRegistrationQuery(), cancellationToken);
+        var result = await _mediator.Send(new GetAllRolesQuery(), cancellationToken);
+        return Ok(result);
+    }
+    
+    /// <summary>
+    /// Получает список всех типов паспорта. 
+    /// </summary>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    /// <returns>Список всех типов паспорта.</returns> 
+    [HttpGet("get-passport-types")]
+    [ProducesResponseType(typeof(List<PassportTypeDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetAllPassportTypes(CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetAllPassportTypesQuery(), cancellationToken);
         return Ok(result);
     }
 

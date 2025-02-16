@@ -42,12 +42,28 @@ public interface IAppDbContext
     DbSet<RolePermission> RolePermissions { get; }
 
     /// <summary>
-    /// Возвращает набор ролей.
+    /// Возвращает набор ролей пользователя. 
     /// </summary>
     /// <value>
     /// Роли.
     /// </value>
     DbSet<Role> Roles { get; }
+    
+    /// <summary>
+    /// Возвращает набор типов паспорта.
+    /// </summary>
+    /// <value>
+    /// Типы паспорта. 
+    /// </value>
+    DbSet<PassportType> Types { get; }
+    
+    /// <summary>
+    /// Возвращает набор размеров посылки.
+    /// </summary>
+    /// <value>
+    /// Размеры посылки. 
+    /// </value>
+    DbSet<Size> Sizes { get; }
 
     /// <summary>
     /// Возвращает набор пользователей.
