@@ -20,10 +20,7 @@ public class NotAuthUser : Entity<SequentialGuid>
     /// Возникает, если любой из параметров <paramref name="firstName" />,
     /// <paramref name="lastName" />  равен <c>null</c>.
     /// </exception>
-    public NotAuthUser(SequentialGuid id,
-                       NotAuthUserFirstName? firstName = null,
-                       NotAuthUserLastName? lastName = null,
-                       NotAuthUserPhoneNumber? phoneNumber = null)
+    public NotAuthUser(SequentialGuid id, NotAuthUserFirstName? firstName = null, NotAuthUserLastName? lastName = null, NotAuthUserPhoneNumber? phoneNumber = null)
         : base(id)
     {
         FirstName = firstName;
@@ -44,11 +41,6 @@ public class NotAuthUser : Entity<SequentialGuid>
     }
 
     /// <summary>
-    /// Телефонный номер.
-    /// </summary>
-    public virtual NotAuthUserPhoneNumber? PhoneNumber { get; set; }
-
-    /// <summary>
     /// Имя.
     /// </summary>
     public virtual NotAuthUserFirstName? FirstName { get; set; }
@@ -57,4 +49,9 @@ public class NotAuthUser : Entity<SequentialGuid>
     /// Фамилия.
     /// </summary>
     public virtual NotAuthUserLastName? LastName { get; set; }
+
+    /// <summary>
+    /// Телефонный номер.
+    /// </summary>
+    public virtual NotAuthUserPhoneNumber? PhoneNumber { get; set; }
 }

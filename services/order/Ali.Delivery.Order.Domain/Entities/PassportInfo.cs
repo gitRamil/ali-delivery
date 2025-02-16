@@ -22,11 +22,7 @@ public class PassportInfo : Entity<SequentialGuid>
     /// Возникает, если любой из параметров <paramref name="typeId" />, <paramref name="passportNumber" />,
     /// <paramref name="regDate" /> или <paramref name="issuedBy" /> равен <c>null</c>.
     /// </exception>
-    public PassportInfo(SequentialGuid id,
-                        PassportType typeId,
-                        PassportInfoPassportNumber passportNumber,
-                        PassportInfoRegDate regDate,
-                        PassportInfoIssuedBy issuedBy)
+    public PassportInfo(SequentialGuid id, PassportType typeId, PassportInfoPassportNumber passportNumber, PassportInfoRegDate regDate, PassportInfoIssuedBy issuedBy)
         : base(id)
     {
         PassportType = typeId ?? throw new ArgumentNullException(nameof(typeId));
@@ -59,14 +55,14 @@ public class PassportInfo : Entity<SequentialGuid>
     public PassportInfoPassportNumber PassportNumber { get; set; }
 
     /// <summary>
-    /// Возвращает дату регистрации паспорта.
-    /// </summary>
-    public PassportInfoRegDate RegDate { get; set; }
-
-    /// <summary>
     /// Возвращает идентификатор типа паспорта.
     /// </summary>
     public virtual PassportType PassportType { get; set; }
+
+    /// <summary>
+    /// Возвращает дату регистрации паспорта.
+    /// </summary>
+    public PassportInfoRegDate RegDate { get; set; }
 
     /// <summary>
     /// Обновляет данные паспорта.

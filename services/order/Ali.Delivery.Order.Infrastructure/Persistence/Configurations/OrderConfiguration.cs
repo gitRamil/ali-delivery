@@ -16,7 +16,7 @@ internal class CourierConfiguration : EntityTypeConfigurationBase<Domain.Entitie
        /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
        protected override void OnConfigure(EntityTypeBuilder<Domain.Entities.Order> builder)
     {
-        builder.ToTable("orders", t => t.HasComment("Заказ"));
+        builder.ToTable("orders", t => t.HasComment("Заказы"));
 
         builder.Property(p => p.Name)
                .HasMaxLength(OrderName.MaxLength)

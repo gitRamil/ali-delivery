@@ -63,6 +63,21 @@ public class User : Entity<SequentialGuid>
     }
 
     /// <summary>
+    /// Дата рождения.
+    /// </summary>
+    public UserBirthDay BirthDay { get; private set; }
+
+    /// <summary>
+    /// Имя.
+    /// </summary>
+    public UserFirstName? FirstName { get; private set; }
+
+    /// <summary>
+    /// Фамилия.
+    /// </summary>
+    public UserLastName? LastName { get; private set; }
+
+    /// <summary>
     /// Логин пользователя.
     /// </summary>
     public UserLogin Login { get; private set; }
@@ -81,21 +96,6 @@ public class User : Entity<SequentialGuid>
     /// Идентификатор роли.
     /// </summary>
     public virtual Role Role { get; private set; }
-
-    /// <summary>
-    /// Дата рождения.
-    /// </summary>
-    public UserBirthDay BirthDay { get; private set; }
-
-    /// <summary>
-    /// Имя.
-    /// </summary>
-    public UserFirstName? FirstName { get; private set; }
-
-    /// <summary>
-    /// Фамилия.
-    /// </summary>
-    public UserLastName? LastName { get; private set; }
 
     /// <summary>
     /// Создаёт паспортную информацию для пользователя.

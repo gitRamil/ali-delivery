@@ -17,7 +17,7 @@ internal class UserConfiguration : EntityTypeConfigurationBase<User>
        /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
        protected override void OnConfigure(EntityTypeBuilder<User> builder)
     {
-        builder.ToTable("users", t => t.HasComment("Пользователь"));
+        builder.ToTable("users", t => t.HasComment("Пользователи")); 
 
         builder.Property(u => u.FirstName)
                .HasMaxLength(UserFirstName.MaxLength)

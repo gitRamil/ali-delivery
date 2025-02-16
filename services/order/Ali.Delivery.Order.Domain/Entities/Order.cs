@@ -35,10 +35,11 @@ public class Order : Entity<SequentialGuid>
                  User? courier = null)
         : base(id)
     {
-        if (receiver == null && notAuthReceiver == null)
+        if (receiver == null || notAuthReceiver == null)
         {
             throw new InvalidOperationException("Должен быть указан либо зарегистрированный, либо незарегистрированный получатель.");
         }
+
         Name = orderName ?? throw new ArgumentNullException(nameof(orderName));
         OrderInfo = orderInfo ?? throw new ArgumentNullException(nameof(orderInfo));
         OrderStatus = orderStatus ?? throw new ArgumentNullException(nameof(orderStatus));
@@ -98,7 +99,7 @@ public class Order : Entity<SequentialGuid>
     /// Возвращает отправителя.
     /// </summary>
     public virtual User? Sender { get; }
-    
+
     /// <summary>
     /// Завершить заказ.
     /// </summary>

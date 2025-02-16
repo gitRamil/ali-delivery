@@ -24,12 +24,7 @@ public class OrderInfo : Entity<SequentialGuid>
     /// <paramref name="price" />, <paramref name="addressFrom" /> или <paramref name="addressTo" />
     /// равен <c>null</c>.
     /// </exception>
-    public OrderInfo(SequentialGuid id,
-                     OrderInfoWeight weight,
-                     Size size,
-                     OrderInfoPrice price,
-                     OrderInfoAddressFrom addressFrom,
-                     OrderInfoAddressTo addressTo)
+    public OrderInfo(SequentialGuid id, OrderInfoWeight weight, Size size, OrderInfoPrice price, OrderInfoAddressFrom addressFrom, OrderInfoAddressTo addressTo)
         : base(id)
     {
         Weight = weight ?? throw new ArgumentNullException(nameof(weight));
@@ -69,14 +64,14 @@ public class OrderInfo : Entity<SequentialGuid>
     public OrderInfoPrice Price { get; private set; }
 
     /// <summary>
-    /// Вес.
-    /// </summary>
-    public OrderInfoWeight Weight { get; private set; }
-
-    /// <summary>
     /// Размер.
     /// </summary>
     public virtual Size Size { get; private set; }
+
+    /// <summary>
+    /// Вес.
+    /// </summary>
+    public OrderInfoWeight Weight { get; private set; }
 
     /// <summary>
     /// Обновляет информацию заказа.

@@ -17,7 +17,7 @@ internal class OrderInfoConfiguration : EntityTypeConfigurationBase<OrderInfo>
        /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
        protected override void OnConfigure(EntityTypeBuilder<OrderInfo> builder)
     {
-        builder.ToTable("order_details", t => t.HasComment("Информация о заказе"));
+        builder.ToTable("order_details", t => t.HasComment("Информация о заказах"));
 
         builder.Property(p => p.Weight)
                .IsRequired()
