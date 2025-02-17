@@ -48,18 +48,14 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Gui
             throw new InvalidOperationException("Пожалуйста заполните паспортные данные для создания заказа");
         }
 
-        NotAuthUser? notAuthReceiver  = null;
+        NotAuthUser? notAuthReceiver = null;
 
         var receiver = await _context.Users.FirstOrDefaultAsync(u => (Guid)u.Id == command.ReceiverId, cancellationToken);
 
         if (receiver == null)
         {
-            notAuthReceiver = await _context.NotAuthUsers.FirstOrDefaultAsync(nu => (Guid)nu.Id == command.ReceiverId, cancellationToken);
-
-            if (notAuthReceiver == null)
-            {
-                throw new NotFoundException("Получатель не найден ни среди зарегистрированных, ни среди незарегистрированных пользователей");
-            }
+            notAuthReceiver = await _context.NotAuthUsers.FirstOrDefaultAsync(nu => (Guid)nu.Id == command.ReceiverId, cancellationToken) ??
+                              throw new NotFoundException("Получатель не найден ни среди зарегистрированных, ни среди незарегистрированных пользователей");
         }
 
         var orderInfo = new OrderInfo(SequentialGuid.Create(),
@@ -69,7 +65,13 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Gui
                                       new OrderInfoAddressFrom(command.AddressFrom),
                                       new OrderInfoAddressTo(command.AddressTo));
 
-        var order = new Domain.Entities.Order(SequentialGuid.Create(), new OrderName(command.OrderName), orderInfo, OrderStatus.Created.ToOrderStatus(), sender, receiver,notAuthReceiver);
+        var order = new Domain.Entities.Order(SequentialGuid.Create(),
+                                              new OrderName(command.OrderName),
+                                              orderInfo,
+                                              OrderStatus.Created.ToOrderStatus(),
+                                              sender,
+                                              receiver,
+                                              notAuthReceiver);
 
         _context.Orders.Add(order);
 

@@ -4,6 +4,7 @@ using Ali.Delivery.Order.Application.UseCases.CompletePassport;
 using Ali.Delivery.Order.Application.UseCases.CreateNotAuthUser;
 using Ali.Delivery.Order.Application.UseCases.CreateUser;
 using Ali.Delivery.Order.Application.UseCases.DeleteUser;
+using Ali.Delivery.Order.Application.UseCases.GetAllBasicUserOrdersByOrderStatus;
 using Ali.Delivery.Order.Application.UseCases.GetAllPassportTypes;
 using Ali.Delivery.Order.Application.UseCases.GetAllRoles;
 using Ali.Delivery.Order.Application.UseCases.GetAllUsers;
@@ -53,20 +54,6 @@ public class UserController : ControllerBase
     }
 
     /// <summary>
-    /// Создает пользователя.
-    /// </summary>
-    /// <param name="command">Пользователь.</param>
-    /// <param name="cancellationToken">Маркер отмены.</param>
-    [HttpPost]
-    [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> CreateUser([FromBody] CreateUserCommand command, CancellationToken cancellationToken)
-    {
-        await _mediator.Send(command, cancellationToken);
-        return Ok();
-    }
-    
-    /// <summary>
     /// Создает незарегистрированного пользователя.
     /// </summary>
     /// <param name="command">Незарегистрированный пользователь.</param>
@@ -82,17 +69,60 @@ public class UserController : ControllerBase
     }
 
     /// <summary>
+    /// Создает пользователя.
+    /// </summary>
+    /// <param name="command">Пользователь.</param>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    [HttpPost]
+    [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> CreateUser([FromBody] CreateUserCommand command, CancellationToken cancellationToken)
+    {
+        await _mediator.Send(command, cancellationToken);
+        return Ok();
+    }
+
+    /// <summary>
     /// Удаляет пользователя.
     /// </summary>
     /// <param name="userId">Идентификатор пользователя.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
     [HttpDelete]
-    [UserPermission(UserPermissionCode.UserManagement)]
     [ProducesResponseType(typeof(List<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteUser(Guid userId, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new DeleteUserCommand(userId), cancellationToken);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Получает все заказы базового пользователя по статусу заказа.
+    /// </summary>
+    /// <param name="orderStatus">Статус заказа.</param>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    /// <returns>Список заказов</returns>
+    [HttpGet("basic-user-orders-by-status")]
+    [UserPermission(UserPermissionCode.UserOrderManagement)]
+    [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetAllBasicUserOrdersByOrderStatus(OrderStatus orderStatus, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetAllBasicUserOrdersByOrderStatusQuery(orderStatus), cancellationToken);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Получает список всех типов паспорта.
+    /// </summary>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    /// <returns>Список всех типов паспорта.</returns>
+    [HttpGet("get-passport-types")]
+    [ProducesResponseType(typeof(List<PassportTypeDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetAllPassportTypes(CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetAllPassportTypesQuery(), cancellationToken);
         return Ok(result);
     }
 
@@ -107,20 +137,6 @@ public class UserController : ControllerBase
     public async Task<IActionResult> GetAllRoles(CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetAllRolesQuery(), cancellationToken);
-        return Ok(result);
-    }
-    
-    /// <summary>
-    /// Получает список всех типов паспорта. 
-    /// </summary>
-    /// <param name="cancellationToken">Маркер отмены.</param>
-    /// <returns>Список всех типов паспорта.</returns> 
-    [HttpGet("get-passport-types")]
-    [ProducesResponseType(typeof(List<PassportTypeDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAllPassportTypes(CancellationToken cancellationToken)
-    {
-        var result = await _mediator.Send(new GetAllPassportTypesQuery(), cancellationToken);
         return Ok(result);
     }
 
@@ -144,6 +160,7 @@ public class UserController : ControllerBase
     /// <param name="cancellationToken">Маркер отмены.</param>
     /// <returns>Список всех ролей.</returns>
     [HttpGet("get-current-user")]
+    [UserPermission(UserPermissionCode.UserManagement)]
     [ProducesResponseType(typeof(List<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetCurrentUser(CancellationToken cancellationToken)
