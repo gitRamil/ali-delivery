@@ -13,6 +13,7 @@ public class NotAuthUser : Entity<SequentialGuid>
     /// Инициализирует новый экземпляр типа <see cref="NotAuthUser" />.
     /// </summary>
     /// <param name="id">Идентификатор.</param>
+    /// <param name="creator">Создатель.</param>
     /// <param name="firstName">Имя.</param>
     /// <param name="lastName">Фамилия.</param>
     /// <param name="phoneNumber">Телефонный номер.</param>
@@ -20,9 +21,10 @@ public class NotAuthUser : Entity<SequentialGuid>
     /// Возникает, если любой из параметров <paramref name="firstName" />,
     /// <paramref name="lastName" />  равен <c>null</c>.
     /// </exception>
-    public NotAuthUser(SequentialGuid id, NotAuthUserFirstName? firstName = null, NotAuthUserLastName? lastName = null, NotAuthUserPhoneNumber? phoneNumber = null)
+    public NotAuthUser(SequentialGuid id, User creator, NotAuthUserFirstName? firstName = null, NotAuthUserLastName? lastName = null, NotAuthUserPhoneNumber? phoneNumber = null)
         : base(id)
     {
+        Creator = creator;
         FirstName = firstName;
         LastName = lastName;
         PhoneNumber = phoneNumber;
@@ -35,23 +37,29 @@ public class NotAuthUser : Entity<SequentialGuid>
     protected NotAuthUser()
         : base(SequentialGuid.Empty)
     {
+        Creator = null!;
         FirstName = null!;
         LastName = null!;
         PhoneNumber = null!;
     }
 
     /// <summary>
+    /// Создатель.
+    /// </summary>
+    public virtual User Creator { get; set; }
+
+    /// <summary>
     /// Имя.
     /// </summary>
-    public virtual NotAuthUserFirstName? FirstName { get; set; }
+    public NotAuthUserFirstName? FirstName { get; set; }
 
     /// <summary>
     /// Фамилия.
     /// </summary>
-    public virtual NotAuthUserLastName? LastName { get; set; }
+    public NotAuthUserLastName? LastName { get; set; }
 
     /// <summary>
     /// Телефонный номер.
     /// </summary>
-    public virtual NotAuthUserPhoneNumber? PhoneNumber { get; set; }
+    public NotAuthUserPhoneNumber? PhoneNumber { get; set; }
 }

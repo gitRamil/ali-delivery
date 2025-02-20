@@ -1,4 +1,5 @@
 using Ali.Delivery.Order.Application.Dtos.Order;
+using Ali.Delivery.Order.Application.Dtos.Order.Enum;
 using MediatR;
 
 namespace Ali.Delivery.Order.Application.UseCases.UpdateOrder;

@@ -45,6 +45,19 @@ public class AppDbContext : DbContext, IAppDbContext
     /// <summary>
     /// Возвращает набор доступов.
     /// </summary>
+    /// <value>
+    /// Доступы.
+    /// </value>
+    public DbSet<OrderStatus> OrderStatuses => Set<OrderStatus>();
+
+    /// <summary>
+    /// Возвращает набор типов паспорта.
+    /// </summary>
+    public DbSet<PassportType> PassportTypes => Set<PassportType>();
+
+    /// <summary>
+    /// Возвращает набор доступов.
+    /// </summary>
     public DbSet<Permission> Permissions => Set<Permission>();
 
     /// <summary>
@@ -56,16 +69,6 @@ public class AppDbContext : DbContext, IAppDbContext
     /// Возвращает набор ролей пользователя.
     /// </summary>
     public DbSet<Role> Roles => Set<Role>();
-    
-    /// <summary>
-    /// Возвращает набор типов паспорта.
-    /// </summary>
-    public DbSet<PassportType> Types => Set<PassportType>();
-    
-    /// <summary>
-    /// Возвращает набор размеров посылки.
-    /// </summary>
-    public DbSet<Size> Sizes => Set<Size>();
 
     /// <inheritdoc cref="DbContext" />
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -84,6 +87,16 @@ public class AppDbContext : DbContext, IAppDbContext
 
         return await base.SaveChangesAsync(cancellationToken);
     }
+
+    /// <summary>
+    /// Возвращает набор данных.
+    /// </summary>
+    public new DbSet<T> Set<T>() where T : class => base.Set<T>();
+
+    /// <summary>
+    /// Возвращает набор размеров посылки.
+    /// </summary>
+    public DbSet<Size> Sizes => Set<Size>();
 
     /// <summary>
     /// Возвращает набор пользователей.

@@ -4,7 +4,6 @@ using Ali.Delivery.Order.Application.UseCases.CreateOrder;
 using Ali.Delivery.Order.Application.UseCases.DeleteOrder;
 using Ali.Delivery.Order.Application.UseCases.GetAllCreatedOrders;
 using Ali.Delivery.Order.Application.UseCases.GetAllOrders;
-using Ali.Delivery.Order.Application.UseCases.GetAllSizes;
 using Ali.Delivery.Order.Application.UseCases.GetOrder;
 using Ali.Delivery.Order.Application.UseCases.UpdateOrder;
 using Ali.Delivery.Order.WebApi.Attribute;
@@ -87,20 +86,6 @@ public class OrderController : ControllerBase
     public async Task<IActionResult> GetAllOrders(CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetAllOrders(), cancellationToken);
-        return Ok(result);
-    }
-
-    /// <summary>
-    /// Получает список всех размеров посылки.
-    /// </summary>
-    /// <param name="cancellationToken">Маркер отмены.</param>
-    /// <returns>Список всех размеров посылки.</returns>
-    [HttpGet("get-sizes")]
-    [ProducesResponseType(typeof(List<SizeDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAllSizes(CancellationToken cancellationToken)
-    {
-        var result = await _mediator.Send(new GetAllSizesQuery(), cancellationToken);
         return Ok(result);
     }
 

@@ -7,5 +7,4 @@ namespace Ali.Delivery.Order.Application.Dtos.Order;
 /// <param name="FirstName">Имя.</param>
 /// <param name="LastName">Фамилия.</param>
 /// <param name="PhoneNumber">Номер паспорта.</param> 
-
 public sealed record NotAuthDto(Guid Id, string FirstName, string LastName, string PhoneNumber);

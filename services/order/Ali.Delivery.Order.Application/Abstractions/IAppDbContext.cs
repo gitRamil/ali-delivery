@@ -31,6 +31,22 @@ public interface IAppDbContext
     /// <value>
     /// Доступы.
     /// </value>
+    DbSet<OrderStatus> OrderStatuses { get; }
+
+    /// <summary>
+    /// Возвращает набор типов паспорта.
+    /// </summary>
+    /// <value>
+    /// Типы паспорта.
+    /// </value>
+    DbSet<PassportType> PassportTypes { get; }
+
+    /// <summary>
+    /// Возвращает набор доступов.
+    /// </summary>
+    /// <value>
+    /// Доступы.
+    /// </value>
     DbSet<Permission> Permissions { get; }
 
     /// <summary>
@@ -42,26 +58,18 @@ public interface IAppDbContext
     DbSet<RolePermission> RolePermissions { get; }
 
     /// <summary>
-    /// Возвращает набор ролей пользователя. 
+    /// Возвращает набор ролей пользователя.
     /// </summary>
     /// <value>
     /// Роли.
     /// </value>
     DbSet<Role> Roles { get; }
-    
-    /// <summary>
-    /// Возвращает набор типов паспорта.
-    /// </summary>
-    /// <value>
-    /// Типы паспорта. 
-    /// </value>
-    DbSet<PassportType> Types { get; }
-    
+
     /// <summary>
     /// Возвращает набор размеров посылки.
     /// </summary>
     /// <value>
-    /// Размеры посылки. 
+    /// Размеры посылки.
     /// </value>
     DbSet<Size> Sizes { get; }
 
@@ -78,4 +86,11 @@ public interface IAppDbContext
     /// </summary>
     /// <param name="cancellationToken">Маркер отмены.</param>
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Универсальный метод для получения набора данных.
+    /// </summary>
+    /// <typeparam name="T">Тип сущности.</typeparam>
+    /// <returns>Набор данных.</returns>
+    DbSet<T> Set<T>() where T : class;
 }

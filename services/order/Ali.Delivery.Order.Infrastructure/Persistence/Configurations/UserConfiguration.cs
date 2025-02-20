@@ -11,13 +11,13 @@ namespace Ali.Delivery.Order.Infrastructure.Persistence.Configurations;
 /// </summary>
 internal class UserConfiguration : EntityTypeConfigurationBase<User>
 {
-       /// <summary>
-       /// Вызывается при выполнении конфигурации сущности типа <see cref="User" />.
-       /// </summary>
-       /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
-       protected override void OnConfigure(EntityTypeBuilder<User> builder)
+    /// <summary>
+    /// Вызывается при выполнении конфигурации сущности типа <see cref="User" />.
+    /// </summary>
+    /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
+    protected override void OnConfigure(EntityTypeBuilder<User> builder)
     {
-        builder.ToTable("users", t => t.HasComment("Пользователи")); 
+        builder.ToTable("users", t => t.HasComment("Пользователи"));
 
         builder.Property(u => u.FirstName)
                .HasMaxLength(UserFirstName.MaxLength)
@@ -60,5 +60,9 @@ internal class UserConfiguration : EntityTypeConfigurationBase<User>
 
         builder.Property("role_id")
                .HasComment("Роль пользователя");
+
+        builder.HasMany(u => u.NotAuthUsers)
+               .WithOne(na => na.Creator)
+               .HasForeignKey("creator_id");
     }
 }

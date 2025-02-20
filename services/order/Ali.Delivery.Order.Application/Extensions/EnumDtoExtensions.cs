@@ -1,4 +1,5 @@
 using Ali.Delivery.Order.Application.Dtos.Order;
+using Ali.Delivery.Order.Application.Dtos.Order.Enum;
 using Ali.Delivery.Order.Domain.Entities.Dictionaries;
 using OrderStatus = Ali.Delivery.Order.Domain.Entities.Dictionaries.OrderStatus;
 using PassportType = Ali.Delivery.Order.Domain.Entities.Dictionaries.PassportType;
@@ -14,12 +15,12 @@ public static class EnumDtoExtensions
     /// <summary>
     /// Преобразует значение перечисления в статус заказа.
     /// </summary>
-    public static OrderStatus ToOrderStatus(this Dtos.Order.OrderStatus codeEnum) =>
+    public static OrderStatus ToOrderStatus(this Dtos.Order.Enum.OrderStatus codeEnum) =>
         codeEnum switch
         {
-            Dtos.Order.OrderStatus.Created => OrderStatus.Created,
-            Dtos.Order.OrderStatus.InProgress => OrderStatus.InProgress,
-            Dtos.Order.OrderStatus.Finished => OrderStatus.Finished,
+            Dtos.Order.Enum.OrderStatus.Created => OrderStatus.Created,
+            Dtos.Order.Enum.OrderStatus.InProgress => OrderStatus.InProgress,
+            Dtos.Order.Enum.OrderStatus.Finished => OrderStatus.Finished,
             _ => throw new ArgumentOutOfRangeException(nameof(codeEnum), codeEnum, "Не поддерживаемое значение статуса заказа.")
         };
     #endregion
@@ -28,12 +29,12 @@ public static class EnumDtoExtensions
     /// <summary>
     /// Преобразует значение перечисления в тип паспорта.
     /// </summary>
-    public static PassportType ToPassportType(this Dtos.Order.PassportType codeEnum) =>
+    public static PassportType ToPassportType(this Dtos.Order.Enum.PassportType codeEnum) =>
         codeEnum switch
         {
-            Dtos.Order.PassportType.Diplomatic => PassportType.Diplomatic,
-            Dtos.Order.PassportType.Internal => PassportType.Internal,
-            Dtos.Order.PassportType.International => PassportType.International,
+            Dtos.Order.Enum.PassportType.Diplomatic => PassportType.Diplomatic,
+            Dtos.Order.Enum.PassportType.Internal => PassportType.Internal,
+            Dtos.Order.Enum.PassportType.International => PassportType.International,
             _ => throw new ArgumentOutOfRangeException(nameof(codeEnum), codeEnum, "Не поддерживаемое значение типа паспорта.")
         };
     #endregion

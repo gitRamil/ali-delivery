@@ -1,5 +1,6 @@
 using Ali.Delivery.Order.Application;
 using Ali.Delivery.Order.Application.Dtos.Order;
+using Ali.Delivery.Order.Application.Dtos.Order.Enum;
 using Ali.Delivery.Order.Application.UseCases.AssignCourier;
 using Ali.Delivery.Order.Application.UseCases.FinishDelivery;
 using Ali.Delivery.Order.Application.UseCases.GetAllCourierOrdersByOrderStatus;

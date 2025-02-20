@@ -1,12 +1,11 @@
 using Ali.Delivery.Order.Application;
 using Ali.Delivery.Order.Application.Dtos.Order;
+using Ali.Delivery.Order.Application.Dtos.Order.Enum;
 using Ali.Delivery.Order.Application.UseCases.CompletePassport;
 using Ali.Delivery.Order.Application.UseCases.CreateNotAuthUser;
 using Ali.Delivery.Order.Application.UseCases.CreateUser;
 using Ali.Delivery.Order.Application.UseCases.DeleteUser;
 using Ali.Delivery.Order.Application.UseCases.GetAllBasicUserOrdersByOrderStatus;
-using Ali.Delivery.Order.Application.UseCases.GetAllPassportTypes;
-using Ali.Delivery.Order.Application.UseCases.GetAllRoles;
 using Ali.Delivery.Order.Application.UseCases.GetAllUsers;
 using Ali.Delivery.Order.Application.UseCases.GetCurrentUser;
 using Ali.Delivery.Order.Application.UseCases.GetIsUserExist;
@@ -109,34 +108,6 @@ public class UserController : ControllerBase
     public async Task<IActionResult> GetAllBasicUserOrdersByOrderStatus(OrderStatus orderStatus, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetAllBasicUserOrdersByOrderStatusQuery(orderStatus), cancellationToken);
-        return Ok(result);
-    }
-
-    /// <summary>
-    /// Получает список всех типов паспорта.
-    /// </summary>
-    /// <param name="cancellationToken">Маркер отмены.</param>
-    /// <returns>Список всех типов паспорта.</returns>
-    [HttpGet("get-passport-types")]
-    [ProducesResponseType(typeof(List<PassportTypeDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAllPassportTypes(CancellationToken cancellationToken)
-    {
-        var result = await _mediator.Send(new GetAllPassportTypesQuery(), cancellationToken);
-        return Ok(result);
-    }
-
-    /// <summary>
-    /// Получает список всех ролей для пользователей.
-    /// </summary>
-    /// <param name="cancellationToken">Маркер отмены.</param>
-    /// <returns>Список всех ролей.</returns>
-    [HttpGet("get-roles")]
-    [ProducesResponseType(typeof(List<RoleDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAllRoles(CancellationToken cancellationToken)
-    {
-        var result = await _mediator.Send(new GetAllRolesQuery(), cancellationToken);
         return Ok(result);
     }
 

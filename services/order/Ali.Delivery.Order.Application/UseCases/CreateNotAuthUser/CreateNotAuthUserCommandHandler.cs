@@ -1,8 +1,6 @@
-using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.Application.Abstractions;
 using Ali.Delivery.Order.Application.Exceptions;
 using Ali.Delivery.Order.Domain.Entities;
-using Ali.Delivery.Order.Domain.ValueObjects.NotAuthUser;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,17 +38,8 @@ public class CreateNotAuthUserCommandHandler : IRequestHandler<CreateNotAuthUser
 
         var currentUser = await _context.Users.FirstOrDefaultAsync(u => (Guid)u.Id == _currentUser.Id, cancellationToken) ??
                           throw new NotFoundException(typeof(User), _currentUser.Id);
-        
-        if (currentUser.PassportInfo == null)
-        {
-            throw new InvalidOperationException("Для продолжения пожалуйста заполните паспортные данные");
-        }
 
-        var notAuthUser = new NotAuthUser(SequentialGuid.Create(),
-                                          new NotAuthUserFirstName(request.FirstName),
-                                          new NotAuthUserLastName(request.LastName),
-                                          new NotAuthUserPhoneNumber(request.PhoneNumber));
-        _context.NotAuthUsers.Add(notAuthUser);
+        var notAuthUser = currentUser.AddNotAuthUser(request.FirstName, request.LastName, request.PhoneNumber);
 
         await _context.SaveChangesAsync(cancellationToken);
 

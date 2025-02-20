@@ -43,7 +43,7 @@ public class AssignCourierCommandHandler : IRequestHandler<AssignCourierCommand,
         {
             throw new InvalidOperationException("Пожалуйста заполните паспортные данные для продолжения работы");
         }
-        
+
         order.SetCourier(courier);
 
         await _context.SaveChangesAsync(cancellationToken);
