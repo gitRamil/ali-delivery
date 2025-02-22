@@ -17,7 +17,7 @@ internal class NotAuthUserConfiguration : EntityTypeConfigurationBase<NotAuthUse
        /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
        protected override void OnConfigure(EntityTypeBuilder<NotAuthUser> builder)
     {
-        builder.ToTable("not_auth_users", t => t.HasComment("Незарегистрированные пользователи")); 
+        builder.ToTable("not_auth_users", t => t.HasComment("Незарегистрированные пользователи"));
 
         builder.Property(u => u.FirstName)
                .HasMaxLength(NotAuthUserFirstName.MaxLength)
@@ -33,5 +33,9 @@ internal class NotAuthUserConfiguration : EntityTypeConfigurationBase<NotAuthUse
                .HasMaxLength(NotAuthUserPhoneNumber.MaxLength)
                .HasConversion(p => (string?)p, s => new NotAuthUserPhoneNumber(s))
                .HasComment("Телефонный номер незарегистрированного пользователя");
+
+        builder.HasOne(na => na.Creator)
+               .WithMany(u => u.NotAuthUsers)
+               .HasForeignKey("creator_id");
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.Application.Abstractions;
-using Ali.Delivery.Order.Application.Dtos.Order;
+using Ali.Delivery.Order.Application.Dtos.Enums;
 using Ali.Delivery.Order.Application.Exceptions;
 using Ali.Delivery.Order.Application.Extensions;
 using Ali.Delivery.Order.Domain.Entities;
@@ -43,13 +43,15 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Gui
 
         var sender = await _context.Users.FirstOrDefaultAsync(u => (Guid)u.Id == _currentUser.Id, cancellationToken) ?? throw new NotFoundException(typeof(User), _currentUser.Id);
 
-        if (sender.PassportInfo == null)
-        {
-            throw new InvalidOperationException("Пожалуйста заполните паспортные данные для создания заказа");
-        }
+        NotAuthUser? notAuthReceiver = null;
 
-        var receiver = await _context.Users.FirstOrDefaultAsync(u => (Guid)u.Id == command.ReceiverId, cancellationToken) ??
-                       throw new NotFoundException(typeof(User), command.ReceiverId);
+        var receiver = await _context.Users.FirstOrDefaultAsync(u => (Guid)u.Id == command.ReceiverId, cancellationToken);
+
+        if (receiver == null)
+        {
+            notAuthReceiver = await _context.NotAuthUsers.FirstOrDefaultAsync(nu => (Guid)nu.Id == command.ReceiverId, cancellationToken) ??
+                              throw new NotFoundException("Получатель не найден ни среди зарегистрированных, ни среди незарегистрированных пользователей");
+        }
 
         var orderInfo = new OrderInfo(SequentialGuid.Create(),
                                       new OrderInfoWeight(command.Weight),
@@ -58,7 +60,13 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Gui
                                       new OrderInfoAddressFrom(command.AddressFrom),
                                       new OrderInfoAddressTo(command.AddressTo));
 
-        var order = new Domain.Entities.Order(SequentialGuid.Create(), new OrderName(command.OrderName), orderInfo, OrderStatus.Created.ToOrderStatus(), sender, receiver);
+        var order = new Domain.Entities.Order(SequentialGuid.Create(),
+                                              new OrderName(command.OrderName),
+                                              orderInfo,
+                                              OrderStatus.Created.ToOrderStatus(),
+                                              sender,
+                                              receiver,
+                                              notAuthReceiver);
 
         _context.Orders.Add(order);
 

@@ -11,11 +11,11 @@ namespace Ali.Delivery.Order.Infrastructure.Persistence.Configurations.Dictionar
 /// </summary>
 internal class RoleConfiguration : EntityTypeConfigurationBase<Role>
 {
-       /// <summary>
-       /// Вызывается при выполнении конфигурации сущности типа <see cref="Role" />.
-       /// </summary>
-       /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
-       protected override void OnConfigure(EntityTypeBuilder<Role> builder)
+    /// <summary>
+    /// Вызывается при выполнении конфигурации сущности типа <see cref="Role" />.
+    /// </summary>
+    /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
+    protected override void OnConfigure(EntityTypeBuilder<Role> builder)
     {
         builder.ToTable("roles", t => t.HasComment("Справочник ролей пользователей"));
 

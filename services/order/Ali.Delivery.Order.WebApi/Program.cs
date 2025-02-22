@@ -1,6 +1,9 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Ali.Delivery.Order.Application;
 using Ali.Delivery.Order.Application.Abstractions;
 using Ali.Delivery.Order.Application.Services;
+using Ali.Delivery.Order.Infrastructure.services;
 using Ali.Delivery.Order.WebApi.Infrastructure.IoC;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.CookiePolicy;
@@ -11,7 +14,12 @@ try
     var builder = WebApplication.CreateBuilder(args);
     builder.Configuration.AddEnvironmentVariables("AliDeliveryOrderService_");
     builder.AddDefaultSerilog();
-    builder.Services.AddControllers();
+
+    builder.Services.AddControllers()
+           .AddJsonOptions(options =>
+           {
+               options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
+           });
     builder.Services.AddDefaultApiVersioning();
     builder.Services.AddDefaultSwagger();
     builder.Services.AddDefaultMediatr();
@@ -25,6 +33,8 @@ try
     builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(nameof(JwtOptions)));
     builder.Services.AddApiAuthentication();
     builder.Services.AddHttpContextAccessor();
+    builder.Services.AddTransient<IDictionaryValuesProvider, DictionaryValuesProvider>();
+    builder.Services.AddTransient<IDictionaryTypeMap, DictionaryTypeMap>();
     builder.Services.AddTransient<ICurrentUser, CurrentUserService>();
 
     var app = builder.Build();
