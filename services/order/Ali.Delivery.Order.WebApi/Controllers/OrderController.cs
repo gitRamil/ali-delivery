@@ -52,6 +52,7 @@ public class OrderController : ControllerBase
     /// <param name="orderId">Идентификатор заказа.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
     [HttpDelete]
+    [UserPermission(UserPermissionCode.UserOrderManagement)]
     [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteOrder(Guid orderId, CancellationToken cancellationToken)
@@ -81,6 +82,7 @@ public class OrderController : ControllerBase
     /// <param name="cancellationToken">Маркер отмены.</param>
     /// <returns>Список всех заказов.</returns>
     [HttpGet]
+    [UserPermission(UserPermissionCode.FullAccess)]
     [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllOrders(CancellationToken cancellationToken)
@@ -95,6 +97,7 @@ public class OrderController : ControllerBase
     /// <param name="orderId">Идентификатор заказа.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
     [HttpGet("{orderId}")]
+    [UserPermission(UserPermissionCode.FullAccess)]
     [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetOrder(Guid orderId, CancellationToken cancellationToken)
@@ -109,6 +112,7 @@ public class OrderController : ControllerBase
     /// <param name="command">Команда обновления заказа.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
     [HttpPut]
+    [UserPermission(UserPermissionCode.FullAccess, UserPermissionCode.UserOrderManagement)]
     [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateOrder([FromBody] UpdateOrderCommand command, CancellationToken cancellationToken)

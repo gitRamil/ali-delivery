@@ -46,7 +46,7 @@ public sealed class GetDictionaryQueryHandler : IRequestHandler<GetDictionaryQue
 
             if (code == null || name == null)
             {
-                throw new InvalidOperationException($"Invalid dictionary code: {code} - {name}");
+                throw new InvalidOperationException($"Недопустимый код словаря: {code} - {name}");
             }
 
             result.Add(new DictionaryDto(code, name));

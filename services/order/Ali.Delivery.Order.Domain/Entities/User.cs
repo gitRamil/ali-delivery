@@ -12,6 +12,8 @@ namespace Ali.Delivery.Order.Domain.Entities;
 /// </summary>
 public class User : Entity<SequentialGuid>
 {
+    private readonly List<NotAuthUser> _notAuthUsers = [];
+
     /// <summary>
     /// Инициализирует новый экземпляр типа <see cref="User" />.
     /// </summary>
@@ -45,7 +47,6 @@ public class User : Entity<SequentialGuid>
         PassportInfo = passportInfo;
         Role = role ?? throw new ArgumentNullException(nameof(role));
         BirthDay = birthDay ?? throw new ArgumentNullException(nameof(birthDay));
-        NotAuthUsers = new List<NotAuthUser>();
     }
 
     /// <summary>
@@ -62,7 +63,6 @@ public class User : Entity<SequentialGuid>
         PassportInfo = null!;
         BirthDay = null!;
         Role = null!;
-        NotAuthUsers = new List<NotAuthUser>();
     }
 
     /// <summary>
@@ -86,11 +86,6 @@ public class User : Entity<SequentialGuid>
     public UserLogin Login { get; private set; }
 
     /// <summary>
-    /// Незарегистрированные пользователи.
-    /// </summary>
-    public virtual List<NotAuthUser> NotAuthUsers { get; private set; }
-
-    /// <summary>
     /// Информация о паспорте пользователя.
     /// </summary>
     public virtual PassportInfo? PassportInfo { get; private set; }
@@ -104,6 +99,11 @@ public class User : Entity<SequentialGuid>
     /// Идентификатор роли.
     /// </summary>
     public virtual Role Role { get; private set; }
+
+    /// <summary>
+    /// Незарегистрированные пользователи.
+    /// </summary>
+    public virtual IReadOnlyCollection<NotAuthUser> NotAuthUsers => _notAuthUsers;
 
     /// <summary>
     /// Создание незарегистрированного пользователя.
@@ -125,7 +125,7 @@ public class User : Entity<SequentialGuid>
                                           new NotAuthUserLastName(lastName),
                                           new NotAuthUserPhoneNumber(phoneNumber));
 
-        NotAuthUsers.Add(notAuthUser);
+        _notAuthUsers.Add(notAuthUser);
         return notAuthUser;
     }
 

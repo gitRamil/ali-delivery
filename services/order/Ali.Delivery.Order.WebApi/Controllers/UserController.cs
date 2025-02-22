@@ -1,6 +1,6 @@
 using Ali.Delivery.Order.Application;
+using Ali.Delivery.Order.Application.Dtos.Enums;
 using Ali.Delivery.Order.Application.Dtos.Order;
-using Ali.Delivery.Order.Application.Dtos.Order.Enum;
 using Ali.Delivery.Order.Application.UseCases.CompletePassport;
 using Ali.Delivery.Order.Application.UseCases.CreateNotAuthUser;
 using Ali.Delivery.Order.Application.UseCases.CreateUser;
@@ -87,6 +87,7 @@ public class UserController : ControllerBase
     /// <param name="userId">Идентификатор пользователя.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
     [HttpDelete]
+    [UserPermission(UserPermissionCode.UserManagement, UserPermissionCode.FullAccess)]
     [ProducesResponseType(typeof(List<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteUser(Guid userId, CancellationToken cancellationToken)
@@ -117,6 +118,7 @@ public class UserController : ControllerBase
     /// <param name="cancellationToken">Маркер отмены.</param>
     /// <returns>Список всех пользователей.</returns>
     [HttpGet]
+    [UserPermission(UserPermissionCode.FullAccess)]
     [ProducesResponseType(typeof(List<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllUsers(CancellationToken cancellationToken)
@@ -161,6 +163,7 @@ public class UserController : ControllerBase
     /// <param name="userId">Идентификатор пользователя.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
     [HttpGet("{userId}")]
+    [UserPermission(UserPermissionCode.FullAccess)]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetUser(Guid userId, CancellationToken cancellationToken)
@@ -209,6 +212,7 @@ public class UserController : ControllerBase
     /// <param name="command">Команда обновления пользователя.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
     [HttpPut]
+    [UserPermission(UserPermissionCode.UserManagement)]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateUser([FromBody] UpdateUserCommand command, CancellationToken cancellationToken)

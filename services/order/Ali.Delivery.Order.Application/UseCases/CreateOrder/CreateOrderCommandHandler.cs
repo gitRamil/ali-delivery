@@ -1,6 +1,6 @@
 ﻿using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.Application.Abstractions;
-using Ali.Delivery.Order.Application.Dtos.Order.Enum;
+using Ali.Delivery.Order.Application.Dtos.Enums;
 using Ali.Delivery.Order.Application.Exceptions;
 using Ali.Delivery.Order.Application.Extensions;
 using Ali.Delivery.Order.Domain.Entities;
@@ -42,11 +42,6 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Gui
         ArgumentNullException.ThrowIfNull(command);
 
         var sender = await _context.Users.FirstOrDefaultAsync(u => (Guid)u.Id == _currentUser.Id, cancellationToken) ?? throw new NotFoundException(typeof(User), _currentUser.Id);
-
-        if (sender.PassportInfo == null)
-        {
-            throw new InvalidOperationException("Пожалуйста заполните паспортные данные для создания заказа");
-        }
 
         NotAuthUser? notAuthReceiver = null;
 

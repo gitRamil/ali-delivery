@@ -2,7 +2,7 @@ using Ali.Delivery.Domain.Core;
 using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.Application;
 using Ali.Delivery.Order.Application.Abstractions;
-using Ali.Delivery.Order.Application.Dtos.Order.Enum;
+using Ali.Delivery.Order.Application.Dtos.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ali.Delivery.Order.Infrastructure.services;

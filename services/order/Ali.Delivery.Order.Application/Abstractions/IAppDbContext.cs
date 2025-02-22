@@ -26,10 +26,10 @@ public interface IAppDbContext
     DbSet<Domain.Entities.Order> Orders { get; }
 
     /// <summary>
-    /// Возвращает набор доступов.
+    /// Возвращает набор статусов заказа.
     /// </summary>
     /// <value>
-    /// Доступы.
+    /// Статусы заказа.
     /// </value>
     DbSet<OrderStatus> OrderStatuses { get; }
 
@@ -86,11 +86,4 @@ public interface IAppDbContext
     /// </summary>
     /// <param name="cancellationToken">Маркер отмены.</param>
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
-
-    /// <summary>
-    /// Универсальный метод для получения набора данных.
-    /// </summary>
-    /// <typeparam name="T">Тип сущности.</typeparam>
-    /// <returns>Набор данных.</returns>
-    DbSet<T> Set<T>() where T : class;
 }

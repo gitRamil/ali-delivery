@@ -1,6 +1,6 @@
 using Ali.Delivery.Domain.Core;
 using Ali.Delivery.Domain.Core.Primitives;
-using Ali.Delivery.Order.Application.Dtos.Order.Enum;
+using Ali.Delivery.Order.Application.Dtos.Enums;
 
 namespace Ali.Delivery.Order.Application.Abstractions;
 

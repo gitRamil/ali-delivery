@@ -40,6 +40,11 @@ public class Order : Entity<SequentialGuid>
             throw new InvalidOperationException("Должен быть указан либо зарегистрированный, либо незарегистрированный получатель.");
         }
 
+        if (sender.PassportInfo == null)
+        {
+            throw new InvalidOperationException("Пожалуйста заполните паспортные данные для создания заказа");
+        }
+
         Name = orderName ?? throw new ArgumentNullException(nameof(orderName));
         OrderInfo = orderInfo ?? throw new ArgumentNullException(nameof(orderInfo));
         OrderStatus = orderStatus ?? throw new ArgumentNullException(nameof(orderStatus));
@@ -68,7 +73,7 @@ public class Order : Entity<SequentialGuid>
     /// <summary>
     /// Возвращает курьера.
     /// </summary>
-    public virtual User? Courier { get; set; }
+    public virtual User? Courier { get; private set; }
 
     /// <summary>
     /// Возвращает наименование.
@@ -78,7 +83,7 @@ public class Order : Entity<SequentialGuid>
     /// <summary>
     /// Возвращает незарегистрированного получателя.
     /// </summary>
-    public virtual NotAuthUser? NotAuthReceiver { get; }
+    public virtual NotAuthUser? NotAuthReceiver { get; private set; }
 
     /// <summary>
     /// Возвращает информацию заказа.
@@ -88,17 +93,17 @@ public class Order : Entity<SequentialGuid>
     /// <summary>
     /// Возвращает статус заказа.
     /// </summary>
-    public virtual OrderStatus OrderStatus { get; set; }
+    public virtual OrderStatus OrderStatus { get; private set; }
 
     /// <summary>
     /// Возвращает получателя.
     /// </summary>
-    public virtual User? Receiver { get; }
+    public virtual User? Receiver { get; private set; }
 
     /// <summary>
     /// Возвращает отправителя.
     /// </summary>
-    public virtual User Sender { get; }
+    public virtual User Sender { get; private set; }
 
     /// <summary>
     /// Завершить заказ.

@@ -46,20 +46,20 @@ public class NotAuthUser : Entity<SequentialGuid>
     /// <summary>
     /// Создатель.
     /// </summary>
-    public virtual User Creator { get; set; }
+    public virtual User Creator { get; init; }
 
     /// <summary>
     /// Имя.
     /// </summary>
-    public NotAuthUserFirstName? FirstName { get; set; }
+    public NotAuthUserFirstName? FirstName { get; init; }
 
     /// <summary>
     /// Фамилия.
     /// </summary>
-    public NotAuthUserLastName? LastName { get; set; }
+    public NotAuthUserLastName? LastName { get; init; }
 
     /// <summary>
     /// Телефонный номер.
     /// </summary>
-    public NotAuthUserPhoneNumber? PhoneNumber { get; set; }
+    public NotAuthUserPhoneNumber? PhoneNumber { get; init; }
 }

@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace Ali.Delivery.Order.Application.Dtos.Order.Enum;
+namespace Ali.Delivery.Order.Application.Dtos.Enums;
 
 /// <summary>
 /// Представляет набор значений, описывающих статусы заказа.

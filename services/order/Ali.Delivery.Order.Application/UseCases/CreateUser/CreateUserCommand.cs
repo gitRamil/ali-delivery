@@ -1,4 +1,4 @@
-using Ali.Delivery.Order.Application.Dtos.Order.Enum;
+using Ali.Delivery.Order.Application.Dtos.Enums;
 using MediatR;
 
 namespace Ali.Delivery.Order.Application.UseCases.CreateUser;

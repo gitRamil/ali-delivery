@@ -1,6 +1,8 @@
+using Ali.Delivery.Order.Application;
+using Ali.Delivery.Order.Application.Dtos.Enums;
 using Ali.Delivery.Order.Application.Dtos.Order;
-using Ali.Delivery.Order.Application.Dtos.Order.Enum;
 using Ali.Delivery.Order.Application.UseCases.GetDictionary;
+using Ali.Delivery.Order.WebApi.Attribute;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,6 +34,7 @@ public class DictionaryController : ControllerBase
     /// <param name="token"></param>
     /// <returns></returns>
     [HttpGet("get-dictionary")]
+    [UserPermission(UserPermissionCode.UserManagement)]
     [ProducesResponseType(typeof(IReadOnlyCollection<DictionaryDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

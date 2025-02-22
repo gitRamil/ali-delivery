@@ -39,11 +39,6 @@ public class AssignCourierCommandHandler : IRequestHandler<AssignCourierCommand,
 
         var courier = await _context.Users.FirstOrDefaultAsync(u => (Guid)u.Id == _currentUser.Id, cancellationToken) ?? throw new NotFoundException(typeof(User), _currentUser.Id);
 
-        if (courier.PassportInfo == null)
-        {
-            throw new InvalidOperationException("Пожалуйста заполните паспортные данные для продолжения работы");
-        }
-
         order.SetCourier(courier);
 
         await _context.SaveChangesAsync(cancellationToken);

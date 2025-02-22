@@ -43,10 +43,10 @@ public class AppDbContext : DbContext, IAppDbContext
     public DbSet<Domain.Entities.Order> Orders => Set<Domain.Entities.Order>();
 
     /// <summary>
-    /// Возвращает набор доступов.
+    /// Возвращает набор статусов заказа.
     /// </summary>
     /// <value>
-    /// Доступы.
+    /// Статусы заказа.
     /// </value>
     public DbSet<OrderStatus> OrderStatuses => Set<OrderStatus>();
 
@@ -87,11 +87,6 @@ public class AppDbContext : DbContext, IAppDbContext
 
         return await base.SaveChangesAsync(cancellationToken);
     }
-
-    /// <summary>
-    /// Возвращает набор данных.
-    /// </summary>
-    public new DbSet<T> Set<T>() where T : class => base.Set<T>();
 
     /// <summary>
     /// Возвращает набор размеров посылки.
