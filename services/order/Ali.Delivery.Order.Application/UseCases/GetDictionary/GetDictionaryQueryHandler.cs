@@ -1,4 +1,5 @@
 using Ali.Delivery.Order.Application.Dtos.Order;
+using Ali.Delivery.Order.Domain.Entities.Dictionaries;
 using MediatR;
 
 namespace Ali.Delivery.Order.Application.UseCases.GetDictionary;
@@ -34,6 +35,11 @@ public sealed class GetDictionaryQueryHandler : IRequestHandler<GetDictionaryQue
 
         foreach (var item in items)
         {
+            if (item is Role role && role.IsSystemRole())
+            {
+                continue;
+            }
+
             var code = item.GetType()
                            .GetProperty("Name")
                            ?.GetValue(item)

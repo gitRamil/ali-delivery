@@ -37,7 +37,7 @@ public class OrderController : ControllerBase
     /// <param name="command">Заказ.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
     [HttpPost]
-    [UserPermission(UserPermissionCode.UserOrderManagement)]
+    [UserPermission(UserPermissionCode.UserOrderManagement, UserPermissionCode.FullAccess)]
     [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CreateOrder([FromBody] CreateOrderCommand command, CancellationToken cancellationToken)
@@ -52,7 +52,7 @@ public class OrderController : ControllerBase
     /// <param name="orderId">Идентификатор заказа.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
     [HttpDelete]
-    [UserPermission(UserPermissionCode.UserOrderManagement)]
+    [UserPermission(UserPermissionCode.UserOrderManagement, UserPermissionCode.FullAccess)]
     [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteOrder(Guid orderId, CancellationToken cancellationToken)
@@ -67,7 +67,7 @@ public class OrderController : ControllerBase
     /// <param name="cancellationToken">Маркер отмены.</param>
     /// <returns>Список всех активных заказов.</returns>
     [HttpGet("active-orders")]
-    [UserPermission(UserPermissionCode.CourierOrderManagement)]
+    [UserPermission(UserPermissionCode.CourierOrderManagement, UserPermissionCode.FullAccess)]
     [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllCreatedOrders(CancellationToken cancellationToken)

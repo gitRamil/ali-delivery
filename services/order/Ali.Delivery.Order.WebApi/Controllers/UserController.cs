@@ -133,7 +133,7 @@ public class UserController : ControllerBase
     /// <param name="cancellationToken">Маркер отмены.</param>
     /// <returns>Список всех ролей.</returns>
     [HttpGet("get-current-user")]
-    [UserPermission(UserPermissionCode.UserManagement)]
+    [UserPermission(UserPermissionCode.UserManagement, UserPermissionCode.FullAccess)]
     [ProducesResponseType(typeof(List<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetCurrentUser(CancellationToken cancellationToken)

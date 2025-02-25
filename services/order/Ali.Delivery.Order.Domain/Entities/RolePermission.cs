@@ -63,24 +63,30 @@ public class RolePermission : Entity<SequentialGuid>
     public static IEnumerable<RolePermission> GetAllValues() =>
         GetNotAuthUserPermissions()
             .Concat(GetBasicUserPermissions())
-            .Concat(GetCourierPermissions());
+            .Concat(GetCourierPermissions())
+            .Concat(GetAdminPermissions());
 
     private static IEnumerable<RolePermission> GetBasicUserPermissions()
     {
-        yield return new RolePermission(new Guid("3a17be5f-7b9c-0bc4-a94f-b0bba09fd370"), Role.BasicUser.Id, Permission.UserOrderManagement.Id);
-        yield return new RolePermission(new Guid("3a17be5f-7bbe-2559-4048-48a0196e0f25"), Role.BasicUser.Id, Permission.Tracking.Id);
-        yield return new RolePermission(new Guid("3a17be5f-7bbf-849a-7d45-02bd0f50536d"), Role.BasicUser.Id, Permission.UserManagement.Id);
+        yield return new RolePermission(new Guid("3a1844e7-409f-dd6f-39ed-1f2f67aef722"), Role.BasicUser.Id, Permission.UserOrderManagement.Id);
+        yield return new RolePermission(new Guid("3a1844e7-40b0-0bdb-5ad3-309f135ff5e2"), Role.BasicUser.Id, Permission.Tracking.Id);
+        yield return new RolePermission(new Guid("3a1844e7-40b1-d958-4573-cc84183ec531"), Role.BasicUser.Id, Permission.UserManagement.Id);
     }
 
     private static IEnumerable<RolePermission> GetCourierPermissions()
     {
-        yield return new RolePermission(new Guid("3a17be5f-7bc0-509f-e1ec-2f10d0cebef0"), Role.Courier.Id, Permission.CourierOrderManagement.Id);
-        yield return new RolePermission(new Guid("3a17be5f-7bc1-6952-64c0-1c9ca8881fd0"), Role.Courier.Id, Permission.UserManagement.Id);
-        yield return new RolePermission(new Guid("3a17be5f-7bc2-9c5b-8a73-bcd6ce135188"), Role.Courier.Id, Permission.Tracking.Id);
+        yield return new RolePermission(new Guid("3a1844e7-40b2-9ae9-56c9-27598b808a43"), Role.Courier.Id, Permission.CourierOrderManagement.Id);
+        yield return new RolePermission(new Guid("3a1844e7-40b3-790d-6f17-ffa82729df95"), Role.Courier.Id, Permission.UserManagement.Id);
+        yield return new RolePermission(new Guid("3a1844e7-40b4-6c99-9ee8-c6ed4958ad43"), Role.Courier.Id, Permission.Tracking.Id);
     }
 
     private static IEnumerable<RolePermission> GetNotAuthUserPermissions()
     {
-        yield return new RolePermission(new Guid("3a17be5f-7bc6-ba8e-0f5d-b7192c99492b"), Role.NotAuthUser.Id, Permission.Tracking.Id);
+        yield return new RolePermission(new Guid("3a1844e7-40b5-634c-f5e0-662dfe13dff1"), Role.NotAuthUser.Id, Permission.Tracking.Id);
+    }
+
+    private static IEnumerable<RolePermission> GetAdminPermissions()
+    {
+        yield return new RolePermission(new Guid("3a1844e7-40b6-8c81-44cf-f1ff77037740"), Role.SuperUser.Id, Permission.FullAccess.Id);
     }
 }

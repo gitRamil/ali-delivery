@@ -104,3 +104,8 @@ VALUES
     (gen_random_uuid(), 'Order 1', (SELECT id FROM order_info1), '3a15d9e1-c989-2e49-e8d3-55a56db7a2e1', '06af16fc-76c8-4344-b490-fd4844db0927', 'admin', '2023-01-01 03:00:00+03'::timestamp with time zone, 'admin', '2023-01-01 03:00:00+03'::timestamp with time zone),
     (gen_random_uuid(), 'Order 2', (SELECT id FROM order_info2), '3a15d9e1-c989-2e49-e8d3-55a56db7a2e1', 'bb3e6799-928a-4c89-92d7-4b6bea9e2121', 'admin', '2023-01-01 03:00:00+03'::timestamp with time zone, 'admin', '2023-01-01 03:00:00+03'::timestamp with time zone),
     (gen_random_uuid(), 'Order 3', (SELECT id FROM order_info3), '3a15d9e1-c99e-6357-1416-7c7be54dd2a5', 'b2050a3b-d0db-42f8-aa10-baaeba2d2a98', 'admin', '2023-01-01 03:00:00+03'::timestamp with time zone, 'admin', '2023-01-01 03:00:00+03'::timestamp with time zone);
+
+#Создание Админа
+
+INSERT INTO users (id, birth_day, created_date, first_name, last_name, login, password, role_id)  
+VALUES (gen_random_uuid(), '1990-01-01', '2023-01-01 03:00:00+03'::timestamp with time zone, 'Admin', 'Admin', 'Admin', '$2a$11$2OUblbk4LfMfGreEbndQIePViRI8JraT01MUiXAorN4yeCyUkq9z6', '3a1844b2-1e63-f523-2f04-f4eb3bad17b3');

@@ -34,7 +34,7 @@ public class DictionaryController : ControllerBase
     /// <param name="token"></param>
     /// <returns></returns>
     [HttpGet("get-dictionary")]
-    [UserPermission(UserPermissionCode.UserManagement)]
+    [UserPermission(UserPermissionCode.UserManagement, UserPermissionCode.FullAccess)]
     [ProducesResponseType(typeof(IReadOnlyCollection<DictionaryDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
