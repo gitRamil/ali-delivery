@@ -43,6 +43,19 @@ public class AppDbContext : DbContext, IAppDbContext
     public DbSet<Domain.Entities.Order> Orders => Set<Domain.Entities.Order>();
 
     /// <summary>
+    /// Возвращает набор статусов заказа.
+    /// </summary>
+    /// <value>
+    /// Статусы заказа.
+    /// </value>
+    public DbSet<OrderStatus> OrderStatuses => Set<OrderStatus>();
+
+    /// <summary>
+    /// Возвращает набор типов паспорта.
+    /// </summary>
+    public DbSet<PassportType> PassportTypes => Set<PassportType>();
+
+    /// <summary>
     /// Возвращает набор доступов.
     /// </summary>
     public DbSet<Permission> Permissions => Set<Permission>();
@@ -53,7 +66,7 @@ public class AppDbContext : DbContext, IAppDbContext
     public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
 
     /// <summary>
-    /// Возвращает набор ролей.
+    /// Возвращает набор ролей пользователя.
     /// </summary>
     public DbSet<Role> Roles => Set<Role>();
 
@@ -74,6 +87,11 @@ public class AppDbContext : DbContext, IAppDbContext
 
         return await base.SaveChangesAsync(cancellationToken);
     }
+
+    /// <summary>
+    /// Возвращает набор размеров посылки.
+    /// </summary>
+    public DbSet<Size> Sizes => Set<Size>();
 
     /// <summary>
     /// Возвращает набор пользователей.

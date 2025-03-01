@@ -1,12 +1,14 @@
 using Ali.Delivery.Order.Application;
+using Ali.Delivery.Order.Application.Dtos.Enums;
 using Ali.Delivery.Order.Application.Dtos.Order;
 using Ali.Delivery.Order.Application.UseCases.CompletePassport;
+using Ali.Delivery.Order.Application.UseCases.CreateNotAuthUser;
 using Ali.Delivery.Order.Application.UseCases.CreateUser;
 using Ali.Delivery.Order.Application.UseCases.DeleteUser;
+using Ali.Delivery.Order.Application.UseCases.GetAllBasicUserOrdersByOrderStatus;
 using Ali.Delivery.Order.Application.UseCases.GetAllUsers;
 using Ali.Delivery.Order.Application.UseCases.GetCurrentUser;
 using Ali.Delivery.Order.Application.UseCases.GetIsUserExist;
-using Ali.Delivery.Order.Application.UseCases.GetRolesForUserRegistration;
 using Ali.Delivery.Order.Application.UseCases.GetUser;
 using Ali.Delivery.Order.Application.UseCases.Login;
 using Ali.Delivery.Order.Application.UseCases.UpdateUser;
@@ -51,6 +53,21 @@ public class UserController : ControllerBase
     }
 
     /// <summary>
+    /// Создает незарегистрированного пользователя.
+    /// </summary>
+    /// <param name="command">Незарегистрированный пользователь.</param>
+    /// <param name="cancellationToken">Маркер отмены.</param>
+    [HttpPost("create-not-auth-user")]
+    [UserPermission(UserPermissionCode.UserManagement)]
+    [ProducesResponseType(typeof(NotAuthDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> CreateNotAuthUser([FromBody] CreateNotAuthUserCommand command, CancellationToken cancellationToken)
+    {
+        await _mediator.Send(command, cancellationToken);
+        return Ok();
+    }
+
+    /// <summary>
     /// Создает пользователя.
     /// </summary>
     /// <param name="command">Пользователь.</param>
@@ -70,7 +87,7 @@ public class UserController : ControllerBase
     /// <param name="userId">Идентификатор пользователя.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
     [HttpDelete]
-    [UserPermission(UserPermissionCode.UserManagement)]
+    [UserPermission(UserPermissionCode.UserManagement, UserPermissionCode.FullAccess)]
     [ProducesResponseType(typeof(List<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteUser(Guid userId, CancellationToken cancellationToken)
@@ -80,16 +97,18 @@ public class UserController : ControllerBase
     }
 
     /// <summary>
-    /// Получает список всех ролей для пользователей.
+    /// Получает все заказы базового пользователя по статусу заказа.
     /// </summary>
+    /// <param name="orderStatus">Статус заказа.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
-    /// <returns>Список всех ролей.</returns>
-    [HttpGet("get-roles")]
-    [ProducesResponseType(typeof(List<UserDto>), StatusCodes.Status200OK)]
+    /// <returns>Список заказов</returns>
+    [HttpGet("basic-user-orders-by-status")]
+    [UserPermission(UserPermissionCode.UserOrderManagement)]
+    [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAllRoles(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllBasicUserOrdersByOrderStatus(OrderStatus orderStatus, CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new GetRolesForUserRegistrationQuery(), cancellationToken);
+        var result = await _mediator.Send(new GetAllBasicUserOrdersByOrderStatusQuery(orderStatus), cancellationToken);
         return Ok(result);
     }
 
@@ -99,6 +118,7 @@ public class UserController : ControllerBase
     /// <param name="cancellationToken">Маркер отмены.</param>
     /// <returns>Список всех пользователей.</returns>
     [HttpGet]
+    [UserPermission(UserPermissionCode.FullAccess)]
     [ProducesResponseType(typeof(List<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllUsers(CancellationToken cancellationToken)
@@ -113,6 +133,7 @@ public class UserController : ControllerBase
     /// <param name="cancellationToken">Маркер отмены.</param>
     /// <returns>Список всех ролей.</returns>
     [HttpGet("get-current-user")]
+    [UserPermission(UserPermissionCode.UserManagement, UserPermissionCode.FullAccess)]
     [ProducesResponseType(typeof(List<UserDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetCurrentUser(CancellationToken cancellationToken)
@@ -142,6 +163,7 @@ public class UserController : ControllerBase
     /// <param name="userId">Идентификатор пользователя.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
     [HttpGet("{userId}")]
+    [UserPermission(UserPermissionCode.FullAccess)]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetUser(Guid userId, CancellationToken cancellationToken)
@@ -190,6 +212,7 @@ public class UserController : ControllerBase
     /// <param name="command">Команда обновления пользователя.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
     [HttpPut]
+    [UserPermission(UserPermissionCode.UserManagement)]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateUser([FromBody] UpdateUserCommand command, CancellationToken cancellationToken)

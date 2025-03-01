@@ -13,8 +13,7 @@ internal class RolePermissionConfiguration : EntityTypeConfigurationBase<RolePer
 
         builder.HasOne(p => p.Role)
                .WithMany()
-               .HasForeignKey(p => p.RoleId)
-               .OnDelete(DeleteBehavior.Cascade);
+               .HasForeignKey(p => p.RoleId);
 
         builder.Property(p => p.RoleId)
                .HasColumnOrder(1)
@@ -23,8 +22,7 @@ internal class RolePermissionConfiguration : EntityTypeConfigurationBase<RolePer
 
         builder.HasOne(p => p.Permission)
                .WithMany()
-               .HasForeignKey(p => p.PermissionId)
-               .OnDelete(DeleteBehavior.Cascade);
+               .HasForeignKey(p => p.PermissionId);
 
         builder.Property(p => p.PermissionId)
                .HasColumnOrder(2)

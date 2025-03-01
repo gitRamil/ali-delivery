@@ -13,45 +13,47 @@ public class NotAuthUser : Entity<SequentialGuid>
     /// Инициализирует новый экземпляр типа <see cref="NotAuthUser" />.
     /// </summary>
     /// <param name="id">Идентификатор.</param>
+    /// <param name="creator">Создатель.</param>
     /// <param name="firstName">Имя.</param>
     /// <param name="lastName">Фамилия.</param>
     /// <param name="phoneNumber">Телефонный номер.</param>
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если любой из параметров <paramref name="firstName" />,
-    /// <paramref name="lastName" />  равен <c>null</c>.
+    /// Возникает, если любой из параметров <paramref name="creator" /> равен <c>null</c>.
     /// </exception>
-    public NotAuthUser(SequentialGuid id, NotAuthUserFirstName? firstName = null, NotAuthUserLastName? lastName = null, NotAuthUserPhoneNumber? phoneNumber = null)
+    public NotAuthUser(SequentialGuid id, User creator, NotAuthUserFirstName? firstName, NotAuthUserLastName? lastName, NotAuthUserPhoneNumber? phoneNumber)
         : base(id)
     {
+        Creator = creator ?? throw new ArgumentNullException(nameof(creator));
         FirstName = firstName;
         LastName = lastName;
         PhoneNumber = phoneNumber;
     }
 
     /// <summary>
-    /// Инициализирует новый экземпляр типа <see cref="NotAuthUser" /> для использования ORM.
+    /// Инициализирует новый экземпляр типа <see cref="NotAuthUser" />.
     /// </summary>
-    /// <remarks>Конструктор без параметров необходим для Entity Framework.</remarks>
+    /// <remarks>Конструктор для Entity Framework.</remarks>
     protected NotAuthUser()
-        : base(SequentialGuid.Empty)
-    {
-        FirstName = null!;
-        LastName = null!;
-        PhoneNumber = null!;
-    }
+        : base(SequentialGuid.Empty) =>
+        Creator = null!;
+
+    /// <summary>
+    /// Создатель.
+    /// </summary>
+    public virtual User Creator { get; init; }
 
     /// <summary>
     /// Имя.
     /// </summary>
-    public virtual NotAuthUserFirstName? FirstName { get; set; }
+    public NotAuthUserFirstName? FirstName { get; init; }
 
     /// <summary>
     /// Фамилия.
     /// </summary>
-    public virtual NotAuthUserLastName? LastName { get; set; }
+    public NotAuthUserLastName? LastName { get; init; }
 
     /// <summary>
     /// Телефонный номер.
     /// </summary>
-    public virtual NotAuthUserPhoneNumber? PhoneNumber { get; set; }
+    public NotAuthUserPhoneNumber? PhoneNumber { get; init; }
 }

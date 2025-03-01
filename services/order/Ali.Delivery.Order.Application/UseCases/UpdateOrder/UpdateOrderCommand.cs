@@ -1,3 +1,4 @@
+using Ali.Delivery.Order.Application.Dtos.Enums;
 using Ali.Delivery.Order.Application.Dtos.Order;
 using MediatR;
 

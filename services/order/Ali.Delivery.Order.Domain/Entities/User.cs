@@ -1,6 +1,7 @@
 using Ali.Delivery.Domain.Core;
 using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.Domain.Entities.Dictionaries;
+using Ali.Delivery.Order.Domain.ValueObjects.NotAuthUser;
 using Ali.Delivery.Order.Domain.ValueObjects.PassportInfo;
 using Ali.Delivery.Order.Domain.ValueObjects.User;
 
@@ -11,6 +12,8 @@ namespace Ali.Delivery.Order.Domain.Entities;
 /// </summary>
 public class User : Entity<SequentialGuid>
 {
+    private readonly List<NotAuthUser> _notAuthUsers = [];
+
     /// <summary>
     /// Инициализирует новый экземпляр типа <see cref="User" />.
     /// </summary>
@@ -96,6 +99,37 @@ public class User : Entity<SequentialGuid>
     /// Идентификатор роли.
     /// </summary>
     public virtual Role Role { get; private set; }
+
+    /// <summary>
+    /// Незарегистрированные пользователи.
+    /// </summary>
+    public virtual IReadOnlyCollection<NotAuthUser> NotAuthUsers => _notAuthUsers;
+
+    /// <summary>
+    /// Создание незарегистрированного пользователя.
+    /// </summary>
+    /// <param name="firstName">Имя.</param>
+    /// <param name="lastName">Фамилия.</param>
+    /// <param name="phoneNumber">Телефонный номер.</param>
+    /// <exception cref="InvalidOperationException">
+    /// Выдает ошибку, если не заполнены паспортные данные пользователя.
+    /// </exception>
+    public NotAuthUser AddNotAuthUser(string firstName, string lastName, string phoneNumber)
+    {
+        if (PassportInfo == null)
+        {
+            throw new InvalidOperationException("Для продолжения пожалуйста заполните паспортные данные");
+        }
+
+        var notAuthUser = new NotAuthUser(SequentialGuid.Create(),
+                                          this,
+                                          new NotAuthUserFirstName(firstName),
+                                          new NotAuthUserLastName(lastName),
+                                          new NotAuthUserPhoneNumber(phoneNumber));
+
+        _notAuthUsers.Add(notAuthUser);
+        return notAuthUser;
+    }
 
     /// <summary>
     /// Создаёт паспортную информацию для пользователя.

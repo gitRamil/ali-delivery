@@ -11,13 +11,13 @@ namespace Ali.Delivery.Order.Infrastructure.Persistence.Configurations;
 /// </summary>
 internal class UserConfiguration : EntityTypeConfigurationBase<User>
 {
-       /// <summary>
-       /// Вызывается при выполнении конфигурации сущности типа <see cref="User" />.
-       /// </summary>
-       /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
-       protected override void OnConfigure(EntityTypeBuilder<User> builder)
+    /// <summary>
+    /// Вызывается при выполнении конфигурации сущности типа <see cref="User" />.
+    /// </summary>
+    /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
+    protected override void OnConfigure(EntityTypeBuilder<User> builder)
     {
-        builder.ToTable("users", t => t.HasComment("Пользователи")); 
+        builder.ToTable("users", t => t.HasComment("Пользователи"));
 
         builder.Property(u => u.FirstName)
                .HasMaxLength(UserFirstName.MaxLength)
@@ -38,6 +38,10 @@ internal class UserConfiguration : EntityTypeConfigurationBase<User>
         builder.HasIndex(u => u.Login)
                .IsUnique();
 
+        builder.Property(u => u.BirthDay)
+               .HasConversion(b => (DateTime)b, s => new UserBirthDay(s))
+               .HasComment("Дата рождения пользователя");
+
         builder.Property(u => u.Password)
                .HasMaxLength(UserLastName.MaxLength)
                .HasConversion(l => (string)l, s => new UserPassword(s))
@@ -50,15 +54,15 @@ internal class UserConfiguration : EntityTypeConfigurationBase<User>
         builder.Property("passport_info_id")
                .HasComment("Информация о паспорте");
 
-        builder.Property(u => u.BirthDay)
-               .HasConversion(b => (DateTime)b, s => new UserBirthDay(s))
-               .HasComment("Дата рождения пользователя");
-
         builder.HasOne(u => u.Role)
                .WithMany()
                .HasForeignKey("role_id");
 
         builder.Property("role_id")
                .HasComment("Роль пользователя");
+
+        builder.HasMany(u => u.NotAuthUsers)
+               .WithOne(na => na.Creator)
+               .HasForeignKey("creator_user_id");
     }
 }

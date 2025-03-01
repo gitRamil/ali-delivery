@@ -1,4 +1,5 @@
 using Ali.Delivery.Order.Application;
+using Ali.Delivery.Order.Application.Dtos.Enums;
 using Ali.Delivery.Order.Application.Dtos.Order;
 using Ali.Delivery.Order.Application.UseCases.AssignCourier;
 using Ali.Delivery.Order.Application.UseCases.FinishDelivery;

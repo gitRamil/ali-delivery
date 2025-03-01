@@ -12,23 +12,29 @@ public class Role : Entity<SequentialGuid>
     /// <summary>
     /// Возвращает тип пользователя: Пользователь.
     /// </summary>
-    public static readonly Role BasicUser = new(new Guid("3a1537bf-cabc-d70c-f42c-012821b898b1"), new RoleCode("basicUser"), new RoleName("Пользователь"));
+    public static readonly Role BasicUser = new(new Guid("3a1844b2-1e4f-f70c-c599-5fe824c7a873"), new RoleCode("basicUser"), new RoleName("Пользователь"));
 
     /// <summary>
     /// Возвращает тип пользователя: Курьер.
     /// </summary>
-    public static readonly Role Courier = new(new Guid("3a1537be-fa32-3962-f94d-62f95e6ffcad"), new RoleCode("courier"), new RoleName("Курьер"));
+    public static readonly Role Courier = new(new Guid("3a1844b2-1e60-6e25-1bcf-da74b2a4f07c"), new RoleCode("courier"), new RoleName("Курьер"));
 
     /// <summary>
     /// Возвращает тип пользователя: Неавторизованный пользователь.
     /// </summary>
-    public static readonly Role NotAuthUser = new(new Guid("3a1537c0-11f8-d788-90d9-ced196c63397"), new RoleCode("notAuthUser"), new RoleName("Неавторизованный пользователь"));
+    public static readonly Role NotAuthUser = new(new Guid("3a1844b2-1e61-d7b0-a9f6-8ec08e2c69fd"), new RoleCode("notAuthUser"), new RoleName("Неавторизованный пользователь"));
+
+    /// <summary>
+    /// Возвращает тип пользователя: Пользователь с полным доступом.
+    /// </summary>
+    public static readonly Role SuperUser = new(new Guid("3a1844b2-1e63-f523-2f04-f4eb3bad17b3"), new RoleCode("superUser"), new RoleName("Пользователь с полным доступом"));
 
     private static readonly Dictionary<RoleCode, Role> RoleNames = new()
     {
         [Courier.Code] = Courier,
         [BasicUser.Code] = BasicUser,
-        [NotAuthUser.Code] = NotAuthUser
+        [NotAuthUser.Code] = NotAuthUser,
+        [SuperUser.Code] = SuperUser
     };
 
     /// <summary>
@@ -58,6 +64,11 @@ public class Role : Entity<SequentialGuid>
     /// Возвращает наименование.
     /// </summary>
     public RoleName Name { get; }
+
+    /// <summary>
+    /// Определяет, является ли роль системной (например, SuperUser).
+    /// </summary>
+    public bool IsSystemRole() => this == SuperUser;
 
     /// <summary>
     /// Возвращает все значения перечисления.
