@@ -36,6 +36,10 @@ internal class NotAuthUserConfiguration : EntityTypeConfigurationBase<NotAuthUse
 
         builder.HasOne(na => na.Creator)
                .WithMany(u => u.NotAuthUsers)
-               .HasForeignKey("creator_id");
+               .HasForeignKey("creator_user_id");
+
+        builder.Property("creator_user_id")
+               .HasComment("Идентификатор пользователя, создавшего неавторизованного пользователя");
+        
     }
 }

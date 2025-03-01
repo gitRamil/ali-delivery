@@ -38,6 +38,10 @@ internal class UserConfiguration : EntityTypeConfigurationBase<User>
         builder.HasIndex(u => u.Login)
                .IsUnique();
 
+        builder.Property(u => u.BirthDay)
+               .HasConversion(b => (DateTime)b, s => new UserBirthDay(s))
+               .HasComment("Дата рождения пользователя");
+
         builder.Property(u => u.Password)
                .HasMaxLength(UserLastName.MaxLength)
                .HasConversion(l => (string)l, s => new UserPassword(s))
@@ -50,10 +54,6 @@ internal class UserConfiguration : EntityTypeConfigurationBase<User>
         builder.Property("passport_info_id")
                .HasComment("Информация о паспорте");
 
-        builder.Property(u => u.BirthDay)
-               .HasConversion(b => (DateTime)b, s => new UserBirthDay(s))
-               .HasComment("Дата рождения пользователя");
-
         builder.HasOne(u => u.Role)
                .WithMany()
                .HasForeignKey("role_id");
@@ -63,6 +63,6 @@ internal class UserConfiguration : EntityTypeConfigurationBase<User>
 
         builder.HasMany(u => u.NotAuthUsers)
                .WithOne(na => na.Creator)
-               .HasForeignKey("creator_id");
+               .HasForeignKey("creator_user_id");
     }
 }

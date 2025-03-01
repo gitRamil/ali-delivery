@@ -18,30 +18,24 @@ public class NotAuthUser : Entity<SequentialGuid>
     /// <param name="lastName">Фамилия.</param>
     /// <param name="phoneNumber">Телефонный номер.</param>
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если любой из параметров <paramref name="firstName" />,
-    /// <paramref name="lastName" />  равен <c>null</c>.
+    /// Возникает, если любой из параметров <paramref name="creator" /> равен <c>null</c>.
     /// </exception>
-    public NotAuthUser(SequentialGuid id, User creator, NotAuthUserFirstName? firstName = null, NotAuthUserLastName? lastName = null, NotAuthUserPhoneNumber? phoneNumber = null)
+    public NotAuthUser(SequentialGuid id, User creator, NotAuthUserFirstName? firstName, NotAuthUserLastName? lastName, NotAuthUserPhoneNumber? phoneNumber)
         : base(id)
     {
-        Creator = creator;
+        Creator = creator ?? throw new ArgumentNullException(nameof(creator));
         FirstName = firstName;
         LastName = lastName;
         PhoneNumber = phoneNumber;
     }
 
     /// <summary>
-    /// Инициализирует новый экземпляр типа <see cref="NotAuthUser" /> для использования ORM.
+    /// Инициализирует новый экземпляр типа <see cref="NotAuthUser" />.
     /// </summary>
-    /// <remarks>Конструктор без параметров необходим для Entity Framework.</remarks>
+    /// <remarks>Конструктор для Entity Framework.</remarks>
     protected NotAuthUser()
-        : base(SequentialGuid.Empty)
-    {
+        : base(SequentialGuid.Empty) =>
         Creator = null!;
-        FirstName = null!;
-        LastName = null!;
-        PhoneNumber = null!;
-    }
 
     /// <summary>
     /// Создатель.

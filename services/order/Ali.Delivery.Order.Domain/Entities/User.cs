@@ -111,7 +111,9 @@ public class User : Entity<SequentialGuid>
     /// <param name="firstName">Имя.</param>
     /// <param name="lastName">Фамилия.</param>
     /// <param name="phoneNumber">Телефонный номер.</param>
-    /// <exception cref="InvalidOperationException">Выдает ошибку, если не заполнены паспортные данные пользователя.</exception>
+    /// <exception cref="InvalidOperationException">
+    /// Выдает ошибку, если не заполнены паспортные данные пользователя.
+    /// </exception>
     public NotAuthUser AddNotAuthUser(string firstName, string lastName, string phoneNumber)
     {
         if (PassportInfo == null)
