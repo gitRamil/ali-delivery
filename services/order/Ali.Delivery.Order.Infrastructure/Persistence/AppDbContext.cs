@@ -23,7 +23,7 @@ public class AppDbContext : DbContext, IAppDbContext
     /// <param name="options">Параметры конфигурации для контекста базы данных.</param>
     /// <param name="dateTimeService">Сервис для работы с датой и временем.</param>
     /// <exception cref="ArgumentNullException">
-    /// Выбрасывается, если <paramref name="dateTimeService" /> имеет значение <c>null</c>.
+    /// Возникает, если <paramref name="dateTimeService" /> равен <c>null</c>.
     /// </exception>
     public AppDbContext(DbContextOptions<AppDbContext> options, IDateTimeService dateTimeService)
         : base(options)

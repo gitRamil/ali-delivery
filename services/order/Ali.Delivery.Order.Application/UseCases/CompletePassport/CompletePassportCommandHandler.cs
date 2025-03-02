@@ -21,6 +21,10 @@ public class CompletePassportCommandHandler : IRequestHandler<CompletePassportCo
     /// </summary>
     /// <param name="context">Контекст БД.</param>
     /// <param name="currentUser">Текущий пользователь.</param>
+    /// <exception cref="ArgumentNullException">
+    /// Возникает, если <paramref name="context" /> или
+    /// <paramref name="currentUser" /> равен <c>null</c>.
+    /// </exception>
     public CompletePassportCommandHandler(IAppDbContext context, ICurrentUser currentUser)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));

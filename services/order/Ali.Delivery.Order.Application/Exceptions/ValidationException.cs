@@ -34,7 +34,9 @@ public sealed class ValidationException : Exception
     /// Инициализирует новый экземпляр типа <see cref="ValidationException" />.
     /// </summary>
     /// <param name="errors">Словарь, содержащий описание ошибок.</param>
-    /// <exception cref="System.ArgumentNullException">Возникает, если <paramref name="errors" /> равен <c>null</c></exception>
+    /// <exception cref="ArgumentNullException">
+    /// Возникает, если <paramref name="errors" /> равен <c>null</c>.
+    /// </exception>
     public ValidationException(IDictionary<string, string[]> errors) => Errors = errors ?? throw new ArgumentNullException(nameof(errors));
 
     /// <summary>
@@ -42,6 +44,9 @@ public sealed class ValidationException : Exception
     /// </summary>
     /// <param name="errors">Словарь, содержащий описание ошибок по свойствам, не прошедшим проверку.</param>
     /// <param name="message">Сообщение с описанием ошибки.</param>
+    /// <exception cref="ArgumentNullException">
+    /// Возникает, если <paramref name="errors" /> равен <c>null</c>.
+    /// </exception>
     public ValidationException(IDictionary<string, string[]> errors, string? message)
         : base(message) =>
         Errors = errors ?? throw new ArgumentNullException(nameof(errors));
@@ -52,6 +57,9 @@ public sealed class ValidationException : Exception
     /// <param name="errors">Словарь, содержащий описание ошибок по свойствам, не прошедшим проверку.</param>
     /// <param name="message">Сообщение с описанием ошибки.</param>
     /// <param name="innerException">Внутреннее исключение.</param>
+    /// <exception cref="ArgumentNullException">
+    /// Возникает, если <paramref name="errors" /> равен <c>null</c>.
+    /// </exception>
     public ValidationException(IDictionary<string, string[]> errors, string? message, Exception? innerException)
         : base(message, innerException) =>
         Errors = errors ?? throw new ArgumentNullException(nameof(errors));

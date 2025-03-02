@@ -66,12 +66,12 @@ public class Role : Entity<SequentialGuid>
     public RoleName Name { get; }
 
     /// <summary>
-    /// Определяет, является ли роль системной (например, SuperUser).
-    /// </summary>
-    public bool IsSystemRole() => this == SuperUser;
-
-    /// <summary>
     /// Возвращает все значения перечисления.
     /// </summary>
     public static IReadOnlyCollection<Role> GetAllValues() => RoleNames.Values;
+
+    /// <summary>
+    /// Определяет, является ли роль системной (например, SuperUser).
+    /// </summary>
+    public bool IsSystemRole() => this == SuperUser;
 }
