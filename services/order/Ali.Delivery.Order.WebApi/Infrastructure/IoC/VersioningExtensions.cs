@@ -18,8 +18,6 @@ internal static class VersioningExtensions
     /// <returns>Коллекция дескрипторов службы.</returns>
     public static IServiceCollection AddDefaultApiVersioning(this IServiceCollection services)
     {
-        ArgumentNullException.ThrowIfNull(nameof(services));
-
         services.AddRouting(options => options.LowercaseUrls = true);
 
         services.AddApiVersioning(options =>
