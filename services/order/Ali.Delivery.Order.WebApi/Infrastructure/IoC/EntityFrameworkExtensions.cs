@@ -33,8 +33,6 @@ internal static class EntityFrameworkExtensions
     /// <returns>Коллекция дескрипторов службы.</returns>
     public static IServiceCollection AddDefaultEfCore(this IServiceCollection services)
     {
-        ArgumentNullException.ThrowIfNull(nameof(services));
-
         services.AddDbContext<AppDbContext>((provider, builder) =>
         {
             var configuration = provider.GetRequiredService<IConfiguration>();
