@@ -66,6 +66,11 @@ public class RolePermission : Entity<SequentialGuid>
             .Concat(GetCourierPermissions())
             .Concat(GetAdminPermissions());
 
+    private static IEnumerable<RolePermission> GetAdminPermissions()
+    {
+        yield return new RolePermission(new Guid("3a1844e7-40b6-8c81-44cf-f1ff77037740"), Role.SuperUser.Id, Permission.FullAccess.Id);
+    }
+
     private static IEnumerable<RolePermission> GetBasicUserPermissions()
     {
         yield return new RolePermission(new Guid("3a1844e7-409f-dd6f-39ed-1f2f67aef722"), Role.BasicUser.Id, Permission.UserOrderManagement.Id);
@@ -83,10 +88,5 @@ public class RolePermission : Entity<SequentialGuid>
     private static IEnumerable<RolePermission> GetNotAuthUserPermissions()
     {
         yield return new RolePermission(new Guid("3a1844e7-40b5-634c-f5e0-662dfe13dff1"), Role.NotAuthUser.Id, Permission.Tracking.Id);
-    }
-
-    private static IEnumerable<RolePermission> GetAdminPermissions()
-    {
-        yield return new RolePermission(new Guid("3a1844e7-40b6-8c81-44cf-f1ff77037740"), Role.SuperUser.Id, Permission.FullAccess.Id);
     }
 }

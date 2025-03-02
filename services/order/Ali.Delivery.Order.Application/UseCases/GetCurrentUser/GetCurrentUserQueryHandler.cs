@@ -21,7 +21,8 @@ public class GetCurrentUserQueryHandler : IRequestHandler<GetCurrentUserQuery, U
     /// <param name="query">Контекст БД.</param>
     /// <param name="currentUser">Текущий пользователь.</param>
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если <paramref name="query" /> равен <c>null</c>.
+    /// Возникает, если <paramref name="query" /> или
+    /// <paramref name="currentUser" /> равен <c>null</c>.
     /// </exception>
     public GetCurrentUserQueryHandler(IAppDbContext query, ICurrentUser currentUser)
     {

@@ -20,9 +20,11 @@ public class OrderInfo : Entity<SequentialGuid>
     /// <param name="addressFrom">Адрес отправления.</param>
     /// <param name="addressTo">Адрес доставки.</param>
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если любой из параметров <paramref name="weight" />, <paramref name="size" />,
-    /// <paramref name="price" />, <paramref name="addressFrom" /> или <paramref name="addressTo" />
-    /// равен <c>null</c>.
+    /// Возникает, если <paramref name="weight" /> или
+    /// <paramref name="size" /> или
+    /// <paramref name="price" /> или
+    /// <paramref name="addressFrom" /> или
+    /// <paramref name="addressTo" /> равен <c>null</c>.
     /// </exception>
     public OrderInfo(SequentialGuid id, OrderInfoWeight weight, Size size, OrderInfoPrice price, OrderInfoAddressFrom addressFrom, OrderInfoAddressTo addressTo)
         : base(id)

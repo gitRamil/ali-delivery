@@ -18,7 +18,7 @@ public class NotAuthUser : Entity<SequentialGuid>
     /// <param name="lastName">Фамилия.</param>
     /// <param name="phoneNumber">Телефонный номер.</param>
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если любой из параметров <paramref name="creator" /> равен <c>null</c>.
+    /// Возникает, если <paramref name="creator" /> равен <c>null</c>.
     /// </exception>
     public NotAuthUser(SequentialGuid id, User creator, NotAuthUserFirstName? firstName, NotAuthUserLastName? lastName, NotAuthUserPhoneNumber? phoneNumber)
         : base(id)

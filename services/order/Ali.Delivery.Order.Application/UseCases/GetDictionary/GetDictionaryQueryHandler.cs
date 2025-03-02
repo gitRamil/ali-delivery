@@ -16,7 +16,7 @@ public sealed class GetDictionaryQueryHandler : IRequestHandler<GetDictionaryQue
     /// </summary>
     /// <param name="dictionaryValuesProvider">Провайдер значений справочника.</param>
     /// <exception cref="ArgumentNullException">
-    /// <paramref name="dictionaryValuesProvider" /> равен <c>null</c>.
+    /// Возникает, если <paramref name="dictionaryValuesProvider"/> равен <c>null</c>.
     /// </exception>
     public GetDictionaryQueryHandler(IDictionaryValuesProvider dictionaryValuesProvider) =>
         _dictionaryValuesProvider = dictionaryValuesProvider ?? throw new ArgumentNullException(nameof(dictionaryValuesProvider));

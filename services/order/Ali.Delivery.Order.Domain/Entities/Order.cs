@@ -22,8 +22,10 @@ public class Order : Entity<SequentialGuid>
     /// <param name="courier">Курьер.</param>
     /// <param name="notAuthReceiver">Незарегистрированный получатель.</param>
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если любой из параметров <paramref name="orderName" />,
-    /// <paramref name="orderInfo" />, <paramref name="orderStatus" /> равен <c>null</c>.
+    /// Возникает, если <paramref name="orderName" /> или
+    /// <paramref name="orderInfo" /> или
+    /// <paramref name="orderStatus" /> или
+    /// <paramref name="sender" /> равен <c>null</c>.
     /// </exception>
     public Order(SequentialGuid id,
                  OrderName orderName,
@@ -169,6 +171,9 @@ public class Order : Entity<SequentialGuid>
     /// Обновляет наименование заказа.
     /// </summary>
     /// <param name="name">Наименование.</param>
+    /// <exception cref="ArgumentNullException">
+    /// Возникает, если <paramref name="name" /> равен <c>null</c>.
+    /// </exception>
     public void UpdateOrderName(OrderName name)
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));
@@ -178,6 +183,9 @@ public class Order : Entity<SequentialGuid>
     /// Обновляет статус заказа.
     /// </summary>
     /// <param name="orderStatus">Статус заказа.</param>
+    /// <exception cref="ArgumentNullException">
+    /// Возникает, если <paramref name="orderStatus" /> равен <c>null</c>.
+    /// </exception>
     public void UpdateOrderStatus(OrderStatus orderStatus)
     {
         OrderStatus = orderStatus ?? throw new ArgumentNullException(nameof(orderStatus));

@@ -40,8 +40,8 @@ public sealed class NotFoundException : Exception
     /// <param name="type">Тип сущности.</param>
     /// <param name="key">Ключ.</param>
     /// <exception cref="ArgumentNullException">
-    /// >Возникает, если <paramref name="type" /> или равен <paramref name="key" /> равен
-    /// <c>null</c>
+    /// Возникает, если <paramref name="type" /> или
+    /// <paramref name="key" /> равен <c>null</c>.
     /// </exception>
     public NotFoundException(Type type, object key)
     {
@@ -65,21 +65,13 @@ public sealed class NotFoundException : Exception
     /// <param name="key">Ключ.</param>
     /// <param name="message">Сообщение с описанием ошибки.</param>
     /// <exception cref="ArgumentNullException">
-    /// >Возникает, если <paramref name="type" /> или равен <paramref name="key" /> равен
-    /// <c>null</c>
+    /// Возникает, если <paramref name="type" /> или <paramref name="key" /> равен <c>null</c>.
     /// </exception>
     public NotFoundException(Type type, object key, string? message)
         : base(message)
     {
-        if (type == null)
-        {
-            throw new ArgumentNullException(nameof(type));
-        }
-
-        if (key == null)
-        {
-            throw new ArgumentNullException(nameof(key));
-        }
+        ArgumentNullException.ThrowIfNull(type);
+        ArgumentNullException.ThrowIfNull(key);
 
         Details = $"Сущность {type.FullName} с ключом {key} не найдена.";
     }
@@ -92,21 +84,13 @@ public sealed class NotFoundException : Exception
     /// <param name="message">Сообщение с описанием ошибки.</param>
     /// <param name="innerException">Внутреннее исключение.</param>
     /// <exception cref="ArgumentNullException">
-    /// >Возникает, если <paramref name="type" /> или равен <paramref name="key" /> равен
-    /// <c>null</c>
+    /// Возникает, если <paramref name="type" /> или <paramref name="key" /> равен <c>null</c>.
     /// </exception>
     public NotFoundException(Type type, object key, string? message, Exception? innerException)
         : base(message, innerException)
     {
-        if (type == null)
-        {
-            throw new ArgumentNullException(nameof(type));
-        }
-
-        if (key == null)
-        {
-            throw new ArgumentNullException(nameof(key));
-        }
+        ArgumentNullException.ThrowIfNull(type);
+        ArgumentNullException.ThrowIfNull(key);
 
         Details = $"Сущность {type.FullName} с ключом {key} не найдена.";
     }
