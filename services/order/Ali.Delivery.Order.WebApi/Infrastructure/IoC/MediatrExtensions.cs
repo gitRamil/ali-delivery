@@ -18,8 +18,6 @@ internal static class MediatrExtensions
     /// <returns>Коллекция дескрипторов службы.</returns>
     public static IServiceCollection AddDefaultMediatr(this IServiceCollection services)
     {
-        ArgumentNullException.ThrowIfNull(nameof(services));
-
         services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
 

@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Ali.Delivery.Domain.Core;
 
 namespace Ali.Delivery.Order.Domain.ValueObjects.PassportInfo;
@@ -21,7 +22,7 @@ public class PassportInfoIssuedBy : ValueObject
     /// </summary>
     /// <param name="issuedBy">Кем выдан.</param>
     /// <exception cref="ArgumentException">Возникает, если строка пуста или превышает максимальную длину.</exception>
-    public PassportInfoIssuedBy(string? issuedBy)
+    public PassportInfoIssuedBy(string issuedBy)
     {
         if (string.IsNullOrWhiteSpace(issuedBy))
         {
@@ -46,9 +47,18 @@ public class PassportInfoIssuedBy : ValueObject
     {
         yield return _issuedBy;
     }
+    
+    /// <summary>
+    /// Выполняет явное преобразование из <see cref="string" /> в <see cref="PassportInfoIssuedBy" />.
+    /// </summary>
+    /// <param name="obj">Номер паспорта.</param>
+    [return: NotNullIfNotNull(nameof(obj))]
+    public static explicit operator PassportInfoIssuedBy?(string? obj) => obj == null ? null : new PassportInfoIssuedBy(obj);
 
     /// <summary>
     /// Выполняет неявное преобразование из <see cref="PassportInfoIssuedBy" /> в <see cref="string" />.
     /// </summary>
-    public static implicit operator string?(PassportInfoIssuedBy? obj) => obj?._issuedBy ?? null;
+    /// <param name="obj">Номер паспорта.</param>
+    [return: NotNullIfNotNull(nameof(obj))]
+    public static implicit operator string?(PassportInfoIssuedBy? obj) => obj?._issuedBy;
 }

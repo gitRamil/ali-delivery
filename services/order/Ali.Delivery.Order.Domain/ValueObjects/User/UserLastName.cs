@@ -25,15 +25,21 @@ public class UserLastName : ValueObject
     /// Возникает, если <paramref name="name" /> является <c>null</c>,
     /// <c>whitespace</c> или его длина превышает <see cref="MaxLength" />.
     /// </exception>
-    public UserLastName(string? name)
+    public UserLastName(string name)
     {
-        _name = name ?? throw new ArgumentNullException(nameof(name));
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("Фамилия пользователя не может быть null или пустой строкой.", nameof(name));
+        }
+        
         name = name.Trim();
 
         if (name.Length > MaxLength)
         {
             throw new ArgumentException($"Фамилия не может быть длиннее {MaxLength} символов.", nameof(name));
         }
+        
+        _name = name;
     }
 
     /// <inheritdoc />
@@ -46,10 +52,18 @@ public class UserLastName : ValueObject
     {
         yield return _name;
     }
+    
+    /// <summary>
+    /// Выполняет явное преобразование из <see cref="string" /> в <see cref="UserLastName" />.
+    /// </summary>
+    /// <param name="obj">Номер паспорта.</param>
+    [return: NotNullIfNotNull(nameof(obj))]
+    public static explicit operator UserLastName?(string? obj) => obj == null ? null : new UserLastName(obj);
 
     /// <summary>
     /// Выполняет неявное преобразование из <see cref="UserLastName" /> в <see cref="string" />.
     /// </summary>
+    /// <param name="obj">Номер паспорта.</param>
     [return: NotNullIfNotNull(nameof(obj))]
     public static implicit operator string?(UserLastName? obj) => obj?._name;
 }
