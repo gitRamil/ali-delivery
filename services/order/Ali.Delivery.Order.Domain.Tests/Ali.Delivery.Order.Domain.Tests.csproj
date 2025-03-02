@@ -7,6 +7,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Ali.Delivery.Order.Domain\Ali.Delivery.Order.Domain.csproj"/>
+        <ProjectReference Include="..\Inno.Air.PerformanceManagement.Tests.Shared\Inno.Air.PerformanceManagement.Tests.Shared.csproj" />
     </ItemGroup>
 
     <ItemGroup>

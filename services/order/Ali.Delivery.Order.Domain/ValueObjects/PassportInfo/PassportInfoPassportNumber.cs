@@ -21,7 +21,7 @@ public sealed class PassportInfoPassportNumber : ValueObject
     /// </summary>
     /// <param name="passportNumber">Номер паспорта.</param>
     /// <exception cref="ArgumentException">Возникает, если номер паспорта пуст или превышает максимальную длину.</exception>
-    public PassportInfoPassportNumber(string? passportNumber)
+    public PassportInfoPassportNumber(string passportNumber)
     {
         if (string.IsNullOrWhiteSpace(passportNumber))
         {

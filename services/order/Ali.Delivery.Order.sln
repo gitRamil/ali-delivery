@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ali.Delivery.Order.Infrastr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ali.Delivery.Order.WebApi.Tests", "Ali.Delivery.Order.WebApi.Tests\Ali.Delivery.Order.WebApi.Tests.csproj", "{ACCEDCF5-1D60-4F4B-B145-18FDAB093D3A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inno.Air.PerformanceManagement.Tests.Shared", "Inno.Air.PerformanceManagement.Tests.Shared\Inno.Air.PerformanceManagement.Tests.Shared.csproj", "{8A010D11-E57B-403B-9688-2A69CC2EF1B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +64,10 @@ Global
 		{ACCEDCF5-1D60-4F4B-B145-18FDAB093D3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACCEDCF5-1D60-4F4B-B145-18FDAB093D3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACCEDCF5-1D60-4F4B-B145-18FDAB093D3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A010D11-E57B-403B-9688-2A69CC2EF1B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A010D11-E57B-403B-9688-2A69CC2EF1B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A010D11-E57B-403B-9688-2A69CC2EF1B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A010D11-E57B-403B-9688-2A69CC2EF1B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0248D012-1383-48CD-B9F3-41A0706AE9CA} = {C9C76D75-EF93-4624-A3CA-7BB0B0728D2C}
@@ -71,5 +77,6 @@ Global
 		{A1CD0D37-48BA-4D1A-8600-EE3EE151896C} = {DC6DBF47-4D83-4550-8BF2-07F29C89686E}
 		{9A36E3E4-E517-4BA8-B44D-FB8222F5C2A7} = {DC6DBF47-4D83-4550-8BF2-07F29C89686E}
 		{ACCEDCF5-1D60-4F4B-B145-18FDAB093D3A} = {DC6DBF47-4D83-4550-8BF2-07F29C89686E}
+		{8A010D11-E57B-403B-9688-2A69CC2EF1B0} = {DC6DBF47-4D83-4550-8BF2-07F29C89686E}
 	EndGlobalSection
 EndGlobal
