@@ -21,12 +21,12 @@ internal class UserConfiguration : EntityTypeConfigurationBase<User>
 
         builder.Property(u => u.FirstName)
                .HasMaxLength(UserFirstName.MaxLength)
-               .HasConversion(f => (string?)f, s => new UserFirstName(s))
+               .HasConversion(f => (string?)f, s => (UserFirstName?)s)
                .HasComment("Имя пользователя");
 
         builder.Property(u => u.LastName)
                .HasMaxLength(UserLastName.MaxLength)
-               .HasConversion(l => (string?)l, s => new UserLastName(s))
+               .HasConversion(l => (string?)l, s => (UserLastName?)s)
                .HasComment("Фамилия пользователя");
 
         builder.Property(u => u.Login)

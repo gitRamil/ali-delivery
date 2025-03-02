@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Ali.Delivery.Domain.Core;
 
 namespace Ali.Delivery.Order.Domain.ValueObjects.PassportInfo;
@@ -46,9 +47,18 @@ public sealed class PassportInfoPassportNumber : ValueObject
     {
         yield return _passportNumber;
     }
+    
+    /// <summary>
+    /// Выполняет явное преобразование из <see cref="string" /> в <see cref="PassportInfoPassportNumber" />.
+    /// </summary>
+    /// <param name="obj">Номер паспорта.</param>
+    [return: NotNullIfNotNull(nameof(obj))]
+    public static explicit operator PassportInfoPassportNumber?(string? obj) => obj == null ? null : new PassportInfoPassportNumber(obj);
 
     /// <summary>
     /// Выполняет неявное преобразование из <see cref="PassportInfoPassportNumber" /> в <see cref="string" />.
     /// </summary>
-    public static implicit operator string?(PassportInfoPassportNumber? obj) => obj?._passportNumber ?? null;
+    /// <param name="obj">Номер паспорта.</param>
+    [return: NotNullIfNotNull(nameof(obj))]
+    public static implicit operator string?(PassportInfoPassportNumber? obj) => obj?._passportNumber;
 }
