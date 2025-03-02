@@ -8,10 +8,12 @@
         <IsRoslynComponent>true</IsRoslynComponent>
     </PropertyGroup>
     <PropertyGroup>
-        <Version>0.0.2</Version>
+        <Version>0.0.3</Version>
         <Authors>Ramil Alimukhamedov</Authors>
         <Description>Анализатор кода, упрощающий создание документации.</Description>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/gitRamil/ali-delivery/tree/main/services/analyzer</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/gitRamil/ali-delivery/tree/main/services/analyzer</RepositoryUrl>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0">

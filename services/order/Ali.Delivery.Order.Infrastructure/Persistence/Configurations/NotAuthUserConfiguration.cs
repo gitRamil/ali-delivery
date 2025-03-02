@@ -11,11 +11,11 @@ namespace Ali.Delivery.Order.Infrastructure.Persistence.Configurations;
 /// </summary>
 internal class NotAuthUserConfiguration : EntityTypeConfigurationBase<NotAuthUser>
 {
-    /// <summary>
-    /// Вызывается при выполнении конфигурации сущности типа <see cref="NotAuthUser" />.
-    /// </summary>
-    /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
-    protected override void OnConfigure(EntityTypeBuilder<NotAuthUser> builder)
+       /// <summary>
+       /// Вызывается при выполнении конфигурации сущности типа <see cref="NotAuthUser" />.
+       /// </summary>
+       /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
+       protected override void OnConfigure(EntityTypeBuilder<NotAuthUser> builder)
     {
         builder.ToTable("not_auth_users", t => t.HasComment("Незарегистрированные пользователи"));
 
@@ -40,6 +40,5 @@ internal class NotAuthUserConfiguration : EntityTypeConfigurationBase<NotAuthUse
 
         builder.Property("creator_user_id")
                .HasComment("Идентификатор пользователя, создавшего неавторизованного пользователя");
-        
     }
 }

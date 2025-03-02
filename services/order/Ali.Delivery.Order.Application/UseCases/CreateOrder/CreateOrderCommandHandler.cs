@@ -25,7 +25,8 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Gui
     /// <param name="context">Контекст БД.</param>
     /// <param name="currentUser">Текущий пользователь</param>
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если <paramref name="context" /> равен <c>null</c>.
+    /// Возникает, если <paramref name="context" /> или
+    /// <paramref name="currentUser" /> равен <c>null</c>.
     /// </exception>
     public CreateOrderCommandHandler(IAppDbContext context, ICurrentUser currentUser)
     {

@@ -11,11 +11,11 @@ namespace Ali.Delivery.Order.Infrastructure.Persistence.Configurations;
 /// </summary>
 internal class OrderInfoConfiguration : EntityTypeConfigurationBase<OrderInfo>
 {
-    /// <summary>
-    /// Вызывается при выполнении конфигурации сущности типа <see cref="OrderInfo" />.
-    /// </summary>
-    /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
-    protected override void OnConfigure(EntityTypeBuilder<OrderInfo> builder)
+       /// <summary>
+       /// Вызывается при выполнении конфигурации сущности типа <see cref="OrderInfo" />.
+       /// </summary>
+       /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
+       protected override void OnConfigure(EntityTypeBuilder<OrderInfo> builder)
     {
         builder.ToTable("order_details", t => t.HasComment("Информация о заказах"));
 

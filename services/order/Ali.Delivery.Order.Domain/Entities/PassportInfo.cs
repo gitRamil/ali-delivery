@@ -19,8 +19,10 @@ public class PassportInfo : Entity<SequentialGuid>
     /// <param name="regDate">Дата регистрации паспорта.</param>
     /// <param name="issuedBy">Кем выдан.</param>
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если любой из параметров <paramref name="typeId" />, <paramref name="passportNumber" />,
-    /// <paramref name="regDate" /> или <paramref name="issuedBy" /> равен <c>null</c>.
+    /// Возникает, если <paramref name="typeId" /> или
+    /// <paramref name="passportNumber" /> или
+    /// <paramref name="regDate" /> или
+    /// <paramref name="issuedBy" /> равен <c>null</c>.
     /// </exception>
     public PassportInfo(SequentialGuid id, PassportType typeId, PassportInfoPassportNumber passportNumber, PassportInfoRegDate regDate, PassportInfoIssuedBy issuedBy)
         : base(id)

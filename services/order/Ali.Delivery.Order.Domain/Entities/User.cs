@@ -26,9 +26,10 @@ public class User : Entity<SequentialGuid>
     /// <param name="birthDay">Дата рождения пользователя.</param>
     /// <param name="passportInfo">Информация о паспорте пользователя</param>
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если любой из параметров <paramref name="firstName" />,
-    /// <paramref name="lastName" />, <paramref name="passportInfo" />,
-    /// <paramref name="role" /> или <paramref name="birthDay" /> равен <c>null</c>.
+    /// Возникает, если <paramref name="login" /> или
+    /// <paramref name="password" /> или
+    /// <paramref name="role" /> или
+    /// <paramref name="birthDay" /> равен <c>null</c>.
     /// </exception>
     public User(SequentialGuid id,
                 UserLogin login,
@@ -158,6 +159,9 @@ public class User : Entity<SequentialGuid>
     /// Обновляет дату рождения.
     /// </summary>
     /// <param name="birthDay">Новая дата рождения.</param>
+    /// <exception cref="ArgumentNullException">
+    /// Возникает, если <paramref name="birthDay" /> равен <c>null</c>.
+    /// </exception>
     public void UpdateBirthDay(UserBirthDay birthDay)
     {
         BirthDay = birthDay ?? throw new ArgumentNullException(nameof(birthDay));
@@ -167,6 +171,9 @@ public class User : Entity<SequentialGuid>
     /// Обновляет логин.
     /// </summary>
     /// <param name="login">Новый логин.</param>
+    /// <exception cref="ArgumentNullException">
+    /// Возникает, если <paramref name="login" /> равен <c>null</c>.
+    /// </exception>
     public void UpdateLogin(UserLogin login)
     {
         Login = login ?? throw new ArgumentNullException(nameof(login));
@@ -177,6 +184,10 @@ public class User : Entity<SequentialGuid>
     /// </summary>
     /// <param name="userFirstName">Новое имя.</param>
     /// <param name="userLastName">Новая фамилия.</param>
+    /// <exception cref="ArgumentNullException">
+    /// Возникает, если <paramref name="userFirstName" /> или
+    /// <paramref name="userLastName" /> равен <c>null</c>.
+    /// </exception>
     public void UpdateName(UserFirstName userFirstName, UserLastName userLastName)
     {
         FirstName = userFirstName ?? throw new ArgumentNullException(nameof(userFirstName));
@@ -187,6 +198,9 @@ public class User : Entity<SequentialGuid>
     /// Обновляет роль.
     /// </summary>
     /// <param name="role">Новая роль.</param>
+    /// <exception cref="ArgumentNullException">
+    /// Возникает, если <paramref name="role" /> равен <c>null</c>.
+    /// </exception>
     public void UpdateRole(Role role)
     {
         Role = role ?? throw new ArgumentNullException(nameof(role));
