@@ -26,7 +26,7 @@ public class OrderInfoWeight : ValueObject
     /// <exception cref="ArgumentException">Возникает, если вес меньше минимального или больше максимального.</exception>
     public OrderInfoWeight(decimal weight)
     {
-        if (weight < MinWeight || weight > MaxWeight)
+        if (weight is < MinWeight or > MaxWeight)
         {
             throw new ArgumentException($"Вес заказа должен быть в пределах от {MinWeight} до {MaxWeight} кг.", nameof(weight));
         }

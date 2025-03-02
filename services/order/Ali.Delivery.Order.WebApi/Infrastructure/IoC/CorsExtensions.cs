@@ -15,8 +15,6 @@ internal static class CorsExtensions
     /// <returns>Коллекция дескрипторов службы.</returns>
     public static IServiceCollection AddDefaultCorsPolicy(this IServiceCollection services)
     {
-        ArgumentNullException.ThrowIfNull(nameof(services));
-
         services.AddCors(options =>
         {
             options.AddDefaultPolicy(policyBuilder =>
