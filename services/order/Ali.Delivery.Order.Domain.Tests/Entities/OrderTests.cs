@@ -56,8 +56,6 @@ public class OrderTests
         NotAuthUser? notAuthReceiver = null;
         User? courier = null;
 
-
-
         // Act.
         var act = () => new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, courier);
 
@@ -104,7 +102,6 @@ public class OrderTests
         NotAuthUser? notAuthReceiver = null;
         User? courier = null;
 
-
         // Act.
         var act = () => new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, courier);
 
@@ -127,7 +124,6 @@ public class OrderTests
         var receiver = fixture.Create<User>();
         NotAuthUser? notAuthReceiver = null;
         User? courier = null;
-
 
         // Act.
         var act = () => new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, courier);
@@ -153,7 +149,6 @@ public class OrderTests
         NotAuthUser? notAuthReceiver = null;
         User? courier = null;
 
-
         // Act.
         var act = () => new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, courier);
 
@@ -172,7 +167,7 @@ public class OrderTests
         var id = fixture.Create<SequentialGuid>();
         var orderName = fixture.Create<OrderName>();
         var orderInfo = fixture.Create<OrderInfo>();
-        OrderStatus orderStatus = OrderStatus.InProgress;
+        var orderStatus = OrderStatus.InProgress;
         var sender = fixture.Create<User>();
         var receiver = fixture.Create<User>();
         NotAuthUser? notAuthReceiver = null;
@@ -200,7 +195,7 @@ public class OrderTests
         var id = fixture.Create<SequentialGuid>();
         var orderName = fixture.Create<OrderName>();
         var orderInfo = fixture.Create<OrderInfo>();
-        OrderStatus orderStatus = OrderStatus.InProgress;
+        var orderStatus = OrderStatus.InProgress;
         var sender = fixture.Create<User>();
         var receiver = fixture.Create<User>();
         NotAuthUser? notAuthReceiver = null;
@@ -225,7 +220,7 @@ public class OrderTests
         var id = fixture.Create<SequentialGuid>();
         var orderName = fixture.Create<OrderName>();
         var orderInfo = fixture.Create<OrderInfo>();
-        OrderStatus orderStatus = OrderStatus.Created;
+        var orderStatus = OrderStatus.Created;
         var sender = fixture.Create<User>();
         var receiver = fixture.Create<User>();
         NotAuthUser? notAuthReceiver = null;
@@ -255,7 +250,7 @@ public class OrderTests
         var id = fixture.Create<SequentialGuid>();
         var orderName = fixture.Create<OrderName>();
         var orderInfo = fixture.Create<OrderInfo>();
-        OrderStatus orderStatus = OrderStatus.Created;
+        var orderStatus = OrderStatus.Created;
         var sender = fixture.Create<User>();
         var receiver = fixture.Create<User>();
         NotAuthUser? notAuthReceiver = null;
@@ -286,7 +281,7 @@ public class OrderTests
         var id = fixture.Create<SequentialGuid>();
         var orderName = fixture.Create<OrderName>();
         var orderInfo = fixture.Create<OrderInfo>();
-        OrderStatus orderStatus = OrderStatus.InProgress;
+        var orderStatus = OrderStatus.InProgress;
         var sender = fixture.Create<User>();
         var receiver = fixture.Create<User>();
         NotAuthUser? notAuthReceiver = null;
@@ -312,7 +307,7 @@ public class OrderTests
         var id = fixture.Create<SequentialGuid>();
         var orderName = fixture.Create<OrderName>();
         var orderInfo = fixture.Create<OrderInfo>();
-        OrderStatus orderStatus = OrderStatus.InProgress;
+        var orderStatus = OrderStatus.InProgress;
         var sender = fixture.Create<User>();
         var receiver = fixture.Create<User>();
         NotAuthUser? notAuthReceiver = null;
@@ -338,7 +333,7 @@ public class OrderTests
         var id = fixture.Create<SequentialGuid>();
         var orderName = fixture.Create<OrderName>();
         var orderInfo = fixture.Create<OrderInfo>();
-        OrderStatus orderStatus = OrderStatus.InProgress;
+        var orderStatus = OrderStatus.InProgress;
         var sender = fixture.Create<User>();
         var receiver = fixture.Create<User>();
         NotAuthUser? notAuthReceiver = null;
@@ -431,7 +426,7 @@ public class OrderTests
         act.Should()
            .Throw<ArgumentNullException>(nameof(orderNameNew));
     }
-    
+
     [Fact]
     public void UpdateOrderNameShouldSucceedWhenValidArgumentsPassed()
     {
@@ -456,6 +451,4 @@ public class OrderTests
         act.Should()
            .NotThrow();
     }
-
 }
-
