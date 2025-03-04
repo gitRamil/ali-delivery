@@ -11,7 +11,7 @@ namespace Ali.Delivery.Order.Domain.Tests.Entities;
 public class OrderTests
 {
     [Fact]
-    public void ConstructorShouldFailWhenNameIsNull()
+    public void CreateOrderShouldThrowArgumentNullExceptionWhenNameIsNull()
     {
         // Arrange.
         var fixture = new AppFixture();
@@ -35,7 +35,7 @@ public class OrderTests
     }
 
     [Fact]
-    public void ConstructorShouldFailWhenPassportInfoIsNull()
+    public void CreateOrderShouldThrowArgumentNullExceptionWhenPassportInfoIsNull()
     {
         // Arrange.
         var fixture = new AppFixture();
@@ -65,7 +65,7 @@ public class OrderTests
     }
 
     [Fact]
-    public void ConstructorShouldPassWhenValidArgumentsPassed()
+    public void CreateOrderShouldSucceedWhenValidArgumentsPassed()
     {
         // Arrange.
         var fixture = new AppFixture();
@@ -88,7 +88,7 @@ public class OrderTests
     }
 
     [Fact]
-    public void ConstructorShouldFailWhenReceiverIsNull()
+    public void CreateOrderShouldThrowArgumentNullExceptionWhenReceiverIsNull()
     {
         // Arrange.
         var fixture = new AppFixture();
@@ -111,7 +111,7 @@ public class OrderTests
     }
 
     [Fact]
-    public void ConstructorShouldFailWhenOrderInfoIsNull()
+    public void CreateOrderShouldThrowArgumentNullExceptionWhenOrderInfoIsNull()
     {
         // Arrange.
         var fixture = new AppFixture();
@@ -135,7 +135,7 @@ public class OrderTests
     }
 
     [Fact]
-    public void ConstructorShouldFailWhenOrderStatusIsNull()
+    public void CreateOrderShouldThrowArgumentNullExceptionWhenOrderStatusIsNull()
     {
         // Arrange.
         var fixture = new AppFixture();

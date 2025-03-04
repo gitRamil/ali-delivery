@@ -81,10 +81,10 @@ public class OrderInfo : Entity<SequentialGuid>
     /// <inheritdoc cref="OrderInfo" />
     public void UpdateOrderInfo(OrderInfoWeight weight, OrderInfoPrice price, OrderInfoAddressFrom addressFrom, OrderInfoAddressTo addressTo, Size size)
     {
-        Weight = weight;
-        Price = price;
-        AddressFrom = addressFrom;
-        AddressTo = addressTo;
-        Size = size;
+        Weight = weight ?? throw new ArgumentNullException(nameof(weight));
+        Price = price?? throw new ArgumentNullException(nameof(price));
+        AddressFrom = addressFrom ?? throw new ArgumentNullException(nameof(addressFrom));
+        AddressTo = addressTo ?? throw new ArgumentNullException(nameof(addressTo));
+        Size = size ?? throw new ArgumentNullException(nameof(size));
     }
 }

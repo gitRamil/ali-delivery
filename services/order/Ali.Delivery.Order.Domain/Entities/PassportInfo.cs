@@ -76,9 +76,9 @@ public class PassportInfo : Entity<SequentialGuid>
     /// <exception cref="InvalidOperationException"></exception>
     public void UpdatePassport(PassportInfoPassportNumber passportNumber, PassportInfoRegDate regDate, PassportInfoIssuedBy issuedBy, PassportType typeId)
     {
-        PassportType = typeId;
-        PassportNumber = passportNumber;
-        RegDate = regDate;
-        IssuedBy = issuedBy;
+        PassportType = typeId ?? throw new ArgumentNullException(nameof(typeId));
+        PassportNumber = passportNumber ?? throw new ArgumentNullException(nameof(passportNumber));
+        RegDate = regDate ?? throw new ArgumentNullException(nameof(regDate));
+        IssuedBy = issuedBy ?? throw new ArgumentNullException(nameof(issuedBy));
     }
 }

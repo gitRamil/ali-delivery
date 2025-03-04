@@ -29,7 +29,7 @@ public class UserTests
                                             new PassportInfoRegDate(DateTime.Now),
                                             new PassportInfoIssuedBy("MVD RF"));
 
-        //Act.
+        // Act.
         var act = () => new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
 
         // Assert.
@@ -57,7 +57,7 @@ public class UserTests
                                             new PassportInfoRegDate(DateTime.Now),
                                             new PassportInfoIssuedBy("MVD RF"));
 
-        //Act.
+        // Act.
         var act = () => new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
 
         // Assert.
@@ -85,7 +85,7 @@ public class UserTests
                                             new PassportInfoRegDate(DateTime.Now),
                                             new PassportInfoIssuedBy("MVD RF"));
 
-        //Act.
+        // Act.
         var act = () => new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
 
         // Assert.
@@ -113,7 +113,7 @@ public class UserTests
                                             new PassportInfoRegDate(DateTime.Now),
                                             new PassportInfoIssuedBy("MVD RF"));
 
-        //Act.
+        // Act.
         var act = () => new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
 
         // Assert.
@@ -141,7 +141,7 @@ public class UserTests
                                             new PassportInfoRegDate(DateTime.Now),
                                             new PassportInfoIssuedBy("MVD RF"));
 
-        //Act.
+        // Act.
         var act = () => new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
 
         // Assert.
@@ -174,7 +174,7 @@ public class UserTests
         var notAuthLastName = "Ivanov";
         var phoneNumber = "+77471234567";
 
-        //Act.
+        // Act.
         var act = () => user.AddNotAuthUser(notAuthFirstName, notAuthLastName, phoneNumber);
 
         // Assert.
@@ -201,7 +201,7 @@ public class UserTests
         var notAuthLastName = "Ivanov";
         var phoneNumber = "+77471234567";
 
-        //Act.
+        // Act.
         var act = () => user.AddNotAuthUser(notAuthFirstName, notAuthLastName, phoneNumber);
 
         // Assert.
@@ -229,7 +229,7 @@ public class UserTests
         var issuedBy = fixture.Create<PassportInfoIssuedBy>();
         var user = new User(id, login, password, role, birthDay, firstName, lastName);
 
-        //Act.
+        // Act.
         var act = () => user.CreatePassportInfo(passportId, passportType, passportNumber, regDate, issuedBy);
 
         // Assert.
@@ -263,7 +263,7 @@ public class UserTests
         var issuedBy = fixture.Create<PassportInfoIssuedBy>();
         var user = new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
 
-        //Act.
+        // Act.
         var act = () => user.CreatePassportInfo(passportId, passportType, passportNumber, regDate, issuedBy);
 
         // Assert.
@@ -292,7 +292,7 @@ public class UserTests
                                             new PassportInfoRegDate(DateTime.Now),
                                             new PassportInfoIssuedBy("MVD RF"));
         var user = new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
-        //Act.
+        // Act.
         var act = () => user.UpdateBirthDay(newBirthDay);
 
         // Assert.
@@ -321,7 +321,7 @@ public class UserTests
                                             new PassportInfoRegDate(DateTime.Now),
                                             new PassportInfoIssuedBy("MVD RF"));
         var user = new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
-        //Act.
+        // Act.
         var act = () => user.UpdateBirthDay(newBirthDay);
 
         // Assert.
@@ -350,7 +350,7 @@ public class UserTests
                                             new PassportInfoRegDate(DateTime.Now),
                                             new PassportInfoIssuedBy("MVD RF"));
         var user = new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
-        //Act.
+        // Act.
         var act = () => user.UpdateLogin(newLogin);
 
         // Assert.
@@ -379,7 +379,7 @@ public class UserTests
                                             new PassportInfoRegDate(DateTime.Now),
                                             new PassportInfoIssuedBy("MVD RF"));
         var user = new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
-        //Act.
+        // Act.
         var act = () => user.UpdateLogin(newLogin);
 
         // Assert.
@@ -409,7 +409,7 @@ public class UserTests
                                             new PassportInfoRegDate(DateTime.Now),
                                             new PassportInfoIssuedBy("MVD RF"));
         var user = new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
-        //Act.
+        // Act.
         var act = () => user.UpdateName(newFirstName, newLastName);
 
         // Assert.
@@ -439,7 +439,7 @@ public class UserTests
                                             new PassportInfoRegDate(DateTime.Now),
                                             new PassportInfoIssuedBy("MVD RF"));
         var user = new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
-        //Act.
+        // Act.
         var act = () => user.UpdateName(newFirstName, newLastName);
 
         // Assert.
@@ -469,7 +469,7 @@ public class UserTests
                                             new PassportInfoRegDate(DateTime.Now),
                                             new PassportInfoIssuedBy("MVD RF"));
         var user = new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
-        //Act.
+        // Act.
         var act = () => user.UpdateName(newFirstName, newLastName);
 
         // Assert.
@@ -498,7 +498,7 @@ public class UserTests
                                             new PassportInfoRegDate(DateTime.Now),
                                             new PassportInfoIssuedBy("MVD RF"));
         var user = new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
-        //Act.
+        // Act.
         var act = () => user.UpdateRole(newRole);
 
         // Assert.
@@ -527,7 +527,7 @@ public class UserTests
                                             new PassportInfoRegDate(DateTime.Now),
                                             new PassportInfoIssuedBy("MVD RF"));
         var user = new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
-        //Act.
+        // Act.
         var act = () => user.UpdateRole(newRole);
 
         // Assert.
