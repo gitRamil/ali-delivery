@@ -17,6 +17,7 @@
         <PackageReference Update="Microsoft.CodeAnalysis.CSharp" Version="4.9.2"/>
     </ItemGroup>
     <ItemGroup>
+      <ProjectReference Include="..\Ali.Delivery.Order.Application\Ali.Delivery.Order.Application.csproj" />
       <ProjectReference Include="..\Ali.Delivery.Order.Domain\Ali.Delivery.Order.Domain.csproj" />
     </ItemGroup>
 </Project>
