@@ -67,7 +67,8 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Gui
                                               OrderStatus.Created.ToOrderStatus(),
                                               sender,
                                               receiver,
-                                              notAuthReceiver);
+                                              notAuthReceiver,
+                                              null);
 
         _context.Orders.Add(order);
 

@@ -32,9 +32,9 @@ public class Order : Entity<SequentialGuid>
                  OrderInfo orderInfo,
                  OrderStatus orderStatus,
                  User sender,
-                 User? receiver = null,
-                 NotAuthUser? notAuthReceiver = null,
-                 User? courier = null)
+                 User? receiver,
+                 NotAuthUser? notAuthReceiver,
+                 User? courier)
         : base(id)
     {
         if ((receiver == null && notAuthReceiver == null) || (receiver != null && notAuthReceiver != null))
