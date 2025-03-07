@@ -30,8 +30,7 @@ public class OrderTests
 
         // Assert.
         act.Should()
-           .Throw<ArgumentNullException>()
-           .WithParameterName("orderName");
+           .Throw<ArgumentNullException>(nameof(orderName));
     }
 
     [Fact]
@@ -130,8 +129,7 @@ public class OrderTests
 
         // Assert.
         act.Should()
-           .Throw<ArgumentNullException>()
-           .WithParameterName("orderInfo");
+           .Throw<ArgumentNullException>(nameof(orderInfo));
     }
 
     [Fact]
@@ -154,8 +152,7 @@ public class OrderTests
 
         // Assert.
         act.Should()
-           .Throw<ArgumentNullException>()
-           .WithParameterName("orderStatus");
+           .Throw<ArgumentNullException>(nameof(orderStatus));
     }
 
     [Fact]
@@ -226,7 +223,7 @@ public class OrderTests
         NotAuthUser? notAuthReceiver = null;
         var courier = fixture.Create<User>();
 
-        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver);
+        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, null);
 
         // Act.
         var act = () => order.SetCourier(courier);
@@ -263,7 +260,7 @@ public class OrderTests
                                fixture.Create<UserFirstName>(),
                                fixture.Create<UserLastName>());
 
-        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver);
+        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver,null);
 
         // Act.
         var act = () => order.SetCourier(courier);
@@ -287,7 +284,7 @@ public class OrderTests
         NotAuthUser? notAuthReceiver = null;
         var courier = fixture.Create<User>();
 
-        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver);
+        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, null);
 
         // Act.
         var act = () => order.SetCourier(courier);
@@ -367,7 +364,7 @@ public class OrderTests
         NotAuthUser? notAuthReceiver = null;
         var orderStatusNew = OrderStatus.InProgress;
 
-        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver);
+        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver,null);
 
         // Act.
         var act = () => order.UpdateOrderStatus(orderStatusNew);
@@ -375,6 +372,7 @@ public class OrderTests
         // Assert.
         act.Should()
            .NotThrow();
+        order.OrderStatus.Should().Be(orderStatusNew);
     }
 
     [Fact]
@@ -392,7 +390,7 @@ public class OrderTests
         NotAuthUser? notAuthReceiver = null;
         OrderStatus orderStatusNew = null!;
 
-        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver);
+        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver,null);
 
         // Act.
         var act = () => order.UpdateOrderStatus(orderStatusNew);
@@ -417,7 +415,7 @@ public class OrderTests
         NotAuthUser? notAuthReceiver = null;
         OrderName orderNameNew = null!;
 
-        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver);
+        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, null);
 
         // Act.
         var act = () => order.UpdateOrderName(orderNameNew);
@@ -442,7 +440,7 @@ public class OrderTests
         NotAuthUser? notAuthReceiver = null;
         var orderNameNew = fixture.Create<OrderName>();
 
-        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver);
+        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver,null);
 
         // Act.
         var act = () => order.UpdateOrderName(orderNameNew);
@@ -450,5 +448,6 @@ public class OrderTests
         // Assert.
         act.Should()
            .NotThrow();
+        order.Name.Should().Be(orderNameNew);
     }
 }

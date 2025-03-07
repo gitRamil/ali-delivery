@@ -272,7 +272,7 @@ public class UserTests
     }
 
     [Fact]
-    public void UpdateBirthDayShouldSucceedWhenAllValidArgumentsPassed()
+    public void UpdateBirthDayShouldSucceedWhenUpdateBirthDay()
     {
         // Arrange.
         var fixture = new Fixture();
@@ -298,6 +298,7 @@ public class UserTests
         // Assert.
         act.Should()
            .NotThrow();
+        user.BirthDay.Should().Be(newBirthDay);
     }
 
     [Fact]
@@ -330,7 +331,7 @@ public class UserTests
     }
 
     [Fact]
-    public void UpdateLoginShouldSucceedWhenAllValidArgumentsPassed()
+    public void UpdateLoginShouldSucceedWhenUpdateLogin()
     {
         // Arrange.
         var fixture = new Fixture();
@@ -356,6 +357,7 @@ public class UserTests
         // Assert.
         act.Should()
            .NotThrow();
+        user.Login.Should().Be(newLogin);
     }
 
     [Fact]
@@ -388,7 +390,7 @@ public class UserTests
     }
 
     [Fact]
-    public void UpdateNameShouldSucceedWhenAllValidArgumentsPassed()
+    public void UpdateNameShouldSucceedWhenUpdateName()
     {
         // Arrange.
         var fixture = new Fixture();
@@ -415,6 +417,8 @@ public class UserTests
         // Assert.
         act.Should()
            .NotThrow();
+        user.FirstName.Should().Be(newFirstName);
+        user.LastName.Should().Be(newLastName);
     }
 
     [Fact]
@@ -478,7 +482,7 @@ public class UserTests
     }
 
     [Fact]
-    public void UpdateRoleShouldSucceedWhenAllValidArgumentsPassed()
+    public void UpdateRoleShouldSucceedWhenUpdateRole()
     {
         // Arrange.
         var fixture = new Fixture();
@@ -504,6 +508,7 @@ public class UserTests
         // Assert.
         act.Should()
            .NotThrow();
+        user.Role.Should().Be(newRole);
     }
 
     [Fact]

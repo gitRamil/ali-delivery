@@ -135,7 +135,7 @@ public class OrderInfoTests
     }
 
     [Fact]
-    public void UpdateOrderInfoShouldSucceedWhenAllValidArgumentsPassed()
+    public void UpdateOrderInfoShouldSucceedUpdateOrderInfo()
     {
         // Arrange.
         var fixture = new Fixture();
@@ -159,8 +159,12 @@ public class OrderInfoTests
         var act = () => orderInfo.UpdateOrderInfo(weight1, price1, addressFrom1, addressTo1, size1);
 
         // Assert.
-        act.Should()
-           .NotThrow();
+        act.Should().NotThrow();
+        orderInfo.Weight.Should().Be(weight1);
+        orderInfo.Price.Should().Be(price1);
+        orderInfo.AddressFrom.Should().Be(addressFrom1);
+        orderInfo.AddressTo.Should().Be(addressTo1);
+        orderInfo.Size.Should().Be(size1);
     }
 
     [Fact]

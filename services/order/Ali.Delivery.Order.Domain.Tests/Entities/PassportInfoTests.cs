@@ -114,7 +114,7 @@ public class PassportInfoTests
     }
 
     [Fact]
-    public void UpdatePassportInfoShouldSucceedWhenAllValidArgumentsPassed()
+    public void UpdatePassportInfoShouldSucceedWhenUpdatePassportInfo()
     {
         // Arrange.
         var fixture = new Fixture();
@@ -139,6 +139,11 @@ public class PassportInfoTests
         // Assert.
         act.Should()
            .NotThrow();
+        passportInfo.PassportType.Should().Be(passportType1);
+        passportInfo.PassportNumber.Should().Be(passportNumber1);
+        passportInfo.RegDate.Should().Be(regDate1);
+        passportInfo.IssuedBy.Should().Be(issuedBy1);
+        
     }
 
     [Fact]
