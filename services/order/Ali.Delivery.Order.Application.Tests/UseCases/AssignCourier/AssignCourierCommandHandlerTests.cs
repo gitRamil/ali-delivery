@@ -8,7 +8,7 @@ using Moq;
 using Moq.AutoMock;
 using OrderStatus = Ali.Delivery.Order.Domain.Entities.Dictionaries.OrderStatus;
 
-namespace Ali.Delivery.Order.Application.Tests.UseCases;
+namespace Ali.Delivery.Order.Application.Tests.UseCases.AssignCourier;
 
 [Trait("Category", "Unit")]
 public class AssignCourierCommandHandlerTests
@@ -17,16 +17,31 @@ public class AssignCourierCommandHandlerTests
     public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
     {
         // Arrange.
-        IAppDbContext goalMapsApprovedService = null!;
-        var context = Mock.Of<ICurrentUser>();
+        IAppDbContext context = null!;
+        var currentUser = Mock.Of<ICurrentUser>();
 
         // Act.
-        var act = () => new AssignCourierCommandHandler(goalMapsApprovedService, context);
+        var act = () => new AssignCourierCommandHandler(context, currentUser);
 
         // Assert.
         act.Should()
            .Throw<ArgumentNullException>()
-           .WithParameterName(nameof(goalMapsApprovedService));
+           .WithParameterName(nameof(context));
+    }
+    [Fact]
+    public void ConstructorShouldFailWhenNullArgumentCurrentUserPassed()
+    {
+        // Arrange.
+        var context = Mock.Of<IAppDbContext>();
+        ICurrentUser currentUser = null!;
+
+        // Act.
+        var act = () => new AssignCourierCommandHandler(context, currentUser);
+
+        // Assert.
+        act.Should()
+           .Throw<ArgumentNullException>()
+           .WithParameterName(nameof(currentUser));
     }
 
     [Fact]

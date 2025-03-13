@@ -13,7 +13,7 @@ public class AppFixture : Fixture
     {
         var passportInfo = new PassportInfo(this.Create<SequentialGuid>(),
                                             PassportType.Diplomatic,
-                                            new PassportInfoPassportNumber("123"),
+                                            new PassportInfoPassportNumber("123789798"),
                                             this.Create<PassportInfoRegDate>(),
                                             this.Create<PassportInfoIssuedBy>());
 
