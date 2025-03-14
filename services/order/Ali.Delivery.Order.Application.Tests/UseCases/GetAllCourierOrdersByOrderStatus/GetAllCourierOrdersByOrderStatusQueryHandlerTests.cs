@@ -8,11 +8,10 @@ using Moq.AutoMock;
 
 namespace Ali.Delivery.Order.Application.Tests.UseCases.GetAllCourierOrdersByOrderStatus;
 
-[Trait("Category","Unit")]
+[Trait("Category", "Unit")]
 public class GetAllCourierOrdersByOrderStatusQueryHandlerTests
 {
     [Fact]
-
     public async Task HandlerShouldGetAllCourierOrdersByOrderStatus()
     {
         // Arrange.
@@ -20,14 +19,15 @@ public class GetAllCourierOrdersByOrderStatusQueryHandlerTests
         var mocks = new AutoMocker(MockBehavior.Strict);
         var sender = fixture.Create<User>();
         var courier = fixture.Create<User>();
+
         var orders = new[]
         {
             fixture.CreateOrder(sender, OrderStatus.Created),
-            fixture.CreateOrder(sender, OrderStatus.InProgress,courier),
+            fixture.CreateOrder(sender, OrderStatus.InProgress, courier),
             fixture.CreateOrder(sender, OrderStatus.InProgress, courier),
             fixture.CreateOrder(sender, OrderStatus.Finished, courier)
         };
-        
+
         mocks.CurrentUserSet(courier.Id);
         mocks.MockDbSet(o => o.Orders, orders);
         var sut = mocks.CreateInstance<GetAllCourierOrdersByOrderStatusQueryHandler>();
@@ -40,13 +40,15 @@ public class GetAllCourierOrdersByOrderStatusQueryHandlerTests
 
         result.Should()
               .NotBeNull()
-              .And.HaveCount(2); 
-        
+              .And.HaveCount(2);
+
         foreach (var order in result)
         {
-            order.OrderStatusName.Should().Be(OrderStatus.InProgress.Name);
+            order.OrderStatusName.Should()
+                 .Be(OrderStatus.InProgress.Name);
         }
     }
+
     [Fact]
     public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
     {
@@ -62,6 +64,7 @@ public class GetAllCourierOrdersByOrderStatusQueryHandlerTests
            .Throw<ArgumentNullException>()
            .WithParameterName(nameof(context));
     }
+
     [Fact]
     public void ConstructorShouldFailWhenNullArgumentCurrentUserPassed()
     {

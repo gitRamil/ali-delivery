@@ -19,9 +19,9 @@ public class GetUserQueryHandlerTests
         var fixture = new AppFixture();
         var mocks = new AutoMocker(MockBehavior.Strict);
         var user = fixture.Create<User>();
-        
+
         mocks.MockDbSet(u => u.Users, user);
-        
+
         var sut = mocks.CreateInstance<GetUserQueryHandler>();
 
         // Act.
@@ -32,15 +32,14 @@ public class GetUserQueryHandlerTests
 
         result.Id.Should()
               .Be(user.Id);
-
     }
-    
+
     [Fact]
     public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
     {
         // Arrange.
         IAppDbContext context = null!;
-        
+
         // Act.
         var act = () => new GetUserQueryHandler(context);
 
@@ -49,16 +48,16 @@ public class GetUserQueryHandlerTests
            .Throw<ArgumentNullException>()
            .WithParameterName(nameof(context));
     }
-    
+
     [Fact]
     public async Task ConstructorShouldThrowsArgumentNullExceptionWhenQueryIsNull()
     {
         // Arrange.
         var mocks = new AutoMocker(MockBehavior.Strict);
-    
+
         mocks.GetMock<IAppDbContext>();
         mocks.GetMock<ICurrentUser>();
-    
+
         var sut = mocks.CreateInstance<GetUserQueryHandler>();
 
         // Act.
@@ -68,8 +67,8 @@ public class GetUserQueryHandlerTests
         await act.Should()
                  .ThrowAsync<ArgumentNullException>()
                  .WithMessage("Value cannot be null. (Parameter 'query')");
-        
     }
+
     [Fact]
     public async Task HandlerShouldThrowNotFoundExceptionWhenUserNotinBase()
     {
@@ -77,16 +76,14 @@ public class GetUserQueryHandlerTests
         var fixture = new AppFixture();
         var mocks = new AutoMocker(MockBehavior.Strict);
         var user = fixture.Create<User>();
-        
+
         mocks.MockDbSet(u => u.Users);
-        
+
         var sut = mocks.CreateInstance<GetUserQueryHandler>();
-        
+
         var command = new GetUserQuery(user.Id);
 
         // Act & Assert.
-        await Should.ThrowAsync<NotFoundException>(() => 
-                                                       sut.Handle(command, CancellationToken.None)
-        );
+        await Should.ThrowAsync<NotFoundException>(() => sut.Handle(command, CancellationToken.None));
     }
 }

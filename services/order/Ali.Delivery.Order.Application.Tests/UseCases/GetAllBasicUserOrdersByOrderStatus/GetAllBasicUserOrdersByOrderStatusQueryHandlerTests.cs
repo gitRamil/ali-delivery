@@ -8,25 +8,25 @@ using Moq.AutoMock;
 
 namespace Ali.Delivery.Order.Application.Tests.UseCases.GetAllBasicUserOrdersByOrderStatus;
 
-[Trait("Category","Unit")]
+[Trait("Category", "Unit")]
 public class GetAllBasicUserOrdersByOrderStatusQueryHandlerTests
 {
     [Fact]
-
     public async Task HandlerShouldReturnOrdersByOrderStatus()
     {
         // Arrange.
         var fixture = new AppFixture();
         var mocks = new AutoMocker(MockBehavior.Strict);
         var sender = fixture.Create<User>();
+
         var orders = new[]
         {
             fixture.CreateOrder(sender, OrderStatus.Created),
             fixture.CreateOrder(sender, OrderStatus.Created),
-            fixture.CreateOrder(sender, OrderStatus.InProgress, courier: fixture.Create<User>()),
-            fixture.CreateOrder(sender, OrderStatus.Finished, courier: fixture.Create<User>())
+            fixture.CreateOrder(sender, OrderStatus.InProgress, fixture.Create<User>()),
+            fixture.CreateOrder(sender, OrderStatus.Finished, fixture.Create<User>())
         };
-        
+
         mocks.CurrentUserSet(sender.Id);
         mocks.MockDbSet(o => o.Orders, orders);
         var sut = mocks.CreateInstance<GetAllBasicUserOrdersByOrderStatusQueryHandler>();
@@ -39,14 +39,15 @@ public class GetAllBasicUserOrdersByOrderStatusQueryHandlerTests
 
         result.Should()
               .NotBeNull()
-              .And.HaveCount(2); 
-        
+              .And.HaveCount(2);
+
         foreach (var order in result)
         {
-            order.OrderStatusName.Should().Be(OrderStatus.Created.Name);
+            order.OrderStatusName.Should()
+                 .Be(OrderStatus.Created.Name);
         }
     }
-    
+
     [Fact]
     public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
     {
@@ -62,6 +63,7 @@ public class GetAllBasicUserOrdersByOrderStatusQueryHandlerTests
            .Throw<ArgumentNullException>()
            .WithParameterName(nameof(context));
     }
+
     [Fact]
     public void ConstructorShouldFailWhenNullArgumentCurrentUserPassed()
     {

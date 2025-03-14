@@ -13,58 +13,50 @@ using Moq.AutoMock;
 
 namespace Ali.Delivery.Order.Application.Tests.UseCases.CreateOrder;
 
-
 [Trait("Category", "Unit")]
 public class CreateOrderCommandHandlerTests
 {
     [Fact]
-
     public async Task HandlerShouldCreateOrder()
     {
         // Arrange.
         var fixture = new AppFixture();
         var mocks = new AutoMocker(MockBehavior.Strict);
-        
+
         var sender = fixture.Create<User>();
         var size = SizeCode.Medium;
         var receiver = fixture.Create<User>();
-        
-        var orderInfo = new OrderInfo(SequentialGuid.Create(), 
-                                      fixture.Create<OrderInfoWeight>(), 
-                                      size.ToSize(), 
-                                      fixture.Create<OrderInfoPrice>(), 
-                                      fixture.Create<OrderInfoAddressFrom>(), 
+
+        var orderInfo = new OrderInfo(SequentialGuid.Create(),
+                                      fixture.Create<OrderInfoWeight>(),
+                                      size.ToSize(),
+                                      fixture.Create<OrderInfoPrice>(),
+                                      fixture.Create<OrderInfoAddressFrom>(),
                                       fixture.Create<OrderInfoAddressTo>());
-        
-        var command = new CreateOrderCommand(fixture.Create<OrderName>(),
-                                             orderInfo.Weight,
-                                             size,
-                                             orderInfo.Price,
-                                             orderInfo.AddressFrom,
-                                             orderInfo.AddressTo,
-                                             receiver.Id);
-        
+
+        var command = new CreateOrderCommand(fixture.Create<OrderName>(), orderInfo.Weight, size, orderInfo.Price, orderInfo.AddressFrom, orderInfo.AddressTo, receiver.Id);
+
         mocks.MockDbSet(s => s.Orders);
         mocks.MockDbSet(s => s.Users, sender, receiver);
+
         mocks.GetMock<IAppDbContext>()
              .SetupDefaultSaveChangesAsync();
         mocks.CurrentUserSet(sender.Id);
-        
+
         var sut = mocks.CreateInstance<CreateOrderCommandHandler>();
-        
+
         // Act.
         var result = await sut.Handle(command, default);
 
         // Assert.
         mocks.Verify();
-        
-        mocks.GetMock<IAppDbContext>().Verify(db => db.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-        
+
+        mocks.GetMock<IAppDbContext>()
+             .Verify(db => db.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+
         Assert.NotEqual(Guid.Empty, result);
-        
-        
     }
-    
+
     [Fact]
     public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
     {
@@ -80,6 +72,7 @@ public class CreateOrderCommandHandlerTests
            .Throw<ArgumentNullException>()
            .WithParameterName(nameof(context));
     }
+
     [Fact]
     public void ConstructorShouldFailWhenNullArgumentCurrentUserPassed()
     {
@@ -95,16 +88,16 @@ public class CreateOrderCommandHandlerTests
            .Throw<ArgumentNullException>()
            .WithParameterName(nameof(currentUser));
     }
-    
+
     [Fact]
     public async Task ConstructorShouldThrowsArgumentNullExceptionWhenCommandIsNull()
     {
         // Arrange.
         var mocks = new AutoMocker(MockBehavior.Strict);
-    
+
         mocks.GetMock<IAppDbContext>();
         mocks.GetMock<ICurrentUser>();
-    
+
         var sut = mocks.CreateInstance<CreateOrderCommandHandler>();
 
         // Act.
@@ -114,47 +107,41 @@ public class CreateOrderCommandHandlerTests
         await act.Should()
                  .ThrowAsync<ArgumentNullException>()
                  .WithMessage("Value cannot be null. (Parameter 'command')");
-        
-        mocks.GetMock<IAppDbContext>().Verify(
-            x => x.SaveChangesAsync(It.IsAny<CancellationToken>()),
-            Times.Never
-        );
+
+        mocks.GetMock<IAppDbContext>()
+             .Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
+
     [Fact]
     public async Task HandlerShouldThrowNotFoundExceptionWhenReceiverIsNotInBase()
     {
         // Arrange.
         var fixture = new AppFixture();
         var mocks = new AutoMocker(MockBehavior.Strict);
-        
+
         var sender = fixture.Create<User>();
         var size = SizeCode.Medium;
         var receiver = fixture.Create<User>();
-        
-        var orderInfo = new OrderInfo(SequentialGuid.Create(), 
-                                      fixture.Create<OrderInfoWeight>(), 
-                                      size.ToSize(), 
-                                      fixture.Create<OrderInfoPrice>(), 
-                                      fixture.Create<OrderInfoAddressFrom>(), 
+
+        var orderInfo = new OrderInfo(SequentialGuid.Create(),
+                                      fixture.Create<OrderInfoWeight>(),
+                                      size.ToSize(),
+                                      fixture.Create<OrderInfoPrice>(),
+                                      fixture.Create<OrderInfoAddressFrom>(),
                                       fixture.Create<OrderInfoAddressTo>());
-        
-        var command = new CreateOrderCommand(fixture.Create<OrderName>(),
-                                             orderInfo.Weight,
-                                             size,
-                                             orderInfo.Price,
-                                             orderInfo.AddressFrom,
-                                             orderInfo.AddressTo,
-                                             receiver.Id);
-        
+
+        var command = new CreateOrderCommand(fixture.Create<OrderName>(), orderInfo.Weight, size, orderInfo.Price, orderInfo.AddressFrom, orderInfo.AddressTo, receiver.Id);
+
         mocks.MockDbSet(s => s.Orders);
         mocks.MockDbSet(s => s.Users, sender);
         mocks.MockDbSet(s => s.NotAuthUsers);
-                        mocks.GetMock<IAppDbContext>()
-                             .SetupDefaultSaveChangesAsync();
+
+        mocks.GetMock<IAppDbContext>()
+             .SetupDefaultSaveChangesAsync();
         mocks.CurrentUserSet(sender.Id);
-        
+
         var sut = mocks.CreateInstance<CreateOrderCommandHandler>();
-        
+
         // Act.
         Func<Task> act = () => sut.Handle(command, CancellationToken.None);
 
@@ -162,7 +149,5 @@ public class CreateOrderCommandHandlerTests
         await act.Should()
                  .ThrowAsync<NotFoundException>()
                  .WithMessage("Получатель не найден ни среди зарегистрированных, ни среди незарегистрированных пользователей");
-
-        
     }
 }

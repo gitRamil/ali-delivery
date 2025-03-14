@@ -18,7 +18,6 @@ namespace Ali.Delivery.Order.Application.Tests.UseCases.UpdateOrder;
 public class UpdateOrderCommandHandlerTests
 {
     [Fact]
-
     public async Task HandlerShouldUpdateOrder()
     {
         var fixture = new AppFixture();
@@ -30,7 +29,7 @@ public class UpdateOrderCommandHandlerTests
         var newAddressTo = fixture.Create<OrderInfoAddressTo>();
         var newSize = SizeCode.Medium;
         var newOrderStatus = Dtos.Enums.OrderStatus.Created;
-        
+
         var order = new Domain.Entities.Order(fixture.Create<SequentialGuid>(),
                                               fixture.Create<OrderName>(),
                                               fixture.Create<OrderInfo>(),
@@ -40,11 +39,12 @@ public class UpdateOrderCommandHandlerTests
                                               null,
                                               null);
         mocks.MockDbSet(o => o.Orders, order);
+
         mocks.GetMock<IAppDbContext>()
              .SetupDefaultSaveChangesAsync();
-        
-        var command = new UpdateOrderCommand(order.Id,newOrderName,newWeight,newSize,newPrice, newAddressFrom,newAddressTo, newOrderStatus);
-        
+
+        var command = new UpdateOrderCommand(order.Id, newOrderName, newWeight, newSize, newPrice, newAddressFrom, newAddressTo, newOrderStatus);
+
         var sut = mocks.CreateInstance<UpdateOrderCommandHandler>();
 
         // Act.
@@ -53,21 +53,22 @@ public class UpdateOrderCommandHandlerTests
         // Assert.
         mocks.GetMock<IAppDbContext>()
              .Verify(db => db.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-        
-        result.Name.Should().Be(newOrderName);
+
+        result.Name.Should()
+              .Be(newOrderName);
 
         mocks.GetMock<IAppDbContext>()
              .Verify(db => db.Orders, Times.Once);
-
     }
+
     [Fact]
     public async Task ConstructorShouldThrowsArgumentNullExceptionWhenCommandIsNull()
     {
         // Arrange.
         var mocks = new AutoMocker(MockBehavior.Strict);
-    
+
         mocks.GetMock<IAppDbContext>();
-        
+
         var sut = mocks.CreateInstance<UpdateOrderCommandHandler>();
 
         // Act.
@@ -77,13 +78,11 @@ public class UpdateOrderCommandHandlerTests
         await act.Should()
                  .ThrowAsync<ArgumentNullException>()
                  .WithMessage("Value cannot be null. (Parameter 'command')");
-        
-        mocks.GetMock<IAppDbContext>().Verify(
-            x => x.SaveChangesAsync(It.IsAny<CancellationToken>()),
-            Times.Never
-        );
+
+        mocks.GetMock<IAppDbContext>()
+             .Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
-    
+
     [Fact]
     public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
     {
@@ -98,6 +97,7 @@ public class UpdateOrderCommandHandlerTests
            .Throw<ArgumentNullException>()
            .WithParameterName(nameof(context));
     }
+
     [Fact]
     public async Task HandlerShouldThrowNotFoundExceptionWhenOrderNotinBase()
     {
@@ -111,7 +111,7 @@ public class UpdateOrderCommandHandlerTests
         var newAddressTo = fixture.Create<OrderInfoAddressTo>();
         var newSize = SizeCode.Medium;
         var newOrderStatus = Dtos.Enums.OrderStatus.Created;
-        
+
         var order = new Domain.Entities.Order(fixture.Create<SequentialGuid>(),
                                               fixture.Create<OrderName>(),
                                               fixture.Create<OrderInfo>(),
@@ -121,22 +121,18 @@ public class UpdateOrderCommandHandlerTests
                                               null,
                                               null);
         mocks.MockDbSet(o => o.Orders);
+
         mocks.GetMock<IAppDbContext>()
              .SetupDefaultSaveChangesAsync();
-        
 
         var sut = mocks.CreateInstance<UpdateOrderCommandHandler>();
-        
-        var command = new UpdateOrderCommand(order.Id,newOrderName,newWeight,newSize,newPrice, newAddressFrom,newAddressTo, newOrderStatus);
 
+        var command = new UpdateOrderCommand(order.Id, newOrderName, newWeight, newSize, newPrice, newAddressFrom, newAddressTo, newOrderStatus);
 
         // Act & Assert.
-        await Should.ThrowAsync<NotFoundException>(() => 
-                                                       sut.Handle(command, CancellationToken.None)
-        );
-        
+        await Should.ThrowAsync<NotFoundException>(() => sut.Handle(command, CancellationToken.None));
+
         mocks.GetMock<IAppDbContext>()
              .Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
-
     }
 }

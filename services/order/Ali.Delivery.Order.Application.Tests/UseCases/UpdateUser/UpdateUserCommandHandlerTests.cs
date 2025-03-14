@@ -15,7 +15,7 @@ using PassportType = Ali.Delivery.Order.Application.Dtos.Enums.PassportType;
 
 namespace Ali.Delivery.Order.Application.Tests.UseCases.UpdateUser;
 
-[Trait("Category","Unit")]
+[Trait("Category", "Unit")]
 public class UpdateUserCommandHandlerTests
 {
     [Fact]
@@ -24,7 +24,7 @@ public class UpdateUserCommandHandlerTests
         // Arrange.
         var fixture = new Fixture();
         var mocks = new AutoMocker(MockBehavior.Strict);
-        
+
         var id = fixture.Create<SequentialGuid>();
         var login = fixture.Create<UserLogin>();
         var password = fixture.Create<UserPassword>();
@@ -39,7 +39,7 @@ public class UpdateUserCommandHandlerTests
                                             new PassportInfoRegDate(DateTime.Now),
                                             new PassportInfoIssuedBy("MVD RF"));
         var user = new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
-        
+
         var newLogin = fixture.Create<UserLogin>();
         var newRole = RoleCode.BasicUser;
         var newBirthDay = fixture.Create<UserBirthDay>();
@@ -51,21 +51,13 @@ public class UpdateUserCommandHandlerTests
         var newPassportType = PassportType.Diplomatic;
 
         mocks.MockDbSet(u => u.Users, user);
+
         mocks.GetMock<IAppDbContext>()
              .SetupDefaultSaveChangesAsync();
 
-        var command = new UpdateUserCommand(user.Id, 
-                                            newLogin, 
-                                            newFirstName, 
-                                            newLastName, 
-                                            newPassportType, 
-                                            newPassportNumber, 
-                                            newRegDate, 
-                                            newIssuedBy, 
-                                            newRole, 
-                                            newBirthDay);
-        
-        var sut = mocks.CreateInstance< UpdateUserCommandHandler>();
+        var command = new UpdateUserCommand(user.Id, newLogin, newFirstName, newLastName, newPassportType, newPassportNumber, newRegDate, newIssuedBy, newRole, newBirthDay);
+
+        var sut = mocks.CreateInstance<UpdateUserCommandHandler>();
 
         // Act.
         var result = await sut.Handle(command, default);
@@ -73,22 +65,22 @@ public class UpdateUserCommandHandlerTests
         // Assert.
         mocks.GetMock<IAppDbContext>()
              .Verify(db => db.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-        
-        result.Login.Should().Be(newLogin);
+
+        result.Login.Should()
+              .Be(newLogin);
 
         mocks.GetMock<IAppDbContext>()
              .Verify(db => db.Users, Times.Once);
-
-
     }
+
     [Fact]
     public async Task ConstructorShouldThrowsArgumentNullExceptionWhenCommandIsNull()
     {
         // Arrange.
         var mocks = new AutoMocker(MockBehavior.Strict);
-    
+
         mocks.GetMock<IAppDbContext>();
-        
+
         var sut = mocks.CreateInstance<UpdateUserCommandHandler>();
 
         // Act.
@@ -98,13 +90,11 @@ public class UpdateUserCommandHandlerTests
         await act.Should()
                  .ThrowAsync<ArgumentNullException>()
                  .WithMessage("Value cannot be null. (Parameter 'command')");
-        
-        mocks.GetMock<IAppDbContext>().Verify(
-            x => x.SaveChangesAsync(It.IsAny<CancellationToken>()),
-            Times.Never
-        );
+
+        mocks.GetMock<IAppDbContext>()
+             .Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
-    
+
     [Fact]
     public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
     {
@@ -119,13 +109,14 @@ public class UpdateUserCommandHandlerTests
            .Throw<ArgumentNullException>()
            .WithParameterName(nameof(context));
     }
+
     [Fact]
     public async Task HandlerShouldThrowNotFoundExceptionWhenUserNotinBase()
     {
         // Arrange.
         var fixture = new Fixture();
         var mocks = new AutoMocker(MockBehavior.Strict);
-        
+
         var id = fixture.Create<SequentialGuid>();
         var login = fixture.Create<UserLogin>();
         var password = fixture.Create<UserPassword>();
@@ -140,7 +131,7 @@ public class UpdateUserCommandHandlerTests
                                             new PassportInfoRegDate(DateTime.Now),
                                             new PassportInfoIssuedBy("MVD RF"));
         var user = new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
-        
+
         var newLogin = fixture.Create<UserLogin>();
         var newRole = RoleCode.BasicUser;
         var newBirthDay = fixture.Create<UserBirthDay>();
@@ -152,32 +143,21 @@ public class UpdateUserCommandHandlerTests
         var newPassportType = PassportType.Diplomatic;
 
         mocks.MockDbSet(u => u.Users);
+
         mocks.GetMock<IAppDbContext>()
              .SetupDefaultSaveChangesAsync();
 
-        var command = new UpdateUserCommand(user.Id, 
-                                            newLogin, 
-                                            newFirstName, 
-                                            newLastName, 
-                                            newPassportType, 
-                                            newPassportNumber, 
-                                            newRegDate, 
-                                            newIssuedBy, 
-                                            newRole, 
-                                            newBirthDay);
-        
-        var sut = mocks.CreateInstance< UpdateUserCommandHandler>();
+        var command = new UpdateUserCommand(user.Id, newLogin, newFirstName, newLastName, newPassportType, newPassportNumber, newRegDate, newIssuedBy, newRole, newBirthDay);
+
+        var sut = mocks.CreateInstance<UpdateUserCommandHandler>();
+
         mocks.GetMock<IAppDbContext>()
              .SetupDefaultSaveChangesAsync();
-        
+
         // Act & Assert.
-        await Should.ThrowAsync<NotFoundException>(() => 
-                                                       sut.Handle(command, CancellationToken.None)
-        );
-        
+        await Should.ThrowAsync<NotFoundException>(() => sut.Handle(command, CancellationToken.None));
+
         mocks.GetMock<IAppDbContext>()
              .Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
-
     }
-    
 }

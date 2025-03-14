@@ -52,10 +52,11 @@ public class FinishDeliveryCommandHandlerTests
 
         order.Courier.Should()
              .Be(courier);
-        
+
         order.OrderStatus.Should()
              .Be(OrderStatus.Finished);
     }
+
     [Fact]
     public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
     {
@@ -71,6 +72,7 @@ public class FinishDeliveryCommandHandlerTests
            .Throw<ArgumentNullException>()
            .WithParameterName(nameof(context));
     }
+
     [Fact]
     public void ConstructorShouldFailWhenNullArgumentCurrentUserPassed()
     {
@@ -86,9 +88,8 @@ public class FinishDeliveryCommandHandlerTests
            .Throw<ArgumentNullException>()
            .WithParameterName(nameof(currentUser));
     }
-    
-    [Fact]
 
+    [Fact]
     public async Task HandlerShouldThrowNotFoundExceptionWhenCurrentUserNotinBase()
     {
         // Arrange.
@@ -113,19 +114,16 @@ public class FinishDeliveryCommandHandlerTests
              .SetupDefaultSaveChangesAsync();
 
         var sut = mocks.CreateInstance<FinishDeliveryCommandHandler>();
-        
+
         var command = new FinishDeliveryCommand(order.Id);
 
         // Act & Assert.
-        await Should.ThrowAsync<NotFoundException>(() => 
-                                                        sut.Handle(command, CancellationToken.None)
-        );
-        
+        await Should.ThrowAsync<NotFoundException>(() => sut.Handle(command, CancellationToken.None));
+
         mocks.GetMock<IAppDbContext>()
              .Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
-
     }
-    
+
     [Fact]
     public async Task HandlerShouldThrowNotFoundExceptionWhenOrderNotinBase()
     {
@@ -151,16 +149,13 @@ public class FinishDeliveryCommandHandlerTests
              .SetupDefaultSaveChangesAsync();
 
         var sut = mocks.CreateInstance<FinishDeliveryCommandHandler>();
-        
+
         var command = new FinishDeliveryCommand(order.Id);
 
         // Act & Assert.
-        await Should.ThrowAsync<NotFoundException>(() => 
-                                                       sut.Handle(command, CancellationToken.None)
-        );
-        
+        await Should.ThrowAsync<NotFoundException>(() => sut.Handle(command, CancellationToken.None));
+
         mocks.GetMock<IAppDbContext>()
              .Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
-
     }
 }

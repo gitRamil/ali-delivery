@@ -8,12 +8,10 @@ using Moq.AutoMock;
 
 namespace Ali.Delivery.Order.Application.Tests.UseCases.CreateUser;
 
-
 [Trait("Category", "Unit")]
 public class CreateUserCommandHandlerTests
 {
     [Fact]
-
     public async Task CreateUserShouldSucceed()
     {
         // Arrange.
@@ -29,16 +27,16 @@ public class CreateUserCommandHandlerTests
         var command = new CreateUserCommand(fixture.Create<UserLogin>(), fixture.Create<UserPassword>(), role, fixture.Create<UserBirthDay>());
 
         var sut = mocks.CreateInstance<CreateUserCommandHandler>();
-        
+
         // Act.
         var result = await sut.Handle(command, default);
 
         // Assert.
         mocks.Verify();
-        
+
         mocks.GetMock<IAppDbContext>()
              .Verify(db => db.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-        
+
         Assert.NotEqual(Guid.Empty, result);
     }
 
@@ -77,6 +75,5 @@ public class CreateUserCommandHandlerTests
 
         mocks.GetMock<IAppDbContext>()
              .Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
-
     }
 }

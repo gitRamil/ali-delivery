@@ -17,28 +17,29 @@ public class DeleteUserCommandHandlerTests
     {
         var fixture = new AppFixture();
         var mocks = new AutoMocker(MockBehavior.Strict);
-        var user  = fixture.Create<User>();
+        var user = fixture.Create<User>();
 
         mocks.MockDbSet(u => u.Users, user);
+
         mocks.GetMock<IAppDbContext>()
              .SetupDefaultSaveChangesAsync();
-        
+
         var command = new DeleteUserCommand(user.Id);
-        
+
         var sut = mocks.CreateInstance<DeleteUserCommandHandler>();
 
         // Act.
         var result = await sut.Handle(command, default);
-        
+
         // Assert.
         mocks.Verify();
-        
+
         mocks.GetMock<IAppDbContext>()
              .Verify(db => db.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-        
+
         Assert.NotEqual(Guid.Empty, result);
     }
-    
+
     [Fact]
     public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
     {
@@ -53,15 +54,16 @@ public class DeleteUserCommandHandlerTests
            .Throw<ArgumentNullException>()
            .WithParameterName(nameof(context));
     }
+
     [Fact]
     public async Task ConstructorShouldThrowsArgumentNullExceptionWhenCommandIsNull()
     {
         // Arrange.
         var mocks = new AutoMocker(MockBehavior.Strict);
-    
+
         mocks.GetMock<IAppDbContext>();
         mocks.GetMock<ICurrentUser>();
-    
+
         var sut = mocks.CreateInstance<DeleteUserCommandHandler>();
 
         // Act.
@@ -71,9 +73,8 @@ public class DeleteUserCommandHandlerTests
         await act.Should()
                  .ThrowAsync<ArgumentNullException>()
                  .WithMessage("Value cannot be null. (Parameter 'command')");
-        
     }
-    
+
     [Fact]
     public async Task HandlerShouldThrowNotFoundExceptionWhenUserNotinBase()
     {
@@ -81,7 +82,7 @@ public class DeleteUserCommandHandlerTests
         var fixture = new AppFixture();
         var mocks = new AutoMocker(MockBehavior.Strict);
         var user = fixture.Create<User>();
-        
+
         mocks.MockDbSet(u => u.Users);
         mocks.CurrentUserSet(user.Id);
 
@@ -89,16 +90,13 @@ public class DeleteUserCommandHandlerTests
              .SetupDefaultSaveChangesAsync();
 
         var sut = mocks.CreateInstance<DeleteUserCommandHandler>();
-        
+
         var command = new DeleteUserCommand(user.Id);
 
         // Act & Assert.
-        await Should.ThrowAsync<NotFoundException>(() => 
-                                                       sut.Handle(command, CancellationToken.None)
-        );
-        
+        await Should.ThrowAsync<NotFoundException>(() => sut.Handle(command, CancellationToken.None));
+
         mocks.GetMock<IAppDbContext>()
              .Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
-
     }
 }

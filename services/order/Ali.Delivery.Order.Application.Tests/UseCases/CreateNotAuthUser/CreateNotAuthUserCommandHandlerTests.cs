@@ -14,7 +14,6 @@ namespace Ali.Delivery.Order.Application.Tests.UseCases.CreateNotAuthUser;
 public class CreateNotAuthUserCommandHandlerTests
 {
     [Fact]
-
     public async Task HandlerShouldCreateNotAuthUser()
     {
         // Arrange.
@@ -24,16 +23,16 @@ public class CreateNotAuthUserCommandHandlerTests
         var notAuthUserFirstName = fixture.Create<NotAuthUserFirstName>();
         var notAuthUserLastName = fixture.Create<NotAuthUserLastName>();
         var notAuthUserPhoneNumber = new NotAuthUserPhoneNumber("+78777777777");
-        
+
         mocks.CurrentUserSet(user.Id);
-        
+
         mocks.MockDbSet(u => u.Users, user);
-        
+
         mocks.GetMock<IAppDbContext>()
              .SetupDefaultSaveChangesAsync();
-        
+
         var command = new CreateNotAuthUserCommand(notAuthUserFirstName, notAuthUserLastName, notAuthUserPhoneNumber);
-        
+
         var sut = mocks.CreateInstance<CreateNotAuthUserCommandHandler>();
 
         // Act.
@@ -42,13 +41,12 @@ public class CreateNotAuthUserCommandHandlerTests
         // Assert.
         mocks.GetMock<IAppDbContext>()
              .Verify(db => db.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-        
+
         Assert.NotEqual(Guid.Empty, result);
 
-       mocks.GetMock<IAppDbContext>()
+        mocks.GetMock<IAppDbContext>()
              .Verify(db => db.Users, Times.Once);
     }
-
 
     [Fact]
     public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
@@ -88,36 +86,31 @@ public class CreateNotAuthUserCommandHandlerTests
         // Arrange.
         var fixture = new AppFixture();
         var mocks = new AutoMocker(MockBehavior.Strict);
-        var user  = fixture.Create<User>();
-        
+        var user = fixture.Create<User>();
+
         mocks.CurrentUserSet(user.Id);
         mocks.MockDbSet(u => u.Users);
-    
-        var command = new CreateNotAuthUserCommand(
-            fixture.Create<NotAuthUserFirstName>(),
-            fixture.Create<NotAuthUserLastName>(),
-            new NotAuthUserPhoneNumber("+79999999999")
-        );
-    
+
+        var command = new CreateNotAuthUserCommand(fixture.Create<NotAuthUserFirstName>(), fixture.Create<NotAuthUserLastName>(), new NotAuthUserPhoneNumber("+79999999999"));
+
         var sut = mocks.CreateInstance<CreateNotAuthUserCommandHandler>();
 
         // Act & Assert.
-        await Should.ThrowAsync<NotFoundException>(() => 
-                                                       sut.Handle(command, CancellationToken.None)
-        );
-        
+        await Should.ThrowAsync<NotFoundException>(() => sut.Handle(command, CancellationToken.None));
+
         mocks.GetMock<IAppDbContext>()
              .Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
+
     [Fact]
     public async Task ConstructorShouldThrowsArgumentNullExceptionWhenCommandIsNull()
     {
         // Arrange.
         var mocks = new AutoMocker(MockBehavior.Strict);
-    
+
         mocks.GetMock<IAppDbContext>();
         mocks.GetMock<ICurrentUser>();
-    
+
         var sut = mocks.CreateInstance<CreateNotAuthUserCommandHandler>();
 
         // Act.
@@ -127,6 +120,5 @@ public class CreateNotAuthUserCommandHandlerTests
         await act.Should()
                  .ThrowAsync<ArgumentNullException>()
                  .WithMessage("Value cannot be null. (Parameter 'command')");
-        
     }
 }

@@ -7,7 +7,7 @@ using Moq.AutoMock;
 
 namespace Ali.Delivery.Order.Application.Tests.UseCases.GetAllUsers;
 
-[Trait("Category","Unit")]
+[Trait("Category", "Unit")]
 public class GetAllUsersQueryHandlerTests
 {
     [Fact]
@@ -16,6 +16,7 @@ public class GetAllUsersQueryHandlerTests
         // Arrange.
         var fixture = new AppFixture();
         var mocks = new AutoMocker(MockBehavior.Strict);
+
         var users = new[]
         {
             fixture.Create<User>(),
@@ -25,7 +26,7 @@ public class GetAllUsersQueryHandlerTests
             fixture.Create<User>(),
             fixture.Create<User>()
         };
-        
+
         mocks.MockDbSet(u => u.Users, users);
         var sut = mocks.CreateInstance<GetAllUsersQueryHandler>();
 
@@ -37,15 +38,15 @@ public class GetAllUsersQueryHandlerTests
 
         result.Should()
               .NotBeNull()
-              .And.HaveCount(6); 
+              .And.HaveCount(6);
     }
-    
+
     [Fact]
     public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
     {
         // Arrange.
         IAppDbContext context = null!;
-        
+
         // Act.
         var act = () => new GetAllUsersQueryHandler(context);
 
@@ -54,5 +55,4 @@ public class GetAllUsersQueryHandlerTests
            .Throw<ArgumentNullException>()
            .WithParameterName(nameof(context));
     }
-    }
-
+}

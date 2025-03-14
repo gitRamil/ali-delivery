@@ -16,49 +16,56 @@ namespace Ali.Delivery.Order.Application.Tests.UseCases.CompletePassport;
 [Trait("Category", "Unit")]
 public class CompletePassportCommandHandlerTest
 {
-
     [Fact]
     public async Task HandlerShouldCompleteUsersPassport()
     {
         // Arrange.
         var fixture = new AppFixture();
         var mocks = new AutoMocker(MockBehavior.Strict);
-        var user = new User(fixture.Create<SequentialGuid>(), 
-                            fixture.Create<UserLogin>(), 
-                            fixture.Create<UserPassword>(), Role.BasicUser, fixture.Create<UserBirthDay>());
+        var user = new User(fixture.Create<SequentialGuid>(), fixture.Create<UserLogin>(), fixture.Create<UserPassword>(), Role.BasicUser, fixture.Create<UserBirthDay>());
         var passportType = fixture.Create<PassportType>();
         var passportNumber = new PassportInfoPassportNumber("1234567890");
         var regDate = fixture.Create<PassportInfoRegDate>();
         var issuedBy = fixture.Create<PassportInfoIssuedBy>();
-        var firstName =fixture.Create<UserFirstName>();
+        var firstName = fixture.Create<UserFirstName>();
         var lastName = fixture.Create<UserLastName>();
 
-        
         mocks.CurrentUserSet(user.Id);
         mocks.MockDbSet(u => u.Users, user);
+
         mocks.GetMock<IAppDbContext>()
              .SetupDefaultSaveChangesAsync();
         var command = new CompletePassportCommand(passportType, passportNumber, (DateTime)regDate, issuedBy, firstName, lastName);
         var sut = mocks.CreateInstance<CompletePassportCommandHandler>();
-        
+
         // Act.
         var result = await sut.Handle(command, default);
-        
+
         // Assert.
         mocks.Verify();
 
         result.Should()
               .Be(user.Id);
-        
-        user.FirstName.Should().Be(firstName);
-        user.LastName.Should().Be(lastName);
-        
-        user.PassportInfo?.PassportType.Should().Be(passportType.ToPassportType());
-        user.PassportInfo?.PassportNumber.Should().Be(passportNumber);
-        user.PassportInfo?.RegDate.Should().Be(regDate);
-        user.PassportInfo?.IssuedBy.Should().Be(issuedBy);
+
+        user.FirstName.Should()
+            .Be(firstName);
+
+        user.LastName.Should()
+            .Be(lastName);
+
+        user.PassportInfo?.PassportType.Should()
+            .Be(passportType.ToPassportType());
+
+        user.PassportInfo?.PassportNumber.Should()
+            .Be(passportNumber);
+
+        user.PassportInfo?.RegDate.Should()
+            .Be(regDate);
+
+        user.PassportInfo?.IssuedBy.Should()
+            .Be(issuedBy);
     }
-    
+
     [Fact]
     public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
     {
@@ -74,7 +81,7 @@ public class CompletePassportCommandHandlerTest
            .Throw<ArgumentNullException>()
            .WithParameterName(nameof(context));
     }
-    
+
     [Fact]
     public void ConstructorShouldFailWhenNullArgumentCurrentUserPassed()
     {
@@ -101,13 +108,11 @@ public class CompletePassportCommandHandlerTest
 
         var handler = mocker.CreateInstance<CompletePassportCommandHandler>();
         var command = new CompletePassportCommand(PassportType.International, "1234567890", DateTime.UtcNow, "Some Authority", "Ivan", "Ivanov");
-        
+
         // Act.
         var exception = await Assert.ThrowsAsync<InvalidOperationException>(async () => await handler.Handle(command, CancellationToken.None));
 
         // Assert.
         Assert.Equal("Пользователь не найден.", exception.Message);
-
     }
 }
-    

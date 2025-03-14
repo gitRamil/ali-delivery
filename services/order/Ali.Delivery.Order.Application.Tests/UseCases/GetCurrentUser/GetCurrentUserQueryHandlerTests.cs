@@ -9,7 +9,7 @@ using Shouldly;
 
 namespace Ali.Delivery.Order.Application.Tests.UseCases.GetCurrentUser;
 
-[Trait("Category","Unit")]
+[Trait("Category", "Unit")]
 public class GetCurrentUserQueryHandlerTests
 {
     [Fact]
@@ -19,10 +19,10 @@ public class GetCurrentUserQueryHandlerTests
         var fixture = new AppFixture();
         var mocks = new AutoMocker(MockBehavior.Strict);
         var currentUser = fixture.Create<User>();
-        
+
         mocks.MockDbSet(u => u.Users, currentUser);
         mocks.CurrentUserSet(currentUser.Id);
-        
+
         var sut = mocks.CreateInstance<GetCurrentUserQueryHandler>();
 
         // Act.
@@ -33,10 +33,11 @@ public class GetCurrentUserQueryHandlerTests
 
         result.Should()
               .NotBeNull();
-        
-        result.Id.Should().Be(currentUser.Id);
+
+        result.Id.Should()
+              .Be(currentUser.Id);
     }
-    
+
     [Fact]
     public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
     {
@@ -52,6 +53,7 @@ public class GetCurrentUserQueryHandlerTests
            .Throw<ArgumentNullException>()
            .WithParameterName(nameof(context));
     }
+
     [Fact]
     public void ConstructorShouldFailWhenNullArgumentCurrentUserPassed()
     {
@@ -67,15 +69,16 @@ public class GetCurrentUserQueryHandlerTests
            .Throw<ArgumentNullException>()
            .WithParameterName(nameof(currentUser));
     }
+
     [Fact]
     public async Task ConstructorShouldThrowsArgumentNullExceptionWhenRequestIsNull()
     {
         // Arrange.
         var mocks = new AutoMocker(MockBehavior.Strict);
-    
+
         mocks.GetMock<IAppDbContext>();
         mocks.GetMock<ICurrentUser>();
-    
+
         var sut = mocks.CreateInstance<GetCurrentUserQueryHandler>();
 
         // Act.
@@ -85,27 +88,23 @@ public class GetCurrentUserQueryHandlerTests
         await act.Should()
                  .ThrowAsync<ArgumentNullException>()
                  .WithMessage("Value cannot be null. (Parameter 'request')");
-        
     }
-    
+
     [Fact]
     public async Task HandleWhenUserNotFoundThrowsNotFoundException()
     {
         // Arrange.
         var fixture = new AppFixture();
         var mocks = new AutoMocker(MockBehavior.Strict);
-        var user  = fixture.Create<User>();
-        
+        var user = fixture.Create<User>();
+
         mocks.CurrentUserSet(user.Id);
         mocks.MockDbSet(u => u.Users);
-    
+
         var command = new GetCurrentUserQuery();
         var sut = mocks.CreateInstance<GetCurrentUserQueryHandler>();
 
         // Act & Assert.
-        await Should.ThrowAsync<NotFoundException>(() => 
-                                                       sut.Handle(command, CancellationToken.None)
-        );
+        await Should.ThrowAsync<NotFoundException>(() => sut.Handle(command, CancellationToken.None));
     }
-        
 }

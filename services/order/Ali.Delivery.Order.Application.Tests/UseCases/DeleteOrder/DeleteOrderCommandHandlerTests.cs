@@ -12,18 +12,16 @@ using Shouldly;
 
 namespace Ali.Delivery.Order.Application.Tests.UseCases.DeleteOrder;
 
-
 [Trait("Category", "Unit")]
 public class DeleteOrderCommandHandlerTests
 {
     [Fact]
-
     public async Task OrderShouldBeDeleted()
     {
         // Arrange.
         var fixture = new AppFixture();
         var mocks = new AutoMocker(MockBehavior.Strict);
-        
+
         var id = fixture.Create<SequentialGuid>();
         var orderName = fixture.Create<OrderName>();
         var orderInfo = fixture.Create<OrderInfo>();
@@ -31,30 +29,29 @@ public class DeleteOrderCommandHandlerTests
         var sender = fixture.Create<User>();
         var receiver = fixture.Create<User>();
         NotAuthUser? notAuthReceiver = null;
-        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver,null);
+        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, null);
 
-        
-        mocks.MockDbSet(o=>o.Orders, order);
+        mocks.MockDbSet(o => o.Orders, order);
+
         mocks.GetMock<IAppDbContext>()
              .SetupDefaultSaveChangesAsync();
 
         var command = new DeleteOrderCommand(order.Id);
-        
+
         var sut = mocks.CreateInstance<DeleteOrderCommandHandler>();
-        
+
         // Act.
         var result = await sut.Handle(command, default);
-        
+
         // Assert.
         mocks.Verify();
-        
+
         mocks.GetMock<IAppDbContext>()
              .Verify(db => db.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-        
-        Assert.NotEqual(Guid.Empty, result);
 
+        Assert.NotEqual(Guid.Empty, result);
     }
-    
+
     [Fact]
     public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
     {
@@ -69,16 +66,16 @@ public class DeleteOrderCommandHandlerTests
            .Throw<ArgumentNullException>()
            .WithParameterName(nameof(context));
     }
-    
+
     [Fact]
     public async Task ConstructorShouldThrowsArgumentNullExceptionWhenCommandIsNull()
     {
         // Arrange.
         var mocks = new AutoMocker(MockBehavior.Strict);
-    
+
         mocks.GetMock<IAppDbContext>();
         mocks.GetMock<ICurrentUser>();
-    
+
         var sut = mocks.CreateInstance<DeleteOrderCommandHandler>();
 
         // Act.
@@ -88,9 +85,8 @@ public class DeleteOrderCommandHandlerTests
         await act.Should()
                  .ThrowAsync<ArgumentNullException>()
                  .WithMessage("Value cannot be null. (Parameter 'command')");
-        
     }
-    
+
     [Fact]
     public async Task HandlerShouldThrowNotFoundExceptionWhenOrderNotinBase()
     {
@@ -104,24 +100,21 @@ public class DeleteOrderCommandHandlerTests
         var sender = fixture.Create<User>();
         var receiver = fixture.Create<User>();
         NotAuthUser? notAuthReceiver = null;
-        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver,null);
-        
-        
+        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, null);
+
         mocks.MockDbSet(o => o.Orders);
+
         mocks.GetMock<IAppDbContext>()
              .SetupDefaultSaveChangesAsync();
 
         var sut = mocks.CreateInstance<DeleteOrderCommandHandler>();
-        
+
         var command = new DeleteOrderCommand(order.Id);
 
         // Act & Assert.
-        await Should.ThrowAsync<NotFoundException>(() => 
-                                                       sut.Handle(command, CancellationToken.None)
-        );
-        
+        await Should.ThrowAsync<NotFoundException>(() => sut.Handle(command, CancellationToken.None));
+
         mocks.GetMock<IAppDbContext>()
              .Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
-
     }
 }

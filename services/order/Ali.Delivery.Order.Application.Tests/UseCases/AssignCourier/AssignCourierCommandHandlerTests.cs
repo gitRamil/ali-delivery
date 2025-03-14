@@ -30,6 +30,7 @@ public class AssignCourierCommandHandlerTests
            .Throw<ArgumentNullException>()
            .WithParameterName(nameof(context));
     }
+
     [Fact]
     public void ConstructorShouldFailWhenNullArgumentCurrentUserPassed()
     {
@@ -84,6 +85,7 @@ public class AssignCourierCommandHandlerTests
         order.Courier.Should()
              .Be(courier);
     }
+
     [Fact]
     public async Task HandlerShouldThrowNotFoundExceptionWhenCurrentUserNotinBase()
     {
@@ -109,18 +111,16 @@ public class AssignCourierCommandHandlerTests
              .SetupDefaultSaveChangesAsync();
 
         var sut = mocks.CreateInstance<AssignCourierCommandHandler>();
-        
+
         var command = new AssignCourierCommand(order.Id);
 
         // Act & Assert.
-        await Should.ThrowAsync<NotFoundException>(() => 
-                                                       sut.Handle(command, CancellationToken.None)
-        );
-        
+        await Should.ThrowAsync<NotFoundException>(() => sut.Handle(command, CancellationToken.None));
+
         mocks.GetMock<IAppDbContext>()
              .Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
-
     }
+
     [Fact]
     public async Task HandlerShouldThrowNotFoundExceptionWhenOrderNotinBase()
     {
@@ -146,16 +146,13 @@ public class AssignCourierCommandHandlerTests
              .SetupDefaultSaveChangesAsync();
 
         var sut = mocks.CreateInstance<AssignCourierCommandHandler>();
-        
+
         var command = new AssignCourierCommand(order.Id);
 
         // Act & Assert.
-        await Should.ThrowAsync<NotFoundException>(() => 
-                                                       sut.Handle(command, CancellationToken.None)
-        );
-        
+        await Should.ThrowAsync<NotFoundException>(() => sut.Handle(command, CancellationToken.None));
+
         mocks.GetMock<IAppDbContext>()
              .Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
-
     }
 }

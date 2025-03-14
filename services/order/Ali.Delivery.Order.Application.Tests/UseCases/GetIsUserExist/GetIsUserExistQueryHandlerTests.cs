@@ -7,7 +7,7 @@ using Moq.AutoMock;
 
 namespace Ali.Delivery.Order.Application.Tests.UseCases.GetIsUserExist;
 
-[Trait("Category","Unit")]
+[Trait("Category", "Unit")]
 public class GetIsUserExistQueryHandlerTests
 {
     [Fact]
@@ -17,9 +17,9 @@ public class GetIsUserExistQueryHandlerTests
         var fixture = new AppFixture();
         var mocks = new AutoMocker(MockBehavior.Strict);
         var user = fixture.Create<User>();
-        
+
         mocks.MockDbSet(u => u.Users, user);
-        
+
         var sut = mocks.CreateInstance<GetIsUserExistQueryHandler>();
 
         // Act.
@@ -27,10 +27,11 @@ public class GetIsUserExistQueryHandlerTests
 
         // Assert.
         mocks.Verify();
-        
-        result.Should().BeTrue();
-        
+
+        result.Should()
+              .BeTrue();
     }
+
     [Fact]
     public async Task HandlerShouldReturnFalse_WhenUserNotExists()
     {
@@ -38,23 +39,25 @@ public class GetIsUserExistQueryHandlerTests
         var fixture = new AppFixture();
         var mocks = new AutoMocker(MockBehavior.Strict);
         var user = fixture.Create<User>();
-        
+
         mocks.MockDbSet(u => u.Users);
-    
+
         var sut = mocks.CreateInstance<GetIsUserExistQueryHandler>();
 
         // Act
         var result = await sut.Handle(new GetIsUserExistQuery(user.Id), default);
 
         // Assert
-        result.Should().BeFalse();
+        result.Should()
+              .BeFalse();
     }
+
     [Fact]
     public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
     {
         // Arrange.
         IAppDbContext context = null!;
-        
+
         // Act.
         var act = () => new GetIsUserExistQueryHandler(context);
 
@@ -63,16 +66,16 @@ public class GetIsUserExistQueryHandlerTests
            .Throw<ArgumentNullException>()
            .WithParameterName(nameof(context));
     }
-    
+
     [Fact]
     public async Task ConstructorShouldThrowsArgumentNullExceptionWhenQueryIsNull()
     {
         // Arrange.
         var mocks = new AutoMocker(MockBehavior.Strict);
-    
+
         mocks.GetMock<IAppDbContext>();
         mocks.GetMock<ICurrentUser>();
-    
+
         var sut = mocks.CreateInstance<GetIsUserExistQueryHandler>();
 
         // Act.
@@ -82,6 +85,5 @@ public class GetIsUserExistQueryHandlerTests
         await act.Should()
                  .ThrowAsync<ArgumentNullException>()
                  .WithMessage("Value cannot be null. (Parameter 'query')");
-        
     }
 }

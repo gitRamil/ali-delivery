@@ -8,7 +8,7 @@ using Moq.AutoMock;
 
 namespace Ali.Delivery.Order.Application.Tests.UseCases.GetAllCreatedOrders;
 
-[Trait("Category","Unit")]
+[Trait("Category", "Unit")]
 public class GetAllCreatedOrdersQueryHandlerTests
 {
     [Fact]
@@ -19,16 +19,17 @@ public class GetAllCreatedOrdersQueryHandlerTests
         var mocks = new AutoMocker(MockBehavior.Strict);
         var sender = fixture.Create<User>();
         var courier = fixture.Create<User>();
+
         var orders = new[]
         {
             fixture.CreateOrder(sender, OrderStatus.Created),
             fixture.CreateOrder(sender, OrderStatus.Created),
             fixture.CreateOrder(sender, OrderStatus.Created),
-            fixture.CreateOrder(sender, OrderStatus.InProgress,courier),
+            fixture.CreateOrder(sender, OrderStatus.InProgress, courier),
             fixture.CreateOrder(sender, OrderStatus.InProgress, courier),
             fixture.CreateOrder(sender, OrderStatus.Finished, courier)
         };
-        
+
         mocks.MockDbSet(o => o.Orders, orders);
         var sut = mocks.CreateInstance<GetAllCreatedOrdersQueryHandler>();
 
@@ -40,20 +41,21 @@ public class GetAllCreatedOrdersQueryHandlerTests
 
         result.Should()
               .NotBeNull()
-              .And.HaveCount(3); 
-        
+              .And.HaveCount(3);
+
         foreach (var order in result)
         {
-            order.OrderStatusName.Should().Be(OrderStatus.Created.Name);
+            order.OrderStatusName.Should()
+                 .Be(OrderStatus.Created.Name);
         }
     }
-    
+
     [Fact]
     public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
     {
         // Arrange.
         IAppDbContext context = null!;
-        
+
         // Act.
         var act = () => new GetAllCreatedOrdersQueryHandler(context);
 
@@ -62,6 +64,4 @@ public class GetAllCreatedOrdersQueryHandlerTests
            .Throw<ArgumentNullException>()
            .WithParameterName(nameof(context));
     }
-    
-    
 }
