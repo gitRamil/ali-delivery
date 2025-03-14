@@ -8,7 +8,7 @@ namespace Ali.Delivery.Order.Application.UseCases.GetAllOrders;
 /// <summary>
 /// Представляет обработчик запроса на получение списка всех заказов.
 /// </summary>
-public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrders, List<OrderDto>>
+public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery, List<OrderDto>>
 {
     private readonly IAppDbContext _context;
 
@@ -22,7 +22,7 @@ public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrders, List<Order
     public GetAllOrdersQueryHandler(IAppDbContext context) => _context = context ?? throw new ArgumentNullException(nameof(context));
 
     /// <inheritdoc />
-    public async Task<List<OrderDto>> Handle(GetAllOrders query, CancellationToken cancellationToken)
+    public async Task<List<OrderDto>> Handle(GetAllOrdersQuery query, CancellationToken cancellationToken)
     {
         var orders = await _context.Orders.Select(order => OrderDto.FromOrder(order))
                                    .ToListAsync(cancellationToken);

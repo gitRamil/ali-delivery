@@ -31,16 +31,16 @@ public class CreateNotAuthUserCommandHandler : IRequestHandler<CreateNotAuthUser
 
     /// <inheritdoc />
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если <paramref name="request" /> равен <c>null</c>.
+    /// Возникает, если <paramref name="command" /> равен <c>null</c>.
     /// </exception>
-    public async Task<Guid> Handle(CreateNotAuthUserCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CreateNotAuthUserCommand command, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(command);
 
         var currentUser = await _context.Users.FirstOrDefaultAsync(u => (Guid)u.Id == _currentUser.Id, cancellationToken) ??
                           throw new NotFoundException(typeof(User), _currentUser.Id);
         
-        var notAuthUser = currentUser.AddNotAuthUser(request.FirstName, request.LastName, request.PhoneNumber);
+        var notAuthUser = currentUser.AddNotAuthUser(command.FirstName, command.LastName, command.PhoneNumber);
 
         await _context.SaveChangesAsync(cancellationToken);
 

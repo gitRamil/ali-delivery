@@ -1,6 +1,7 @@
 ﻿using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.Domain.Entities;
 using Ali.Delivery.Order.Domain.Entities.Dictionaries;
+using Ali.Delivery.Order.Domain.ValueObjects.Order;
 using Ali.Delivery.Order.Domain.ValueObjects.PassportInfo;
 using Ali.Delivery.Order.Domain.ValueObjects.User;
 using AutoFixture;
@@ -27,4 +28,18 @@ public class AppFixture : Fixture
                                                           passportInfo))
                               .OmitAutoProperties());
     }
+
+    public Order CreateOrder(
+        User sender,
+        OrderStatus status,
+        User courier = null!) =>
+        new Order(
+            this.Create<SequentialGuid>(),
+            this.Create<OrderName>(),
+            this.Create<OrderInfo>(),
+            status,
+            sender,
+            this.Create<User>(),
+            null,
+            courier);
 }

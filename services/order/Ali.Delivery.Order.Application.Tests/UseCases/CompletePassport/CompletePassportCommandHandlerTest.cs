@@ -35,7 +35,7 @@ public class CompletePassportCommandHandlerTest
 
         
         mocks.CurrentUserSet(user.Id);
-        mocks.MockDbSet(s => s.Users, user);
+        mocks.MockDbSet(u => u.Users, user);
         mocks.GetMock<IAppDbContext>()
              .SetupDefaultSaveChangesAsync();
         var command = new CompletePassportCommand(passportType, passportNumber, (DateTime)regDate, issuedBy, firstName, lastName);

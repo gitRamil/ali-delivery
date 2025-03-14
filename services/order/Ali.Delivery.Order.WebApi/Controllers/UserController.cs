@@ -123,7 +123,7 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllUsers(CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new GetAllUsers(), cancellationToken);
+        var result = await _mediator.Send(new GetAllUsersQuery(), cancellationToken);
         return Ok(result);
     }
 

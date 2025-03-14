@@ -87,7 +87,7 @@ public class OrderController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllOrders(CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new GetAllOrders(), cancellationToken);
+        var result = await _mediator.Send(new GetAllOrdersQuery(), cancellationToken);
         return Ok(result);
     }
 
