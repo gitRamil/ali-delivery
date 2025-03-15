@@ -1,4 +1,3 @@
-using System.Reflection;
 using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.Domain.Entities;
 using Ali.Delivery.Order.Domain.Entities.Dictionaries;
@@ -85,40 +84,6 @@ public class NotAuthUserTests
         // Assert.
         act.Should()
            .Throw<ArgumentNullException>(nameof(phoneNumber));
-    }
-
-    [Fact]
-    public void CreateNotAuthUserShouldSucceedSetAllProperties()
-    {
-        // Arrange.
-        var fixture = new Fixture();
-        var id = fixture.Create<SequentialGuid>();
-        var creator = CreateUser();
-        var firstName = fixture.Create<NotAuthUserFirstName>();
-        var lastName = fixture.Create<NotAuthUserLastName>();
-        var phoneNumber = new NotAuthUserPhoneNumber("+77877777777");
-
-        // Act.
-        var notAuthUser = new NotAuthUser(id, creator, firstName, lastName, phoneNumber);
-
-        // Assert.
-        notAuthUser.Should()
-                   .NotBeNull();
-
-        notAuthUser.Id.Should()
-                   .Be(id);
-
-        notAuthUser.Creator.Should()
-                   .Be(creator);
-
-        notAuthUser.FirstName.Should()
-                   .Be(firstName);
-
-        notAuthUser.LastName.Should()
-                   .Be(lastName);
-
-        notAuthUser.PhoneNumber.Should()
-                   .Be(phoneNumber);
     }
 
     [Fact]

@@ -9,6 +9,39 @@ namespace Ali.Delivery.Order.Domain.Tests.Entities;
 public class OrderInfoTests
 {
     [Fact]
+    public void ProtectedConstructorShouldInitializePropertiesWithDefaultValues()
+    {
+        // Arrange
+        var type = typeof(OrderInfo);
+        var constructor = type.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, Type.EmptyTypes, null)!;
+
+        // Act
+        var orderInfo = (OrderInfo)constructor.Invoke(null);
+
+        // Assert
+        orderInfo.Should()
+                   .NotBeNull();
+
+        orderInfo.Id.Should()
+                   .Be(SequentialGuid.Empty);
+
+        orderInfo.Weight.Should()
+                   .BeNull();
+
+        orderInfo.Size.Should()
+                   .BeNull();
+
+        orderInfo.Price.Should()
+                   .BeNull();
+
+        orderInfo.AddressFrom.Should()
+                   .BeNull();
+
+        orderInfo.AddressTo.Should()
+                 .BeNull();
+    }
+    
+    [Fact]
     public void CreateOrderInfoShouldSucceedWhenAllValidArgumentsPassed()
     {
         // Arrange.
