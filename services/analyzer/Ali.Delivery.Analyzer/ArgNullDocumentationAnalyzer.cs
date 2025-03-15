@@ -12,12 +12,16 @@ using Microsoft.CodeAnalysis.Operations;
 
 namespace Ali.Delivery.Analyzer;
 
+/// <summary>
+/// Этот анализатор проверяет аргументы на наличие значений null и генерирует предупреждение,
+/// если комментарии документации не указаны для методов, принимающих аргументы.
+/// </summary>
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public class ArgNullDocumentationAnalyzer : DiagnosticAnalyzer
 {
-    public const string DocInvalidId = "AIR0002";
-    public const string DocMissingId = "AIR0001";
-    public const string DocMissingParamId = "AIR0003";
+    public const string DocInvalidId = "ALI0002";
+    public const string DocMissingId = "ALI0001";
+    public const string DocMissingParamId = "ALI0003";
     private const string Category = "Documentation";
 
     internal static readonly DiagnosticDescriptor DocMissingRule = new(DocMissingId,

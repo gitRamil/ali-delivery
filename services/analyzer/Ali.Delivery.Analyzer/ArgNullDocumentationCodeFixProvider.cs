@@ -123,6 +123,7 @@ public class ArgNullDocumentationCodeFixProvider : CodeFixProvider
                 for (var i = 1; i < args.Count; i++)
                 {
                     yield return separatorText;
+                    yield return SyntaxFactory.XmlNewLine("\r\n");
                     yield return SyntaxFactory.XmlParamRefElement(args[i]);
                 }
 

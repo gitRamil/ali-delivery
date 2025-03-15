@@ -22,10 +22,10 @@ public class Order : Entity<SequentialGuid>
     /// <param name="courier">Курьер.</param>
     /// <param name="notAuthReceiver">Незарегистрированный получатель.</param>
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если <paramref name="orderName" /> или
-    /// <paramref name="orderInfo" /> или
-    /// <paramref name="orderStatus" /> или
-    /// <paramref name="sender" /> равен <c>null</c>.
+    /// Возникает, если <paramref name="orderName"/> или 
+    /// <paramref name="orderInfo"/> или 
+    /// <paramref name="orderStatus"/> или 
+    /// <paramref name="sender"/> равен <c>null</c>.
     /// </exception>
     public Order(SequentialGuid id,
                  OrderName orderName,
