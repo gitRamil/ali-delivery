@@ -12,10 +12,6 @@ using Microsoft.CodeAnalysis.Operations;
 
 namespace Ali.Delivery.Analyzer;
 
-/// <summary>
-/// Этот анализатор проверяет аргументы на наличие значений null и генерирует предупреждение,
-/// если комментарии документации не указаны для методов, принимающих аргументы.
-/// </summary>
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public class ArgNullDocumentationAnalyzer : DiagnosticAnalyzer
 {
@@ -45,17 +41,12 @@ public class ArgNullDocumentationAnalyzer : DiagnosticAnalyzer
                                                                             DiagnosticSeverity.Warning,
                                                                             true);
 
-    // Keep in mind: you have to list your rules here.
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = ImmutableArray.Create(DocMissingRule, DocInvalidRule, DocMissingParamRule);
 
     public override void Initialize(AnalysisContext context)
     {
-        // You must call this method to avoid analyzing generated code.
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-
-        // You must call this method to enable the Concurrent Execution.
         context.EnableConcurrentExecution();
-
         context.RegisterSymbolStartAction(ProcessMethod, SymbolKind.Method);
     }
 
@@ -84,7 +75,6 @@ public class ArgNullDocumentationAnalyzer : DiagnosticAnalyzer
         ctx.RegisterSyntaxNodeAction(state.CollectDocParams, SyntaxKind.MethodDeclaration, SyntaxKind.ConstructorDeclaration, SyntaxKind.ConversionOperatorDeclaration);
         ctx.RegisterOperationAction(state.CollectThrownParams, OperationKind.Throw);
         ctx.RegisterOperationAction(state.CollectThrownWithHelper, OperationKind.Invocation);
-
         ctx.RegisterSymbolEndAction(state.CompleteReport);
     }
 }

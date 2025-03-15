@@ -18,41 +18,30 @@ public class ArgNullDocumentationCodeFixProvider : CodeFixProvider
 {
     private const string FixActionTitle = "Исправить документацию для ArgumentNullException";
 
-    // Specify the diagnostic IDs of analyzers that are expected to be linked.
     public sealed override ImmutableArray<string> FixableDiagnosticIds { get; } =
         ImmutableArray.Create(ArgNullDocumentationAnalyzer.DocMissingId, ArgNullDocumentationAnalyzer.DocInvalidId, ArgNullDocumentationAnalyzer.DocMissingParamId);
 
-    // If you don't need the 'fix all' behaviour, return null.
     public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
     public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {
-        // We link only one diagnostic and assume there is only one diagnostic in the context.
         var diagnostic = context.Diagnostics.Single();
-
-        // 'SourceSpan' of 'Location' is the highlighted area. We're going to use this area to find the 'SyntaxNode' to rename.
         var diagnosticSpan = diagnostic.Location.SourceSpan;
 
-        // Get the root of Syntax Tree that contains the highlighted diagnostic.
         var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken)
                                 .ConfigureAwait(false);
-
-        // Find SyntaxNode corresponding to the diagnostic.
         var diagnosticNode = root?.FindNode(diagnosticSpan);
 
-        // conversion operator method extraction
         if (diagnosticNode is TypeSyntax typeSyntax)
         {
             diagnosticNode = typeSyntax.Parent;
         }
 
-        // To get the required metadata, we should match the Node to the specific type: 'ClassDeclarationSyntax'.
         if (diagnosticNode is not BaseMethodDeclarationSyntax declaration)
         {
             return;
         }
 
-        // Register a code action that will invoke the fix.
         context.RegisterCodeFix(CodeAction.Create(FixActionTitle,
                                                   equivalenceKey: FixActionTitle,
                                                   createChangedDocument: async _ =>
