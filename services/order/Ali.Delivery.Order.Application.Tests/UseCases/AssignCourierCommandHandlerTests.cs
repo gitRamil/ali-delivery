@@ -17,16 +17,16 @@ public class AssignCourierCommandHandlerTests
     public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
     {
         // Arrange.
-        IAppDbContext goalMapsApprovedService = null!;
-        var context = Mock.Of<ICurrentUser>();
+        IAppDbContext context = null!;
+        var currentUser = Mock.Of<ICurrentUser>();
 
         // Act.
-        var act = () => new AssignCourierCommandHandler(goalMapsApprovedService, context);
+        var act = () => new AssignCourierCommandHandler(context, currentUser);
 
         // Assert.
         act.Should()
            .Throw<ArgumentNullException>()
-           .WithParameterName(nameof(goalMapsApprovedService));
+           .WithParameterName(nameof(context));
     }
 
     [Fact]
