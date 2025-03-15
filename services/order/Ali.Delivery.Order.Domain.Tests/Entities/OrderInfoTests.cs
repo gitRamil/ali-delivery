@@ -9,39 +9,6 @@ namespace Ali.Delivery.Order.Domain.Tests.Entities;
 public class OrderInfoTests
 {
     [Fact]
-    public void ProtectedConstructorShouldInitializePropertiesWithDefaultValues()
-    {
-        // Arrange
-        var type = typeof(OrderInfo);
-        var constructor = type.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, Type.EmptyTypes, null)!;
-
-        // Act
-        var orderInfo = (OrderInfo)constructor.Invoke(null);
-
-        // Assert
-        orderInfo.Should()
-                   .NotBeNull();
-
-        orderInfo.Id.Should()
-                   .Be(SequentialGuid.Empty);
-
-        orderInfo.Weight.Should()
-                   .BeNull();
-
-        orderInfo.Size.Should()
-                   .BeNull();
-
-        orderInfo.Price.Should()
-                   .BeNull();
-
-        orderInfo.AddressFrom.Should()
-                   .BeNull();
-
-        orderInfo.AddressTo.Should()
-                 .BeNull();
-    }
-    
-    [Fact]
     public void CreateOrderInfoShouldSucceedWhenAllValidArgumentsPassed()
     {
         // Arrange.
@@ -63,74 +30,10 @@ public class OrderInfoTests
     }
 
     [Fact]
-    public void CreateOrderInfoShouldThrowArgumentNullExceptionWhenWeightIsNull()
-    {
-        // Arrange.
-        var fixture = new Fixture();
-
-        var id = fixture.Create<SequentialGuid>();
-        OrderInfoWeight weight = null!;
-        var size = Size.Medium;
-        var price = fixture.Create<OrderInfoPrice>();
-        var addressFrom = fixture.Create<OrderInfoAddressFrom>();
-        var addressTo = fixture.Create<OrderInfoAddressTo>();
-
-        // Act. 
-        var act = () => new OrderInfo(id, weight, size, price, addressFrom, addressTo);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>(nameof(weight));
-    }
-
-    [Fact]
-    public void CreateOrderInfoShouldThrowArgumentNullExceptionWhenSizeIsNull()
-    {
-        // Arrange.
-        var fixture = new Fixture();
-
-        var id = fixture.Create<SequentialGuid>();
-        var weight = fixture.Create<OrderInfoWeight>();
-        Size size = null!;
-        var price = fixture.Create<OrderInfoPrice>();
-        var addressFrom = fixture.Create<OrderInfoAddressFrom>();
-        var addressTo = fixture.Create<OrderInfoAddressTo>();
-
-        // Act. 
-        var act = () => new OrderInfo(id, weight, size, price, addressFrom, addressTo);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>(nameof(size));
-    }
-
-    [Fact]
-    public void CreateOrderInfoShouldThrowArgumentNullExceptionWhenPriceIsNull()
-    {
-        // Arrange.
-        var fixture = new Fixture();
-
-        var id = fixture.Create<SequentialGuid>();
-        var weight = fixture.Create<OrderInfoWeight>();
-        var size = Size.Medium;
-        OrderInfoPrice price = null!;
-        var addressFrom = fixture.Create<OrderInfoAddressFrom>();
-        var addressTo = fixture.Create<OrderInfoAddressTo>();
-
-        // Act. 
-        var act = () => new OrderInfo(id, weight, size, price, addressFrom, addressTo);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>(nameof(price));
-    }
-
-    [Fact]
     public void CreateOrderInfoShouldThrowArgumentNullExceptionWhenAddressFromIsNull()
     {
         // Arrange.
         var fixture = new Fixture();
-
         var id = fixture.Create<SequentialGuid>();
         var weight = fixture.Create<OrderInfoWeight>();
         var size = Size.Medium;
@@ -168,6 +71,102 @@ public class OrderInfoTests
     }
 
     [Fact]
+    public void CreateOrderInfoShouldThrowArgumentNullExceptionWhenPriceIsNull()
+    {
+        // Arrange.
+        var fixture = new Fixture();
+
+        var id = fixture.Create<SequentialGuid>();
+        var weight = fixture.Create<OrderInfoWeight>();
+        var size = Size.Medium;
+        OrderInfoPrice price = null!;
+        var addressFrom = fixture.Create<OrderInfoAddressFrom>();
+        var addressTo = fixture.Create<OrderInfoAddressTo>();
+
+        // Act. 
+        var act = () => new OrderInfo(id, weight, size, price, addressFrom, addressTo);
+
+        // Assert.
+        act.Should()
+           .Throw<ArgumentNullException>(nameof(price));
+    }
+
+    [Fact]
+    public void CreateOrderInfoShouldThrowArgumentNullExceptionWhenSizeIsNull()
+    {
+        // Arrange.
+        var fixture = new Fixture();
+
+        var id = fixture.Create<SequentialGuid>();
+        var weight = fixture.Create<OrderInfoWeight>();
+        Size size = null!;
+        var price = fixture.Create<OrderInfoPrice>();
+        var addressFrom = fixture.Create<OrderInfoAddressFrom>();
+        var addressTo = fixture.Create<OrderInfoAddressTo>();
+
+        // Act. 
+        var act = () => new OrderInfo(id, weight, size, price, addressFrom, addressTo);
+
+        // Assert.
+        act.Should()
+           .Throw<ArgumentNullException>(nameof(size));
+    }
+
+    [Fact]
+    public void CreateOrderInfoShouldThrowArgumentNullExceptionWhenWeightIsNull()
+    {
+        // Arrange.
+        var fixture = new Fixture();
+
+        var id = fixture.Create<SequentialGuid>();
+        OrderInfoWeight weight = null!;
+        var size = Size.Medium;
+        var price = fixture.Create<OrderInfoPrice>();
+        var addressFrom = fixture.Create<OrderInfoAddressFrom>();
+        var addressTo = fixture.Create<OrderInfoAddressTo>();
+
+        // Act. 
+        var act = () => new OrderInfo(id, weight, size, price, addressFrom, addressTo);
+
+        // Assert.
+        act.Should()
+           .Throw<ArgumentNullException>(nameof(weight));
+    }
+
+    [Fact]
+    public void ProtectedConstructorShouldInitializePropertiesWithDefaultValues()
+    {
+        // Arrange
+        var type = typeof(OrderInfo);
+        var constructor = type.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, Type.EmptyTypes, null)!;
+
+        // Act
+        var orderInfo = (OrderInfo)constructor.Invoke(null);
+
+        // Assert
+        orderInfo.Should()
+                 .NotBeNull();
+
+        orderInfo.Id.Should()
+                 .Be(SequentialGuid.Empty);
+
+        orderInfo.Weight.Should()
+                 .BeNull();
+
+        orderInfo.Size.Should()
+                 .BeNull();
+
+        orderInfo.Price.Should()
+                 .BeNull();
+
+        orderInfo.AddressFrom.Should()
+                 .BeNull();
+
+        orderInfo.AddressTo.Should()
+                 .BeNull();
+    }
+
+    [Fact]
     public void UpdateOrderInfoShouldSucceedUpdateOrderInfo()
     {
         // Arrange.
@@ -192,156 +191,22 @@ public class OrderInfoTests
         var act = () => orderInfo.UpdateOrderInfo(weight1, price1, addressFrom1, addressTo1, size1);
 
         // Assert.
-        act.Should().NotThrow();
-        orderInfo.Weight.Should().Be(weight1);
-        orderInfo.Price.Should().Be(price1);
-        orderInfo.AddressFrom.Should().Be(addressFrom1);
-        orderInfo.AddressTo.Should().Be(addressTo1);
-        orderInfo.Size.Should().Be(size1);
-    }
-
-    [Fact]
-    public void UpdateOrderInfoShouldThrowArgumentNullExceptionWhenWeightIsNull()
-    {
-        // Arrange.
-        var fixture = new Fixture();
-
-        var id = fixture.Create<SequentialGuid>();
-        var weight = fixture.Create<OrderInfoWeight>();
-        var size = Size.Medium;
-        var price = fixture.Create<OrderInfoPrice>();
-        var addressFrom = fixture.Create<OrderInfoAddressFrom>();
-        var addressTo = fixture.Create<OrderInfoAddressTo>();
-
-        OrderInfoWeight weight1 = null!;
-        var size1 = Size.Medium;
-        var price1 = fixture.Create<OrderInfoPrice>();
-        var addressFrom1 = fixture.Create<OrderInfoAddressFrom>();
-        var addressTo1 = fixture.Create<OrderInfoAddressTo>();
-
-        var orderInfo = new OrderInfo(id, weight, size, price, addressFrom, addressTo);
-
-        // Act. 
-        var act = () => orderInfo.UpdateOrderInfo(weight1, price1, addressFrom1, addressTo1, size1);
-
-        // Assert.
         act.Should()
-           .Throw<ArgumentNullException>(nameof(weight1));
-    }
+           .NotThrow();
 
-    [Fact]
-    public void UpdateOrderInfoShouldThrowArgumentNullExceptionWhePriceIsNull()
-    {
-        // Arrange.
-        var fixture = new Fixture();
+        orderInfo.Weight.Should()
+                 .Be(weight1);
 
-        var id = fixture.Create<SequentialGuid>();
-        var weight = fixture.Create<OrderInfoWeight>();
-        var size = Size.Medium;
-        var price = fixture.Create<OrderInfoPrice>();
-        var addressFrom = fixture.Create<OrderInfoAddressFrom>();
-        var addressTo = fixture.Create<OrderInfoAddressTo>();
+        orderInfo.Price.Should()
+                 .Be(price1);
 
-        var weight1 = fixture.Create<OrderInfoWeight>();
-        var size1 = Size.Medium;
-        OrderInfoPrice price1 = null!;
-        var addressFrom1 = fixture.Create<OrderInfoAddressFrom>();
-        var addressTo1 = fixture.Create<OrderInfoAddressTo>();
+        orderInfo.AddressFrom.Should()
+                 .Be(addressFrom1);
 
-        var orderInfo = new OrderInfo(id, weight, size, price, addressFrom, addressTo);
+        orderInfo.AddressTo.Should()
+                 .Be(addressTo1);
 
-        // Act. 
-        var act = () => orderInfo.UpdateOrderInfo(weight1, price1, addressFrom1, addressTo1, size1);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>(nameof(price1));
-    }
-
-    [Fact]
-    public void UpdateOrderInfoShouldThrowArgumentNullExceptionWheAddressFromIsNull()
-    {
-        // Arrange.
-        var fixture = new Fixture();
-
-        var id = fixture.Create<SequentialGuid>();
-        var weight = fixture.Create<OrderInfoWeight>();
-        var size = Size.Medium;
-        var price = fixture.Create<OrderInfoPrice>();
-        var addressFrom = fixture.Create<OrderInfoAddressFrom>();
-        var addressTo = fixture.Create<OrderInfoAddressTo>();
-
-        var weight1 = fixture.Create<OrderInfoWeight>();
-        var size1 = Size.Medium;
-        var price1 = fixture.Create<OrderInfoPrice>();
-        OrderInfoAddressFrom addressFrom1 = null!;
-        var addressTo1 = fixture.Create<OrderInfoAddressTo>();
-
-        var orderInfo = new OrderInfo(id, weight, size, price, addressFrom, addressTo);
-
-        // Act. 
-        var act = () => orderInfo.UpdateOrderInfo(weight1, price1, addressFrom1, addressTo1, size1);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>(nameof(addressFrom1));
-    }
-
-    [Fact]
-    public void UpdateOrderInfoShouldThrowArgumentNullExceptionWheAddressToIsNull()
-    {
-        // Arrange.
-        var fixture = new Fixture();
-
-        var id = fixture.Create<SequentialGuid>();
-        var weight = fixture.Create<OrderInfoWeight>();
-        var size = Size.Medium;
-        var price = fixture.Create<OrderInfoPrice>();
-        var addressFrom = fixture.Create<OrderInfoAddressFrom>();
-        var addressTo = fixture.Create<OrderInfoAddressTo>();
-
-        var weight1 = fixture.Create<OrderInfoWeight>();
-        var size1 = Size.Medium;
-        OrderInfoPrice price1 = null!;
-        var addressTo1 = fixture.Create<OrderInfoAddressTo>();
-        var addressFrom1 = fixture.Create<OrderInfoAddressFrom>();
-
-        var orderInfo = new OrderInfo(id, weight, size, price, addressFrom, addressTo);
-
-        // Act. 
-        var act = () => orderInfo.UpdateOrderInfo(weight1, price1, addressFrom1, addressTo1, size1);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>(nameof(addressTo1));
-    }
-
-    [Fact]
-    public void UpdateOrderInfoShouldThrowArgumentNullExceptionWheSizeIsNull()
-    {
-        // Arrange.
-        var fixture = new Fixture();
-
-        var id = fixture.Create<SequentialGuid>();
-        var weight = fixture.Create<OrderInfoWeight>();
-        var size = Size.Medium;
-        var price = fixture.Create<OrderInfoPrice>();
-        var addressFrom = fixture.Create<OrderInfoAddressFrom>();
-        var addressTo = fixture.Create<OrderInfoAddressTo>();
-
-        var weight1 = fixture.Create<OrderInfoWeight>();
-        Size size1 = null!;
-        var price1 = fixture.Create<OrderInfoPrice>();
-        var addressFrom1 = fixture.Create<OrderInfoAddressFrom>();
-        var addressTo1 = fixture.Create<OrderInfoAddressTo>();
-
-        var orderInfo = new OrderInfo(id, weight, size, price, addressFrom, addressTo);
-
-        // Act. 
-        var act = () => orderInfo.UpdateOrderInfo(weight1, price1, addressFrom1, addressTo1, size1);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>(nameof(size1));
+        orderInfo.Size.Should()
+                 .Be(size1);
     }
 }

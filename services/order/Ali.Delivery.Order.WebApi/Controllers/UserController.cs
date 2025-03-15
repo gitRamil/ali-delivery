@@ -162,7 +162,7 @@ public class UserController : ControllerBase
     /// </summary>
     /// <param name="userId">Идентификатор пользователя.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
-    [HttpGet("{userId}")]
+    [HttpGet("{userId:guid}")]
     [UserPermission(UserPermissionCode.FullAccess)]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
