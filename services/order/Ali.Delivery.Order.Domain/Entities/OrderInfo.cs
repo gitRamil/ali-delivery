@@ -79,6 +79,13 @@ public class OrderInfo : Entity<SequentialGuid>
     /// Обновляет информацию заказа.
     /// </summary>
     /// <inheritdoc cref="OrderInfo" />
+    /// <exception cref="ArgumentNullException">
+    /// Возникает, если <paramref name="weight"/> или 
+    /// <paramref name="price"/> или 
+    /// <paramref name="addressFrom"/> или 
+    /// <paramref name="addressTo"/> или 
+    /// <paramref name="size"/> равен <c>null</c>.
+    /// </exception>
     public void UpdateOrderInfo(OrderInfoWeight weight, OrderInfoPrice price, OrderInfoAddressFrom addressFrom, OrderInfoAddressTo addressTo, Size size)
     {
         Weight = weight ?? throw new ArgumentNullException(nameof(weight));
