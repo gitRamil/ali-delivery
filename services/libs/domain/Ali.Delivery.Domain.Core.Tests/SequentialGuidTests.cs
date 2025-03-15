@@ -1,6 +1,6 @@
+using Ali.Delivery.Domain.Core.Primitives;
 using AutoFixture;
 using AutoFixture.Xunit2;
-using Ali.Delivery.Domain.Core.Primitives;
 using FluentAssertions;
 
 namespace Ali.Delivery.Domain.Core.Tests;

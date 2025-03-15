@@ -1,15 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <Description>Содержит базовые доменные абстракции из DDD.</Description>
-  </PropertyGroup>
-
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+    <PropertyGroup>
+        <Version>1.0.1</Version>
+        <Authors>Ramil Alimukhamedov</Authors>
+        <Description>Содержит базовые доменные абстракции из DDD.</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/gitRamil/ali-delivery/tree/main/services/libs/domain</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/gitRamil/ali-delivery/tree/main/services/libs/domain</RepositoryUrl>
+    </PropertyGroup>
 </Project>

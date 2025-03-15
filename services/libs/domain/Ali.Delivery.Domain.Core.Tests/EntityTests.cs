@@ -322,23 +322,6 @@ public class EntityTests
     }
 
     [Fact]
-    public void NotEqualsOperatorMustReturnFalseWhenCompareTwoTheEntityWithSameIdAndTheDifferentContent()
-    {
-        // Arrange.
-        var fixture = new Fixture();
-        fixture.Freeze<long>();
-        var first = fixture.Create<User>();
-        var second = fixture.Create<User>();
-
-        // Act.
-        var result = first != second;
-
-        // Assert.
-        result.Should()
-              .BeFalse();
-    }
-
-    [Fact]
     public void NotEqualsOperatorMustBeReflective()
     {
         // Arrange.
@@ -406,6 +389,23 @@ public class EntityTests
         // Assert.
         result.Should()
               .BeTrue();
+    }
+
+    [Fact]
+    public void NotEqualsOperatorMustReturnFalseWhenCompareTwoTheEntityWithSameIdAndTheDifferentContent()
+    {
+        // Arrange.
+        var fixture = new Fixture();
+        fixture.Freeze<long>();
+        var first = fixture.Create<User>();
+        var second = fixture.Create<User>();
+
+        // Act.
+        var result = first != second;
+
+        // Assert.
+        result.Should()
+              .BeFalse();
     }
 
     [Fact]
