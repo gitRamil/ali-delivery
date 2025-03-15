@@ -7,8 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Location.Application\Location.Application.csproj" />
-      <ProjectReference Include="..\Location.Domain\Location.Domain.csproj" />
+      <ProjectReference Include="..\Ali.Delivery.Location.Application\Ali.Delivery.Location.Application.csproj" />
+      <ProjectReference Include="..\Ali.Delivery.Location.Domain\Ali.Delivery.Location.Domain.csproj" />
     </ItemGroup>
 
 </Project>

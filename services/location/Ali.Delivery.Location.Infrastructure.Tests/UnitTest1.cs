@@ -1,4 +1,4 @@
-namespace Location.Infrastructure.Tests;
+namespace Ali.Delivery.Location.Infrastructure.Tests;
 
 public class UnitTest1
 {

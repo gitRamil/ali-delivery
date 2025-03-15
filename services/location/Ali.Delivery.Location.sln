@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Location.WebApi", "Location.WebApi\Location.WebApi.csproj", "{9A963E75-1350-4209-A607-2876E196A91D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ali.Delivery.Location.WebApi", "Ali.Delivery.Location.WebApi\Ali.Delivery.Location.WebApi.csproj", "{9A963E75-1350-4209-A607-2876E196A91D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{3B2CD1DE-C2EB-4EB9-916C-CE45ED3E8651}"
 EndProject
@@ -10,19 +10,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{35A34192-4FCA-432F-B839-E4774EB904B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Location.Application", "Location.Application\Location.Application.csproj", "{02EA6991-D3BE-4FD1-9FB6-BC055BBFE6EF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ali.Delivery.Location.Application", "Ali.Delivery.Location.Application\Ali.Delivery.Location.Application.csproj", "{02EA6991-D3BE-4FD1-9FB6-BC055BBFE6EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Location.Domain", "Location.Domain\Location.Domain.csproj", "{F6F53F64-6328-4C12-8103-F75CF2F4CD1B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ali.Delivery.Location.Domain", "Ali.Delivery.Location.Domain\Ali.Delivery.Location.Domain.csproj", "{F6F53F64-6328-4C12-8103-F75CF2F4CD1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Location.Infrastructure", "Location.Infrastructure\Location.Infrastructure.csproj", "{081D60CD-6FC4-4AF0-A377-E0FA5894388C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ali.Delivery.Location.Infrastructure", "Ali.Delivery.Location.Infrastructure\Ali.Delivery.Location.Infrastructure.csproj", "{081D60CD-6FC4-4AF0-A377-E0FA5894388C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Location.Application.Tests", "Location.Application.Tests\Location.Application.Tests.csproj", "{02598900-B3C6-45E6-8568-D88E9D8E0C89}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ali.Delivery.Location.Application.Tests", "Ali.Delivery.Location.Application.Tests\Ali.Delivery.Location.Application.Tests.csproj", "{02598900-B3C6-45E6-8568-D88E9D8E0C89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Location.Domain.Tests", "Location.Domain.Tests\Location.Domain.Tests.csproj", "{2B196767-86B7-4BAB-BD1F-94FCD3A06E95}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ali.Delivery.Location.Domain.Tests", "Ali.Delivery.Location.Domain.Tests\Ali.Delivery.Location.Domain.Tests.csproj", "{2B196767-86B7-4BAB-BD1F-94FCD3A06E95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Location.Infrastructure.Tests", "Location.Infrastructure.Tests\Location.Infrastructure.Tests.csproj", "{A9A7F1BE-E84E-4CFE-B4A4-255E84D5BF6D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ali.Delivery.Location.Infrastructure.Tests", "Ali.Delivery.Location.Infrastructure.Tests\Ali.Delivery.Location.Infrastructure.Tests.csproj", "{A9A7F1BE-E84E-4CFE-B4A4-255E84D5BF6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Location.WebApi.Tests", "Location.WebApi.Tests\Location.WebApi.Tests.csproj", "{3177C6A5-93F0-45D4-AA33-8927D0628D45}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ali.Delivery.Location.WebApi.Tests", "Ali.Delivery.Location.WebApi.Tests\Ali.Delivery.Location.WebApi.Tests.csproj", "{3177C6A5-93F0-45D4-AA33-8927D0628D45}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

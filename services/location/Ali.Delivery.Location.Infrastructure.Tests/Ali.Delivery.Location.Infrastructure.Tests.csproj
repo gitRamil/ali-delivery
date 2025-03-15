@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Location.Infrastructure\Location.Infrastructure.csproj" />
+      <ProjectReference Include="..\Ali.Delivery.Location.Infrastructure\Ali.Delivery.Location.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

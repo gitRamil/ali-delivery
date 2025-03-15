@@ -1,4 +1,4 @@
-namespace Location.WebApi.Tests;
+namespace Ali.Delivery.Location.Domain.Tests;
 
 public class UnitTest1
 {
