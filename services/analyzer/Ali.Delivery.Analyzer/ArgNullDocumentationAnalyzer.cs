@@ -12,7 +12,9 @@ using Microsoft.CodeAnalysis.Operations;
 
 namespace Ali.Delivery.Analyzer;
 
+#pragma warning disable RS1038
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
+#pragma warning restore RS1038
 public class ArgNullDocumentationAnalyzer : DiagnosticAnalyzer
 {
     public const string DocInvalidId = "ALI0002";
