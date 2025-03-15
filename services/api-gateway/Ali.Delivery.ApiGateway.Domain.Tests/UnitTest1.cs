@@ -1,4 +1,4 @@
-namespace ApiGateway.Infrastructure.Tests;
+namespace Ali.Delivery.ApiGateway.Domain.Tests;
 
 public class UnitTest1
 {
