@@ -64,7 +64,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Gui
         var order = new Domain.Entities.Order(SequentialGuid.Create(),
                                               new OrderName(command.OrderName),
                                               orderInfo,
-                                              OrderStatus.Created.ToOrderStatus(),
+                                              OrderStatusCode.Created.ToOrderStatus(),
                                               sender,
                                               receiver,
                                               notAuthReceiver,

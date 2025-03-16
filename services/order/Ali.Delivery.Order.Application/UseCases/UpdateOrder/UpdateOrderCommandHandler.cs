@@ -46,7 +46,7 @@ public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand, Ord
                                   new OrderInfoAddressTo(command.AddressTo),
                                   command.Size.ToSize());
 
-        order.UpdateOrderStatus(command.OrderStatus.ToOrderStatus());
+        order.UpdateOrderStatus(command.OrderStatusCode.ToOrderStatus());
 
         await _context.SaveChangesAsync(cancellationToken);
 

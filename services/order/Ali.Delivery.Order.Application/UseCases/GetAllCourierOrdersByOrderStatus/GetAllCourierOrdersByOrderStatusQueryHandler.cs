@@ -31,7 +31,7 @@ public class GetAllCourierOrdersByOrderStatusQueryHandler : IRequestHandler<GetA
     /// <inheritdoc />
     public async Task<List<OrderDto>> Handle(GetAllCourierOrdersByOrderStatusQuery query, CancellationToken cancellationToken)
     {
-        var orders = await _context.Orders.Where(o => o.OrderStatus == query.OrderStatus.ToOrderStatus() && (Guid)o.Courier!.Id == _currentUser.Id)
+        var orders = await _context.Orders.Where(o => o.OrderStatus == query.OrderStatusCode.ToOrderStatus() && (Guid)o.Courier!.Id == _currentUser.Id)
                                    .Select(order => OrderDto.FromOrder(order))
                                    .ToListAsync(cancellationToken);
 

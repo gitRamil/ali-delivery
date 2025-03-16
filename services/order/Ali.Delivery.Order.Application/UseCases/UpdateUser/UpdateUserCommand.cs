@@ -11,7 +11,7 @@ namespace Ali.Delivery.Order.Application.UseCases.UpdateUser;
 /// <param name="Login">Логин.</param>
 /// <param name="FirstName">Имя.</param>
 /// <param name="LastName">Фамилия.</param>
-/// <param name="PassportType">Тип паспорта.</param>
+/// <param name="PassportTypeCode">Тип паспорта.</param>
 /// <param name="PassportNumber">Номер паспорта.</param>
 /// <param name="RegDate">Дата регистрации паспорта.</param>
 /// <param name="IssuedBy">Кем выдан.</param>
@@ -22,7 +22,7 @@ public record UpdateUserCommand(
     string Login,
     string FirstName,
     string LastName,
-    PassportType PassportType,
+    PassportTypeCode PassportTypeCode,
     string PassportNumber,
     DateTime RegDate,
     string IssuedBy,

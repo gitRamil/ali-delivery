@@ -99,16 +99,16 @@ public class UserController : ControllerBase
     /// <summary>
     /// Получает все заказы базового пользователя по статусу заказа.
     /// </summary>
-    /// <param name="orderStatus">Статус заказа.</param>
+    /// <param name="orderStatusCode">Статус заказа.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
     /// <returns>Список заказов</returns>
     [HttpGet("basic-user-orders-by-status")]
     [UserPermission(UserPermissionCode.UserOrderManagement)]
     [ProducesResponseType(typeof(List<OrderDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAllBasicUserOrdersByOrderStatus(OrderStatus orderStatus, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllBasicUserOrdersByOrderStatus(OrderStatusCode orderStatusCode, CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new GetAllBasicUserOrdersByOrderStatusQuery(orderStatus), cancellationToken);
+        var result = await _mediator.Send(new GetAllBasicUserOrdersByOrderStatusQuery(orderStatusCode), cancellationToken);
         return Ok(result);
     }
 
