@@ -74,7 +74,7 @@ public class UnassignCourierCommandHandlerTests
         var sut = mocks.CreateInstance<UnassignCourierCommandHandler>();
 
         // Act.
-        var result = await sut.Handle(new UnassignCourierCommand(order.Id), default);
+        var result = await sut.Handle(new UnassignCourierCommand(order.Id), CancellationToken.None);
 
         // Assert.
         mocks.Verify();

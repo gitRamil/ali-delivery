@@ -26,7 +26,7 @@ public class GetCurrentUserQueryHandlerTests
         var sut = mocks.CreateInstance<GetCurrentUserQueryHandler>();
 
         // Act.
-        var result = await sut.Handle(new GetCurrentUserQuery(), default);
+        var result = await sut.Handle(new GetCurrentUserQuery(), CancellationToken.None);
 
         // Assert.
         mocks.Verify();

@@ -1,5 +1,6 @@
 using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.Application.Abstractions;
+using Ali.Delivery.Order.Application.Dtos.Enums;
 using Ali.Delivery.Order.Application.Exceptions;
 using Ali.Delivery.Order.Application.UseCases.UpdateOrder;
 using Ali.Delivery.Order.Domain.Entities;
@@ -10,7 +11,6 @@ using Inno.Air.PerformanceManagement.Tests.Shared;
 using Moq;
 using Moq.AutoMock;
 using Shouldly;
-using SizeCode = Ali.Delivery.Order.Application.Dtos.Enums.SizeCode;
 
 namespace Ali.Delivery.Order.Application.Tests.UseCases.UpdateOrder;
 
@@ -28,7 +28,7 @@ public class UpdateOrderCommandHandlerTests
         var newAddressFrom = fixture.Create<OrderInfoAddressFrom>();
         var newAddressTo = fixture.Create<OrderInfoAddressTo>();
         var newSize = SizeCode.Medium;
-        var newOrderStatus = Dtos.Enums.OrderStatus.Created;
+        var newOrderStatus = OrderStatusCode.Created;
 
         var order = new Domain.Entities.Order(fixture.Create<SequentialGuid>(),
                                               fixture.Create<OrderName>(),
@@ -48,7 +48,7 @@ public class UpdateOrderCommandHandlerTests
         var sut = mocks.CreateInstance<UpdateOrderCommandHandler>();
 
         // Act.
-        var result = await sut.Handle(command, default);
+        var result = await sut.Handle(command, CancellationToken.None);
 
         // Assert.
         mocks.GetMock<IAppDbContext>()
@@ -110,7 +110,7 @@ public class UpdateOrderCommandHandlerTests
         var newAddressFrom = fixture.Create<OrderInfoAddressFrom>();
         var newAddressTo = fixture.Create<OrderInfoAddressTo>();
         var newSize = SizeCode.Medium;
-        var newOrderStatus = Dtos.Enums.OrderStatus.Created;
+        var newOrderStatus = OrderStatusCode.Created;
 
         var order = new Domain.Entities.Order(fixture.Create<SequentialGuid>(),
                                               fixture.Create<OrderName>(),

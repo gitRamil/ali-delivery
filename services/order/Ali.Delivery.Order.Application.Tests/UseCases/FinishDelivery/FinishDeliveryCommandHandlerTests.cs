@@ -42,7 +42,7 @@ public class FinishDeliveryCommandHandlerTests
         var sut = mocks.CreateInstance<FinishDeliveryCommandHandler>();
 
         // Act.
-        var result = await sut.Handle(new FinishDeliveryCommand(order.Id), default);
+        var result = await sut.Handle(new FinishDeliveryCommand(order.Id), CancellationToken.None);
 
         // Assert.
         mocks.Verify();

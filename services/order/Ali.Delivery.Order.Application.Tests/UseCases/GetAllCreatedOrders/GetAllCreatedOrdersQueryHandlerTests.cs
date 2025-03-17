@@ -34,7 +34,7 @@ public class GetAllCreatedOrdersQueryHandlerTests
         var sut = mocks.CreateInstance<GetAllCreatedOrdersQueryHandler>();
 
         // Act.
-        var result = await sut.Handle(new GetAllCreatedOrdersQuery(), default);
+        var result = await sut.Handle(new GetAllCreatedOrdersQuery(), CancellationToken.None);
 
         // Assert.
         mocks.Verify();

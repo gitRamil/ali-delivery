@@ -1,4 +1,5 @@
 using Ali.Delivery.Order.Application.Abstractions;
+using Ali.Delivery.Order.Application.Dtos.Enums;
 using Ali.Delivery.Order.Application.UseCases.GetAllCourierOrdersByOrderStatus;
 using Ali.Delivery.Order.Domain.Entities;
 using Ali.Delivery.Order.Domain.Entities.Dictionaries;
@@ -33,7 +34,7 @@ public class GetAllCourierOrdersByOrderStatusQueryHandlerTests
         var sut = mocks.CreateInstance<GetAllCourierOrdersByOrderStatusQueryHandler>();
 
         // Act.
-        var result = await sut.Handle(new GetAllCourierOrdersByOrderStatusQuery(Dtos.Enums.OrderStatus.InProgress), default);
+        var result = await sut.Handle(new GetAllCourierOrdersByOrderStatusQuery(OrderStatusCode.InProgress), CancellationToken.None);
 
         // Assert.
         mocks.Verify();

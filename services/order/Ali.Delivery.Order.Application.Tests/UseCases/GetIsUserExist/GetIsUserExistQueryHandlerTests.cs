@@ -23,7 +23,7 @@ public class GetIsUserExistQueryHandlerTests
         var sut = mocks.CreateInstance<GetIsUserExistQueryHandler>();
 
         // Act.
-        var result = await sut.Handle(new GetIsUserExistQuery(user.Id), default);
+        var result = await sut.Handle(new GetIsUserExistQuery(user.Id), CancellationToken.None);
 
         // Assert.
         mocks.Verify();
@@ -45,7 +45,7 @@ public class GetIsUserExistQueryHandlerTests
         var sut = mocks.CreateInstance<GetIsUserExistQueryHandler>();
 
         // Act
-        var result = await sut.Handle(new GetIsUserExistQuery(user.Id), default);
+        var result = await sut.Handle(new GetIsUserExistQuery(user.Id), CancellationToken.None);
 
         // Assert
         result.Should()

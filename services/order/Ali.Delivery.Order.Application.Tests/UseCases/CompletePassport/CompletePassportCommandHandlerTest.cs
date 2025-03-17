@@ -1,5 +1,6 @@
 using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Order.Application.Abstractions;
+using Ali.Delivery.Order.Application.Dtos.Enums;
 using Ali.Delivery.Order.Application.Extensions;
 using Ali.Delivery.Order.Application.UseCases.CompletePassport;
 using Ali.Delivery.Order.Domain.Entities;
@@ -9,7 +10,6 @@ using Ali.Delivery.Order.Domain.ValueObjects.User;
 using Inno.Air.PerformanceManagement.Tests.Shared;
 using Moq;
 using Moq.AutoMock;
-using PassportType = Ali.Delivery.Order.Application.Dtos.Enums.PassportType;
 
 namespace Ali.Delivery.Order.Application.Tests.UseCases.CompletePassport;
 
@@ -23,7 +23,7 @@ public class CompletePassportCommandHandlerTest
         var fixture = new AppFixture();
         var mocks = new AutoMocker(MockBehavior.Strict);
         var user = new User(fixture.Create<SequentialGuid>(), fixture.Create<UserLogin>(), fixture.Create<UserPassword>(), Role.BasicUser, fixture.Create<UserBirthDay>());
-        var passportType = fixture.Create<PassportType>();
+        var passportType = PassportTypeCode.Diplomatic;
         var passportNumber = new PassportInfoPassportNumber("1234567890");
         var regDate = fixture.Create<PassportInfoRegDate>();
         var issuedBy = fixture.Create<PassportInfoIssuedBy>();
@@ -107,7 +107,7 @@ public class CompletePassportCommandHandlerTest
         mocker.CurrentUserSet(SequentialGuid.Create());
 
         var handler = mocker.CreateInstance<CompletePassportCommandHandler>();
-        var command = new CompletePassportCommand(PassportType.International, "1234567890", DateTime.UtcNow, "Some Authority", "Ivan", "Ivanov");
+        var command = new CompletePassportCommand(PassportTypeCode.International, "1234567890", DateTime.UtcNow, "Some Authority", "Ivan", "Ivanov");
 
         // Act.
         var exception = await Assert.ThrowsAsync<InvalidOperationException>(async () => await handler.Handle(command, CancellationToken.None));

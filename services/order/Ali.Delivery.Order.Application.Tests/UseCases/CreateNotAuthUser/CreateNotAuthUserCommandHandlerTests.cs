@@ -36,7 +36,7 @@ public class CreateNotAuthUserCommandHandlerTests
         var sut = mocks.CreateInstance<CreateNotAuthUserCommandHandler>();
 
         // Act.
-        var result = await sut.Handle(command, default);
+        var result = await sut.Handle(command, CancellationToken.None);
 
         // Assert.
         mocks.GetMock<IAppDbContext>()

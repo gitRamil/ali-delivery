@@ -29,7 +29,7 @@ public class CreateUserCommandHandlerTests
         var sut = mocks.CreateInstance<CreateUserCommandHandler>();
 
         // Act.
-        var result = await sut.Handle(command, default);
+        var result = await sut.Handle(command, CancellationToken.None);
 
         // Assert.
         mocks.Verify();

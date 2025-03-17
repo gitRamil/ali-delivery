@@ -31,7 +31,7 @@ public class GetAllUsersQueryHandlerTests
         var sut = mocks.CreateInstance<GetAllUsersQueryHandler>();
 
         // Act.
-        var result = await sut.Handle(new GetAllUsersQuery(), default);
+        var result = await sut.Handle(new GetAllUsersQuery(), CancellationToken.None);
 
         // Assert.
         mocks.Verify();

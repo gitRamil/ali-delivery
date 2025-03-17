@@ -11,7 +11,6 @@ using Inno.Air.PerformanceManagement.Tests.Shared;
 using Moq;
 using Moq.AutoMock;
 using Shouldly;
-using PassportType = Ali.Delivery.Order.Application.Dtos.Enums.PassportType;
 
 namespace Ali.Delivery.Order.Application.Tests.UseCases.UpdateUser;
 
@@ -34,7 +33,7 @@ public class UpdateUserCommandHandlerTests
         var lastName = fixture.Create<UserLastName>();
 
         var passportInfo = new PassportInfo(SequentialGuid.Create(),
-                                            Domain.Entities.Dictionaries.PassportType.Internal,
+                                            PassportType.Internal,
                                             new PassportInfoPassportNumber("123456789"),
                                             new PassportInfoRegDate(DateTime.Now),
                                             new PassportInfoIssuedBy("MVD RF"));
@@ -48,7 +47,7 @@ public class UpdateUserCommandHandlerTests
         var newPassportNumber = new PassportInfoPassportNumber("12312312333");
         var newRegDate = fixture.Create<DateTime>();
         var newIssuedBy = fixture.Create<PassportInfoIssuedBy>();
-        var newPassportType = PassportType.Diplomatic;
+        var newPassportType = PassportTypeCode.Diplomatic;
 
         mocks.MockDbSet(u => u.Users, user);
 
@@ -60,7 +59,7 @@ public class UpdateUserCommandHandlerTests
         var sut = mocks.CreateInstance<UpdateUserCommandHandler>();
 
         // Act.
-        var result = await sut.Handle(command, default);
+        var result = await sut.Handle(command, CancellationToken.None);
 
         // Assert.
         mocks.GetMock<IAppDbContext>()
@@ -126,7 +125,7 @@ public class UpdateUserCommandHandlerTests
         var lastName = fixture.Create<UserLastName>();
 
         var passportInfo = new PassportInfo(SequentialGuid.Create(),
-                                            Domain.Entities.Dictionaries.PassportType.Internal,
+                                            PassportType.Internal,
                                             new PassportInfoPassportNumber("123456789"),
                                             new PassportInfoRegDate(DateTime.Now),
                                             new PassportInfoIssuedBy("MVD RF"));
@@ -140,7 +139,7 @@ public class UpdateUserCommandHandlerTests
         var newPassportNumber = new PassportInfoPassportNumber("12312312333");
         var newRegDate = fixture.Create<DateTime>();
         var newIssuedBy = fixture.Create<PassportInfoIssuedBy>();
-        var newPassportType = PassportType.Diplomatic;
+        var newPassportType = PassportTypeCode.Diplomatic;
 
         mocks.MockDbSet(u => u.Users);
 

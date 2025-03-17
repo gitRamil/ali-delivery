@@ -1,4 +1,5 @@
 using Ali.Delivery.Order.Application.Abstractions;
+using Ali.Delivery.Order.Application.Dtos.Enums;
 using Ali.Delivery.Order.Application.UseCases.GetAllBasicUserOrdersByOrderStatus;
 using Ali.Delivery.Order.Domain.Entities;
 using Ali.Delivery.Order.Domain.Entities.Dictionaries;
@@ -32,7 +33,7 @@ public class GetAllBasicUserOrdersByOrderStatusQueryHandlerTests
         var sut = mocks.CreateInstance<GetAllBasicUserOrdersByOrderStatusQueryHandler>();
 
         // Act.
-        var result = await sut.Handle(new GetAllBasicUserOrdersByOrderStatusQuery(Dtos.Enums.OrderStatus.Created), default);
+        var result = await sut.Handle(new GetAllBasicUserOrdersByOrderStatusQuery(OrderStatusCode.Created), CancellationToken.None);
 
         // Assert.
         mocks.Verify();

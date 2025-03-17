@@ -74,7 +74,7 @@ public class AssignCourierCommandHandlerTests
         var sut = mocks.CreateInstance<AssignCourierCommandHandler>();
 
         // Act.
-        var result = await sut.Handle(new AssignCourierCommand(order.Id), default);
+        var result = await sut.Handle(new AssignCourierCommand(order.Id), CancellationToken.None);
 
         // Assert.
         mocks.Verify();

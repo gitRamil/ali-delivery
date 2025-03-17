@@ -46,7 +46,7 @@ public class CreateOrderCommandHandlerTests
         var sut = mocks.CreateInstance<CreateOrderCommandHandler>();
 
         // Act.
-        var result = await sut.Handle(command, default);
+        var result = await sut.Handle(command, CancellationToken.None);
 
         // Assert.
         mocks.Verify();
