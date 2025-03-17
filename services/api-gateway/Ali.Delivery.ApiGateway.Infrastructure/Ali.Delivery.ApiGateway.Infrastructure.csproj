@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Ali.Delivery.ApiGateway.Application.Tests\Ali.Delivery.ApiGateway.Application.Tests.csproj"/>
+        <ProjectReference Include="..\Ali.Delivery.ApiGateway.Domain.Tests\Ali.Delivery.ApiGateway.Domain.Tests.csproj"/>
+    </ItemGroup>
+</Project>

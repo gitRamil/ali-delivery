@@ -44,7 +44,7 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserD
         user.PassportInfo?.UpdatePassport(new PassportInfoPassportNumber(command.PassportNumber),
                                           new PassportInfoRegDate(command.RegDate),
                                           new PassportInfoIssuedBy(command.IssuedBy),
-                                          command.PassportType.ToPassportType());
+                                          command.PassportTypeCode.ToPassportType());
 
         user.UpdateLogin(new UserLogin(command.Login));
 

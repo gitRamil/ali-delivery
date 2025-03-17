@@ -1,8 +1,12 @@
+using Ali.Delivery.Order.Domain.Entities.Dictionaries;
+using Ali.Delivery.Order.Generators;
+
 namespace Ali.Delivery.Order.Application.Dtos.Enums;
 
 /// <summary>
 /// Коды доступов.
 /// </summary>
+[MapDictionaryEntity(typeof(Permission))]
 public enum PermissionCode
 {
     /// <summary>

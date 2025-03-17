@@ -39,7 +39,7 @@ public class CompletePassportCommandHandler : IRequestHandler<CompletePassportCo
                    throw new InvalidOperationException("Пользователь не найден.");
 
         user.CreatePassportInfo(SequentialGuid.Create(),
-                                command.PassportType.ToPassportType(),
+                                command.PassportTypeCode.ToPassportType(),
                                 new PassportInfoPassportNumber(command.PassportNumber),
                                 new PassportInfoRegDate(command.RegDate),
                                 new PassportInfoIssuedBy(command.IssuedBy));

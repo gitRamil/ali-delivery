@@ -7,5 +7,5 @@ namespace Ali.Delivery.Order.Application.UseCases.GetAllCourierOrdersByOrderStat
 /// <summary>
 /// Представляет команду для получения заказов курьера по статусу.
 /// </summary>
-/// <param name="OrderStatus">Статус заказа.</param>
-public record GetAllCourierOrdersByOrderStatusQuery(OrderStatus OrderStatus) : IRequest<List<OrderDto>>;
+/// <param name="OrderStatusCode">Статус заказа.</param>
+public record GetAllCourierOrdersByOrderStatusQuery(OrderStatusCode OrderStatusCode) : IRequest<List<OrderDto>>;

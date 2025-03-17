@@ -7,5 +7,5 @@ namespace Ali.Delivery.Order.Application.UseCases.GetAllBasicUserOrdersByOrderSt
 /// <summary>
 /// Представляет команду для получения заказов базового пользователя по статусу.
 /// </summary>
-/// <param name="OrderStatus">Статус заказа.</param>
-public record GetAllBasicUserOrdersByOrderStatusQuery(OrderStatus OrderStatus) : IRequest<List<OrderDto>>;
+/// <param name="OrderStatusCode">Статус заказа.</param>
+public record GetAllBasicUserOrdersByOrderStatusQuery(OrderStatusCode OrderStatusCode) : IRequest<List<OrderDto>>;

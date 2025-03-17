@@ -14,6 +14,6 @@ namespace Ali.Delivery.Order.Application.UseCases.UpdateOrder;
 /// <param name="Price">Цена.</param>
 /// <param name="AddressFrom">Адрес отправления.</param>
 /// <param name="AddressTo">Адрес доставки.</param>
-/// <param name="OrderStatus">Статус.</param>
-public record UpdateOrderCommand(Guid OrderId, string OrderName, decimal Weight, SizeCode Size, decimal Price, string AddressFrom, string AddressTo, OrderStatus OrderStatus)
+/// <param name="OrderStatusCode">Статус.</param>
+public record UpdateOrderCommand(Guid OrderId, string OrderName, decimal Weight, SizeCode Size, decimal Price, string AddressFrom, string AddressTo, OrderStatusCode OrderStatusCode)
     : IRequest<OrderDto>;
