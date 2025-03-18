@@ -16,6 +16,38 @@ namespace Ali.Delivery.Order.Application.Tests.UseCases.FinishDelivery;
 public class FinishDeliveryCommandHandlerTests
 {
     [Fact]
+    public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
+    {
+        // Arrange.
+        IAppDbContext context = null!;
+        var currentUser = Mock.Of<ICurrentUser>();
+
+        // Act.
+        var act = () => new FinishDeliveryCommandHandler(context, currentUser);
+
+        // Assert.
+        act.Should()
+           .Throw<ArgumentNullException>()
+           .WithParameterName(nameof(context));
+    }
+
+    [Fact]
+    public void ConstructorShouldFailWhenNullArgumentCurrentUserPassed()
+    {
+        // Arrange.
+        var context = Mock.Of<IAppDbContext>();
+        ICurrentUser currentUser = null!;
+
+        // Act.
+        var act = () => new FinishDeliveryCommandHandler(context, currentUser);
+
+        // Assert.
+        act.Should()
+           .Throw<ArgumentNullException>()
+           .WithParameterName(nameof(currentUser));
+    }
+
+    [Fact]
     public async Task HandlerShouldFinishDelivery()
     {
         // Arrange.
@@ -55,38 +87,6 @@ public class FinishDeliveryCommandHandlerTests
 
         order.OrderStatus.Should()
              .Be(OrderStatus.Finished);
-    }
-
-    [Fact]
-    public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
-    {
-        // Arrange.
-        IAppDbContext context = null!;
-        var currentUser = Mock.Of<ICurrentUser>();
-
-        // Act.
-        var act = () => new FinishDeliveryCommandHandler(context, currentUser);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>()
-           .WithParameterName(nameof(context));
-    }
-
-    [Fact]
-    public void ConstructorShouldFailWhenNullArgumentCurrentUserPassed()
-    {
-        // Arrange.
-        var context = Mock.Of<IAppDbContext>();
-        ICurrentUser currentUser = null!;
-
-        // Act.
-        var act = () => new FinishDeliveryCommandHandler(context, currentUser);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>()
-           .WithParameterName(nameof(currentUser));
     }
 
     [Fact]

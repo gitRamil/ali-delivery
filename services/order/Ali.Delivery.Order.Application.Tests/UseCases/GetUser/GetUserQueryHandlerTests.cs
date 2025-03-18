@@ -13,28 +13,6 @@ namespace Ali.Delivery.Order.Application.Tests.UseCases.GetUser;
 public class GetUserQueryHandlerTests
 {
     [Fact]
-    public async Task HandlerShouldReturnUser()
-    {
-        // Arrange.
-        var fixture = new AppFixture();
-        var mocks = new AutoMocker(MockBehavior.Strict);
-        var user = fixture.Create<User>();
-
-        mocks.MockDbSet(u => u.Users, user);
-
-        var sut = mocks.CreateInstance<GetUserQueryHandler>();
-
-        // Act.
-        var result = await sut.Handle(new GetUserQuery(user.Id), CancellationToken.None);
-
-        // Assert.
-        mocks.Verify();
-
-        result.Id.Should()
-              .Be(user.Id);
-    }
-
-    [Fact]
     public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
     {
         // Arrange.
@@ -67,6 +45,28 @@ public class GetUserQueryHandlerTests
         await act.Should()
                  .ThrowAsync<ArgumentNullException>()
                  .WithMessage("Value cannot be null. (Parameter 'query')");
+    }
+
+    [Fact]
+    public async Task HandlerShouldReturnUser()
+    {
+        // Arrange.
+        var fixture = new AppFixture();
+        var mocks = new AutoMocker(MockBehavior.Strict);
+        var user = fixture.Create<User>();
+
+        mocks.MockDbSet(u => u.Users, user);
+
+        var sut = mocks.CreateInstance<GetUserQueryHandler>();
+
+        // Act.
+        var result = await sut.Handle(new GetUserQuery(user.Id), CancellationToken.None);
+
+        // Assert.
+        mocks.Verify();
+
+        result.Id.Should()
+              .Be(user.Id);
     }
 
     [Fact]

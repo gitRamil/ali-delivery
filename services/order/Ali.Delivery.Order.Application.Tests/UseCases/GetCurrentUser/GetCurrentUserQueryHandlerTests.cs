@@ -13,32 +13,6 @@ namespace Ali.Delivery.Order.Application.Tests.UseCases.GetCurrentUser;
 public class GetCurrentUserQueryHandlerTests
 {
     [Fact]
-    public async Task HandlerShouldGetCurrentUser()
-    {
-        // Arrange.
-        var fixture = new AppFixture();
-        var mocks = new AutoMocker(MockBehavior.Strict);
-        var currentUser = fixture.Create<User>();
-
-        mocks.MockDbSet(u => u.Users, currentUser);
-        mocks.CurrentUserSet(currentUser.Id);
-
-        var sut = mocks.CreateInstance<GetCurrentUserQueryHandler>();
-
-        // Act.
-        var result = await sut.Handle(new GetCurrentUserQuery(), CancellationToken.None);
-
-        // Assert.
-        mocks.Verify();
-
-        result.Should()
-              .NotBeNull();
-
-        result.Id.Should()
-              .Be(currentUser.Id);
-    }
-
-    [Fact]
     public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
     {
         // Arrange.
@@ -88,6 +62,32 @@ public class GetCurrentUserQueryHandlerTests
         await act.Should()
                  .ThrowAsync<ArgumentNullException>()
                  .WithMessage("Value cannot be null. (Parameter 'request')");
+    }
+
+    [Fact]
+    public async Task HandlerShouldGetCurrentUser()
+    {
+        // Arrange.
+        var fixture = new AppFixture();
+        var mocks = new AutoMocker(MockBehavior.Strict);
+        var currentUser = fixture.Create<User>();
+
+        mocks.MockDbSet(u => u.Users, currentUser);
+        mocks.CurrentUserSet(currentUser.Id);
+
+        var sut = mocks.CreateInstance<GetCurrentUserQueryHandler>();
+
+        // Act.
+        var result = await sut.Handle(new GetCurrentUserQuery(), CancellationToken.None);
+
+        // Assert.
+        mocks.Verify();
+
+        result.Should()
+              .NotBeNull();
+
+        result.Id.Should()
+              .Be(currentUser.Id);
     }
 
     [Fact]

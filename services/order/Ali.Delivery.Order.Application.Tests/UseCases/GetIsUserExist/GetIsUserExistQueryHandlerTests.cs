@@ -11,48 +11,6 @@ namespace Ali.Delivery.Order.Application.Tests.UseCases.GetIsUserExist;
 public class GetIsUserExistQueryHandlerTests
 {
     [Fact]
-    public async Task HandlerShouldReturnIsUserExist()
-    {
-        // Arrange.
-        var fixture = new AppFixture();
-        var mocks = new AutoMocker(MockBehavior.Strict);
-        var user = fixture.Create<User>();
-
-        mocks.MockDbSet(u => u.Users, user);
-
-        var sut = mocks.CreateInstance<GetIsUserExistQueryHandler>();
-
-        // Act.
-        var result = await sut.Handle(new GetIsUserExistQuery(user.Id), CancellationToken.None);
-
-        // Assert.
-        mocks.Verify();
-
-        result.Should()
-              .BeTrue();
-    }
-
-    [Fact]
-    public async Task HandlerShouldReturnFalse_WhenUserNotExists()
-    {
-        // Arrange
-        var fixture = new AppFixture();
-        var mocks = new AutoMocker(MockBehavior.Strict);
-        var user = fixture.Create<User>();
-
-        mocks.MockDbSet(u => u.Users);
-
-        var sut = mocks.CreateInstance<GetIsUserExistQueryHandler>();
-
-        // Act
-        var result = await sut.Handle(new GetIsUserExistQuery(user.Id), CancellationToken.None);
-
-        // Assert
-        result.Should()
-              .BeFalse();
-    }
-
-    [Fact]
     public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
     {
         // Arrange.
@@ -85,5 +43,47 @@ public class GetIsUserExistQueryHandlerTests
         await act.Should()
                  .ThrowAsync<ArgumentNullException>()
                  .WithMessage("Value cannot be null. (Parameter 'query')");
+    }
+
+    [Fact]
+    public async Task HandlerShouldReturnFalse_WhenUserNotExists()
+    {
+        // Arrange
+        var fixture = new AppFixture();
+        var mocks = new AutoMocker(MockBehavior.Strict);
+        var user = fixture.Create<User>();
+
+        mocks.MockDbSet(u => u.Users);
+
+        var sut = mocks.CreateInstance<GetIsUserExistQueryHandler>();
+
+        // Act
+        var result = await sut.Handle(new GetIsUserExistQuery(user.Id), CancellationToken.None);
+
+        // Assert
+        result.Should()
+              .BeFalse();
+    }
+
+    [Fact]
+    public async Task HandlerShouldReturnIsUserExist()
+    {
+        // Arrange.
+        var fixture = new AppFixture();
+        var mocks = new AutoMocker(MockBehavior.Strict);
+        var user = fixture.Create<User>();
+
+        mocks.MockDbSet(u => u.Users, user);
+
+        var sut = mocks.CreateInstance<GetIsUserExistQueryHandler>();
+
+        // Act.
+        var result = await sut.Handle(new GetIsUserExistQuery(user.Id), CancellationToken.None);
+
+        // Assert.
+        mocks.Verify();
+
+        result.Should()
+              .BeTrue();
     }
 }

@@ -47,7 +47,7 @@ public sealed class PassportInfoPassportNumber : ValueObject
     {
         yield return _passportNumber;
     }
-    
+
     /// <summary>
     /// Выполняет явное преобразование из <see cref="string" /> в <see cref="PassportInfoPassportNumber" />.
     /// </summary>

@@ -11,83 +11,6 @@ namespace Ali.Delivery.Order.Domain.Tests.Entities;
 public class OrderTests
 {
     [Fact]
-    public void CreateOrderShouldThrowArgumentNullExceptionWhenNameIsNull()
-    {
-        // Arrange.
-        var fixture = new AppFixture();
-
-        var id = fixture.Create<SequentialGuid>();
-        OrderName orderName = null!;
-        var orderInfo = fixture.Create<OrderInfo>();
-        var orderStatus = OrderStatus.Created;
-        var sender = fixture.Create<User>();
-        var receiver = fixture.Create<User>();
-        NotAuthUser? notAuthReceiver = null;
-        User? courier = null;
-
-        // Act.
-        var act = () => new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, courier);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>(nameof(orderName));
-    }
-
-    [Fact]
-    public void CreateOrderShouldThrowArgumentNullExceptionWhenSenderIsNull()
-    {
-        // Arrange.
-        var fixture = new AppFixture();
-
-        var id = fixture.Create<SequentialGuid>();
-        var orderName = fixture.Create<OrderName>();
-        var orderInfo = fixture.Create<OrderInfo>();
-        var orderStatus = OrderStatus.Created;
-        User sender = null!;
-        var receiver = fixture.Create<User>();
-        NotAuthUser? notAuthReceiver = null;
-        User? courier = null;
-
-        // Act.
-        var act = () => new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, courier);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>()
-           .WithParameterName(nameof(sender));
-    }
-
-    [Fact]
-    public void CreateOrderShouldThrowArgumentNullExceptionWhenPassportInfoIsNull()
-    {
-        // Arrange.
-        var fixture = new AppFixture();
-
-        var id = fixture.Create<SequentialGuid>();
-        var orderName = fixture.Create<OrderName>();
-        var orderInfo = fixture.Create<OrderInfo>();
-        var orderStatus = OrderStatus.Created;
-
-        var sender = new User(fixture.Create<SequentialGuid>(),
-                              fixture.Create<UserLogin>(),
-                              fixture.Create<UserPassword>(),
-                              fixture.Create<Role>(),
-                              fixture.Create<UserBirthDay>(),
-                              fixture.Create<UserFirstName>(),
-                              fixture.Create<UserLastName>());
-        var receiver = fixture.Create<User>();
-        NotAuthUser? notAuthReceiver = null;
-        User? courier = null;
-
-        // Act.
-        var act = () => new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, courier);
-
-        // Assert.
-        act.Should()
-           .Throw<InvalidOperationException>("Пожалуйста заполните паспортные данные для создания заказа");
-    }
-
-    [Fact]
     public void CreateOrderShouldSucceedWhenValidArgumentsPassed()
     {
         // Arrange.
@@ -111,17 +34,17 @@ public class OrderTests
     }
 
     [Fact]
-    public void CreateOrderShouldThrowArgumentNullExceptionWhenReceiverIsNull()
+    public void CreateOrderShouldThrowArgumentNullExceptionWhenNameIsNull()
     {
         // Arrange.
         var fixture = new AppFixture();
 
         var id = fixture.Create<SequentialGuid>();
-        var orderName = fixture.Create<OrderName>();
+        OrderName orderName = null!;
         var orderInfo = fixture.Create<OrderInfo>();
         var orderStatus = OrderStatus.Created;
         var sender = fixture.Create<User>();
-        User receiver = null!;
+        var receiver = fixture.Create<User>();
         NotAuthUser? notAuthReceiver = null;
         User? courier = null;
 
@@ -130,7 +53,7 @@ public class OrderTests
 
         // Assert.
         act.Should()
-           .Throw<InvalidOperationException>("Должен быть указан либо зарегистрированный, либо незарегистрированный получатель.");
+           .Throw<ArgumentNullException>(nameof(orderName));
     }
 
     [Fact]
@@ -177,6 +100,83 @@ public class OrderTests
         // Assert.
         act.Should()
            .Throw<ArgumentNullException>(nameof(orderStatus));
+    }
+
+    [Fact]
+    public void CreateOrderShouldThrowArgumentNullExceptionWhenPassportInfoIsNull()
+    {
+        // Arrange.
+        var fixture = new AppFixture();
+
+        var id = fixture.Create<SequentialGuid>();
+        var orderName = fixture.Create<OrderName>();
+        var orderInfo = fixture.Create<OrderInfo>();
+        var orderStatus = OrderStatus.Created;
+
+        var sender = new User(fixture.Create<SequentialGuid>(),
+                              fixture.Create<UserLogin>(),
+                              fixture.Create<UserPassword>(),
+                              fixture.Create<Role>(),
+                              fixture.Create<UserBirthDay>(),
+                              fixture.Create<UserFirstName>(),
+                              fixture.Create<UserLastName>());
+        var receiver = fixture.Create<User>();
+        NotAuthUser? notAuthReceiver = null;
+        User? courier = null;
+
+        // Act.
+        var act = () => new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, courier);
+
+        // Assert.
+        act.Should()
+           .Throw<InvalidOperationException>("Пожалуйста заполните паспортные данные для создания заказа");
+    }
+
+    [Fact]
+    public void CreateOrderShouldThrowArgumentNullExceptionWhenReceiverIsNull()
+    {
+        // Arrange.
+        var fixture = new AppFixture();
+
+        var id = fixture.Create<SequentialGuid>();
+        var orderName = fixture.Create<OrderName>();
+        var orderInfo = fixture.Create<OrderInfo>();
+        var orderStatus = OrderStatus.Created;
+        var sender = fixture.Create<User>();
+        User receiver = null!;
+        NotAuthUser? notAuthReceiver = null;
+        User? courier = null;
+
+        // Act.
+        var act = () => new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, courier);
+
+        // Assert.
+        act.Should()
+           .Throw<InvalidOperationException>("Должен быть указан либо зарегистрированный, либо незарегистрированный получатель.");
+    }
+
+    [Fact]
+    public void CreateOrderShouldThrowArgumentNullExceptionWhenSenderIsNull()
+    {
+        // Arrange.
+        var fixture = new AppFixture();
+
+        var id = fixture.Create<SequentialGuid>();
+        var orderName = fixture.Create<OrderName>();
+        var orderInfo = fixture.Create<OrderInfo>();
+        var orderStatus = OrderStatus.Created;
+        User sender = null!;
+        var receiver = fixture.Create<User>();
+        NotAuthUser? notAuthReceiver = null;
+        User? courier = null;
+
+        // Act.
+        var act = () => new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, courier);
+
+        // Assert.
+        act.Should()
+           .Throw<ArgumentNullException>()
+           .WithParameterName(nameof(sender));
     }
 
     [Fact]
@@ -231,6 +231,45 @@ public class OrderTests
         // Assert.
         act.Should()
            .Throw<UnauthorizedAccessException>("Текущий пользователь не является назначенным курьером для этого заказа.");
+    }
+
+    [Fact]
+    public void ProtectedConstructorShouldInitializePropertiesWithDefaultValues()
+    {
+        // Arrange
+        var type = typeof(Domain.Entities.Order);
+        var constructor = type.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, Type.EmptyTypes, null)!;
+
+        // Act
+        var order = (Domain.Entities.Order)constructor.Invoke(null);
+
+        // Assert
+        order.Should()
+             .NotBeNull();
+
+        order.Id.Should()
+             .Be(SequentialGuid.Empty);
+
+        order.Name.Should()
+             .BeNull();
+
+        order.OrderStatus.Should()
+             .BeNull();
+
+        order.OrderInfo.Should()
+             .BeNull();
+
+        order.Sender.Should()
+             .BeNull();
+
+        order.Receiver.Should()
+             .BeNull();
+
+        order.Courier.Should()
+             .BeNull();
+
+        order.NotAuthReceiver.Should()
+             .BeNull();
     }
 
     [Fact]
@@ -316,33 +355,7 @@ public class OrderTests
         // Assert.
         act.Should()
            .Throw<InvalidOperationException>()
-           .WithMessage($"Нельзя назначить курьера, если заказ находится в статусах: В процессе, Завершена");
-    }
-
-    [Fact]
-    public void UnassignCourierShouldThrowUnauthorizedAccessExceptionWhenCurrentUserIsNotCourier()
-    {
-        // Arrange.
-        var fixture = new AppFixture();
-
-        var id = fixture.Create<SequentialGuid>();
-        var orderName = fixture.Create<OrderName>();
-        var orderInfo = fixture.Create<OrderInfo>();
-        var orderStatus = OrderStatus.InProgress;
-        var sender = fixture.Create<User>();
-        var receiver = fixture.Create<User>();
-        NotAuthUser? notAuthReceiver = null;
-        var courier = fixture.Create<User>();
-        var anotherUser = fixture.Create<User>();
-
-        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, courier);
-
-        // Act.
-        var act = () => order.UnassignCourier(anotherUser);
-
-        // Assert.
-        act.Should()
-           .Throw<UnauthorizedAccessException>("Текущий пользователь не является назначенным курьером для этого заказа.");
+           .WithMessage("Нельзя назначить курьера, если заказ находится в статусах: В процессе, Завершена");
     }
 
     [Fact]
@@ -374,7 +387,7 @@ public class OrderTests
     }
 
     [Fact]
-    public void UpdateOrderStatusShouldSucceedWhenValidArgumentsPassed()
+    public void UnassignCourierShouldThrowUnauthorizedAccessExceptionWhenCurrentUserIsNotCourier()
     {
         // Arrange.
         var fixture = new AppFixture();
@@ -382,23 +395,21 @@ public class OrderTests
         var id = fixture.Create<SequentialGuid>();
         var orderName = fixture.Create<OrderName>();
         var orderInfo = fixture.Create<OrderInfo>();
-        var orderStatus = OrderStatus.Created;
+        var orderStatus = OrderStatus.InProgress;
         var sender = fixture.Create<User>();
         var receiver = fixture.Create<User>();
         NotAuthUser? notAuthReceiver = null;
-        var orderStatusNew = OrderStatus.InProgress;
+        var courier = fixture.Create<User>();
+        var anotherUser = fixture.Create<User>();
 
-        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, null);
+        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, courier);
 
         // Act.
-        var act = () => order.UpdateOrderStatus(orderStatusNew);
+        var act = () => order.UnassignCourier(anotherUser);
 
         // Assert.
         act.Should()
-           .NotThrow();
-
-        order.OrderStatus.Should()
-             .Be(orderStatusNew);
+           .Throw<UnauthorizedAccessException>("Текущий пользователь не является назначенным курьером для этого заказа.");
     }
 
     [Fact]
@@ -430,41 +441,30 @@ public class OrderTests
     }
 
     [Fact]
-    public void ProtectedConstructorShouldInitializePropertiesWithDefaultValues()
+    public void UpdateOrderStatusShouldSucceedWhenValidArgumentsPassed()
     {
-        // Arrange
-        var type = typeof(Domain.Entities.Order);
-        var constructor = type.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, Type.EmptyTypes, null)!;
+        // Arrange.
+        var fixture = new AppFixture();
 
-        // Act
-        var order = (Domain.Entities.Order)constructor.Invoke(null);
+        var id = fixture.Create<SequentialGuid>();
+        var orderName = fixture.Create<OrderName>();
+        var orderInfo = fixture.Create<OrderInfo>();
+        var orderStatus = OrderStatus.Created;
+        var sender = fixture.Create<User>();
+        var receiver = fixture.Create<User>();
+        NotAuthUser? notAuthReceiver = null;
+        var orderStatusNew = OrderStatus.InProgress;
 
-        // Assert
-        order.Should()
-             .NotBeNull();
+        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, null);
 
-        order.Id.Should()
-             .Be(SequentialGuid.Empty);
+        // Act.
+        var act = () => order.UpdateOrderStatus(orderStatusNew);
 
-        order.Name.Should()
-             .BeNull();
+        // Assert.
+        act.Should()
+           .NotThrow();
 
         order.OrderStatus.Should()
-             .BeNull();
-
-        order.OrderInfo.Should()
-             .BeNull();
-
-        order.Sender.Should()
-             .BeNull();
-
-        order.Receiver.Should()
-             .BeNull();
-
-        order.Courier.Should()
-             .BeNull();
-
-        order.NotAuthReceiver.Should()
-             .BeNull();
+             .Be(orderStatusNew);
     }
 }

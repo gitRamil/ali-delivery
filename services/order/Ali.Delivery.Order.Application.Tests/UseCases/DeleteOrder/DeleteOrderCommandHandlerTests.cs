@@ -16,43 +16,6 @@ namespace Ali.Delivery.Order.Application.Tests.UseCases.DeleteOrder;
 public class DeleteOrderCommandHandlerTests
 {
     [Fact]
-    public async Task OrderShouldBeDeleted()
-    {
-        // Arrange.
-        var fixture = new AppFixture();
-        var mocks = new AutoMocker(MockBehavior.Strict);
-
-        var id = fixture.Create<SequentialGuid>();
-        var orderName = fixture.Create<OrderName>();
-        var orderInfo = fixture.Create<OrderInfo>();
-        var orderStatus = OrderStatus.Created;
-        var sender = fixture.Create<User>();
-        var receiver = fixture.Create<User>();
-        NotAuthUser? notAuthReceiver = null;
-        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, null);
-
-        mocks.MockDbSet(o => o.Orders, order);
-
-        mocks.GetMock<IAppDbContext>()
-             .SetupDefaultSaveChangesAsync();
-
-        var command = new DeleteOrderCommand(order.Id);
-
-        var sut = mocks.CreateInstance<DeleteOrderCommandHandler>();
-
-        // Act.
-        var result = await sut.Handle(command, CancellationToken.None);
-
-        // Assert.
-        mocks.Verify();
-
-        mocks.GetMock<IAppDbContext>()
-             .Verify(db => db.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-
-        Assert.NotEqual(Guid.Empty, result);
-    }
-
-    [Fact]
     public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
     {
         // Arrange.
@@ -116,5 +79,42 @@ public class DeleteOrderCommandHandlerTests
 
         mocks.GetMock<IAppDbContext>()
              .Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task OrderShouldBeDeleted()
+    {
+        // Arrange.
+        var fixture = new AppFixture();
+        var mocks = new AutoMocker(MockBehavior.Strict);
+
+        var id = fixture.Create<SequentialGuid>();
+        var orderName = fixture.Create<OrderName>();
+        var orderInfo = fixture.Create<OrderInfo>();
+        var orderStatus = OrderStatus.Created;
+        var sender = fixture.Create<User>();
+        var receiver = fixture.Create<User>();
+        NotAuthUser? notAuthReceiver = null;
+        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, null);
+
+        mocks.MockDbSet(o => o.Orders, order);
+
+        mocks.GetMock<IAppDbContext>()
+             .SetupDefaultSaveChangesAsync();
+
+        var command = new DeleteOrderCommand(order.Id);
+
+        var sut = mocks.CreateInstance<DeleteOrderCommandHandler>();
+
+        // Act.
+        var result = await sut.Handle(command, CancellationToken.None);
+
+        // Assert.
+        mocks.Verify();
+
+        mocks.GetMock<IAppDbContext>()
+             .Verify(db => db.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+
+        Assert.NotEqual(Guid.Empty, result);
     }
 }

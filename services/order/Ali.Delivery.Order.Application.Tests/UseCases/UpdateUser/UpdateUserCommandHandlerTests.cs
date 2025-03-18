@@ -18,6 +18,94 @@ namespace Ali.Delivery.Order.Application.Tests.UseCases.UpdateUser;
 public class UpdateUserCommandHandlerTests
 {
     [Fact]
+    public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
+    {
+        // Arrange.
+        IAppDbContext context = null!;
+
+        // Act.
+        var act = () => new UpdateUserCommandHandler(context);
+
+        // Assert.
+        act.Should()
+           .Throw<ArgumentNullException>()
+           .WithParameterName(nameof(context));
+    }
+
+    [Fact]
+    public async Task ConstructorShouldThrowsArgumentNullExceptionWhenCommandIsNull()
+    {
+        // Arrange.
+        var mocks = new AutoMocker(MockBehavior.Strict);
+
+        mocks.GetMock<IAppDbContext>();
+
+        var sut = mocks.CreateInstance<UpdateUserCommandHandler>();
+
+        // Act.
+        Func<Task> act = () => sut.Handle(null!, CancellationToken.None);
+
+        // Assert.
+        await act.Should()
+                 .ThrowAsync<ArgumentNullException>()
+                 .WithMessage("Value cannot be null. (Parameter 'command')");
+
+        mocks.GetMock<IAppDbContext>()
+             .Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task HandlerShouldThrowNotFoundExceptionWhenUserNotinBase()
+    {
+        // Arrange.
+        var fixture = new Fixture();
+        var mocks = new AutoMocker(MockBehavior.Strict);
+
+        var id = fixture.Create<SequentialGuid>();
+        var login = fixture.Create<UserLogin>();
+        var password = fixture.Create<UserPassword>();
+        var role = Role.BasicUser;
+        var birthDay = fixture.Create<UserBirthDay>();
+        var firstName = fixture.Create<UserFirstName>();
+        var lastName = fixture.Create<UserLastName>();
+
+        var passportInfo = new PassportInfo(SequentialGuid.Create(),
+                                            PassportType.Internal,
+                                            new PassportInfoPassportNumber("123456789"),
+                                            new PassportInfoRegDate(DateTime.Now),
+                                            new PassportInfoIssuedBy("MVD RF"));
+        var user = new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
+
+        var newLogin = fixture.Create<UserLogin>();
+        var newRole = RoleCode.BasicUser;
+        var newBirthDay = fixture.Create<UserBirthDay>();
+        var newFirstName = fixture.Create<UserFirstName>();
+        var newLastName = fixture.Create<UserLastName>();
+        var newPassportNumber = new PassportInfoPassportNumber("12312312333");
+        var newRegDate = fixture.Create<DateTime>();
+        var newIssuedBy = fixture.Create<PassportInfoIssuedBy>();
+        var newPassportType = PassportTypeCode.Diplomatic;
+
+        mocks.MockDbSet(u => u.Users);
+
+        mocks.GetMock<IAppDbContext>()
+             .SetupDefaultSaveChangesAsync();
+
+        var command = new UpdateUserCommand(user.Id, newLogin, newFirstName, newLastName, newPassportType, newPassportNumber, newRegDate, newIssuedBy, newRole, newBirthDay);
+
+        var sut = mocks.CreateInstance<UpdateUserCommandHandler>();
+
+        mocks.GetMock<IAppDbContext>()
+             .SetupDefaultSaveChangesAsync();
+
+        // Act & Assert.
+        await Should.ThrowAsync<NotFoundException>(() => sut.Handle(command, CancellationToken.None));
+
+        mocks.GetMock<IAppDbContext>()
+             .Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+    }
+
+    [Fact]
     public async Task HandlerShouldUpdateUser()
     {
         // Arrange.
@@ -70,93 +158,5 @@ public class UpdateUserCommandHandlerTests
 
         mocks.GetMock<IAppDbContext>()
              .Verify(db => db.Users, Times.Once);
-    }
-
-    [Fact]
-    public async Task ConstructorShouldThrowsArgumentNullExceptionWhenCommandIsNull()
-    {
-        // Arrange.
-        var mocks = new AutoMocker(MockBehavior.Strict);
-
-        mocks.GetMock<IAppDbContext>();
-
-        var sut = mocks.CreateInstance<UpdateUserCommandHandler>();
-
-        // Act.
-        Func<Task> act = () => sut.Handle(null!, CancellationToken.None);
-
-        // Assert.
-        await act.Should()
-                 .ThrowAsync<ArgumentNullException>()
-                 .WithMessage("Value cannot be null. (Parameter 'command')");
-
-        mocks.GetMock<IAppDbContext>()
-             .Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
-    }
-
-    [Fact]
-    public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
-    {
-        // Arrange.
-        IAppDbContext context = null!;
-
-        // Act.
-        var act = () => new UpdateUserCommandHandler(context);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>()
-           .WithParameterName(nameof(context));
-    }
-
-    [Fact]
-    public async Task HandlerShouldThrowNotFoundExceptionWhenUserNotinBase()
-    {
-        // Arrange.
-        var fixture = new Fixture();
-        var mocks = new AutoMocker(MockBehavior.Strict);
-
-        var id = fixture.Create<SequentialGuid>();
-        var login = fixture.Create<UserLogin>();
-        var password = fixture.Create<UserPassword>();
-        var role = Role.BasicUser;
-        var birthDay = fixture.Create<UserBirthDay>();
-        var firstName = fixture.Create<UserFirstName>();
-        var lastName = fixture.Create<UserLastName>();
-
-        var passportInfo = new PassportInfo(SequentialGuid.Create(),
-                                            PassportType.Internal,
-                                            new PassportInfoPassportNumber("123456789"),
-                                            new PassportInfoRegDate(DateTime.Now),
-                                            new PassportInfoIssuedBy("MVD RF"));
-        var user = new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
-
-        var newLogin = fixture.Create<UserLogin>();
-        var newRole = RoleCode.BasicUser;
-        var newBirthDay = fixture.Create<UserBirthDay>();
-        var newFirstName = fixture.Create<UserFirstName>();
-        var newLastName = fixture.Create<UserLastName>();
-        var newPassportNumber = new PassportInfoPassportNumber("12312312333");
-        var newRegDate = fixture.Create<DateTime>();
-        var newIssuedBy = fixture.Create<PassportInfoIssuedBy>();
-        var newPassportType = PassportTypeCode.Diplomatic;
-
-        mocks.MockDbSet(u => u.Users);
-
-        mocks.GetMock<IAppDbContext>()
-             .SetupDefaultSaveChangesAsync();
-
-        var command = new UpdateUserCommand(user.Id, newLogin, newFirstName, newLastName, newPassportType, newPassportNumber, newRegDate, newIssuedBy, newRole, newBirthDay);
-
-        var sut = mocks.CreateInstance<UpdateUserCommandHandler>();
-
-        mocks.GetMock<IAppDbContext>()
-             .SetupDefaultSaveChangesAsync();
-
-        // Act & Assert.
-        await Should.ThrowAsync<NotFoundException>(() => sut.Handle(command, CancellationToken.None));
-
-        mocks.GetMock<IAppDbContext>()
-             .Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 }

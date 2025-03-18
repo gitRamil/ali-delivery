@@ -4,12 +4,10 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
-
     <ItemGroup>
         <ProjectReference Include="..\Ali.Delivery.Order.Domain\Ali.Delivery.Order.Domain.csproj"/>
-        <ProjectReference Include="..\Inno.Air.PerformanceManagement.Tests.Shared\Inno.Air.PerformanceManagement.Tests.Shared.csproj" />
+        <ProjectReference Include="..\Inno.Air.PerformanceManagement.Tests.Shared\Inno.Air.PerformanceManagement.Tests.Shared.csproj"/>
     </ItemGroup>
-
     <ItemGroup>
         <PackageReference Include="FluentAssertions" Version="7.0.0"/>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0"/>

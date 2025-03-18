@@ -15,36 +15,6 @@ namespace Ali.Delivery.Order.Application.Tests.UseCases.GetOrder;
 public class GetOrderQueryHandlerTests
 {
     [Fact]
-    public async Task HandlerShouldReturnOrder()
-    {
-        // Arrange.
-        var fixture = new AppFixture();
-        var mocks = new AutoMocker(MockBehavior.Strict);
-
-        var order = new Domain.Entities.Order(fixture.Create<SequentialGuid>(),
-                                              fixture.Create<OrderName>(),
-                                              fixture.Create<OrderInfo>(),
-                                              OrderStatus.Created,
-                                              fixture.Create<User>(),
-                                              fixture.Create<User>(),
-                                              null,
-                                              null);
-
-        mocks.MockDbSet(o => o.Orders, order);
-
-        var sut = mocks.CreateInstance<GetOrderQueryHandler>();
-
-        // Act.
-        var result = await sut.Handle(new GetOrderQuery(order.Id), CancellationToken.None);
-
-        // Assert.
-        mocks.Verify();
-
-        result.Id.Should()
-              .Be(order.Id);
-    }
-
-    [Fact]
     public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
     {
         // Arrange.
@@ -77,6 +47,36 @@ public class GetOrderQueryHandlerTests
         await act.Should()
                  .ThrowAsync<ArgumentNullException>()
                  .WithMessage("Value cannot be null. (Parameter 'query')");
+    }
+
+    [Fact]
+    public async Task HandlerShouldReturnOrder()
+    {
+        // Arrange.
+        var fixture = new AppFixture();
+        var mocks = new AutoMocker(MockBehavior.Strict);
+
+        var order = new Domain.Entities.Order(fixture.Create<SequentialGuid>(),
+                                              fixture.Create<OrderName>(),
+                                              fixture.Create<OrderInfo>(),
+                                              OrderStatus.Created,
+                                              fixture.Create<User>(),
+                                              fixture.Create<User>(),
+                                              null,
+                                              null);
+
+        mocks.MockDbSet(o => o.Orders, order);
+
+        var sut = mocks.CreateInstance<GetOrderQueryHandler>();
+
+        // Act.
+        var result = await sut.Handle(new GetOrderQuery(order.Id), CancellationToken.None);
+
+        // Assert.
+        mocks.Verify();
+
+        result.Id.Should()
+              .Be(order.Id);
     }
 
     [Fact]

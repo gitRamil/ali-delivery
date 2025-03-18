@@ -13,6 +13,38 @@ namespace Ali.Delivery.Order.Application.Tests.UseCases.GetAllBasicUserOrdersByO
 public class GetAllBasicUserOrdersByOrderStatusQueryHandlerTests
 {
     [Fact]
+    public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
+    {
+        // Arrange.
+        IAppDbContext context = null!;
+        var currentUser = Mock.Of<ICurrentUser>();
+
+        // Act.
+        var act = () => new GetAllBasicUserOrdersByOrderStatusQueryHandler(context, currentUser);
+
+        // Assert.
+        act.Should()
+           .Throw<ArgumentNullException>()
+           .WithParameterName(nameof(context));
+    }
+
+    [Fact]
+    public void ConstructorShouldFailWhenNullArgumentCurrentUserPassed()
+    {
+        // Arrange.
+        var context = Mock.Of<IAppDbContext>();
+        ICurrentUser currentUser = null!;
+
+        // Act.
+        var act = () => new GetAllBasicUserOrdersByOrderStatusQueryHandler(context, currentUser);
+
+        // Assert.
+        act.Should()
+           .Throw<ArgumentNullException>()
+           .WithParameterName(nameof(currentUser));
+    }
+
+    [Fact]
     public async Task HandlerShouldReturnOrdersByOrderStatus()
     {
         // Arrange.
@@ -47,37 +79,5 @@ public class GetAllBasicUserOrdersByOrderStatusQueryHandlerTests
             order.OrderStatusName.Should()
                  .Be(OrderStatus.Created.Name);
         }
-    }
-
-    [Fact]
-    public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
-    {
-        // Arrange.
-        IAppDbContext context = null!;
-        var currentUser = Mock.Of<ICurrentUser>();
-
-        // Act.
-        var act = () => new GetAllBasicUserOrdersByOrderStatusQueryHandler(context, currentUser);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>()
-           .WithParameterName(nameof(context));
-    }
-
-    [Fact]
-    public void ConstructorShouldFailWhenNullArgumentCurrentUserPassed()
-    {
-        // Arrange.
-        var context = Mock.Of<IAppDbContext>();
-        ICurrentUser currentUser = null!;
-
-        // Act.
-        var act = () => new GetAllBasicUserOrdersByOrderStatusQueryHandler(context, currentUser);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>()
-           .WithParameterName(nameof(currentUser));
     }
 }

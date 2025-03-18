@@ -12,35 +12,6 @@ namespace Ali.Delivery.Order.Application.Tests.UseCases.CreateUser;
 public class CreateUserCommandHandlerTests
 {
     [Fact]
-    public async Task CreateUserShouldSucceed()
-    {
-        // Arrange.
-        var fixture = new AppFixture();
-        var mocks = new AutoMocker(MockBehavior.Strict);
-
-        mocks.MockDbSet(u => u.Users);
-
-        mocks.GetMock<IAppDbContext>()
-             .SetupDefaultSaveChangesAsync();
-
-        var role = RoleCode.BasicUser;
-        var command = new CreateUserCommand(fixture.Create<UserLogin>(), fixture.Create<UserPassword>(), role, fixture.Create<UserBirthDay>());
-
-        var sut = mocks.CreateInstance<CreateUserCommandHandler>();
-
-        // Act.
-        var result = await sut.Handle(command, CancellationToken.None);
-
-        // Assert.
-        mocks.Verify();
-
-        mocks.GetMock<IAppDbContext>()
-             .Verify(db => db.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-
-        Assert.NotEqual(Guid.Empty, result);
-    }
-
-    [Fact]
     public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
     {
         // Arrange.
@@ -75,5 +46,34 @@ public class CreateUserCommandHandlerTests
 
         mocks.GetMock<IAppDbContext>()
              .Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task CreateUserShouldSucceed()
+    {
+        // Arrange.
+        var fixture = new AppFixture();
+        var mocks = new AutoMocker(MockBehavior.Strict);
+
+        mocks.MockDbSet(u => u.Users);
+
+        mocks.GetMock<IAppDbContext>()
+             .SetupDefaultSaveChangesAsync();
+
+        var role = RoleCode.BasicUser;
+        var command = new CreateUserCommand(fixture.Create<UserLogin>(), fixture.Create<UserPassword>(), role, fixture.Create<UserBirthDay>());
+
+        var sut = mocks.CreateInstance<CreateUserCommandHandler>();
+
+        // Act.
+        var result = await sut.Handle(command, CancellationToken.None);
+
+        // Assert.
+        mocks.Verify();
+
+        mocks.GetMock<IAppDbContext>()
+             .Verify(db => db.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+
+        Assert.NotEqual(Guid.Empty, result);
     }
 }

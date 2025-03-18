@@ -39,7 +39,7 @@ public class CreateNotAuthUserCommandHandler : IRequestHandler<CreateNotAuthUser
 
         var currentUser = await _context.Users.FirstOrDefaultAsync(u => (Guid)u.Id == _currentUser.Id, cancellationToken) ??
                           throw new NotFoundException(typeof(User), _currentUser.Id);
-        
+
         var notAuthUser = currentUser.AddNotAuthUser(command.FirstName, command.LastName, command.PhoneNumber);
 
         await _context.SaveChangesAsync(cancellationToken);

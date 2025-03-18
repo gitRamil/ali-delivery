@@ -21,7 +21,7 @@ public class AppFixture : Fixture
         Customize<User>(c => c.FromFactory(() => new User(this.Create<SequentialGuid>(),
                                                           this.Create<UserLogin>(),
                                                           this.Create<UserPassword>(),
-                                                          Role.BasicUser, 
+                                                          Role.BasicUser,
                                                           this.Create<UserBirthDay>(),
                                                           this.Create<UserFirstName>(),
                                                           this.Create<UserLastName>(),
@@ -29,17 +29,6 @@ public class AppFixture : Fixture
                               .OmitAutoProperties());
     }
 
-    public Order CreateOrder(
-        User sender,
-        OrderStatus status,
-        User courier = null!) =>
-        new Order(
-            this.Create<SequentialGuid>(),
-            this.Create<OrderName>(),
-            this.Create<OrderInfo>(),
-            status,
-            sender,
-            this.Create<User>(),
-            null,
-            courier);
+    public Order CreateOrder(User sender, OrderStatus status, User courier = null!) =>
+        new(this.Create<SequentialGuid>(), this.Create<OrderName>(), this.Create<OrderInfo>(), status, sender, this.Create<User>(), null, courier);
 }

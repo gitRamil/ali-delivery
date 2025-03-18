@@ -31,14 +31,14 @@ public class NotAuthUserLastName : ValueObject
         {
             throw new ArgumentException("Фамилия незарегистрированного пользователя не может быть null или пустой строкой.", nameof(name));
         }
-        
+
         name = name.Trim();
 
         if (name.Length > MaxLength)
         {
             throw new ArgumentException($"Фамилия не может быть длиннее {MaxLength} символов.", nameof(name));
         }
-        
+
         _name = name;
     }
 
@@ -52,8 +52,7 @@ public class NotAuthUserLastName : ValueObject
     {
         yield return _name;
     }
-    
-    
+
     /// <summary>
     /// Выполняет явное преобразование из <see cref="string" /> в <see cref="NotAuthUserLastName" />.
     /// </summary>

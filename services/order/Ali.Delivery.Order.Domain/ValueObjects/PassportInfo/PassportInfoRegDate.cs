@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Ali.Delivery.Domain.Core;
-using Ali.Delivery.Order.Domain.ValueObjects.Dictionaries.OrderStatus;
 
 namespace Ali.Delivery.Order.Domain.ValueObjects.PassportInfo;
 
@@ -23,7 +22,7 @@ public sealed class PassportInfoRegDate : ValueObject
         {
             throw new ArgumentException("Дата регистрации не может быть значением по умолчанию.", nameof(regDate));
         }
-        
+
         _regDate = regDate;
     }
 

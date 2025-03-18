@@ -11,6 +11,21 @@ namespace Ali.Delivery.Order.Application.Tests.UseCases.GetAllUsers;
 public class GetAllUsersQueryHandlerTests
 {
     [Fact]
+    public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
+    {
+        // Arrange.
+        IAppDbContext context = null!;
+
+        // Act.
+        var act = () => new GetAllUsersQueryHandler(context);
+
+        // Assert.
+        act.Should()
+           .Throw<ArgumentNullException>()
+           .WithParameterName(nameof(context));
+    }
+
+    [Fact]
     public async Task HandlerShouldGetAllUsers()
     {
         // Arrange.
@@ -39,20 +54,5 @@ public class GetAllUsersQueryHandlerTests
         result.Should()
               .NotBeNull()
               .And.HaveCount(6);
-    }
-
-    [Fact]
-    public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
-    {
-        // Arrange.
-        IAppDbContext context = null!;
-
-        // Act.
-        var act = () => new GetAllUsersQueryHandler(context);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>()
-           .WithParameterName(nameof(context));
     }
 }

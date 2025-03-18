@@ -13,34 +13,6 @@ namespace Ali.Delivery.Order.Application.Tests.UseCases.DeleteUser;
 public class DeleteUserCommandHandlerTests
 {
     [Fact]
-    public async Task UserShouldBeDeleted()
-    {
-        var fixture = new AppFixture();
-        var mocks = new AutoMocker(MockBehavior.Strict);
-        var user = fixture.Create<User>();
-
-        mocks.MockDbSet(u => u.Users, user);
-
-        mocks.GetMock<IAppDbContext>()
-             .SetupDefaultSaveChangesAsync();
-
-        var command = new DeleteUserCommand(user.Id);
-
-        var sut = mocks.CreateInstance<DeleteUserCommandHandler>();
-
-        // Act.
-        var result = await sut.Handle(command, CancellationToken.None);
-
-        // Assert.
-        mocks.Verify();
-
-        mocks.GetMock<IAppDbContext>()
-             .Verify(db => db.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-
-        Assert.NotEqual(Guid.Empty, result);
-    }
-
-    [Fact]
     public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
     {
         // Arrange.
@@ -98,5 +70,33 @@ public class DeleteUserCommandHandlerTests
 
         mocks.GetMock<IAppDbContext>()
              .Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task UserShouldBeDeleted()
+    {
+        var fixture = new AppFixture();
+        var mocks = new AutoMocker(MockBehavior.Strict);
+        var user = fixture.Create<User>();
+
+        mocks.MockDbSet(u => u.Users, user);
+
+        mocks.GetMock<IAppDbContext>()
+             .SetupDefaultSaveChangesAsync();
+
+        var command = new DeleteUserCommand(user.Id);
+
+        var sut = mocks.CreateInstance<DeleteUserCommandHandler>();
+
+        // Act.
+        var result = await sut.Handle(command, CancellationToken.None);
+
+        // Assert.
+        mocks.Verify();
+
+        mocks.GetMock<IAppDbContext>()
+             .Verify(db => db.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+
+        Assert.NotEqual(Guid.Empty, result);
     }
 }

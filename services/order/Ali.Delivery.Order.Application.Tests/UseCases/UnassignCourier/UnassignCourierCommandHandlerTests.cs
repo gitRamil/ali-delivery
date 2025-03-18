@@ -48,46 +48,6 @@ public class UnassignCourierCommandHandlerTests
     }
 
     [Fact]
-    public async Task HandlerShouldUnassignCourier()
-    {
-        // Arrange.
-        var fixture = new AppFixture();
-        var mocks = new AutoMocker(MockBehavior.Strict);
-        var courier = fixture.Create<User>();
-
-        var order = new Domain.Entities.Order(fixture.Create<SequentialGuid>(),
-                                              fixture.Create<OrderName>(),
-                                              fixture.Create<OrderInfo>(),
-                                              OrderStatus.InProgress,
-                                              fixture.Create<User>(),
-                                              fixture.Create<User>(),
-                                              null,
-                                              courier);
-
-        mocks.MockDbSet(o => o.Orders, order);
-        mocks.MockDbSet(u => u.Users, courier);
-        mocks.CurrentUserSet(courier.Id);
-
-        mocks.GetMock<IAppDbContext>()
-             .SetupDefaultSaveChangesAsync();
-
-        var sut = mocks.CreateInstance<UnassignCourierCommandHandler>();
-
-        // Act.
-        var result = await sut.Handle(new UnassignCourierCommand(order.Id), CancellationToken.None);
-
-        // Assert.
-        mocks.Verify();
-
-        result.Should()
-              .Be(order.Id);
-        order.OrderStatus.ShouldBe(OrderStatus.Created);
-
-        order.Courier.Should()
-             .Be(null);
-    }
-
-    [Fact]
     public async Task HandlerShouldThrowNotFoundExceptionWhenCurrentUserNotinBase()
     {
         // Arrange.
@@ -155,5 +115,45 @@ public class UnassignCourierCommandHandlerTests
 
         mocks.GetMock<IAppDbContext>()
              .Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task HandlerShouldUnassignCourier()
+    {
+        // Arrange.
+        var fixture = new AppFixture();
+        var mocks = new AutoMocker(MockBehavior.Strict);
+        var courier = fixture.Create<User>();
+
+        var order = new Domain.Entities.Order(fixture.Create<SequentialGuid>(),
+                                              fixture.Create<OrderName>(),
+                                              fixture.Create<OrderInfo>(),
+                                              OrderStatus.InProgress,
+                                              fixture.Create<User>(),
+                                              fixture.Create<User>(),
+                                              null,
+                                              courier);
+
+        mocks.MockDbSet(o => o.Orders, order);
+        mocks.MockDbSet(u => u.Users, courier);
+        mocks.CurrentUserSet(courier.Id);
+
+        mocks.GetMock<IAppDbContext>()
+             .SetupDefaultSaveChangesAsync();
+
+        var sut = mocks.CreateInstance<UnassignCourierCommandHandler>();
+
+        // Act.
+        var result = await sut.Handle(new UnassignCourierCommand(order.Id), CancellationToken.None);
+
+        // Assert.
+        mocks.Verify();
+
+        result.Should()
+              .Be(order.Id);
+        order.OrderStatus.ShouldBe(OrderStatus.Created);
+
+        order.Courier.Should()
+             .Be(null);
     }
 }

@@ -14,6 +14,58 @@ namespace Ali.Delivery.Order.Application.Tests.UseCases.CreateNotAuthUser;
 public class CreateNotAuthUserCommandHandlerTests
 {
     [Fact]
+    public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
+    {
+        // Arrange.
+        IAppDbContext context = null!;
+        var currentUser = Mock.Of<ICurrentUser>();
+
+        // Act.
+        var act = () => new CreateNotAuthUserCommandHandler(context, currentUser);
+
+        // Assert.
+        act.Should()
+           .Throw<ArgumentNullException>()
+           .WithParameterName(nameof(context));
+    }
+
+    [Fact]
+    public void ConstructorShouldFailWhenNullArgumentCurrentUserPassed()
+    {
+        // Arrange.
+        var context = Mock.Of<IAppDbContext>();
+        ICurrentUser currentUser = null!;
+
+        // Act.
+        var act = () => new CreateNotAuthUserCommandHandler(context, currentUser);
+
+        // Assert.
+        act.Should()
+           .Throw<ArgumentNullException>()
+           .WithParameterName(nameof(currentUser));
+    }
+
+    [Fact]
+    public async Task ConstructorShouldThrowsArgumentNullExceptionWhenCommandIsNull()
+    {
+        // Arrange.
+        var mocks = new AutoMocker(MockBehavior.Strict);
+
+        mocks.GetMock<IAppDbContext>();
+        mocks.GetMock<ICurrentUser>();
+
+        var sut = mocks.CreateInstance<CreateNotAuthUserCommandHandler>();
+
+        // Act.
+        Func<Task> act = () => sut.Handle(null!, CancellationToken.None);
+
+        // Assert.
+        await act.Should()
+                 .ThrowAsync<ArgumentNullException>()
+                 .WithMessage("Value cannot be null. (Parameter 'command')");
+    }
+
+    [Fact]
     public async Task HandlerShouldCreateNotAuthUser()
     {
         // Arrange.
@@ -49,38 +101,6 @@ public class CreateNotAuthUserCommandHandlerTests
     }
 
     [Fact]
-    public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
-    {
-        // Arrange.
-        IAppDbContext context = null!;
-        var currentUser = Mock.Of<ICurrentUser>();
-
-        // Act.
-        var act = () => new CreateNotAuthUserCommandHandler(context, currentUser);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>()
-           .WithParameterName(nameof(context));
-    }
-
-    [Fact]
-    public void ConstructorShouldFailWhenNullArgumentCurrentUserPassed()
-    {
-        // Arrange.
-        var context = Mock.Of<IAppDbContext>();
-        ICurrentUser currentUser = null!;
-
-        // Act.
-        var act = () => new CreateNotAuthUserCommandHandler(context, currentUser);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>()
-           .WithParameterName(nameof(currentUser));
-    }
-
-    [Fact]
     public async Task HandleWhenUserNotFoundThrowsNotFoundException()
     {
         // Arrange.
@@ -100,25 +120,5 @@ public class CreateNotAuthUserCommandHandlerTests
 
         mocks.GetMock<IAppDbContext>()
              .Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
-    }
-
-    [Fact]
-    public async Task ConstructorShouldThrowsArgumentNullExceptionWhenCommandIsNull()
-    {
-        // Arrange.
-        var mocks = new AutoMocker(MockBehavior.Strict);
-
-        mocks.GetMock<IAppDbContext>();
-        mocks.GetMock<ICurrentUser>();
-
-        var sut = mocks.CreateInstance<CreateNotAuthUserCommandHandler>();
-
-        // Act.
-        Func<Task> act = () => sut.Handle(null!, CancellationToken.None);
-
-        // Assert.
-        await act.Should()
-                 .ThrowAsync<ArgumentNullException>()
-                 .WithMessage("Value cannot be null. (Parameter 'command')");
     }
 }

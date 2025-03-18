@@ -30,16 +30,16 @@ public class PassportInfoTests
     }
 
     [Fact]
-    public void CreatePassportInfoShouldThrowArgumentNullExceptionWhenPassportTypeIsNull()
+    public void CreatePassportInfoShouldThrowArgumentNullExceptionWhenIssuedByIsNull()
     {
         // Arrange.
         var fixture = new Fixture();
 
         var id = fixture.Create<SequentialGuid>();
-        PassportType passportType = null!;
+        var passportType = PassportType.Internal;
         var passportNumber = new PassportInfoPassportNumber("12345678");
         var regDate = fixture.Create<PassportInfoRegDate>();
-        var issuedBy = fixture.Create<PassportInfoIssuedBy>();
+        PassportInfoIssuedBy issuedBy = null!;
 
         // Act.
 
@@ -47,7 +47,7 @@ public class PassportInfoTests
 
         // Assert.
         act.Should()
-           .Throw<ArgumentNullException>(nameof(passportType));
+           .Throw<ArgumentNullException>(nameof(issuedBy));
     }
 
     [Fact]
@@ -72,6 +72,27 @@ public class PassportInfoTests
     }
 
     [Fact]
+    public void CreatePassportInfoShouldThrowArgumentNullExceptionWhenPassportTypeIsNull()
+    {
+        // Arrange.
+        var fixture = new Fixture();
+
+        var id = fixture.Create<SequentialGuid>();
+        PassportType passportType = null!;
+        var passportNumber = new PassportInfoPassportNumber("12345678");
+        var regDate = fixture.Create<PassportInfoRegDate>();
+        var issuedBy = fixture.Create<PassportInfoIssuedBy>();
+
+        // Act.
+
+        var act = () => new PassportInfo(id, passportType, passportNumber, regDate, issuedBy);
+
+        // Assert.
+        act.Should()
+           .Throw<ArgumentNullException>(nameof(passportType));
+    }
+
+    [Fact]
     public void CreatePassportInfoShouldThrowArgumentNullExceptionWhenRegDateIsNull()
     {
         // Arrange.
@@ -93,24 +114,33 @@ public class PassportInfoTests
     }
 
     [Fact]
-    public void CreatePassportInfoShouldThrowArgumentNullExceptionWhenIssuedByIsNull()
+    public void ProtectedConstructorShouldInitializePropertiesWithDefaultValues()
     {
-        // Arrange.
-        var fixture = new Fixture();
+        // Arrange
+        var type = typeof(PassportInfo);
+        var constructor = type.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, Type.EmptyTypes, null)!;
 
-        var id = fixture.Create<SequentialGuid>();
-        var passportType = PassportType.Internal;
-        var passportNumber = new PassportInfoPassportNumber("12345678");
-        var regDate = fixture.Create<PassportInfoRegDate>();
-        PassportInfoIssuedBy issuedBy = null!;
+        // Act
+        var passportInfo = (PassportInfo)constructor.Invoke(null);
 
-        // Act.
+        // Assert
+        passportInfo.Should()
+                    .NotBeNull();
 
-        var act = () => new PassportInfo(id, passportType, passportNumber, regDate, issuedBy);
+        passportInfo.Id.Should()
+                    .Be(SequentialGuid.Empty);
 
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>(nameof(issuedBy));
+        passportInfo.PassportType.Should()
+                    .BeNull();
+
+        passportInfo.PassportNumber.Should()
+                    .BeNull();
+
+        passportInfo.RegDate.Should()
+                    .BeNull();
+
+        passportInfo.IssuedBy.Should()
+                    .BeNull();
     }
 
     [Fact]
@@ -151,35 +181,5 @@ public class PassportInfoTests
 
         passportInfo.IssuedBy.Should()
                     .Be(issuedBy1);
-    }
-
-    [Fact]
-    public void ProtectedConstructorShouldInitializePropertiesWithDefaultValues()
-    {
-        // Arrange
-        var type = typeof(PassportInfo);
-        var constructor = type.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, Type.EmptyTypes, null)!;
-
-        // Act
-        var passportInfo = (PassportInfo)constructor.Invoke(null);
-
-        // Assert
-        passportInfo.Should()
-                    .NotBeNull();
-
-        passportInfo.Id.Should()
-                    .Be(SequentialGuid.Empty);
-
-        passportInfo.PassportType.Should()
-                    .BeNull();
-
-        passportInfo.PassportNumber.Should()
-                    .BeNull();
-
-        passportInfo.RegDate.Should()
-                    .BeNull();
-
-        passportInfo.IssuedBy.Should()
-                    .BeNull();
     }
 }

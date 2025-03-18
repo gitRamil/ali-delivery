@@ -38,7 +38,7 @@ public class UserFirstName : ValueObject
         {
             throw new ArgumentException($"Имя не может быть длиннее {MaxLength} символов.", nameof(name));
         }
-        
+
         _name = name;
     }
 
@@ -52,7 +52,7 @@ public class UserFirstName : ValueObject
     {
         yield return _name;
     }
-    
+
     /// <summary>
     /// Выполняет явное преобразование из <see cref="string" /> в <see cref="UserFirstName" />.
     /// </summary>

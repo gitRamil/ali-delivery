@@ -10,146 +10,6 @@ namespace Ali.Delivery.Order.Domain.Tests.Entities;
 public class UserTests
 {
     [Fact]
-    public void CreateUserShouldSucceedWhenAllValidArgumentsPassed()
-    {
-        // Arrange.
-        var fixture = new Fixture();
-
-        var id = fixture.Create<SequentialGuid>();
-        var login = fixture.Create<UserLogin>();
-        var password = fixture.Create<UserPassword>();
-        var role = Role.BasicUser;
-        var birthDay = fixture.Create<UserBirthDay>();
-        var firstName = fixture.Create<UserFirstName>();
-        var lastName = fixture.Create<UserLastName>();
-
-        var passportInfo = new PassportInfo(SequentialGuid.Create(),
-                                            PassportType.Internal,
-                                            new PassportInfoPassportNumber("123456789"),
-                                            new PassportInfoRegDate(DateTime.Now),
-                                            new PassportInfoIssuedBy("MVD RF"));
-
-        // Act.
-        var act = () => new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
-
-        // Assert.
-        act.Should()
-           .NotThrow();
-    }
-
-    [Fact]
-    public void CreateUserShouldThrowArgumentNullExceptionWhenLoginIsNull()
-    {
-        // Arrange.
-        var fixture = new Fixture();
-
-        var id = fixture.Create<SequentialGuid>();
-        UserLogin login = null!;
-        var password = fixture.Create<UserPassword>();
-        var role = Role.BasicUser;
-        var birthDay = fixture.Create<UserBirthDay>();
-        var firstName = fixture.Create<UserFirstName>();
-        var lastName = fixture.Create<UserLastName>();
-
-        var passportInfo = new PassportInfo(SequentialGuid.Create(),
-                                            PassportType.Internal,
-                                            new PassportInfoPassportNumber("123456789"),
-                                            new PassportInfoRegDate(DateTime.Now),
-                                            new PassportInfoIssuedBy("MVD RF"));
-
-        // Act.
-        var act = () => new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>(nameof(login));
-    }
-
-    [Fact]
-    public void CreateUserShouldThrowArgumentNullExceptionWhenPasswordIsNull()
-    {
-        // Arrange.
-        var fixture = new Fixture();
-
-        var id = fixture.Create<SequentialGuid>();
-        var login = fixture.Create<UserLogin>();
-        UserPassword password = null!;
-        var role = Role.BasicUser;
-        var birthDay = fixture.Create<UserBirthDay>();
-        var firstName = fixture.Create<UserFirstName>();
-        var lastName = fixture.Create<UserLastName>();
-
-        var passportInfo = new PassportInfo(SequentialGuid.Create(),
-                                            PassportType.Internal,
-                                            new PassportInfoPassportNumber("123456789"),
-                                            new PassportInfoRegDate(DateTime.Now),
-                                            new PassportInfoIssuedBy("MVD RF"));
-
-        // Act.
-        var act = () => new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>(nameof(password));
-    }
-
-    [Fact]
-    public void CreateUserShouldThrowArgumentNullExceptionWhenRoleIsNull()
-    {
-        // Arrange.
-        var fixture = new Fixture();
-
-        var id = fixture.Create<SequentialGuid>();
-        var login = fixture.Create<UserLogin>();
-        var password = fixture.Create<UserPassword>();
-        Role role = null!;
-        var birthDay = fixture.Create<UserBirthDay>();
-        var firstName = fixture.Create<UserFirstName>();
-        var lastName = fixture.Create<UserLastName>();
-
-        var passportInfo = new PassportInfo(SequentialGuid.Create(),
-                                            PassportType.Internal,
-                                            new PassportInfoPassportNumber("123456789"),
-                                            new PassportInfoRegDate(DateTime.Now),
-                                            new PassportInfoIssuedBy("MVD RF"));
-
-        // Act.
-        var act = () => new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>(nameof(role));
-    }
-
-    [Fact]
-    public void CreateUserShouldThrowArgumentNullExceptionWhenBirthdayIsNull()
-    {
-        // Arrange.
-        var fixture = new Fixture();
-
-        var id = fixture.Create<SequentialGuid>();
-        var login = fixture.Create<UserLogin>();
-        var password = fixture.Create<UserPassword>();
-        var role = Role.BasicUser;
-        UserBirthDay birthDay = null!;
-        var firstName = fixture.Create<UserFirstName>();
-        var lastName = fixture.Create<UserLastName>();
-
-        var passportInfo = new PassportInfo(SequentialGuid.Create(),
-                                            PassportType.Internal,
-                                            new PassportInfoPassportNumber("123456789"),
-                                            new PassportInfoRegDate(DateTime.Now),
-                                            new PassportInfoIssuedBy("MVD RF"));
-
-        // Act.
-        var act = () => new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>(nameof(birthDay));
-    }
-
-    [Fact]
     public void AddNotAuthUserShouldSucceedWhenAllValidArgumentsPassed()
     {
         // Arrange.
@@ -272,6 +132,185 @@ public class UserTests
     }
 
     [Fact]
+    public void CreateUserShouldSucceedWhenAllValidArgumentsPassed()
+    {
+        // Arrange.
+        var fixture = new Fixture();
+
+        var id = fixture.Create<SequentialGuid>();
+        var login = fixture.Create<UserLogin>();
+        var password = fixture.Create<UserPassword>();
+        var role = Role.BasicUser;
+        var birthDay = fixture.Create<UserBirthDay>();
+        var firstName = fixture.Create<UserFirstName>();
+        var lastName = fixture.Create<UserLastName>();
+
+        var passportInfo = new PassportInfo(SequentialGuid.Create(),
+                                            PassportType.Internal,
+                                            new PassportInfoPassportNumber("123456789"),
+                                            new PassportInfoRegDate(DateTime.Now),
+                                            new PassportInfoIssuedBy("MVD RF"));
+
+        // Act.
+        var act = () => new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
+
+        // Assert.
+        act.Should()
+           .NotThrow();
+    }
+
+    [Fact]
+    public void CreateUserShouldThrowArgumentNullExceptionWhenBirthdayIsNull()
+    {
+        // Arrange.
+        var fixture = new Fixture();
+
+        var id = fixture.Create<SequentialGuid>();
+        var login = fixture.Create<UserLogin>();
+        var password = fixture.Create<UserPassword>();
+        var role = Role.BasicUser;
+        UserBirthDay birthDay = null!;
+        var firstName = fixture.Create<UserFirstName>();
+        var lastName = fixture.Create<UserLastName>();
+
+        var passportInfo = new PassportInfo(SequentialGuid.Create(),
+                                            PassportType.Internal,
+                                            new PassportInfoPassportNumber("123456789"),
+                                            new PassportInfoRegDate(DateTime.Now),
+                                            new PassportInfoIssuedBy("MVD RF"));
+
+        // Act.
+        var act = () => new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
+
+        // Assert.
+        act.Should()
+           .Throw<ArgumentNullException>(nameof(birthDay));
+    }
+
+    [Fact]
+    public void CreateUserShouldThrowArgumentNullExceptionWhenLoginIsNull()
+    {
+        // Arrange.
+        var fixture = new Fixture();
+
+        var id = fixture.Create<SequentialGuid>();
+        UserLogin login = null!;
+        var password = fixture.Create<UserPassword>();
+        var role = Role.BasicUser;
+        var birthDay = fixture.Create<UserBirthDay>();
+        var firstName = fixture.Create<UserFirstName>();
+        var lastName = fixture.Create<UserLastName>();
+
+        var passportInfo = new PassportInfo(SequentialGuid.Create(),
+                                            PassportType.Internal,
+                                            new PassportInfoPassportNumber("123456789"),
+                                            new PassportInfoRegDate(DateTime.Now),
+                                            new PassportInfoIssuedBy("MVD RF"));
+
+        // Act.
+        var act = () => new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
+
+        // Assert.
+        act.Should()
+           .Throw<ArgumentNullException>(nameof(login));
+    }
+
+    [Fact]
+    public void CreateUserShouldThrowArgumentNullExceptionWhenPasswordIsNull()
+    {
+        // Arrange.
+        var fixture = new Fixture();
+
+        var id = fixture.Create<SequentialGuid>();
+        var login = fixture.Create<UserLogin>();
+        UserPassword password = null!;
+        var role = Role.BasicUser;
+        var birthDay = fixture.Create<UserBirthDay>();
+        var firstName = fixture.Create<UserFirstName>();
+        var lastName = fixture.Create<UserLastName>();
+
+        var passportInfo = new PassportInfo(SequentialGuid.Create(),
+                                            PassportType.Internal,
+                                            new PassportInfoPassportNumber("123456789"),
+                                            new PassportInfoRegDate(DateTime.Now),
+                                            new PassportInfoIssuedBy("MVD RF"));
+
+        // Act.
+        var act = () => new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
+
+        // Assert.
+        act.Should()
+           .Throw<ArgumentNullException>(nameof(password));
+    }
+
+    [Fact]
+    public void CreateUserShouldThrowArgumentNullExceptionWhenRoleIsNull()
+    {
+        // Arrange.
+        var fixture = new Fixture();
+
+        var id = fixture.Create<SequentialGuid>();
+        var login = fixture.Create<UserLogin>();
+        var password = fixture.Create<UserPassword>();
+        Role role = null!;
+        var birthDay = fixture.Create<UserBirthDay>();
+        var firstName = fixture.Create<UserFirstName>();
+        var lastName = fixture.Create<UserLastName>();
+
+        var passportInfo = new PassportInfo(SequentialGuid.Create(),
+                                            PassportType.Internal,
+                                            new PassportInfoPassportNumber("123456789"),
+                                            new PassportInfoRegDate(DateTime.Now),
+                                            new PassportInfoIssuedBy("MVD RF"));
+
+        // Act.
+        var act = () => new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
+
+        // Assert.
+        act.Should()
+           .Throw<ArgumentNullException>(nameof(role));
+    }
+
+    [Fact]
+    public void ProtectedConstructorShouldInitializePropertiesWithDefaultValues()
+    {
+        // Arrange
+        var type = typeof(User);
+        var constructor = type.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, Type.EmptyTypes, null)!;
+
+        // Act
+        var user = (User)constructor.Invoke(null);
+
+        // Assert
+        user.Should()
+            .NotBeNull();
+
+        user.Id.Should()
+            .Be(SequentialGuid.Empty);
+
+        user.Login.Should()
+            .BeNull();
+
+        user.FirstName.Should()
+            .BeNull();
+
+        user.LastName.Should()
+            .BeNull();
+
+        user.Password.Should()
+            .BeNull();
+
+        user.PassportInfo.Should()
+            .BeNull();
+
+        user.BirthDay.Should()
+            .BeNull();
+
+        user.Role.Should()
+            .BeNull();
+    }
+
+    [Fact]
     public void UpdateBirthDayShouldSucceedWhenUpdateBirthDay()
     {
         // Arrange.
@@ -369,45 +408,6 @@ public class UserTests
 
         user.LastName.Should()
             .Be(newLastName);
-    }
-
-    [Fact]
-    public void ProtectedConstructorShouldInitializePropertiesWithDefaultValues()
-    {
-        // Arrange
-        var type = typeof(User);
-        var constructor = type.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, Type.EmptyTypes, null)!;
-
-        // Act
-        var user = (User)constructor.Invoke(null);
-
-        // Assert
-        user.Should()
-            .NotBeNull();
-
-        user.Id.Should()
-            .Be(SequentialGuid.Empty);
-
-        user.Login.Should()
-            .BeNull();
-
-        user.FirstName.Should()
-            .BeNull();
-
-        user.LastName.Should()
-            .BeNull();
-
-        user.Password.Should()
-            .BeNull();
-
-        user.PassportInfo.Should()
-            .BeNull();
-
-        user.BirthDay.Should()
-            .BeNull();
-
-        user.Role.Should()
-            .BeNull();
     }
 
     [Fact]

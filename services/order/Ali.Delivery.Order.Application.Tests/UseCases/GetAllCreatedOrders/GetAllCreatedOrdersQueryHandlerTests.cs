@@ -12,6 +12,21 @@ namespace Ali.Delivery.Order.Application.Tests.UseCases.GetAllCreatedOrders;
 public class GetAllCreatedOrdersQueryHandlerTests
 {
     [Fact]
+    public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
+    {
+        // Arrange.
+        IAppDbContext context = null!;
+
+        // Act.
+        var act = () => new GetAllCreatedOrdersQueryHandler(context);
+
+        // Assert.
+        act.Should()
+           .Throw<ArgumentNullException>()
+           .WithParameterName(nameof(context));
+    }
+
+    [Fact]
     public async Task HandlerShouldReturnAllCreatedOrders()
     {
         // Arrange.
@@ -48,20 +63,5 @@ public class GetAllCreatedOrdersQueryHandlerTests
             order.OrderStatusName.Should()
                  .Be(OrderStatus.Created.Name);
         }
-    }
-
-    [Fact]
-    public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
-    {
-        // Arrange.
-        IAppDbContext context = null!;
-
-        // Act.
-        var act = () => new GetAllCreatedOrdersQueryHandler(context);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>()
-           .WithParameterName(nameof(context));
     }
 }

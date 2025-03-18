@@ -52,7 +52,7 @@ public class RolePermission : Entity<SequentialGuid>
     /// <summary>
     /// Возвращает или устанавливает роль.
     /// </summary>
-    public virtual Role? Role { get;}
+    public virtual Role? Role { get; }
 
     /// <summary>
     /// Возвращает или устанавливает идентификатор роли.

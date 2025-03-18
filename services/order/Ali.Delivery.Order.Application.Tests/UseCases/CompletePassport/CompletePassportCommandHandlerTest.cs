@@ -17,6 +17,38 @@ namespace Ali.Delivery.Order.Application.Tests.UseCases.CompletePassport;
 public class CompletePassportCommandHandlerTest
 {
     [Fact]
+    public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
+    {
+        // Arrange.
+        IAppDbContext context = null!;
+        var currentUser = Mock.Of<ICurrentUser>();
+
+        // Act.
+        var act = () => new CompletePassportCommandHandler(context, currentUser);
+
+        // Assert.
+        act.Should()
+           .Throw<ArgumentNullException>()
+           .WithParameterName(nameof(context));
+    }
+
+    [Fact]
+    public void ConstructorShouldFailWhenNullArgumentCurrentUserPassed()
+    {
+        // Arrange.
+        var context = Mock.Of<IAppDbContext>();
+        ICurrentUser currentUser = null!;
+
+        // Act.
+        var act = () => new CompletePassportCommandHandler(context, currentUser);
+
+        // Assert.
+        act.Should()
+           .Throw<ArgumentNullException>()
+           .WithParameterName(nameof(currentUser));
+    }
+
+    [Fact]
     public async Task HandlerShouldCompleteUsersPassport()
     {
         // Arrange.
@@ -64,38 +96,6 @@ public class CompletePassportCommandHandlerTest
 
         user.PassportInfo?.IssuedBy.Should()
             .Be(issuedBy);
-    }
-
-    [Fact]
-    public void ConstructorShouldFailWhenNullArgumentAppDbContextPassed()
-    {
-        // Arrange.
-        IAppDbContext context = null!;
-        var currentUser = Mock.Of<ICurrentUser>();
-
-        // Act.
-        var act = () => new CompletePassportCommandHandler(context, currentUser);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>()
-           .WithParameterName(nameof(context));
-    }
-
-    [Fact]
-    public void ConstructorShouldFailWhenNullArgumentCurrentUserPassed()
-    {
-        // Arrange.
-        var context = Mock.Of<IAppDbContext>();
-        ICurrentUser currentUser = null!;
-
-        // Act.
-        var act = () => new CompletePassportCommandHandler(context, currentUser);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>()
-           .WithParameterName(nameof(currentUser));
     }
 
     [Fact]
