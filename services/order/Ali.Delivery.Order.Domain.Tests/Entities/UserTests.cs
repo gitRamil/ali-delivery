@@ -14,7 +14,6 @@ public class UserTests
     {
         // Arrange.
         var fixture = new Fixture();
-
         var id = fixture.Create<SequentialGuid>();
         var login = fixture.Create<UserLogin>();
         var password = fixture.Create<UserPassword>();
@@ -29,10 +28,9 @@ public class UserTests
                                             new PassportInfoRegDate(DateTime.Now),
                                             new PassportInfoIssuedBy("MVD RF"));
         var user = new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
-
-        var notAuthFirstName = "Ivan";
-        var notAuthLastName = "Ivanov";
-        var phoneNumber = "+77471234567";
+        const string notAuthFirstName = "Ivan";
+        const string notAuthLastName = "Ivanov";
+        const string phoneNumber = "+77471234567";
 
         // Act.
         var act = () => user.AddNotAuthUser(notAuthFirstName, notAuthLastName, phoneNumber);
@@ -40,6 +38,11 @@ public class UserTests
         // Assert.
         act.Should()
            .NotThrow();
+
+        user.NotAuthUsers.First()
+            .FirstName?.ToString()
+            .Should()
+            .Be(notAuthFirstName);
     }
 
     [Fact]
@@ -47,7 +50,6 @@ public class UserTests
     {
         // Arrange.
         var fixture = new Fixture();
-
         var id = fixture.Create<SequentialGuid>();
         var login = fixture.Create<UserLogin>();
         var password = fixture.Create<UserPassword>();
@@ -56,10 +58,9 @@ public class UserTests
         var firstName = fixture.Create<UserFirstName>();
         var lastName = fixture.Create<UserLastName>();
         var user = new User(id, login, password, role, birthDay, firstName, lastName);
-
-        var notAuthFirstName = "Ivan";
-        var notAuthLastName = "Ivanov";
-        var phoneNumber = "+77471234567";
+        const string notAuthFirstName = "Ivan";
+        const string notAuthLastName = "Ivanov";
+        const string phoneNumber = "+77471234567";
 
         // Act.
         var act = () => user.AddNotAuthUser(notAuthFirstName, notAuthLastName, phoneNumber);
@@ -74,7 +75,6 @@ public class UserTests
     {
         // Arrange.
         var fixture = new Fixture();
-
         var id = fixture.Create<SequentialGuid>();
         var login = fixture.Create<UserLogin>();
         var password = fixture.Create<UserPassword>();
@@ -102,7 +102,6 @@ public class UserTests
     {
         // Arrange.
         var fixture = new Fixture();
-
         var id = fixture.Create<SequentialGuid>();
         var login = fixture.Create<UserLogin>();
         var password = fixture.Create<UserPassword>();
@@ -136,7 +135,6 @@ public class UserTests
     {
         // Arrange.
         var fixture = new Fixture();
-
         var id = fixture.Create<SequentialGuid>();
         var login = fixture.Create<UserLogin>();
         var password = fixture.Create<UserPassword>();
@@ -164,7 +162,6 @@ public class UserTests
     {
         // Arrange.
         var fixture = new Fixture();
-
         var id = fixture.Create<SequentialGuid>();
         var login = fixture.Create<UserLogin>();
         var password = fixture.Create<UserPassword>();
@@ -192,7 +189,6 @@ public class UserTests
     {
         // Arrange.
         var fixture = new Fixture();
-
         var id = fixture.Create<SequentialGuid>();
         UserLogin login = null!;
         var password = fixture.Create<UserPassword>();
@@ -220,7 +216,6 @@ public class UserTests
     {
         // Arrange.
         var fixture = new Fixture();
-
         var id = fixture.Create<SequentialGuid>();
         var login = fixture.Create<UserLogin>();
         UserPassword password = null!;
@@ -248,7 +243,6 @@ public class UserTests
     {
         // Arrange.
         var fixture = new Fixture();
-
         var id = fixture.Create<SequentialGuid>();
         var login = fixture.Create<UserLogin>();
         var password = fixture.Create<UserPassword>();
@@ -315,7 +309,6 @@ public class UserTests
     {
         // Arrange.
         var fixture = new Fixture();
-
         var id = fixture.Create<SequentialGuid>();
         var login = fixture.Create<UserLogin>();
         var password = fixture.Create<UserPassword>();
@@ -331,6 +324,7 @@ public class UserTests
                                             new PassportInfoRegDate(DateTime.Now),
                                             new PassportInfoIssuedBy("MVD RF"));
         var user = new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
+
         // Act.
         var act = () => user.UpdateBirthDay(newBirthDay);
 
@@ -347,7 +341,6 @@ public class UserTests
     {
         // Arrange.
         var fixture = new Fixture();
-
         var id = fixture.Create<SequentialGuid>();
         var login = fixture.Create<UserLogin>();
         var password = fixture.Create<UserPassword>();
@@ -363,6 +356,7 @@ public class UserTests
                                             new PassportInfoRegDate(DateTime.Now),
                                             new PassportInfoIssuedBy("MVD RF"));
         var user = new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
+
         // Act.
         var act = () => user.UpdateLogin(newLogin);
 
@@ -379,7 +373,6 @@ public class UserTests
     {
         // Arrange.
         var fixture = new Fixture();
-
         var id = fixture.Create<SequentialGuid>();
         var login = fixture.Create<UserLogin>();
         var password = fixture.Create<UserPassword>();
@@ -396,6 +389,7 @@ public class UserTests
                                             new PassportInfoRegDate(DateTime.Now),
                                             new PassportInfoIssuedBy("MVD RF"));
         var user = new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
+
         // Act.
         var act = () => user.UpdateName(newFirstName, newLastName);
 
@@ -415,7 +409,6 @@ public class UserTests
     {
         // Arrange.
         var fixture = new Fixture();
-
         var id = fixture.Create<SequentialGuid>();
         var login = fixture.Create<UserLogin>();
         var password = fixture.Create<UserPassword>();
@@ -431,6 +424,7 @@ public class UserTests
                                             new PassportInfoRegDate(DateTime.Now),
                                             new PassportInfoIssuedBy("MVD RF"));
         var user = new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
+
         // Act.
         var act = () => user.UpdateRole(newRole);
 
@@ -440,5 +434,11 @@ public class UserTests
 
         user.Role.Should()
             .Be(newRole);
+        
+        user.Login.ToString().Should().Be(login.ToString());
+        user.Password.ToString().Should().Be(password.ToString());
+        user.FirstName!.ToString().Should().Be(firstName.ToString());
+        user.LastName!.ToString().Should().Be(lastName.ToString());
+
     }
 }

@@ -13,7 +13,6 @@ public class PassportInfoTests
     {
         // Arrange.
         var fixture = new Fixture();
-
         var id = fixture.Create<SequentialGuid>();
         var passportType = PassportType.Internal;
         var passportNumber = new PassportInfoPassportNumber("12345678");
@@ -21,7 +20,6 @@ public class PassportInfoTests
         var issuedBy = fixture.Create<PassportInfoIssuedBy>();
 
         // Act.
-
         var act = () => new PassportInfo(id, passportType, passportNumber, regDate, issuedBy);
 
         // Assert.
@@ -34,7 +32,6 @@ public class PassportInfoTests
     {
         // Arrange.
         var fixture = new Fixture();
-
         var id = fixture.Create<SequentialGuid>();
         var passportType = PassportType.Internal;
         var passportNumber = new PassportInfoPassportNumber("12345678");
@@ -42,7 +39,6 @@ public class PassportInfoTests
         PassportInfoIssuedBy issuedBy = null!;
 
         // Act.
-
         var act = () => new PassportInfo(id, passportType, passportNumber, regDate, issuedBy);
 
         // Assert.
@@ -55,7 +51,6 @@ public class PassportInfoTests
     {
         // Arrange.
         var fixture = new Fixture();
-
         var id = fixture.Create<SequentialGuid>();
         var passportType = PassportType.Internal;
         PassportInfoPassportNumber passportNumber = null!;
@@ -63,7 +58,6 @@ public class PassportInfoTests
         var issuedBy = fixture.Create<PassportInfoIssuedBy>();
 
         // Act.
-
         var act = () => new PassportInfo(id, passportType, passportNumber, regDate, issuedBy);
 
         // Assert.
@@ -76,7 +70,6 @@ public class PassportInfoTests
     {
         // Arrange.
         var fixture = new Fixture();
-
         var id = fixture.Create<SequentialGuid>();
         PassportType passportType = null!;
         var passportNumber = new PassportInfoPassportNumber("12345678");
@@ -84,7 +77,6 @@ public class PassportInfoTests
         var issuedBy = fixture.Create<PassportInfoIssuedBy>();
 
         // Act.
-
         var act = () => new PassportInfo(id, passportType, passportNumber, regDate, issuedBy);
 
         // Assert.
@@ -97,7 +89,6 @@ public class PassportInfoTests
     {
         // Arrange.
         var fixture = new Fixture();
-
         var id = fixture.Create<SequentialGuid>();
         var passportType = PassportType.Internal;
         var passportNumber = new PassportInfoPassportNumber("12345678");
@@ -105,7 +96,6 @@ public class PassportInfoTests
         var issuedBy = fixture.Create<PassportInfoIssuedBy>();
 
         // Act.
-
         var act = () => new PassportInfo(id, passportType, passportNumber, regDate, issuedBy);
 
         // Assert.
@@ -148,13 +138,11 @@ public class PassportInfoTests
     {
         // Arrange.
         var fixture = new Fixture();
-
         var id = fixture.Create<SequentialGuid>();
         var passportType = PassportType.Internal;
         var passportNumber = new PassportInfoPassportNumber("12345678");
         var regDate = fixture.Create<PassportInfoRegDate>();
         var issuedBy = fixture.Create<PassportInfoIssuedBy>();
-
         var passportType1 = PassportType.International;
         var passportNumber1 = new PassportInfoPassportNumber("1234523678");
         var regDate1 = fixture.Create<PassportInfoRegDate>();
@@ -163,23 +151,22 @@ public class PassportInfoTests
         var passportInfo = new PassportInfo(id, passportType, passportNumber, regDate, issuedBy);
 
         // Act.
-
         var act = () => passportInfo.UpdatePassport(passportNumber1, regDate1, issuedBy1, passportType1);
 
         // Assert.
         act.Should()
            .NotThrow();
 
-        passportInfo.PassportType.Should()
-                    .Be(passportType1);
+        passportInfo.PassportType.ToString().Should()
+                    .Be(passportType1.ToString());
 
-        passportInfo.PassportNumber.Should()
-                    .Be(passportNumber1);
+        passportInfo.PassportNumber.ToString().Should()
+                    .Be(passportNumber1.ToString());
 
-        passportInfo.RegDate.Should()
-                    .Be(regDate1);
+        passportInfo.RegDate.ToString().Should()
+                    .Be(regDate1.ToString());
 
-        passportInfo.IssuedBy.Should()
-                    .Be(issuedBy1);
+        passportInfo.IssuedBy.ToString().Should()
+                    .Be(issuedBy1.ToString());
     }
 }

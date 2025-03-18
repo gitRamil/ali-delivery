@@ -14,7 +14,7 @@ public class GetDictionaryQueryHandlerTests
     {
         // Arrange.
         var mocks = new AutoMocker(MockBehavior.Strict);
-        var dictionaryCode = DictionaryCode.Role;
+        const DictionaryCode dictionaryCode = DictionaryCode.Role;
 
         var dictionaryValues = new[]
         {
@@ -42,11 +42,5 @@ public class GetDictionaryQueryHandlerTests
         result.Should()
               .NotBeNull()
               .And.HaveCount(3);
-    }
-
-    [Fact]
-    public async Task HandlerShouldThrowInvalidOperationExceptionWhenCodeOrNameIsNull()
-    {
-        // Тесты, которые не смог реализовать.
     }
 }

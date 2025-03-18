@@ -12,19 +12,29 @@ public class RolePermissionTests
     {
         //Arrange.
         var fixture = new Fixture();
-
         var id = fixture.Create<SequentialGuid>();
         var roleId = Role.BasicUser.Id;
         var permission = Permission.UserOrderManagement.Id;
 
         //Act.
-
         var act = () => new RolePermission(id, roleId, permission);
 
         //Assert.
-
         act.Should()
            .NotThrow();
+    }
+    
+    [Fact]
+    public void GetAllValuesShouldReturnAllValues()
+    {
+        //Arrange.
+
+        //Act.
+        var values = RolePermission.GetAllValues().ToList();
+
+        //Assert.
+        values[0].RoleId.Should().Be(Role.NotAuthUser.Id);
+        values[1].RoleId.Should().Be(Role.BasicUser.Id);
     }
 
     [Fact]

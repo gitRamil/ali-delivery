@@ -15,7 +15,6 @@ public class OrderTests
     {
         // Arrange.
         var fixture = new AppFixture();
-
         var id = fixture.Create<SequentialGuid>();
         var orderName = fixture.Create<OrderName>();
         var orderInfo = fixture.Create<OrderInfo>();
@@ -38,7 +37,6 @@ public class OrderTests
     {
         // Arrange.
         var fixture = new AppFixture();
-
         var id = fixture.Create<SequentialGuid>();
         OrderName orderName = null!;
         var orderInfo = fixture.Create<OrderInfo>();
@@ -61,7 +59,6 @@ public class OrderTests
     {
         // Arrange.
         var fixture = new AppFixture();
-
         var id = fixture.Create<SequentialGuid>();
         var orderName = fixture.Create<OrderName>();
         OrderInfo orderInfo = null!;
@@ -84,7 +81,6 @@ public class OrderTests
     {
         // Arrange.
         var fixture = new AppFixture();
-
         var id = fixture.Create<SequentialGuid>();
         var orderName = fixture.Create<OrderName>();
         var orderInfo = fixture.Create<OrderInfo>();
@@ -107,7 +103,6 @@ public class OrderTests
     {
         // Arrange.
         var fixture = new AppFixture();
-
         var id = fixture.Create<SequentialGuid>();
         var orderName = fixture.Create<OrderName>();
         var orderInfo = fixture.Create<OrderInfo>();
@@ -137,7 +132,6 @@ public class OrderTests
     {
         // Arrange.
         var fixture = new AppFixture();
-
         var id = fixture.Create<SequentialGuid>();
         var orderName = fixture.Create<OrderName>();
         var orderInfo = fixture.Create<OrderInfo>();
@@ -160,7 +154,6 @@ public class OrderTests
     {
         // Arrange.
         var fixture = new AppFixture();
-
         var id = fixture.Create<SequentialGuid>();
         var orderName = fixture.Create<OrderName>();
         var orderInfo = fixture.Create<OrderInfo>();
@@ -184,7 +177,6 @@ public class OrderTests
     {
         // Arrange.
         var fixture = new AppFixture();
-
         var id = fixture.Create<SequentialGuid>();
         var orderName = fixture.Create<OrderName>();
         var orderInfo = fixture.Create<OrderInfo>();
@@ -193,7 +185,6 @@ public class OrderTests
         var receiver = fixture.Create<User>();
         NotAuthUser? notAuthReceiver = null;
         var courier = fixture.Create<User>();
-
         var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, courier);
 
         // Act.
@@ -205,6 +196,7 @@ public class OrderTests
 
         order.OrderStatus.Should()
              .Be(OrderStatus.Finished);
+        order.Name.ToString().Should().Be(orderName);
     }
 
     [Fact]
@@ -212,7 +204,6 @@ public class OrderTests
     {
         // Arrange.
         var fixture = new AppFixture();
-
         var id = fixture.Create<SequentialGuid>();
         var orderName = fixture.Create<OrderName>();
         var orderInfo = fixture.Create<OrderInfo>();
@@ -222,7 +213,6 @@ public class OrderTests
         NotAuthUser? notAuthReceiver = null;
         var courier = fixture.Create<User>();
         var anotherUser = fixture.Create<User>();
-
         var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, courier);
 
         // Act.
@@ -285,7 +275,6 @@ public class OrderTests
         var receiver = fixture.Create<User>();
         NotAuthUser? notAuthReceiver = null;
         var courier = fixture.Create<User>();
-
         var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, null);
 
         // Act.
@@ -346,7 +335,6 @@ public class OrderTests
         var receiver = fixture.Create<User>();
         NotAuthUser? notAuthReceiver = null;
         var courier = fixture.Create<User>();
-
         var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, null);
 
         // Act.
@@ -363,7 +351,6 @@ public class OrderTests
     {
         // Arrange.
         var fixture = new AppFixture();
-
         var id = fixture.Create<SequentialGuid>();
         var orderName = fixture.Create<OrderName>();
         var orderInfo = fixture.Create<OrderInfo>();
@@ -372,7 +359,6 @@ public class OrderTests
         var receiver = fixture.Create<User>();
         NotAuthUser? notAuthReceiver = null;
         var courier = fixture.Create<User>();
-
         var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, courier);
 
         // Act.
@@ -391,7 +377,6 @@ public class OrderTests
     {
         // Arrange.
         var fixture = new AppFixture();
-
         var id = fixture.Create<SequentialGuid>();
         var orderName = fixture.Create<OrderName>();
         var orderInfo = fixture.Create<OrderInfo>();
@@ -401,7 +386,6 @@ public class OrderTests
         NotAuthUser? notAuthReceiver = null;
         var courier = fixture.Create<User>();
         var anotherUser = fixture.Create<User>();
-
         var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, courier);
 
         // Act.
@@ -417,7 +401,6 @@ public class OrderTests
     {
         // Arrange.
         var fixture = new AppFixture();
-
         var id = fixture.Create<SequentialGuid>();
         var orderName = fixture.Create<OrderName>();
         var orderInfo = fixture.Create<OrderInfo>();
@@ -445,7 +428,6 @@ public class OrderTests
     {
         // Arrange.
         var fixture = new AppFixture();
-
         var id = fixture.Create<SequentialGuid>();
         var orderName = fixture.Create<OrderName>();
         var orderInfo = fixture.Create<OrderInfo>();

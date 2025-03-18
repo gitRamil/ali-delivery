@@ -77,14 +77,14 @@ public class UpdateUserCommandHandlerTests
         var user = new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
 
         var newLogin = fixture.Create<UserLogin>();
-        var newRole = RoleCode.BasicUser;
+        const RoleCode newRole = RoleCode.BasicUser;
         var newBirthDay = fixture.Create<UserBirthDay>();
         var newFirstName = fixture.Create<UserFirstName>();
         var newLastName = fixture.Create<UserLastName>();
         var newPassportNumber = new PassportInfoPassportNumber("12312312333");
         var newRegDate = fixture.Create<DateTime>();
         var newIssuedBy = fixture.Create<PassportInfoIssuedBy>();
-        var newPassportType = PassportTypeCode.Diplomatic;
+        const PassportTypeCode newPassportType = PassportTypeCode.Diplomatic;
 
         mocks.MockDbSet(u => u.Users);
 
@@ -135,7 +135,7 @@ public class UpdateUserCommandHandlerTests
         var newPassportNumber = new PassportInfoPassportNumber("12312312333");
         var newRegDate = fixture.Create<DateTime>();
         var newIssuedBy = fixture.Create<PassportInfoIssuedBy>();
-        var newPassportType = PassportTypeCode.Diplomatic;
+        const PassportTypeCode newPassportType = PassportTypeCode.Diplomatic;
 
         mocks.MockDbSet(u => u.Users, user);
 

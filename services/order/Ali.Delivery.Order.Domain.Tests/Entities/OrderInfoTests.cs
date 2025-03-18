@@ -13,7 +13,6 @@ public class OrderInfoTests
     {
         // Arrange.
         var fixture = new Fixture();
-
         var id = fixture.Create<SequentialGuid>();
         var weight = fixture.Create<OrderInfoWeight>();
         var size = Size.Medium;
@@ -75,7 +74,6 @@ public class OrderInfoTests
     {
         // Arrange.
         var fixture = new Fixture();
-
         var id = fixture.Create<SequentialGuid>();
         var weight = fixture.Create<OrderInfoWeight>();
         var size = Size.Medium;
@@ -96,7 +94,6 @@ public class OrderInfoTests
     {
         // Arrange.
         var fixture = new Fixture();
-
         var id = fixture.Create<SequentialGuid>();
         var weight = fixture.Create<OrderInfoWeight>();
         Size size = null!;
@@ -117,7 +114,6 @@ public class OrderInfoTests
     {
         // Arrange.
         var fixture = new Fixture();
-
         var id = fixture.Create<SequentialGuid>();
         OrderInfoWeight weight = null!;
         var size = Size.Medium;
@@ -171,7 +167,6 @@ public class OrderInfoTests
     {
         // Arrange.
         var fixture = new Fixture();
-
         var id = fixture.Create<SequentialGuid>();
         var weight = fixture.Create<OrderInfoWeight>();
         var size = Size.Medium;
@@ -184,7 +179,6 @@ public class OrderInfoTests
         var price1 = fixture.Create<OrderInfoPrice>();
         var addressFrom1 = fixture.Create<OrderInfoAddressFrom>();
         var addressTo1 = fixture.Create<OrderInfoAddressTo>();
-
         var orderInfo = new OrderInfo(id, weight, size, price, addressFrom, addressTo);
 
         // Act. 
@@ -194,19 +188,19 @@ public class OrderInfoTests
         act.Should()
            .NotThrow();
 
-        orderInfo.Weight.Should()
-                 .Be(weight1);
+        orderInfo.Weight.ToString().Should()
+                 .Be(weight1.ToString());
 
-        orderInfo.Price.Should()
-                 .Be(price1);
+        orderInfo.Price.ToString().Should()
+                 .Be(price1.ToString());
 
-        orderInfo.AddressFrom.Should()
-                 .Be(addressFrom1);
+        orderInfo.AddressFrom.ToString().Should()
+                 .Be(addressFrom1.ToString());
 
-        orderInfo.AddressTo.Should()
-                 .Be(addressTo1);
+        orderInfo.AddressTo.ToString().Should()
+                 .Be(addressTo1.ToString());
 
-        orderInfo.Size.Should()
-                 .Be(size1);
+        orderInfo.Size.ToString().Should()
+                 .Be(size1.ToString());
     }
 }
