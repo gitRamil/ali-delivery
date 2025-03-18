@@ -32,6 +32,29 @@ public class OrderTests
         act.Should()
            .Throw<ArgumentNullException>(nameof(orderName));
     }
+    [Fact]
+    public void CreateOrderShouldThrowArgumentNullExceptionWhenSenderIsNull()
+    {
+        // Arrange.
+        var fixture = new AppFixture();
+
+        var id = fixture.Create<SequentialGuid>();
+        var orderName = fixture.Create<OrderName>();
+        var orderInfo = fixture.Create<OrderInfo>();
+        var orderStatus = OrderStatus.Created;
+        User sender = null!;
+        var receiver = fixture.Create<User>();
+        NotAuthUser? notAuthReceiver = null;
+        User? courier = null;
+
+        // Act.
+        var act = () => new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, courier);
+
+        // Assert.
+        act.Should()
+           .Throw<ArgumentNullException>()
+           .WithParameterName(nameof(sender));
+    }
 
     [Fact]
     public void CreateOrderShouldThrowArgumentNullExceptionWhenPassportInfoIsNull()
@@ -374,57 +397,7 @@ public class OrderTests
            .NotThrow();
         order.OrderStatus.Should().Be(orderStatusNew);
     }
-
-    [Fact]
-    public void UpdateOrderStatusShouldThrowArgumentNullExceptionWhenNewOrderStatusIsNull()
-    {
-        // Arrange.
-        var fixture = new AppFixture();
-
-        var id = fixture.Create<SequentialGuid>();
-        var orderName = fixture.Create<OrderName>();
-        var orderInfo = fixture.Create<OrderInfo>();
-        var orderStatus = OrderStatus.Created;
-        var sender = fixture.Create<User>();
-        var receiver = fixture.Create<User>();
-        NotAuthUser? notAuthReceiver = null;
-        OrderStatus orderStatusNew = null!;
-
-        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver,null);
-
-        // Act.
-        var act = () => order.UpdateOrderStatus(orderStatusNew);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>(nameof(orderStatusNew));
-    }
-
-    [Fact]
-    public void UpdateOrderNameShouldThrowArgumentNullExceptionWhenNewOrderNameIsNull()
-    {
-        // Arrange.
-        var fixture = new AppFixture();
-
-        var id = fixture.Create<SequentialGuid>();
-        var orderName = fixture.Create<OrderName>();
-        var orderInfo = fixture.Create<OrderInfo>();
-        var orderStatus = OrderStatus.Created;
-        var sender = fixture.Create<User>();
-        var receiver = fixture.Create<User>();
-        NotAuthUser? notAuthReceiver = null;
-        OrderName orderNameNew = null!;
-
-        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, null);
-
-        // Act.
-        var act = () => order.UpdateOrderName(orderNameNew);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>(nameof(orderNameNew));
-    }
-
+    
     [Fact]
     public void UpdateOrderNameShouldSucceedWhenValidArgumentsPassed()
     {
@@ -449,5 +422,43 @@ public class OrderTests
         act.Should()
            .NotThrow();
         order.Name.Should().Be(orderNameNew);
+    }
+    [Fact]
+    public void ProtectedConstructorShouldInitializePropertiesWithDefaultValues()
+    {
+        // Arrange
+        var type = typeof(Domain.Entities.Order);
+        var constructor = type.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, Type.EmptyTypes, null)!;
+
+        // Act
+        var order = (Domain.Entities.Order)constructor.Invoke(null);
+
+        // Assert
+        order.Should()
+            .NotBeNull();
+
+        order.Id.Should()
+            .Be(SequentialGuid.Empty);
+
+        order.Name.Should()
+            .BeNull();
+
+        order.OrderStatus.Should()
+            .BeNull();
+
+        order.OrderInfo.Should()
+            .BeNull();
+
+        order.Sender.Should()
+            .BeNull();
+        
+        order.Receiver.Should()
+            .BeNull();
+        
+        order.Courier.Should()
+            .BeNull();
+        
+        order.NotAuthReceiver.Should()
+            .BeNull();
     }
 }

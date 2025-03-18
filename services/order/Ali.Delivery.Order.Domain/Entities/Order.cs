@@ -41,12 +41,7 @@ public class Order : Entity<SequentialGuid>
         {
             throw new InvalidOperationException("Должен быть указан либо зарегистрированный, либо незарегистрированный получатель.");
         }
-
-        if (sender.PassportInfo == null)
-        {
-            throw new InvalidOperationException("Пожалуйста заполните паспортные данные для создания заказа");
-        }
-
+        
         Name = orderName ?? throw new ArgumentNullException(nameof(orderName));
         OrderInfo = orderInfo ?? throw new ArgumentNullException(nameof(orderInfo));
         OrderStatus = orderStatus ?? throw new ArgumentNullException(nameof(orderStatus));
@@ -54,6 +49,11 @@ public class Order : Entity<SequentialGuid>
         Receiver = receiver;
         Courier = courier;
         NotAuthReceiver = notAuthReceiver;
+        
+        if (sender.PassportInfo == null)
+        {
+            throw new InvalidOperationException("Пожалуйста заполните паспортные данные для создания заказа");
+        }
     }
 
     /// <summary>

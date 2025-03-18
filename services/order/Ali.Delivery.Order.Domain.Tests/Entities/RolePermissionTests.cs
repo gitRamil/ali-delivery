@@ -26,4 +26,33 @@ public class RolePermissionTests
         
         act.Should().NotThrow();
     }
+    [Fact]
+    public void ProtectedConstructorShouldInitializePropertiesWithDefaultValues()
+    {
+        // Arrange
+        var type = typeof(RolePermission);
+        var constructor = type.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, Type.EmptyTypes, null)!;
+
+        // Act
+        var rolePermission = (RolePermission)constructor.Invoke(null);
+
+        // Assert
+        rolePermission.Should()
+                   .NotBeNull();
+
+        rolePermission.Id.Should()
+                   .Be(SequentialGuid.Empty);
+
+        rolePermission.RoleId.Should()
+                   .Be(SequentialGuid.Empty);
+
+        rolePermission.PermissionId.Should()
+                   .Be(SequentialGuid.Empty);
+
+        rolePermission.Permission.Should()
+                   .BeNull();
+
+        rolePermission.Role.Should()
+                   .BeNull();
+    }
 }

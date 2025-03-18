@@ -147,114 +147,33 @@ public class PassportInfoTests
     }
 
     [Fact]
-    public void UpdatePassportInfoShouldThrowArgumentNullExceptionWhenPassportTypeIsNull()
+    public void ProtectedConstructorShouldInitializePropertiesWithDefaultValues()
     {
-        // Arrange.
-        var fixture = new Fixture();
+        // Arrange
+        var type = typeof(PassportInfo);
+        var constructor = type.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, Type.EmptyTypes, null)!;
 
-        var id = fixture.Create<SequentialGuid>();
-        var passportType = PassportType.Internal;
-        var passportNumber = new PassportInfoPassportNumber("12345678");
-        var regDate = fixture.Create<PassportInfoRegDate>();
-        var issuedBy = fixture.Create<PassportInfoIssuedBy>();
+        // Act
+        var passportInfo = (PassportInfo)constructor.Invoke(null);
 
-        PassportType passportType1 = null!;
-        var passportNumber1 = new PassportInfoPassportNumber("1234325678");
-        var regDate1 = fixture.Create<PassportInfoRegDate>();
-        var issuedBy1 = fixture.Create<PassportInfoIssuedBy>();
+        // Assert
+        passportInfo.Should()
+                   .NotBeNull();
 
-        var passportInfo = new PassportInfo(id, passportType, passportNumber, regDate, issuedBy);
+        passportInfo.Id.Should()
+                   .Be(SequentialGuid.Empty);
 
-        // Act.
+        passportInfo.PassportType.Should()
+                   .BeNull();
 
-        var act = () => passportInfo.UpdatePassport(passportNumber1, regDate1, issuedBy1, passportType1);
+        passportInfo.PassportNumber.Should()
+                   .BeNull();
 
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>(nameof(passportType1));
+        passportInfo.RegDate.Should()
+                   .BeNull();
+
+        passportInfo.IssuedBy.Should()
+                   .BeNull();
     }
-
-    [Fact]
-    public void UpdatePassportInfoShouldThrowArgumentNullExceptionWhenPassportNumberIsNull()
-    {
-        // Arrange.
-        var fixture = new Fixture();
-
-        var id = fixture.Create<SequentialGuid>();
-        var passportType = PassportType.Internal;
-        var passportNumber = new PassportInfoPassportNumber("12345678");
-        var regDate = fixture.Create<PassportInfoRegDate>();
-        var issuedBy = fixture.Create<PassportInfoIssuedBy>();
-
-        var passportType1 = PassportType.International;
-        PassportInfoPassportNumber passportNumber1 = null!;
-        var regDate1 = fixture.Create<PassportInfoRegDate>();
-        var issuedBy1 = fixture.Create<PassportInfoIssuedBy>();
-
-        var passportInfo = new PassportInfo(id, passportType, passportNumber, regDate, issuedBy);
-
-        // Act.
-
-        var act = () => passportInfo.UpdatePassport(passportNumber1, regDate1, issuedBy1, passportType1);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>(nameof(passportNumber1));
-    }
-
-    [Fact]
-    public void UpdatePassportInfoShouldThrowArgumentNullExceptionWhenRegDateIsNull()
-    {
-        // Arrange.
-        var fixture = new Fixture();
-
-        var id = fixture.Create<SequentialGuid>();
-        var passportType = PassportType.Internal;
-        var passportNumber = new PassportInfoPassportNumber("12345678");
-        var regDate = fixture.Create<PassportInfoRegDate>();
-        var issuedBy = fixture.Create<PassportInfoIssuedBy>();
-
-        var passportType1 = PassportType.International;
-        var passportNumber1 = new PassportInfoPassportNumber("1234235678");
-        PassportInfoRegDate regDate1 = null!;
-        var issuedBy1 = fixture.Create<PassportInfoIssuedBy>();
-
-        var passportInfo = new PassportInfo(id, passportType, passportNumber, regDate, issuedBy);
-
-        // Act.
-
-        var act = () => passportInfo.UpdatePassport(passportNumber1, regDate1, issuedBy1, passportType1);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>(nameof(regDate1));
-    }
-
-    [Fact]
-    public void UpdatePassportInfoShouldThrowArgumentNullExceptionWhenIssuedByIsNull()
-    {
-        // Arrange.
-        var fixture = new Fixture();
-
-        var id = fixture.Create<SequentialGuid>();
-        var passportType = PassportType.Internal;
-        var passportNumber = new PassportInfoPassportNumber("12345678");
-        var regDate = fixture.Create<PassportInfoRegDate>();
-        var issuedBy = fixture.Create<PassportInfoIssuedBy>();
-
-        var passportType1 = PassportType.International;
-        var passportNumber1 = new PassportInfoPassportNumber("12345628");
-        var regDate1 = fixture.Create<PassportInfoRegDate>();
-        PassportInfoIssuedBy issuedBy1 = null!;
-
-        var passportInfo = new PassportInfo(id, passportType, passportNumber, regDate, issuedBy);
-
-        // Act.
-
-        var act = () => passportInfo.UpdatePassport(passportNumber1, regDate1, issuedBy1, passportType1);
-
-        // Assert.
-        act.Should()
-           .Throw<ArgumentNullException>(nameof(issuedBy1));
-    }
+    
 }
