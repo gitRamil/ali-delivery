@@ -14,6 +14,7 @@ public static class AppDbContextMockExtensions
         mock.Setup(c => c.SaveChangesAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(0)
             .Verifiable();
+
     public static Mock<DbSet<T>> MockDbSet<T>(this AutoMocker mocks, Expression<Func<IAppDbContext, DbSet<T>>> expression, params T[] items) where T : class
     {
         var dbSetMock = items.BuildMock()
@@ -25,7 +26,7 @@ public static class AppDbContextMockExtensions
              .Verifiable();
         return dbSetMock;
     }
-    
+
     public static void CurrentUserSet(this AutoMocker mocks, SequentialGuid userId)
     {
         mocks.GetMock<ICurrentUser>()

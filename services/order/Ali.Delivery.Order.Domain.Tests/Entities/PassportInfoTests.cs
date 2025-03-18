@@ -139,11 +139,18 @@ public class PassportInfoTests
         // Assert.
         act.Should()
            .NotThrow();
-        passportInfo.PassportType.Should().Be(passportType1);
-        passportInfo.PassportNumber.Should().Be(passportNumber1);
-        passportInfo.RegDate.Should().Be(regDate1);
-        passportInfo.IssuedBy.Should().Be(issuedBy1);
-        
+
+        passportInfo.PassportType.Should()
+                    .Be(passportType1);
+
+        passportInfo.PassportNumber.Should()
+                    .Be(passportNumber1);
+
+        passportInfo.RegDate.Should()
+                    .Be(regDate1);
+
+        passportInfo.IssuedBy.Should()
+                    .Be(issuedBy1);
     }
 
     [Fact]
@@ -158,22 +165,21 @@ public class PassportInfoTests
 
         // Assert
         passportInfo.Should()
-                   .NotBeNull();
+                    .NotBeNull();
 
         passportInfo.Id.Should()
-                   .Be(SequentialGuid.Empty);
+                    .Be(SequentialGuid.Empty);
 
         passportInfo.PassportType.Should()
-                   .BeNull();
+                    .BeNull();
 
         passportInfo.PassportNumber.Should()
-                   .BeNull();
+                    .BeNull();
 
         passportInfo.RegDate.Should()
-                   .BeNull();
+                    .BeNull();
 
         passportInfo.IssuedBy.Should()
-                   .BeNull();
+                    .BeNull();
     }
-    
 }

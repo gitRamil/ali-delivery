@@ -32,6 +32,7 @@ public class OrderTests
         act.Should()
            .Throw<ArgumentNullException>(nameof(orderName));
     }
+
     [Fact]
     public void CreateOrderShouldThrowArgumentNullExceptionWhenSenderIsNull()
     {
@@ -283,7 +284,7 @@ public class OrderTests
                                fixture.Create<UserFirstName>(),
                                fixture.Create<UserLastName>());
 
-        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver,null);
+        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, null);
 
         // Act.
         var act = () => order.SetCourier(courier);
@@ -387,7 +388,7 @@ public class OrderTests
         NotAuthUser? notAuthReceiver = null;
         var orderStatusNew = OrderStatus.InProgress;
 
-        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver,null);
+        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, null);
 
         // Act.
         var act = () => order.UpdateOrderStatus(orderStatusNew);
@@ -395,9 +396,11 @@ public class OrderTests
         // Assert.
         act.Should()
            .NotThrow();
-        order.OrderStatus.Should().Be(orderStatusNew);
+
+        order.OrderStatus.Should()
+             .Be(orderStatusNew);
     }
-    
+
     [Fact]
     public void UpdateOrderNameShouldSucceedWhenValidArgumentsPassed()
     {
@@ -413,7 +416,7 @@ public class OrderTests
         NotAuthUser? notAuthReceiver = null;
         var orderNameNew = fixture.Create<OrderName>();
 
-        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver,null);
+        var order = new Domain.Entities.Order(id, orderName, orderInfo, orderStatus, sender, receiver, notAuthReceiver, null);
 
         // Act.
         var act = () => order.UpdateOrderName(orderNameNew);
@@ -421,8 +424,11 @@ public class OrderTests
         // Assert.
         act.Should()
            .NotThrow();
-        order.Name.Should().Be(orderNameNew);
+
+        order.Name.Should()
+             .Be(orderNameNew);
     }
+
     [Fact]
     public void ProtectedConstructorShouldInitializePropertiesWithDefaultValues()
     {
@@ -435,30 +441,30 @@ public class OrderTests
 
         // Assert
         order.Should()
-            .NotBeNull();
+             .NotBeNull();
 
         order.Id.Should()
-            .Be(SequentialGuid.Empty);
+             .Be(SequentialGuid.Empty);
 
         order.Name.Should()
-            .BeNull();
+             .BeNull();
 
         order.OrderStatus.Should()
-            .BeNull();
+             .BeNull();
 
         order.OrderInfo.Should()
-            .BeNull();
+             .BeNull();
 
         order.Sender.Should()
-            .BeNull();
-        
+             .BeNull();
+
         order.Receiver.Should()
-            .BeNull();
-        
+             .BeNull();
+
         order.Courier.Should()
-            .BeNull();
-        
+             .BeNull();
+
         order.NotAuthReceiver.Should()
-            .BeNull();
+             .BeNull();
     }
 }

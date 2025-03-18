@@ -21,7 +21,7 @@ public class AppFixture : Fixture
         Customize<User>(c => c.FromFactory(() => new User(this.Create<SequentialGuid>(),
                                                           this.Create<UserLogin>(),
                                                           this.Create<UserPassword>(),
-                                                          this.Create<Role>(),
+                                                          Role.BasicUser, 
                                                           this.Create<UserBirthDay>(),
                                                           this.Create<UserFirstName>(),
                                                           this.Create<UserLastName>(),

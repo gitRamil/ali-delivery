@@ -298,9 +298,11 @@ public class UserTests
         // Assert.
         act.Should()
            .NotThrow();
-        user.BirthDay.Should().Be(newBirthDay);
+
+        user.BirthDay.Should()
+            .Be(newBirthDay);
     }
-    
+
     [Fact]
     public void UpdateLoginShouldSucceedWhenUpdateLogin()
     {
@@ -328,9 +330,11 @@ public class UserTests
         // Assert.
         act.Should()
            .NotThrow();
-        user.Login.Should().Be(newLogin);
+
+        user.Login.Should()
+            .Be(newLogin);
     }
-    
+
     [Fact]
     public void UpdateNameShouldSucceedWhenUpdateName()
     {
@@ -359,8 +363,12 @@ public class UserTests
         // Assert.
         act.Should()
            .NotThrow();
-        user.FirstName.Should().Be(newFirstName);
-        user.LastName.Should().Be(newLastName);
+
+        user.FirstName.Should()
+            .Be(newFirstName);
+
+        user.LastName.Should()
+            .Be(newLastName);
     }
 
     [Fact]
@@ -375,39 +383,39 @@ public class UserTests
 
         // Assert
         user.Should()
-                   .NotBeNull();
+            .NotBeNull();
 
         user.Id.Should()
-                   .Be(SequentialGuid.Empty);
+            .Be(SequentialGuid.Empty);
 
         user.Login.Should()
-                   .BeNull();
+            .BeNull();
 
         user.FirstName.Should()
-                   .BeNull();
+            .BeNull();
 
         user.LastName.Should()
-                   .BeNull();
+            .BeNull();
 
         user.Password.Should()
-                   .BeNull();
-        
+            .BeNull();
+
         user.PassportInfo.Should()
             .BeNull();
-        
+
         user.BirthDay.Should()
             .BeNull();
-        
+
         user.Role.Should()
             .BeNull();
     }
-    
+
     [Fact]
     public void UpdateRoleShouldSucceedWhenUpdateRole()
     {
         // Arrange.
         var fixture = new Fixture();
-    
+
         var id = fixture.Create<SequentialGuid>();
         var login = fixture.Create<UserLogin>();
         var password = fixture.Create<UserPassword>();
@@ -416,7 +424,7 @@ public class UserTests
         var firstName = fixture.Create<UserFirstName>();
         var newRole = Role.Courier;
         var lastName = fixture.Create<UserLastName>();
-    
+
         var passportInfo = new PassportInfo(SequentialGuid.Create(),
                                             PassportType.Internal,
                                             new PassportInfoPassportNumber("123456789"),
@@ -425,10 +433,12 @@ public class UserTests
         var user = new User(id, login, password, role, birthDay, firstName, lastName, passportInfo);
         // Act.
         var act = () => user.UpdateRole(newRole);
-    
+
         // Assert.
         act.Should()
            .NotThrow();
-        user.Role.Should().Be(newRole);
+
+        user.Role.Should()
+            .Be(newRole);
     }
 }

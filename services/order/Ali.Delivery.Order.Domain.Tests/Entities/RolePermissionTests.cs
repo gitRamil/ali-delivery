@@ -8,24 +8,25 @@ namespace Ali.Delivery.Order.Domain.Tests.Entities;
 public class RolePermissionTests
 {
     [Fact]
-
     public void CreateRolePermissionShouldSucceedWhenAllValidArgumentsPassed()
     {
         //Arrange.
         var fixture = new Fixture();
-        
+
         var id = fixture.Create<SequentialGuid>();
         var roleId = Role.BasicUser.Id;
         var permission = Permission.UserOrderManagement.Id;
-        
+
         //Act.
-        
+
         var act = () => new RolePermission(id, roleId, permission);
-        
+
         //Assert.
-        
-        act.Should().NotThrow();
+
+        act.Should()
+           .NotThrow();
     }
+
     [Fact]
     public void ProtectedConstructorShouldInitializePropertiesWithDefaultValues()
     {
@@ -38,21 +39,21 @@ public class RolePermissionTests
 
         // Assert
         rolePermission.Should()
-                   .NotBeNull();
+                      .NotBeNull();
 
         rolePermission.Id.Should()
-                   .Be(SequentialGuid.Empty);
+                      .Be(SequentialGuid.Empty);
 
         rolePermission.RoleId.Should()
-                   .Be(SequentialGuid.Empty);
+                      .Be(SequentialGuid.Empty);
 
         rolePermission.PermissionId.Should()
-                   .Be(SequentialGuid.Empty);
+                      .Be(SequentialGuid.Empty);
 
         rolePermission.Permission.Should()
-                   .BeNull();
+                      .BeNull();
 
         rolePermission.Role.Should()
-                   .BeNull();
+                      .BeNull();
     }
 }
