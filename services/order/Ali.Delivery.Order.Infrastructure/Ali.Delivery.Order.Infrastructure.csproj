@@ -4,24 +4,20 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
-
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
         <DocumentationFile>bin\Debug\Ali.Delivery.Order.Infrastructure.xml</DocumentationFile>
     </PropertyGroup>
-
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <DocumentationFile>bin\Release\Ali.Delivery.Order.Infrastructure.xml</DocumentationFile>
     </PropertyGroup>
-
     <ItemGroup>
         <ProjectReference Include="..\Ali.Delivery.Order.Application\Ali.Delivery.Order.Application.csproj"/>
         <ProjectReference Include="..\Ali.Delivery.Order.Domain\Ali.Delivery.Order.Domain.csproj"/>
     </ItemGroup>
-
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.2"/>
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4"/>
     </ItemGroup>
 </Project>

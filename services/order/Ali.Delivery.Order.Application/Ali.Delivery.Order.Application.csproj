@@ -4,20 +4,16 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
-
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
         <DocumentationFile>bin\Debug\Ali.Delivery.Order.Application.xml</DocumentationFile>
     </PropertyGroup>
-
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <DebugSymbols>true</DebugSymbols>
         <DocumentationFile>bin\Release\Ali.Delivery.Order.Application.xml</DocumentationFile>
     </PropertyGroup>
-
     <ItemGroup>
         <ProjectReference Include="..\Ali.Delivery.Order.Domain\Ali.Delivery.Order.Domain.csproj"/>
     </ItemGroup>
-
     <ItemGroup>
         <PackageReference Include="Ali.Delivery.Generators" Version="0.0.2"/>
         <PackageReference Include="FluentValidation" Version="11.10.0"/>

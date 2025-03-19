@@ -22,29 +22,17 @@ public class Order : Entity<SequentialGuid>
     /// <param name="courier">Курьер.</param>
     /// <param name="notAuthReceiver">Незарегистрированный получатель.</param>
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если <paramref name="orderName"/> или 
-    /// <paramref name="orderInfo"/> или 
-    /// <paramref name="orderStatus"/> или 
-    /// <paramref name="sender"/> равен <c>null</c>.
+    /// Возникает, если <paramref name="orderName" /> или
+    /// <paramref name="orderInfo" /> или
+    /// <paramref name="orderStatus" /> или
+    /// <paramref name="sender" /> равен <c>null</c>.
     /// </exception>
-    public Order(SequentialGuid id,
-                 OrderName orderName,
-                 OrderInfo orderInfo,
-                 OrderStatus orderStatus,
-                 User sender,
-                 User? receiver,
-                 NotAuthUser? notAuthReceiver,
-                 User? courier)
+    public Order(SequentialGuid id, OrderName orderName, OrderInfo orderInfo, OrderStatus orderStatus, User sender, User? receiver, NotAuthUser? notAuthReceiver, User? courier)
         : base(id)
     {
         if ((receiver == null && notAuthReceiver == null) || (receiver != null && notAuthReceiver != null))
         {
             throw new InvalidOperationException("Должен быть указан либо зарегистрированный, либо незарегистрированный получатель.");
-        }
-
-        if (sender.PassportInfo == null)
-        {
-            throw new InvalidOperationException("Пожалуйста заполните паспортные данные для создания заказа");
         }
 
         Name = orderName ?? throw new ArgumentNullException(nameof(orderName));
@@ -54,6 +42,11 @@ public class Order : Entity<SequentialGuid>
         Receiver = receiver;
         Courier = courier;
         NotAuthReceiver = notAuthReceiver;
+
+        if (sender.PassportInfo == null)
+        {
+            throw new InvalidOperationException("Пожалуйста заполните паспортные данные для создания заказа");
+        }
     }
 
     /// <summary>

@@ -4,11 +4,9 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
-
     <ItemGroup>
         <ProjectReference Include="..\Ali.Delivery.Order.Infrastructure\Ali.Delivery.Order.Infrastructure.csproj"/>
     </ItemGroup>
-
     <ItemGroup>
         <PackageReference Include="FluentAssertions" Version="7.0.0"/>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0"/>

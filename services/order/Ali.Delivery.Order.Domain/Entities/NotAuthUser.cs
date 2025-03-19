@@ -24,9 +24,9 @@ public class NotAuthUser : Entity<SequentialGuid>
         : base(id)
     {
         Creator = creator ?? throw new ArgumentNullException(nameof(creator));
-        FirstName = firstName;
-        LastName = lastName;
-        PhoneNumber = phoneNumber;
+        FirstName = firstName ?? throw new ArgumentNullException(nameof(firstName));
+        LastName = lastName ?? throw new ArgumentNullException(nameof(lastName));
+        PhoneNumber = phoneNumber ?? throw new ArgumentNullException(nameof(phoneNumber));
     }
 
     /// <summary>

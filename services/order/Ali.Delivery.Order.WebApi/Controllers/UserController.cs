@@ -123,7 +123,7 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllUsers(CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new GetAllUsers(), cancellationToken);
+        var result = await _mediator.Send(new GetAllUsersQuery(), cancellationToken);
         return Ok(result);
     }
 
@@ -162,7 +162,7 @@ public class UserController : ControllerBase
     /// </summary>
     /// <param name="userId">Идентификатор пользователя.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
-    [HttpGet("{userId}")]
+    [HttpGet("{userId:guid}")]
     [UserPermission(UserPermissionCode.FullAccess)]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -35,27 +35,29 @@ public class RolePermission : Entity<SequentialGuid>
     {
         RoleId = SequentialGuid.Empty;
         PermissionId = SequentialGuid.Empty;
+        Permission = null;
+        Role = null;
     }
 
     /// <summary>
     /// Возвращает или устанавливает разрешение.
     /// </summary>
-    public virtual Permission? Permission { get; private set; }
+    public virtual Permission? Permission { get; }
 
     /// <summary>
     /// Возвращает или устанавливает идентификатор разрешения.
     /// </summary>
-    public SequentialGuid PermissionId { get; set; }
+    public SequentialGuid PermissionId { get; init; }
 
     /// <summary>
     /// Возвращает или устанавливает роль.
     /// </summary>
-    public virtual Role? Role { get; private set; }
+    public virtual Role? Role { get; }
 
     /// <summary>
     /// Возвращает или устанавливает идентификатор роли.
     /// </summary>
-    public SequentialGuid RoleId { get; set; }
+    public SequentialGuid RoleId { get; init; }
 
     /// <summary>
     /// Возвращает все значения доступов по роли.

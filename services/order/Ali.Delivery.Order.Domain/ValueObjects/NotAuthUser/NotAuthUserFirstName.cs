@@ -31,14 +31,14 @@ public class NotAuthUserFirstName : ValueObject
         {
             throw new ArgumentException("Имя незарегистрированного пользователя не может быть null или пустой строкой.", nameof(name));
         }
-        
+
         name = name.Trim();
 
         if (name.Length > MaxLength)
         {
             throw new ArgumentException($"Имя не может быть длиннее {MaxLength} символов.", nameof(name));
         }
-        
+
         _name = name;
     }
 
@@ -52,7 +52,7 @@ public class NotAuthUserFirstName : ValueObject
     {
         yield return _name;
     }
-    
+
     /// <summary>
     /// Выполняет явное преобразование из <see cref="string" /> в <see cref="NotAuthUserFirstName" />.
     /// </summary>

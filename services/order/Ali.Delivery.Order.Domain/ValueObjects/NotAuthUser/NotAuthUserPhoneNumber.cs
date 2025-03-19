@@ -59,7 +59,7 @@ public class NotAuthUserPhoneNumber : ValueObject
     /// Проверяет, является ли строка корректным номером телефона.
     /// </summary>
     private static bool IsValidPhoneNumber(string phoneNumber) => Regex.IsMatch(phoneNumber, @"^\+7\d{10}$");
-    
+
     /// <summary>
     /// Выполняет явное преобразование из <see cref="string" /> в <see cref="NotAuthUserPhoneNumber" />.
     /// </summary>

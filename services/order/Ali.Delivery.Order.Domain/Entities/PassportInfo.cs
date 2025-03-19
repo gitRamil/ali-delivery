@@ -74,11 +74,17 @@ public class PassportInfo : Entity<SequentialGuid>
     /// <param name="regDate">Дата регистрации.</param>
     /// <param name="issuedBy">Кем выдан.</param>
     /// <exception cref="InvalidOperationException"></exception>
+    /// <exception cref="ArgumentNullException">
+    /// Возникает, если <paramref name="passportNumber" /> или
+    /// <paramref name="regDate" /> или
+    /// <paramref name="issuedBy" /> или
+    /// <paramref name="typeId" /> равен <c>null</c>.
+    /// </exception>
     public void UpdatePassport(PassportInfoPassportNumber passportNumber, PassportInfoRegDate regDate, PassportInfoIssuedBy issuedBy, PassportType typeId)
     {
-        PassportType = typeId;
-        PassportNumber = passportNumber;
-        RegDate = regDate;
-        IssuedBy = issuedBy;
+        PassportType = typeId ?? throw new ArgumentNullException(nameof(typeId));
+        PassportNumber = passportNumber ?? throw new ArgumentNullException(nameof(passportNumber));
+        RegDate = regDate ?? throw new ArgumentNullException(nameof(regDate));
+        IssuedBy = issuedBy ?? throw new ArgumentNullException(nameof(issuedBy));
     }
 }

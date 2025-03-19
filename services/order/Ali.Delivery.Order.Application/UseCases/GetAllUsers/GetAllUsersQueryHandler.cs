@@ -8,7 +8,7 @@ namespace Ali.Delivery.Order.Application.UseCases.GetAllUsers;
 /// <summary>
 /// Представляет обработчик запроса на получение списка всех пользователей.
 /// </summary>
-public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsers, List<UserDto>>
+public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, List<UserDto>>
 {
     private readonly IAppDbContext _context;
 
@@ -22,7 +22,7 @@ public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsers, List<UserDto
     public GetAllUsersQueryHandler(IAppDbContext context) => _context = context ?? throw new ArgumentNullException(nameof(context));
 
     /// <inheritdoc />
-    public async Task<List<UserDto>> Handle(GetAllUsers query, CancellationToken cancellationToken)
+    public async Task<List<UserDto>> Handle(GetAllUsersQuery query, CancellationToken cancellationToken)
     {
         return await _context.Users.Select(user => new UserDto(user.Id,
                                                                user.Login,

@@ -47,7 +47,7 @@ public class PassportInfoIssuedBy : ValueObject
     {
         yield return _issuedBy;
     }
-    
+
     /// <summary>
     /// Выполняет явное преобразование из <see cref="string" /> в <see cref="PassportInfoIssuedBy" />.
     /// </summary>
