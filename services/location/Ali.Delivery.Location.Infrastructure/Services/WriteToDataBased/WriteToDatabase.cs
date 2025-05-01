@@ -12,21 +12,21 @@ public class WriteToDatabase : IWriteToDatabase
     public WriteToDatabase(IMyConfigurationService configurationService) => _configurationService = configurationService;
 
     
-    public async Task<bool> CheckUserExists(string login, string password)
-    {
-        _baseService.PostLogin(login,password)
-        // await using var conn = new NpgsqlConnection(_configurationService.GetDatabaseConnectionString());
-        // await conn.OpenAsync();
-        // // Добавляем @ как в методе SetCoordinates
-        // var telegramLogin = login.Trim();
-        //
-        // var cmd = new NpgsqlCommand(
-        //     @"SELECT * FROM users WHERE login LIKE @telegramLogin;", 
-        //     conn);
-        //
-        // cmd.Parameters.AddWithValue("telegramLogin", telegramLogin);
-        // return await cmd.ExecuteScalarAsync() != null;
-    }
+    // public async Task<bool> CheckUserExists(string login, string password)
+    // {
+    //     _baseService.PostLogin(login,password)
+    //     // await using var conn = new NpgsqlConnection(_configurationService.GetDatabaseConnectionString());
+    //     // await conn.OpenAsync();
+    //     // // Добавляем @ как в методе SetCoordinates
+    //     // var telegramLogin = login.Trim();
+    //     //
+    //     // var cmd = new NpgsqlCommand(
+    //     //     @"SELECT * FROM users WHERE login LIKE @telegramLogin;", 
+    //     //     conn);
+    //     //
+    //     // cmd.Parameters.AddWithValue("telegramLogin", telegramLogin);
+    //     // return await cmd.ExecuteScalarAsync() != null;
+    // }
 
     public async Task<bool> CreateUserLocationIfNotExists(string telegramLogin)
     {

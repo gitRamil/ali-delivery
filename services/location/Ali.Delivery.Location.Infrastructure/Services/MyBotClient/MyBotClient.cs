@@ -1,4 +1,5 @@
 using System.Globalization;
+using Ali.Delivery.Location.Infrastructure.ExternalServices;
 using Ali.Delivery.Location.Infrastructure.Services.MyConfiguration;
 using Ali.Delivery.Location.Infrastructure.Services.WriteToDataBased;
 using Telegram.Bot;
@@ -6,18 +7,28 @@ using Telegram.Bot.Types;
 
 namespace Ali.Delivery.Location.Infrastructure.Services.MyBotClient;
 
-public class MyBotClient(IMyConfigurationService config, IWriteToDatabase dbService) : IMyBotClient
+public class MyBotClient : IMyBotClient
 {
-    private readonly ITelegramBotClient _botClient = new TelegramBotClient(config.GetTgToken());
+    private readonly ITelegramBotClient _botClient;
+    private readonly IWriteToDatabase _dbService;
+    private readonly AuthService _authService;
+
     private readonly Dictionary<long, UserState> _userStates = new();
     private readonly Dictionary<long, string> _userLogins = new();
+
+    public MyBotClient(IMyConfigurationService config, IWriteToDatabase dbService, AuthService authService)
+    {
+        _botClient = new TelegramBotClient(config.GetTgToken());
+        _dbService = dbService;
+        _authService = authService;
+    }
 
     public void RunBot() => _botClient.StartReceiving(HandleUpdateAsync, HandleErrorAsync);
 
     private async Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken ct)
     {
         var chatId = update.Message?.Chat.Id ?? 0;
-        
+
         try
         {
             if (update.Message?.Location != null)
@@ -33,11 +44,11 @@ public class MyBotClient(IMyConfigurationService config, IWriteToDatabase dbServ
                     case "/start":
                         await HandleStartCommandAsync(chatId, ct);
                         break;
-                    
+
                     case "/login":
                         await HandleLoginCommandAsync(chatId, ct);
                         break;
-                    
+
                     default:
                         await HandleOtherMessagesAsync(chatId, update.Message, ct);
                         break;
@@ -53,7 +64,7 @@ public class MyBotClient(IMyConfigurationService config, IWriteToDatabase dbServ
     private async Task HandleStartCommandAsync(long chatId, CancellationToken ct)
     {
         _userStates[chatId] = UserState.WaitingForCommand;
-        
+
         await _botClient.SendMessage(
             chatId: chatId,
             text: "🚀 Добро пожаловать! Я готов к работе.\n" +
@@ -66,7 +77,7 @@ public class MyBotClient(IMyConfigurationService config, IWriteToDatabase dbServ
     private async Task HandleLoginCommandAsync(long chatId, CancellationToken ct)
     {
         _userStates[chatId] = UserState.WaitingForUsername;
-        
+
         await _botClient.SendMessage(
             chatId: chatId,
             text: "🔑 Введите ваш логин для авторизации:",
@@ -76,53 +87,64 @@ public class MyBotClient(IMyConfigurationService config, IWriteToDatabase dbServ
     private async Task HandleOtherMessagesAsync(long chatId, Message message, CancellationToken ct)
     {
         if (!_userStates.TryGetValue(chatId, out var state))
-        {
             return;
-        }
 
-        if (state == UserState.WaitingForUsername && !string.IsNullOrEmpty(message.Text))
+        var text = message.Text?.Trim();
+        if (string.IsNullOrEmpty(text))
+            return;
+
+        switch (state)
         {
-            var login = message.Text.Trim();
-            var telegramUsername = message.From?.Username;
-            var exists = await dbService.CheckUserExists(login,password);
-            
-            if (exists)
-            {
-                var created = telegramUsername != null && await dbService.CreateUserLocationIfNotExists(telegramUsername);
-                
-                if (created)
+            case UserState.WaitingForUsername:
+                _userLogins[chatId] = text;
+                _userStates[chatId] = UserState.WaitingForPassword;
+
+                await _botClient.SendMessage(
+                    chatId: chatId,
+                    text: "🔒 Теперь введите ваш пароль:",
+                    cancellationToken: ct);
+                break;
+
+            case UserState.WaitingForPassword:
+                var login = _userLogins[chatId];
+                var password = text;
+
+                var isAuthenticated = await _authService.AuthenticateUserAsync(login, password);
+
+                if (isAuthenticated)
                 {
                     _userStates[chatId] = UserState.Authorized;
-                    _userLogins[chatId] = telegramUsername!;
+
                     await _botClient.SendMessage(
                         chatId: chatId,
-                        text: $"✅ Авторизация успешна, {telegramUsername}!\n" +
-                              "Теперь вы можете делиться своей геопозицией",
+                        text: $"✅ Авторизация успешна, {login}!\nТеперь вы можете делиться своей геопозицией",
                         cancellationToken: ct);
                 }
                 else
                 {
+                    _userStates.Remove(chatId);
+                    _userLogins.Remove(chatId);
+
                     await _botClient.SendMessage(
                         chatId: chatId,
-                        text: "⚠️ Ошибка активации профиля",
+                        text: "❌ Неверный логин или пароль. Попробуйте снова: /login",
                         cancellationToken: ct);
                 }
-            }
-            else
-            {
-                _userStates.Remove(chatId);
+                break;
+
+            case UserState.Authorized:
                 await _botClient.SendMessage(
                     chatId: chatId,
-                    text: "❌ Пользователь не найден\nПопробуйте снова: /login",
+                    text: "Вы уже авторизованы. Отправьте свою локацию или используйте команды.",
                     cancellationToken: ct);
-            }
-        }
-        else
-        {
-            await _botClient.SendMessage(
-                chatId: chatId,
-                text: "⚠️ Неизвестная команда\nИспользуйте /help для списка команд",
-                cancellationToken: ct);
+                break;
+
+            default:
+                await _botClient.SendMessage(
+                    chatId: chatId,
+                    text: "⚠️ Неизвестная команда\nИспользуйте /help для списка команд",
+                    cancellationToken: ct);
+                break;
         }
     }
 
@@ -137,10 +159,10 @@ public class MyBotClient(IMyConfigurationService config, IWriteToDatabase dbServ
             return;
         }
 
-        if (_userLogins.TryGetValue(chatId, out var telegramUsername))
+        if (_userLogins.TryGetValue(chatId, out var login))
         {
-            await dbService.SetCoordinates(
-                telegramUsername,
+            await _dbService.SetCoordinates(
+                login,
                 location.Latitude.ToString(CultureInfo.InvariantCulture),
                 location.Longitude.ToString(CultureInfo.InvariantCulture));
 
@@ -163,6 +185,7 @@ public class MyBotClient(IMyConfigurationService config, IWriteToDatabase dbServ
     {
         WaitingForCommand,
         WaitingForUsername,
+        WaitingForPassword,
         Authorized
     }
 }

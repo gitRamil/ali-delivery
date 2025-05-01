@@ -13,20 +13,17 @@ public class AuthService
 
     public async Task<bool> AuthenticateUserAsync(string login, string password)
     {
-        // 1. Логинимся
-        var loginResponse = await _fileService.LoginAsync(new LoginRequest { Login = login, Password = password });
+        var token = await _fileService.LoginAsync(new LoginRequest { Login = login, Password = password });
 
-        if (string.IsNullOrEmpty(loginResponse.Token))
+        if (string.IsNullOrEmpty(token))
         {
-            Console.WriteLine($"Ошибка логина: {loginResponse.Error}");
+            Console.WriteLine("Ошибка логина: пустой токен");
             return false;
         }
 
-        // 2. Получаем текущего пользователя по токену
-        var userInfo = await _fileService.GetCurrentUserAsync("Bearer " + loginResponse.Token);
+        var userInfo = await _fileService.GetCurrentUserAsync("Bearer " + token);
 
-        // 3. Проверяем существует ли пользователь по ID
-        bool exists = await _fileService.IsUserExistAsync(userInfo.Id);
+        bool exists = await _fileService.IsUserExistAsync(userInfo.Id.ToString("D"));
 
         return exists;
     }

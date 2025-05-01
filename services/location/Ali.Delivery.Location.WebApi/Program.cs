@@ -27,6 +27,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddHostedService<BotBackgroundService>();
 builder.Services.AddRefitClient<IFileService>()
     .ConfigureHttpClient(c => c.BaseAddress = new Uri(userDbUrl));
+builder.Services.AddSingleton<AuthService>();
 
 var app = builder.Build();
 
