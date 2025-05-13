@@ -111,7 +111,7 @@ public class MyBotClient : IMyBotClient
 
                 var isAuthenticated = await _authService.AuthenticateUserAsync(login, password);
 
-                if (isAuthenticated)
+                if (isAuthenticated != null)
                 {
                     _userStates[chatId] = UserState.Authorized;
 

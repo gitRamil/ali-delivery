@@ -31,4 +31,12 @@ public class UserLocation : Entity<SequentialGuid>
     /// Возвращает пользователя.
     /// </summary>
     public string TelegramLogin { get; }
+    
+    public void UpdateCoordinates(string? newE, string? newS)
+    {
+        E = newE;
+        S = newS;
+    }
+    
+   
 }

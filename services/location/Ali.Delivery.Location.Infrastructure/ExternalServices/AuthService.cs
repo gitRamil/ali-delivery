@@ -11,20 +11,19 @@ public class AuthService
         _fileService = fileService;
     }
 
-    public async Task<bool> AuthenticateUserAsync(string login, string password)
+    public async Task<string?> AuthenticateUserAsync(string login, string password)
     {
         var token = await _fileService.LoginAsync(new LoginRequest { Login = login, Password = password });
 
         if (string.IsNullOrEmpty(token))
         {
-            Console.WriteLine("Ошибка логина: пустой токен");
-            return false;
+             Console.WriteLine("Ошибка логина: пустой токен");
+             return null;
+            
         }
 
         var userInfo = await _fileService.GetCurrentUserAsync("Bearer " + token);
 
-        bool exists = await _fileService.IsUserExistAsync(userInfo.Id.ToString("D"));
-
-        return exists;
+        return userInfo.Login;
     }
 }
