@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Ali.Delivery.Location.WebApi.Controllers;
 
 /// <summary>
-/// Контроллер для управления действиями курьера.
+/// Контроллер для управления действиями с базой локаций.
 /// </summary>
 [ApiController]
 [Route("api/v{version:apiVersion}/[controller]")]
@@ -26,15 +26,17 @@ public class UserLocationController : ControllerBase
     /// <summary>
     /// Назначает курьера на заказ.
     /// </summary>
-    /// <param name="orderId">Номер заказа.</param>
+    /// <param name="userLogin">Логин пользователя.</param>
+    /// <param name="s">Долгота.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
-    /// <returns>ID заказа.</returns>
+    /// <param name="e">Широта.</param>
+    /// <returns>Статус команды.</returns>
     [HttpPut("create-location")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> CreateUserLocation(string UserLogin, string E, string S, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateUserLocation(string userLogin, string e, string s, CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new CreateUserLocationCommand(UserLogin, E, S), cancellationToken);
+        var result = await _mediator.Send(new CreateUserLocationCommand(userLogin, e, s), cancellationToken);
         return Ok(result);
     }
 }
