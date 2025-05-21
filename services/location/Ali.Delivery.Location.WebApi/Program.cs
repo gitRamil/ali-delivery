@@ -20,6 +20,8 @@ try
     var userDbUrl = "http://localhost:5091/";
 
     builder.Services.AddEndpointsApiExplorer();
+    builder.Configuration.AddEnvironmentVariables("AliDeliveryLocationService_");
+    builder.AddDefaultSerilog();
     builder.Services.AddControllers()
         .AddJsonOptions(options =>
         {
@@ -30,7 +32,6 @@ try
     builder.Services.AddDefaultMediatr();
     builder.Services.AddDefaultEfCore();
     builder.Services.AddDefaultCorsPolicy();
-    builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddDateTimeService();
     builder.Services.AddDefaultProblemDetails();
     builder.Services.AddSwaggerGen();
@@ -40,9 +41,10 @@ try
     builder.Services.AddSingleton<IWriteToDatabase, WriteToDatabase>();
     builder.Services.AddSingleton<IMyBotClient, MyBotClient>();
     builder.Services.AddDbContext<AppDbContext>(options =>
-    {
-        options.UseNpgsql(configuration.GetConnectionString(nameof(AppDbContext)));
-    });
+        options.UseNpgsql(configuration.GetConnectionString(nameof(AppDbContext)))
+            .UseSnakeCaseNamingConvention()
+            .EnableSensitiveDataLogging()
+            .LogTo(Console.WriteLine, LogLevel.Information));
     builder.Services.AddHostedService<BotBackgroundService>();
     builder.Services.AddRefitClient<IFileService>()
         .ConfigureHttpClient(c => c.BaseAddress = new Uri(userDbUrl));

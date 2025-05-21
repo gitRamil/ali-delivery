@@ -3,6 +3,7 @@ using System;
 using Ali.Delivery.Location.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ali.Delivery.Location.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250521115122_Ini1t")]
+    partial class Ini1t
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,10 +75,6 @@ namespace Ali.Delivery.Location.Infrastructure.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_user_locations");
-
-                    b.HasIndex("TelegramLogin")
-                        .IsUnique()
-                        .HasDatabaseName("ix_user_locations_telegram_login");
 
                     b.ToTable("userLocations", null, t =>
                         {

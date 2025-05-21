@@ -67,7 +67,7 @@ public class WriteToDatabase : IWriteToDatabase
         
         await using var conn = new NpgsqlConnection(_configurationService.GetConnectionString());
         await conn.OpenAsync();
-        var cmd = new NpgsqlCommand(@"SELECT ""Id"" FROM ""userLocations"" WHERE ""TelegramLogin"" LIKE @telegramLogin", conn);
+        var cmd = new NpgsqlCommand(@"SELECT ""id"" FROM ""userLocations"" WHERE ""telegram_login"" LIKE @telegramLogin", conn);
         cmd.Parameters.AddWithValue("TelegramLogin", telegramLogin);
         var id = (Guid?)await cmd.ExecuteScalarAsync();
 

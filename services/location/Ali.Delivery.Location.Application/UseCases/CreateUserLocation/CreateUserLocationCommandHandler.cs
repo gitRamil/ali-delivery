@@ -3,7 +3,7 @@ using Ali.Delivery.Location.Application.Abstractions;
 using Ali.Delivery.Location.Domain.Entities;
 using MediatR;
 
-namespace Ali.Delivery.Location.Application.UseCases;
+namespace Ali.Delivery.Location.Application.UseCases.CreateUserLocation;
 
 /// <summary>
 /// Представляет обработчик команды создания локации пользователя.

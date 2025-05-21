@@ -26,5 +26,8 @@ internal class UserLocationConfiguration : EntityTypeConfigurationBase<UserLocat
 
               builder.Property(p => p.TelegramLogin)
                      .HasComment("Ник телеграм");
+              
+              builder.HasIndex(u => u.TelegramLogin)
+                     .IsUnique();
        }
 }
