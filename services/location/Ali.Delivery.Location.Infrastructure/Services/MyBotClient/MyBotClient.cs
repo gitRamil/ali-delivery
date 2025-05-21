@@ -87,11 +87,15 @@ public class MyBotClient : IMyBotClient
     private async Task HandleOtherMessagesAsync(long chatId, Message message, CancellationToken ct)
     {
         if (!_userStates.TryGetValue(chatId, out var state))
+        {
             return;
+        }
 
         var text = message.Text?.Trim();
         if (string.IsNullOrEmpty(text))
+        {
             return;
+        }
 
         switch (state)
         {
@@ -152,26 +156,26 @@ public class MyBotClient : IMyBotClient
     {
         if (!_userStates.TryGetValue(chatId, out var state) || state != UserState.Authorized)
         {
-            await _botClient.SendMessage(
-                chatId: chatId,
-                text: "🔒 Требуется авторизация!\nИспользуйте /login",
-                cancellationToken: ct);
+            await _botClient.SendMessage(chatId: chatId, text: "🔒 Требуется авторизация!\nИспользуйте /login", cancellationToken: ct);
             return;
         }
 
         if (_userLogins.TryGetValue(chatId, out var login))
         {
-            await _dbService.SetCoordinates(
-                login,
-                location.Latitude.ToString(CultureInfo.InvariantCulture),
-                location.Longitude.ToString(CultureInfo.InvariantCulture));
+            var success = await _dbService.UpsertUserLocation(login,
+                                                              location.Latitude.ToString(CultureInfo.InvariantCulture),
+                                                              location.Longitude.ToString(CultureInfo.InvariantCulture));
 
-            await _botClient.SendMessage(
-                chatId: chatId,
-                text: $"📍 Координаты обновлены:\n" +
-                      $"Широта: {location.Latitude}\n" +
-                      $"Долгота: {location.Longitude}",
-                cancellationToken: ct);
+            if (success)
+            {
+                await _botClient.SendMessage(chatId: chatId,
+                                             text: $"📍 Координаты обновлены:\n" + $"Широта: {location.Latitude}\n" + $"Долгота: {location.Longitude}",
+                                             cancellationToken: ct);
+            }
+            else
+            {
+                await _botClient.SendMessage(chatId: chatId, text: "❌ Не удалось обновить координаты. Повторите попытку позже.", cancellationToken: ct);
+            }
         }
     }
 

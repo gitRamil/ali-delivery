@@ -3,7 +3,7 @@ using Refit;
 
 namespace Ali.Delivery.Location.Infrastructure.ExternalServices;
 
-public interface IFileService
+public interface IFileServiceForOrder
 {
     [Post("/api/v1/user/login")]
         Task<string> LoginAsync([Body] LoginRequest loginRequest);

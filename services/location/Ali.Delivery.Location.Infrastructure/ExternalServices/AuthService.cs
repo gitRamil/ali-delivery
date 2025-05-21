@@ -4,16 +4,16 @@ namespace Ali.Delivery.Location.Infrastructure.ExternalServices;
 
 public class AuthService
 {
-    private readonly IFileService _fileService;
+    private readonly IFileServiceForOrder _fileServiceForOrder;
 
-    public AuthService(IFileService fileService)
+    public AuthService(IFileServiceForOrder fileServiceForOrder)
     {
-        _fileService = fileService;
+        _fileServiceForOrder = fileServiceForOrder;
     }
 
     public async Task<string?> AuthenticateUserAsync(string login, string password)
     {
-        var token = await _fileService.LoginAsync(new LoginRequest { Login = login, Password = password });
+        var token = await _fileServiceForOrder.LoginAsync(new LoginRequest { Login = login, Password = password });
 
         if (string.IsNullOrEmpty(token))
         {
@@ -22,7 +22,7 @@ public class AuthService
             
         }
 
-        var userInfo = await _fileService.GetCurrentUserAsync("Bearer " + token);
+        var userInfo = await _fileServiceForOrder.GetCurrentUserAsync("Bearer " + token);
 
         return userInfo.Login;
     }

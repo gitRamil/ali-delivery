@@ -17,7 +17,8 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
     var configuration = builder.Configuration;
-    var userDbUrl = "http://localhost:5091/";
+    var orderServiceDbUrl = "http://localhost:5091/";
+    var locationServiceDbUrl = "http://localhost:5287/";
 
     builder.Services.AddEndpointsApiExplorer();
     builder.Configuration.AddEnvironmentVariables("AliDeliveryLocationService_");
@@ -46,8 +47,10 @@ try
             .EnableSensitiveDataLogging()
             .LogTo(Console.WriteLine, LogLevel.Information));
     builder.Services.AddHostedService<BotBackgroundService>();
-    builder.Services.AddRefitClient<IFileService>()
-        .ConfigureHttpClient(c => c.BaseAddress = new Uri(userDbUrl));
+    builder.Services.AddRefitClient<IFileServiceForOrder>()
+        .ConfigureHttpClient(c => c.BaseAddress = new Uri(orderServiceDbUrl));
+    builder.Services.AddRefitClient<IFileServiceForLocation>()
+           .ConfigureHttpClient(c => c.BaseAddress = new Uri(locationServiceDbUrl));
     builder.Services.AddSingleton<AuthService>();
 
     var app = builder.Build();

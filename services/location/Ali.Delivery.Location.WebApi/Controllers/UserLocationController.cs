@@ -25,7 +25,7 @@ public class UserLocationController : ControllerBase
     public UserLocationController(IMediator mediator) => _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
     /// <summary>
-    /// Создает локацию пользователя..
+    /// Создает локацию пользователя.
     /// </summary>
     /// <param name="userLogin">Логин пользователя.</param>
     /// <param name="s">Координаты S.</param>
