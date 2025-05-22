@@ -15,7 +15,7 @@ public interface IAppDbContext
     /// Незарегистрированные пользователи.
     /// </value>
     DbSet<UserLocation> UserLocations { get; }
-    
+
     /// <summary>
     /// Сохраняет изменения.
     /// </summary>

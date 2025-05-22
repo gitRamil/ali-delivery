@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ali.Delivery.Location.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250521115122_Ini1t")]
-    partial class Ini1t
+    [Migration("20250522111705_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,6 +75,10 @@ namespace Ali.Delivery.Location.Infrastructure.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_user_locations");
+
+                    b.HasIndex("TelegramLogin")
+                        .IsUnique()
+                        .HasDatabaseName("ix_user_locations_telegram_login");
 
                     b.ToTable("userLocations", null, t =>
                         {

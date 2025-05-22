@@ -5,9 +5,9 @@ namespace Ali.Delivery.Location.Infrastructure.Services.MyConfiguration;
 
 public class MyConfigurationService(IConfiguration configuration) : IMyConfigurationService
 {
-    public string GetConnectionString() => configuration.GetSection("ConnectionStrings")["AppDbContext"] ?? throw new JsonException("AppDbContext");
-
-    public string GetDatabaseConnectionString() => configuration.GetSection("ConnectionStrings")["OrderBaseConnection"]  ?? throw new JsonException("OrderBaseConnection");
-
-    public string GetTgToken() => configuration.GetSection("ConnectionStrings")["TelegramToken"] ?? throw new JsonException("TelegramToken");
+    public string GetTgToken()
+    {
+        return configuration.GetSection("ConnectionStrings")["TelegramToken"] ??
+               throw new JsonException("TelegramToken");
+    }
 }

@@ -9,7 +9,8 @@ namespace Ali.Delivery.Location.Application.Behaviors;
 /// </summary>
 /// <typeparam name="TRequest">Тип запроса.</typeparam>
 /// <typeparam name="TResponse">Тип ответа.</typeparam>
-public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IBaseRequest
+public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IBaseRequest
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 
@@ -20,34 +21,34 @@ public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TReque
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="validators" /> равен <c>null</c>.
     /// </exception>
-    public ValidationBehaviour(IEnumerable<IValidator<TRequest>> validators) => _validators = validators ?? throw new ArgumentNullException(nameof(validators));
+    public ValidationBehaviour(IEnumerable<IValidator<TRequest>> validators)
+    {
+        _validators = validators ?? throw new ArgumentNullException(nameof(validators));
+    }
 
     /// <inheritdoc />
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
     {
         if (!_validators.Any())
-        {
             return await next()
-                       .ConfigureAwait(false);
-        }
+                .ConfigureAwait(false);
 
         var context = new ValidationContext<TRequest>(request);
 
         var validationResults = await Task.WhenAll(_validators.Select(v => v.ValidateAsync(context, cancellationToken)))
-                                          .ConfigureAwait(false);
+            .ConfigureAwait(false);
 
         var failures = validationResults.Where(r => r.Errors.Any())
-                                        .SelectMany(r => r.Errors)
-                                        .ToList();
+            .SelectMany(r => r.Errors)
+            .ToList();
 
         if (failures.Count == 0)
-        {
             return await next()
-                       .ConfigureAwait(false);
-        }
+                .ConfigureAwait(false);
 
         var errors = failures.GroupBy(e => e.PropertyName, e => e.ErrorMessage)
-                             .ToDictionary(failureGroup => failureGroup.Key, failureGroup => failureGroup.ToArray());
+            .ToDictionary(failureGroup => failureGroup.Key, failureGroup => failureGroup.ToArray());
         throw new ValidationException(errors);
     }
 }

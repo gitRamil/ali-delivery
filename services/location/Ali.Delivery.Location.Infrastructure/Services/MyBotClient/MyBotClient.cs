@@ -23,7 +23,10 @@ public class MyBotClient : IMyBotClient
         _authService = authService;
     }
 
-    public void RunBot() => _botClient.StartReceiving(HandleUpdateAsync, HandleErrorAsync);
+    public void RunBot()
+    {
+        _botClient.StartReceiving(HandleUpdateAsync, HandleErrorAsync);
+    }
 
     private async Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken ct)
     {
@@ -38,7 +41,6 @@ public class MyBotClient : IMyBotClient
             }
 
             if (update.Message?.Text is { } messageText)
-            {
                 switch (messageText.Split(' ')[0])
                 {
                     case "/start":
@@ -53,7 +55,6 @@ public class MyBotClient : IMyBotClient
                         await HandleOtherMessagesAsync(chatId, update.Message, ct);
                         break;
                 }
-            }
         }
         catch (Exception ex)
         {
@@ -66,11 +67,11 @@ public class MyBotClient : IMyBotClient
         _userStates[chatId] = UserState.WaitingForCommand;
 
         await _botClient.SendMessage(
-            chatId: chatId,
-            text: "🚀 Добро пожаловать! Я готов к работе.\n" +
-                  "Используйте команды:\n" +
-                  "/login - авторизация\n" +
-                  "/help - справка",
+            chatId,
+            "🚀 Добро пожаловать! Я готов к работе.\n" +
+            "Используйте команды:\n" +
+            "/login - авторизация\n" +
+            "/help - справка",
             cancellationToken: ct);
     }
 
@@ -79,23 +80,17 @@ public class MyBotClient : IMyBotClient
         _userStates[chatId] = UserState.WaitingForUsername;
 
         await _botClient.SendMessage(
-            chatId: chatId,
-            text: "🔑 Введите ваш логин для авторизации:",
+            chatId,
+            "🔑 Введите ваш логин для авторизации:",
             cancellationToken: ct);
     }
 
     private async Task HandleOtherMessagesAsync(long chatId, Message message, CancellationToken ct)
     {
-        if (!_userStates.TryGetValue(chatId, out var state))
-        {
-            return;
-        }
+        if (!_userStates.TryGetValue(chatId, out var state)) return;
 
         var text = message.Text?.Trim();
-        if (string.IsNullOrEmpty(text))
-        {
-            return;
-        }
+        if (string.IsNullOrEmpty(text)) return;
 
         switch (state)
         {
@@ -104,8 +99,8 @@ public class MyBotClient : IMyBotClient
                 _userStates[chatId] = UserState.WaitingForPassword;
 
                 await _botClient.SendMessage(
-                    chatId: chatId,
-                    text: "🔒 Теперь введите ваш пароль:",
+                    chatId,
+                    "🔒 Теперь введите ваш пароль:",
                     cancellationToken: ct);
                 break;
 
@@ -120,8 +115,8 @@ public class MyBotClient : IMyBotClient
                     _userStates[chatId] = UserState.Authorized;
 
                     await _botClient.SendMessage(
-                        chatId: chatId,
-                        text: $"✅ Авторизация успешна, {login}!\nТеперь вы можете делиться своей геопозицией",
+                        chatId,
+                        $"✅ Авторизация успешна, {login}!\nТеперь вы можете делиться своей геопозицией",
                         cancellationToken: ct);
                 }
                 else
@@ -130,23 +125,24 @@ public class MyBotClient : IMyBotClient
                     _userLogins.Remove(chatId);
 
                     await _botClient.SendMessage(
-                        chatId: chatId,
-                        text: "❌ Неверный логин или пароль. Попробуйте снова: /login",
+                        chatId,
+                        "❌ Неверный логин или пароль. Попробуйте снова: /login",
                         cancellationToken: ct);
                 }
+
                 break;
 
             case UserState.Authorized:
                 await _botClient.SendMessage(
-                    chatId: chatId,
-                    text: "Вы уже авторизованы. Отправьте свою локацию или используйте команды.",
+                    chatId,
+                    "Вы уже авторизованы. Отправьте свою локацию или используйте команды.",
                     cancellationToken: ct);
                 break;
 
             default:
                 await _botClient.SendMessage(
-                    chatId: chatId,
-                    text: "⚠️ Неизвестная команда\nИспользуйте /help для списка команд",
+                    chatId,
+                    "⚠️ Неизвестная команда\nИспользуйте /help для списка команд",
                     cancellationToken: ct);
                 break;
         }
@@ -156,26 +152,24 @@ public class MyBotClient : IMyBotClient
     {
         if (!_userStates.TryGetValue(chatId, out var state) || state != UserState.Authorized)
         {
-            await _botClient.SendMessage(chatId: chatId, text: "🔒 Требуется авторизация!\nИспользуйте /login", cancellationToken: ct);
+            await _botClient.SendMessage(chatId, "🔒 Требуется авторизация!\nИспользуйте /login",
+                cancellationToken: ct);
             return;
         }
 
         if (_userLogins.TryGetValue(chatId, out var login))
         {
             var success = await _dbService.UpsertUserLocation(login,
-                                                              location.Latitude.ToString(CultureInfo.InvariantCulture),
-                                                              location.Longitude.ToString(CultureInfo.InvariantCulture));
+                location.Latitude.ToString(CultureInfo.InvariantCulture),
+                location.Longitude.ToString(CultureInfo.InvariantCulture));
 
             if (success)
-            {
-                await _botClient.SendMessage(chatId: chatId,
-                                             text: $"📍 Координаты обновлены:\n" + $"Широта: {location.Latitude}\n" + $"Долгота: {location.Longitude}",
-                                             cancellationToken: ct);
-            }
+                await _botClient.SendMessage(chatId,
+                    $"📍 Координаты обновлены:\n" + $"Широта: {location.Latitude}\n" + $"Долгота: {location.Longitude}",
+                    cancellationToken: ct);
             else
-            {
-                await _botClient.SendMessage(chatId: chatId, text: "❌ Не удалось обновить координаты. Повторите попытку позже.", cancellationToken: ct);
-            }
+                await _botClient.SendMessage(chatId, "❌ Не удалось обновить координаты. Повторите попытку позже.",
+                    cancellationToken: ct);
         }
     }
 

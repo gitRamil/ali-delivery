@@ -1,41 +1,38 @@
 using System.Net;
 using Ali.Delivery.Location.Infrastructure.ExternalServices;
-using Ali.Delivery.Location.Infrastructure.ExternalServices.Models;
 using Refit;
 
 namespace Ali.Delivery.Location.Infrastructure.Services.WriteToDataBased;
 
 public class WriteToDatabase(IFileServiceForLocation serviceForLocation) : IWriteToDatabase
 {
-    public async Task<bool> UpsertUserLocation(string telegramLogin, string? e = null, string? s = null)
+    public async Task<bool> UpsertUserLocation(string userLogin, string? e = null, string? s = null)
     {
         try
         {
-            var dto = new LocationDto
-            {
-                TelegramLogin = telegramLogin,
-                E = e ?? "",
-                S = s ?? ""
-            };
+            var updateResponse = await serviceForLocation.UpdateUserLocationAsync(
+                userLogin,
+                e ?? "",
+                s ?? ""
+            );
 
-            // Сначала пытаемся обновить
-            var updateResponse = await serviceForLocation.UpdateUserLocationAsync(dto);
-
-            // Если пользователя нет (получили 404) — создаём
             if (updateResponse.StatusCode == HttpStatusCode.NotFound)
             {
-                var createResponse = await serviceForLocation.CreateUserLocationAsync(dto);
+                var createResponse = await serviceForLocation.CreateUserLocationAsync(
+                    userLogin,
+                    e ?? "",
+                    s ?? ""
+                );
                 return createResponse.IsSuccessStatusCode;
             }
 
-            // Если ошибка не 404 — возвращаем false
             if (!updateResponse.IsSuccessStatusCode)
             {
                 Console.WriteLine($"Update failed: {updateResponse.StatusCode}");
                 return false;
             }
 
-            return true; // Обновление прошло успешно
+            return true;
         }
         catch (ApiException ex)
         {
@@ -44,4 +41,3 @@ public class WriteToDatabase(IFileServiceForLocation serviceForLocation) : IWrit
         }
     }
 }
-

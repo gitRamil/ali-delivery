@@ -22,7 +22,10 @@ public class UserLocationController : ControllerBase
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="mediator" /> равен <c>null</c>.
     /// </exception>
-    public UserLocationController(IMediator mediator) => _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+    public UserLocationController(IMediator mediator)
+    {
+        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+    }
 
     /// <summary>
     /// Создает локацию пользователя.
@@ -35,12 +38,13 @@ public class UserLocationController : ControllerBase
     [HttpPost("create-location")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> CreateUserLocation(string userLogin, string e, string s, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateUserLocation(string userLogin, string e, string s,
+        CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new CreateUserLocationCommand(userLogin, e, s), cancellationToken);
         return Ok(result);
     }
-    
+
     /// <summary>
     /// Обновляет локацию пользователя.
     /// </summary>
@@ -52,7 +56,8 @@ public class UserLocationController : ControllerBase
     [HttpPut("update-location")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateUserLocation(string userLogin, string e, string s, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateUserLocation(string userLogin, string e, string s,
+        CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new UpdateUserLocationCommand(userLogin, e, s), cancellationToken);
         return Ok(result);

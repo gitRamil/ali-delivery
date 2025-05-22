@@ -45,15 +45,9 @@ public sealed class NotFoundException : Exception
     /// </exception>
     public NotFoundException(Type type, object key)
     {
-        if (type == null)
-        {
-            throw new ArgumentNullException(nameof(type));
-        }
+        if (type == null) throw new ArgumentNullException(nameof(type));
 
-        if (key == null)
-        {
-            throw new ArgumentNullException(nameof(key));
-        }
+        if (key == null) throw new ArgumentNullException(nameof(key));
 
         Details = $"Сущность {type.FullName} с ключем {key} не найдена.";
     }
@@ -102,8 +96,10 @@ public sealed class NotFoundException : Exception
     /// <param name="context">Контекст.</param>
     [Obsolete("Obsolete")]
     private NotFoundException(SerializationInfo info, StreamingContext context)
-        : base(info, context) =>
+        : base(info, context)
+    {
         Details = info.GetString(nameof(Details));
+    }
 
     /// <summary>
     /// Возвращает сведения об ошибке, содержащие тип сущности и ее ключ.
@@ -126,9 +122,10 @@ public sealed class NotFoundException : Exception
     /// The <paramref name="info" /> parameter is a null reference (
     /// <see langword="Nothing" /> in Visual Basic).
     /// </exception>
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.",
-              DiagnosticId = "SYSLIB0051",
-              UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
+    [Obsolete(
+        "This API supports obsolete formatter-based serialization. It should not be called or extended by application code.",
+        DiagnosticId = "SYSLIB0051",
+        UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
     public override void GetObjectData(SerializationInfo info, StreamingContext context)
     {
         base.GetObjectData(info, context);

@@ -24,23 +24,17 @@ public class AppDbContext : DbContext, IAppDbContext
         : base(options)
     {
         _dateTimeService = dateTimeService ?? throw new ArgumentNullException(nameof(dateTimeService));
-        
     }
+
     public DbSet<UserLocation> UserLocations { get; set; }
+
     /// <inheritdoc cref="DbContext" />
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         foreach (var entry in ChangeTracker.Entries<Entity<SequentialGuid>>())
-        {
             if (entry.State == EntityState.Added)
-            {
                 MarkCreated(entry);
-            }
-            else if (entry.State == EntityState.Modified)
-            {
-                MarkUpdated(entry);
-            }
-        }
+            else if (entry.State == EntityState.Modified) MarkUpdated(entry);
 
         return await base.SaveChangesAsync(cancellationToken);
     }
@@ -49,6 +43,7 @@ public class AppDbContext : DbContext, IAppDbContext
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
     }
+
     private void MarkCreated(EntityEntry entry)
     {
         var now = _dateTimeService.GetCurrentDateTime();
@@ -69,7 +64,9 @@ public class AppDbContext : DbContext, IAppDbContext
         //SetEntryProperty(entry, EntityBasePropertyNames.UpdatedBy, userId);
     }
 
-    private static void SetEntryProperty(EntityEntry entry, string propertyName, object? value) =>
+    private static void SetEntryProperty(EntityEntry entry, string propertyName, object? value)
+    {
         entry.Property(propertyName)
             .CurrentValue = value;
+    }
 }

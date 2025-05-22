@@ -9,4 +9,3 @@ namespace Ali.Delivery.Location.Application.UseCases.CreateUserLocation;
 /// <param name="E">Координаты E.</param>
 /// <param name="S">Координаты S</param>
 public record CreateUserLocationCommand(string UserLogin, string E, string S) : IRequest<string>;
-

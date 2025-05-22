@@ -1,8 +1,8 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Ali.Delivery.Location.Domain.Services;
 using Ali.Delivery.Location.Infrastructure;
 using Ali.Delivery.Location.Infrastructure.ExternalServices;
+using Ali.Delivery.Location.Infrastructure.Services;
 using Ali.Delivery.Location.Infrastructure.Services.MyBotClient;
 using Ali.Delivery.Location.Infrastructure.Services.MyConfiguration;
 using Ali.Delivery.Location.Infrastructure.Services.WriteToDataBased;
@@ -50,7 +50,7 @@ try
     builder.Services.AddRefitClient<IFileServiceForOrder>()
         .ConfigureHttpClient(c => c.BaseAddress = new Uri(orderServiceDbUrl));
     builder.Services.AddRefitClient<IFileServiceForLocation>()
-           .ConfigureHttpClient(c => c.BaseAddress = new Uri(locationServiceDbUrl));
+        .ConfigureHttpClient(c => c.BaseAddress = new Uri(locationServiceDbUrl));
     builder.Services.AddSingleton<AuthService>();
 
     var app = builder.Build();
@@ -79,4 +79,3 @@ finally
 {
     Log.CloseAndFlush();
 }
-
