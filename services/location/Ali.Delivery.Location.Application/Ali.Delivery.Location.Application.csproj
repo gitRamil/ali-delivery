@@ -10,14 +10,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Ali.Delivery.Location.Domain\Ali.Delivery.Location.Domain.csproj" />
+        <ProjectReference Include="..\Ali.Delivery.Location.Domain\Ali.Delivery.Location.Domain.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="FluentAssertions" Version="8.2.0" />
-      <PackageReference Include="FluentValidation" Version="12.0.0" />
-      <PackageReference Include="MediatR" Version="12.5.0" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2" />
+        <PackageReference Include="FluentAssertions" Version="8.2.0"/>
+        <PackageReference Include="FluentValidation" Version="12.0.0"/>
+        <PackageReference Include="MediatR" Version="12.5.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2"/>
     </ItemGroup>
 
 </Project>

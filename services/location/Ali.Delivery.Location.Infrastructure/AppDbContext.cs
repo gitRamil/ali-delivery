@@ -21,23 +21,28 @@ public class AppDbContext : DbContext, IAppDbContext
     /// Возникает, если <paramref name="dateTimeService" /> равен <c>null</c>.
     /// </exception>
     public AppDbContext(DbContextOptions<AppDbContext> options, IDateTimeService dateTimeService)
-        : base(options)
-    {
+        : base(options) =>
         _dateTimeService = dateTimeService ?? throw new ArgumentNullException(nameof(dateTimeService));
-    }
-
-    public DbSet<UserLocation> UserLocations { get; set; }
 
     /// <inheritdoc cref="DbContext" />
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         foreach (var entry in ChangeTracker.Entries<Entity<SequentialGuid>>())
+        {
             if (entry.State == EntityState.Added)
+            {
                 MarkCreated(entry);
-            else if (entry.State == EntityState.Modified) MarkUpdated(entry);
+            }
+            else if (entry.State == EntityState.Modified)
+            {
+                MarkUpdated(entry);
+            }
+        }
 
         return await base.SaveChangesAsync(cancellationToken);
     }
+
+    public DbSet<UserLocation> UserLocations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -67,6 +72,6 @@ public class AppDbContext : DbContext, IAppDbContext
     private static void SetEntryProperty(EntityEntry entry, string propertyName, object? value)
     {
         entry.Property(propertyName)
-            .CurrentValue = value;
+             .CurrentValue = value;
     }
 }

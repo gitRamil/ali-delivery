@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Ali.Delivery.Location.WebApi\Ali.Delivery.Location.WebApi.csproj" />
+        <ProjectReference Include="..\Ali.Delivery.Location.WebApi\Ali.Delivery.Location.WebApi.csproj"/>
     </ItemGroup>
 
 </Project>

@@ -8,8 +8,7 @@ namespace Ali.Delivery.Location.Application.Behaviors;
 /// </summary>
 /// <typeparam name="TRequest">Тип запроса.</typeparam>
 /// <typeparam name="TResponse">Тип ответа.</typeparam>
-public class RequestValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IBaseRequest
+public class RequestValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IBaseRequest
 {
     private readonly IValidationService _validationService;
 
@@ -20,14 +19,10 @@ public class RequestValidationBehaviour<TRequest, TResponse> : IPipelineBehavior
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="validationService" /> равен <c>null</c>.
     /// </exception>
-    public RequestValidationBehaviour(IValidationService validationService)
-    {
-        _validationService = validationService ?? throw new ArgumentNullException(nameof(validationService));
-    }
+    public RequestValidationBehaviour(IValidationService validationService) => _validationService = validationService ?? throw new ArgumentNullException(nameof(validationService));
 
     /// <inheritdoc />
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
-        CancellationToken cancellationToken)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         await _validationService.ValidateAsync(request, cancellationToken);
         return await next();

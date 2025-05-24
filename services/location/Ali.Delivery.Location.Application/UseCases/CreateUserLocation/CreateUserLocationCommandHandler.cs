@@ -19,10 +19,7 @@ public class CreateUserLocationCommandHandler : IRequestHandler<CreateUserLocati
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="context" /> равен <c>null</c>.
     /// </exception>
-    public CreateUserLocationCommandHandler(IAppDbContext context)
-    {
-        _context = context ?? throw new ArgumentNullException(nameof(context));
-    }
+    public CreateUserLocationCommandHandler(IAppDbContext context) => _context = context ?? throw new ArgumentNullException(nameof(context));
 
     /// <inheritdoc />
     /// <exception cref="ArgumentNullException">

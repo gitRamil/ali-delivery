@@ -7,16 +7,11 @@ public class BotBackgroundService : BackgroundService
 {
     private readonly IMyBotClient _botClient;
 
-    public BotBackgroundService(IMyBotClient botClient)
-    {
-        _botClient = botClient;
-    }
+    public BotBackgroundService(IMyBotClient botClient) => _botClient = botClient;
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-#pragma warning disable CS0618
-        _botClient.RunBot();
-#pragma warning restore CS0618
+        await _botClient.RunBot(cancellationToken);
         Console.WriteLine("BotStarted");
     }
 }

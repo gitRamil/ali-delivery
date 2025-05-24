@@ -17,20 +17,16 @@ public class UserLocation : Entity<SequentialGuid>
     /// Возникает, если <paramref name="telegramLogin" /> равен <c>null</c>.
     /// </exception>
     public UserLocation(SequentialGuid id, string telegramLogin)
-        : base(id)
-    {
+        : base(id) =>
         TelegramLogin = telegramLogin ?? throw new ArgumentNullException(nameof(telegramLogin));
-    }
 
     /// <summary>
     /// Инициализирует новый экземпляр типа <see cref="UserLocation" /> для использования ORM.
     /// </summary>
     /// <remarks>Конструктор без параметров необходим для Entity Framework.</remarks>
     protected UserLocation()
-        : base(SequentialGuid.Empty)
-    {
+        : base(SequentialGuid.Empty) =>
         TelegramLogin = null!;
-    }
 
     /// <summary>
     /// Возвращает координаты пользователя.

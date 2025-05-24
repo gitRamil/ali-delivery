@@ -9,12 +9,19 @@ namespace Ali.Delivery.Location.Infrastructure.Services.MyBotClient;
 
 public class MyBotClient : IMyBotClient
 {
+    private const string AlreadyAuthorized = "Вы уже авторизованы. Отправьте свою локацию или используйте команды.";
+    private const string AuthorizationIsRequired = "🔒 Требуется авторизация!\nИспользуйте /login";
+    private const string AuthorizationMessage = "🔑 Введите ваш логин для авторизации:";
+    private const string CannotUpdateLocation = "❌ Не удалось обновить координаты. Повторите попытку позже.";
+    private const string PasswordMessage = "🔒 Теперь введите ваш пароль:";
+    private const string UnsupportedCommand = "⚠️ Неизвестная команда\nИспользуйте /help для списка команд";
+    private const string WelcomeMessage = "🚀 Добро пожаловать! Я готов к работе.\n Используйте команды:\n login - авторизация\n help - справка";
+    private const string WrongPasswordMessage = "❌ Неверный логин или пароль. Попробуйте снова: /login";
+    private readonly AuthService _authService;
     private readonly ITelegramBotClient _botClient;
     private readonly IWriteToDatabase _dbService;
-    private readonly AuthService _authService;
-
-    private readonly Dictionary<long, UserState> _userStates = new();
     private readonly Dictionary<long, string> _userLogins = new();
+    private readonly Dictionary<long, UserState> _userStates = new();
 
     public MyBotClient(IMyConfigurationService config, IWriteToDatabase dbService, AuthService authService)
     {
@@ -23,74 +30,58 @@ public class MyBotClient : IMyBotClient
         _authService = authService;
     }
 
-    public void RunBot()
+    public async Task RunBot(CancellationToken cancellationToken)
     {
-        _botClient.StartReceiving(HandleUpdateAsync, HandleErrorAsync);
+        _botClient.StartReceiving(HandleUpdateAsync, HandleErrorAsync, cancellationToken: cancellationToken);
+        await Task.CompletedTask;
     }
 
-    private async Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken ct)
+    private static Task HandleErrorAsync(ITelegramBotClient _, Exception ex, CancellationToken __)
     {
-        var chatId = update.Message?.Chat.Id ?? 0;
+        Console.WriteLine($"Bot error: {ex.Message}");
+        return Task.CompletedTask;
+    }
 
-        try
+    private async Task HandleLocationAsync(long chatId, Telegram.Bot.Types.Location location, CancellationToken cancellationToken)
+    {
+        if (!_userStates.TryGetValue(chatId, out var state) || state != UserState.Authorized)
         {
-            if (update.Message?.Location != null)
+            await _botClient.SendMessage(chatId, AuthorizationIsRequired, cancellationToken: cancellationToken);
+            return;
+        }
+
+        if (_userLogins.TryGetValue(chatId, out var login))
+        {
+            var success = await _dbService.UpsertUserLocation(login,
+                                                              location.Latitude.ToString(CultureInfo.InvariantCulture),
+                                                              location.Longitude.ToString(CultureInfo.InvariantCulture));
+
+            if (success)
             {
-                await HandleLocationAsync(chatId, update.Message.Location, ct);
-                return;
+                await _botClient.SendMessage(chatId,
+                                             $"📍 Координаты обновлены:\n" + $"Широта: {location.Latitude}\n" + $"Долгота: {location.Longitude}",
+                                             cancellationToken: cancellationToken);
             }
-
-            if (update.Message?.Text is { } messageText)
-                switch (messageText.Split(' ')[0])
-                {
-                    case "/start":
-                        await HandleStartCommandAsync(chatId, ct);
-                        break;
-
-                    case "/login":
-                        await HandleLoginCommandAsync(chatId, ct);
-                        break;
-
-                    default:
-                        await HandleOtherMessagesAsync(chatId, update.Message, ct);
-                        break;
-                }
+            else
+            {
+                await _botClient.SendMessage(chatId, CannotUpdateLocation, cancellationToken: cancellationToken);
+            }
         }
-        catch (Exception ex)
+    }
+
+    private async Task HandleOtherMessagesAsync(long chatId, Message message, CancellationToken cancellationToken)
+    {
+        if (!_userStates.TryGetValue(chatId, out var state))
         {
-            Console.WriteLine($"Update error: {ex.Message}");
+            return;
         }
-    }
-
-    private async Task HandleStartCommandAsync(long chatId, CancellationToken ct)
-    {
-        _userStates[chatId] = UserState.WaitingForCommand;
-
-        await _botClient.SendMessage(
-            chatId,
-            "🚀 Добро пожаловать! Я готов к работе.\n" +
-            "Используйте команды:\n" +
-            "/login - авторизация\n" +
-            "/help - справка",
-            cancellationToken: ct);
-    }
-
-    private async Task HandleLoginCommandAsync(long chatId, CancellationToken ct)
-    {
-        _userStates[chatId] = UserState.WaitingForUsername;
-
-        await _botClient.SendMessage(
-            chatId,
-            "🔑 Введите ваш логин для авторизации:",
-            cancellationToken: ct);
-    }
-
-    private async Task HandleOtherMessagesAsync(long chatId, Message message, CancellationToken ct)
-    {
-        if (!_userStates.TryGetValue(chatId, out var state)) return;
 
         var text = message.Text?.Trim();
-        if (string.IsNullOrEmpty(text)) return;
+
+        if (string.IsNullOrEmpty(text))
+        {
+            return;
+        }
 
         switch (state)
         {
@@ -98,10 +89,7 @@ public class MyBotClient : IMyBotClient
                 _userLogins[chatId] = text;
                 _userStates[chatId] = UserState.WaitingForPassword;
 
-                await _botClient.SendMessage(
-                    chatId,
-                    "🔒 Теперь введите ваш пароль:",
-                    cancellationToken: ct);
+                await SentTelegramMessage(chatId, PasswordMessage, cancellationToken);
                 break;
 
             case UserState.WaitingForPassword:
@@ -114,69 +102,69 @@ public class MyBotClient : IMyBotClient
                 {
                     _userStates[chatId] = UserState.Authorized;
 
-                    await _botClient.SendMessage(
-                        chatId,
-                        $"✅ Авторизация успешна, {login}!\nТеперь вы можете делиться своей геопозицией",
-                        cancellationToken: ct);
+                    await SentTelegramMessage(chatId, $"✅ Авторизация успешна, {login}!\nТеперь вы можете делиться своей геопозицией", cancellationToken);
                 }
                 else
                 {
                     _userStates.Remove(chatId);
                     _userLogins.Remove(chatId);
 
-                    await _botClient.SendMessage(
-                        chatId,
-                        "❌ Неверный логин или пароль. Попробуйте снова: /login",
-                        cancellationToken: ct);
+                    await SentTelegramMessage(chatId, WrongPasswordMessage, cancellationToken);
                 }
 
                 break;
 
             case UserState.Authorized:
-                await _botClient.SendMessage(
-                    chatId,
-                    "Вы уже авторизованы. Отправьте свою локацию или используйте команды.",
-                    cancellationToken: ct);
+                await _botClient.SendMessage(chatId, AlreadyAuthorized, cancellationToken: cancellationToken);
                 break;
 
             default:
-                await _botClient.SendMessage(
-                    chatId,
-                    "⚠️ Неизвестная команда\nИспользуйте /help для списка команд",
-                    cancellationToken: ct);
+                await _botClient.SendMessage(chatId, UnsupportedCommand, cancellationToken: cancellationToken);
                 break;
         }
     }
 
-    private async Task HandleLocationAsync(long chatId, Telegram.Bot.Types.Location location, CancellationToken ct)
+    private async Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken cancellationToken)
     {
-        if (!_userStates.TryGetValue(chatId, out var state) || state != UserState.Authorized)
+        var chatId = update.Message?.Chat.Id ?? 0;
+
+        try
         {
-            await _botClient.SendMessage(chatId, "🔒 Требуется авторизация!\nИспользуйте /login",
-                cancellationToken: ct);
-            return;
+            if (update.Message?.Location != null)
+            {
+                await HandleLocationAsync(chatId, update.Message.Location, cancellationToken);
+                return;
+            }
+
+            if (update.Message?.Text is { } messageText)
+            {
+                switch (messageText.Split(' ')[0])
+                {
+                    case "/start":
+                        await SentTelegramMessage(chatId, WelcomeMessage, cancellationToken);
+                        break;
+
+                    case "/login":
+                        await SentTelegramMessage(chatId, AuthorizationMessage, cancellationToken);
+                        break;
+
+                    default:
+                        await HandleOtherMessagesAsync(chatId, update.Message, cancellationToken);
+                        break;
+                }
+            }
         }
-
-        if (_userLogins.TryGetValue(chatId, out var login))
+        catch (Exception ex)
         {
-            var success = await _dbService.UpsertUserLocation(login,
-                location.Latitude.ToString(CultureInfo.InvariantCulture),
-                location.Longitude.ToString(CultureInfo.InvariantCulture));
-
-            if (success)
-                await _botClient.SendMessage(chatId,
-                    $"📍 Координаты обновлены:\n" + $"Широта: {location.Latitude}\n" + $"Долгота: {location.Longitude}",
-                    cancellationToken: ct);
-            else
-                await _botClient.SendMessage(chatId, "❌ Не удалось обновить координаты. Повторите попытку позже.",
-                    cancellationToken: ct);
+            Console.WriteLine($"Update error: {ex.Message}");
         }
     }
 
-    private Task HandleErrorAsync(ITelegramBotClient _, Exception ex, CancellationToken __)
+    private async Task SentTelegramMessage(long chatId, string message, CancellationToken cancellationToken)
     {
-        Console.WriteLine($"Bot error: {ex.Message}");
-        return Task.CompletedTask;
+        _userStates[chatId] = UserState.WaitingForCommand;
+
+        await _botClient.SendMessage(chatId, message, cancellationToken: cancellationToken);
     }
 
     private enum UserState

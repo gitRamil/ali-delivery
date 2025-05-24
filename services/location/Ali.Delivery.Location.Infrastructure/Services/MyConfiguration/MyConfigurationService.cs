@@ -5,9 +5,5 @@ namespace Ali.Delivery.Location.Infrastructure.Services.MyConfiguration;
 
 public class MyConfigurationService(IConfiguration configuration) : IMyConfigurationService
 {
-    public string GetTgToken()
-    {
-        return configuration.GetSection("ConnectionStrings")["TelegramToken"] ??
-               throw new JsonException("TelegramToken");
-    }
+    public string GetTgToken() => configuration.GetSection("TelegramSettings")["TelegramToken"] ?? throw new JsonException("TelegramToken");
 }

@@ -20,10 +20,7 @@ public class UpdateUserLocationCommandHandler : IRequestHandler<UpdateUserLocati
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="context" /> равен <c>null</c>.
     /// </exception>
-    public UpdateUserLocationCommandHandler(IAppDbContext context)
-    {
-        _context = context ?? throw new ArgumentNullException(nameof(context));
-    }
+    public UpdateUserLocationCommandHandler(IAppDbContext context) => _context = context ?? throw new ArgumentNullException(nameof(context));
 
     /// <inheritdoc />
     /// <exception cref="ArgumentNullException">
@@ -33,10 +30,8 @@ public class UpdateUserLocationCommandHandler : IRequestHandler<UpdateUserLocati
     {
         ArgumentNullException.ThrowIfNull(command);
 
-        var userLocation =
-            await _context.UserLocations.FirstOrDefaultAsync(u => u.TelegramLogin == command.UserLogin,
-                cancellationToken) ??
-            throw new NotFoundException(typeof(UserLocation), command.UserLogin);
+        var userLocation = await _context.UserLocations.FirstOrDefaultAsync(u => u.TelegramLogin == command.UserLogin, cancellationToken) ??
+                           throw new NotFoundException(typeof(UserLocation), command.UserLogin);
 
         userLocation.UpdateCoordinates(command.E, command.S);
         await _context.SaveChangesAsync(cancellationToken);

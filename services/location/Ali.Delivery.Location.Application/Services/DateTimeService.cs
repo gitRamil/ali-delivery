@@ -8,14 +8,8 @@ namespace Ali.Delivery.Location.Application.Services;
 public class DateTimeService : IDateTimeService
 {
     /// <inheritdoc />
-    public DateOnly GetCurrentDate()
-    {
-        return DateOnly.FromDateTime(DateTime.UtcNow);
-    }
+    public DateOnly GetCurrentDate() => DateOnly.FromDateTime(DateTime.UtcNow);
 
     /// <inheritdoc />
-    public DateTimeOffset GetCurrentDateTime()
-    {
-        return DateTimeOffset.UtcNow;
-    }
+    public DateTimeOffset GetCurrentDateTime() => DateTimeOffset.UtcNow;
 }

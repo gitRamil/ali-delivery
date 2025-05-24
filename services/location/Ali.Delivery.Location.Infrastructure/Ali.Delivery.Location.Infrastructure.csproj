@@ -7,22 +7,22 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Ali.Delivery.Location.Application\Ali.Delivery.Location.Application.csproj" />
-      <ProjectReference Include="..\Ali.Delivery.Location.Domain\Ali.Delivery.Location.Domain.csproj" />
+        <ProjectReference Include="..\Ali.Delivery.Location.Application\Ali.Delivery.Location.Application.csproj"/>
+        <ProjectReference Include="..\Ali.Delivery.Location.Domain\Ali.Delivery.Location.Domain.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.2" />
-      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
-      <PackageReference Include="Refit" Version="8.0.0" />
-      <PackageReference Include="Refit.HttpClientFactory" Version="8.0.0" />
-      <PackageReference Include="Telegram.Bot" Version="22.5.2-dev.3" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.2"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4"/>
+        <PackageReference Include="Refit" Version="8.0.0"/>
+        <PackageReference Include="Refit.HttpClientFactory" Version="8.0.0"/>
+        <PackageReference Include="Telegram.Bot" Version="22.5.2-dev.3"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Migrations\" />
+        <Folder Include="Migrations\"/>
     </ItemGroup>
 
 </Project>

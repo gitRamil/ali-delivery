@@ -15,19 +15,19 @@ internal class UserLocationConfiguration : EntityTypeConfigurationBase<UserLocat
        /// </summary>
        /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
        protected override void OnConfigure(EntityTypeBuilder<UserLocation> builder)
-       {
-              builder.ToTable("userLocations", t => t.HasComment("Локации пользователя"));
+    {
+        builder.ToTable("userLocations", t => t.HasComment("Локации пользователя"));
 
-              builder.Property(p => p.S)
-                     .HasComment("Координаты S");
+        builder.Property(p => p.S)
+               .HasComment("Координаты S");
 
-              builder.Property(p => p.E)
-                     .HasComment("Координаты E");
+        builder.Property(p => p.E)
+               .HasComment("Координаты E");
 
-              builder.Property(p => p.TelegramLogin)
-                     .HasComment("Ник телеграм");
-              
-              builder.HasIndex(u => u.TelegramLogin)
-                     .IsUnique();
-       }
+        builder.Property(p => p.TelegramLogin)
+               .HasComment("Ник телеграм");
+
+        builder.HasIndex(u => u.TelegramLogin)
+               .IsUnique();
+    }
 }
