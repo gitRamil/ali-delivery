@@ -1,6 +1,6 @@
 using Refit;
 
-namespace Ali.Delivery.Location.Infrastructure.ExternalServices;
+namespace Ali.Delivery.Location.Infrastructure.Interfaces;
 
 public interface IFileServiceForLocation
 {

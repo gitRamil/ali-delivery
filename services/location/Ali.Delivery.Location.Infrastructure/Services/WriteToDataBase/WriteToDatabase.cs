@@ -1,8 +1,8 @@
 using System.Net;
-using Ali.Delivery.Location.Infrastructure.ExternalServices;
+using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Refit;
 
-namespace Ali.Delivery.Location.Infrastructure.Services.WriteToDataBased;
+namespace Ali.Delivery.Location.Infrastructure.Services.WriteToDataBase;
 
 public class WriteToDatabase(IFileServiceForLocation serviceForLocation) : IWriteToDatabase
 {
