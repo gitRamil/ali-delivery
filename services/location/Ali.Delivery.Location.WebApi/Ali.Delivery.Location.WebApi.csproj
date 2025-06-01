@@ -10,6 +10,7 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
     <ItemGroup>
+        <PackageReference Include="DotNetEnv" Version="3.1.1" />
         <PackageReference Include="EFCore.NamingConventions" Version="9.0.0"/>
         <PackageReference Include="EntityFrameworkCore.Exceptions.PostgreSQL" Version="8.1.3"/>
         <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="6.5.1"/>
@@ -42,6 +43,12 @@
     <ItemGroup>
         <ProjectReference Include="..\Ali.Delivery.Location.Application\Ali.Delivery.Location.Application.csproj"/>
         <ProjectReference Include="..\Ali.Delivery.Location.Infrastructure\Ali.Delivery.Location.Infrastructure.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update=".env">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

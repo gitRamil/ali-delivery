@@ -27,4 +27,5 @@ public enum NotificationType
     N7_InvalidLocation
 }
 
+public record StateTransition(BotState NextState, NotificationType? Notification);
 

@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Ali.Delivery.Location.Infrastructure;
+using Ali.Delivery.Location.Infrastructure.ExternalServices.Models.Configuration;
 using Ali.Delivery.Location.Infrastructure.Handlers;
 using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Ali.Delivery.Location.Infrastructure.Services;
@@ -14,10 +15,13 @@ using Telegram.Bot;
 
 try
 {
+    DotNetEnv.Env.Load(); 
     var builder = WebApplication.CreateBuilder(args);
     var configuration = builder.Configuration;
-
+    
     builder.Services.AddEndpointsApiExplorer();
+    builder.Configuration.AddJsonFile("stateTransitions.json", optional: false, reloadOnChange: true);
+    builder.Services.Configure<StateTransitionsConfig>(builder.Configuration);
     builder.Configuration.AddEnvironmentVariables("AliDeliveryLocationService_");
     builder.AddDefaultSerilog();
     builder.Services.AddMemoryCache();
@@ -42,9 +46,17 @@ try
     builder.Services.AddSingleton<IWriteToDatabase, WriteToDatabase>();
     
     // Конфигурация Telegram бота
+    var botToken = configuration["BOT_TOKEN"];
+    Console.WriteLine($"Bot Token: {botToken}");
+    if (string.IsNullOrEmpty(botToken))
+    {
+        // Можно добавить более строгую обработку, если токен критичен
+        Log.Fatal("BOT_TOKEN is not configured!"); 
+        return 1; // Завершить приложение, если токен не найден
+    }
     builder.Services.AddSingleton<ITelegramBotClient>(_ => 
-                                                          new TelegramBotClient(configuration["BotConfiguration:Token"]!));
-
+                                                          new TelegramBotClient(botToken));
+    
     // State Machine и обработчики
     builder.Services.AddSingleton<IStateMachine, StateMachineService>();
     builder.Services.AddScoped<ICommandHandler, LoginCommandHandler>();
