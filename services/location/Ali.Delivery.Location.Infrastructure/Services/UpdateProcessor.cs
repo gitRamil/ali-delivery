@@ -1,11 +1,10 @@
 using Ali.Delivery.Location.Infrastructure.ExternalServices.Models;
 using Ali.Delivery.Location.Infrastructure.Interfaces;
-using Ali.Delivery.Location.Infrastructure.Interfaces2._0;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Telegram.Bot.Types;
 
-namespace Ali.Delivery.Location.Infrastructure.Services2._0;
+namespace Ali.Delivery.Location.Infrastructure.Services;
 
 // Ali.Delivery.Location.Infrastructure.Services/UpdateProcessor.cs
 public class UpdateProcessor : IUpdateProcessor

@@ -1,6 +1,6 @@
 using Ali.Delivery.Location.Infrastructure.ExternalServices.Models;
 
-namespace Ali.Delivery.Location.Infrastructure.Interfaces2._0;
+namespace Ali.Delivery.Location.Infrastructure.Interfaces;
 
 public interface IStateManager
 {

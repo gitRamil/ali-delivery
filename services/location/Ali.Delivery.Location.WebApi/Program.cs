@@ -4,10 +4,8 @@ using Ali.Delivery.Location.Infrastructure;
 using Ali.Delivery.Location.Infrastructure.ExternalServices.Models.Configuration;
 using Ali.Delivery.Location.Infrastructure.Handlers;
 using Ali.Delivery.Location.Infrastructure.Interfaces;
-using Ali.Delivery.Location.Infrastructure.Interfaces2._0;
 using Ali.Delivery.Location.Infrastructure.Services;
 using Ali.Delivery.Location.Infrastructure.Services.WriteToDataBase;
-using Ali.Delivery.Location.Infrastructure.Services2._0;
 using Ali.Delivery.Location.WebApi.Infrastructure.IoC;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.EntityFrameworkCore;
@@ -47,12 +45,10 @@ try
     
     // Конфигурация Telegram бота
     var botToken = configuration["BOT_TOKEN"];
-    Console.WriteLine($"Bot Token: {botToken}");
     if (string.IsNullOrEmpty(botToken))
     {
-        // Можно добавить более строгую обработку, если токен критичен
         Log.Fatal("BOT_TOKEN is not configured!"); 
-        return 1; // Завершить приложение, если токен не найден
+        return 1; 
     }
     builder.Services.AddSingleton<ITelegramBotClient>(_ => 
                                                           new TelegramBotClient(botToken));

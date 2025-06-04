@@ -1,9 +1,9 @@
 using Ali.Delivery.Location.Infrastructure.ExternalServices.Models;
-using Ali.Delivery.Location.Infrastructure.Interfaces2._0;
+using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
-namespace Ali.Delivery.Location.Infrastructure.Services2._0;
+namespace Ali.Delivery.Location.Infrastructure.Services;
 
 public class StateManager : IStateManager
 {
