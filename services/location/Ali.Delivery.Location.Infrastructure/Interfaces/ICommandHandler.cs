@@ -5,6 +5,5 @@ namespace Ali.Delivery.Location.Infrastructure.Interfaces;
 
 public interface ICommandHandler
 {
-    string Command { get; }
     Task<CommandResult> HandleAsync(long userId, Update update, BotState currentState);
 }

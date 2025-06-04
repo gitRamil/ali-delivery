@@ -1,56 +1,84 @@
 ﻿using Ali.Delivery.Location.Infrastructure.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Telegram.Bot;
+using Telegram.Bot.Exceptions;
+using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 
 namespace Ali.Delivery.Location.Infrastructure.Services;
 
-public class BotBackgroundService(ITelegramBotClient botClient, IStateMachine stateMachine, ILogger<BotBackgroundService> logger) : BackgroundService
+public class BotBackgroundService(ITelegramBotClient botClient, IServiceScopeFactory serviceScopeFactory, ILogger<BotBackgroundService> logger) : BackgroundService
 {
-    protected override async Task ExecuteAsync(CancellationToken cancellationToken)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        var receiverOptions = new ReceiverOptions
+        {
+            AllowedUpdates = [],
+            DropPendingUpdates = true
+        };
+
         botClient.StartReceiving(
-            HandleUpdateAsync,
-            HandleErrorAsync,
-            cancellationToken: cancellationToken
+            updateHandler: HandleUpdateAsync,
+            errorHandler: HandleErrorAsync,
+            receiverOptions: receiverOptions,
+            cancellationToken: stoppingToken
         );
-        
-        logger.LogInformation("Bot started successfully");
-        
-        // Для предотвращения завершения задачи
-        await Task.Delay(Timeout.Infinite, cancellationToken);
+
+        logger.LogInformation("Telegram bot started");
+        await Task.Delay(Timeout.Infinite, stoppingToken);
     }
 
     private async Task HandleUpdateAsync(
-        ITelegramBotClient _, 
-        Update update, 
-        CancellationToken token)
+        ITelegramBotClient _,
+        Update update,
+        CancellationToken cancellationToken)
     {
-        if (update.Message?.From?.Id is { } userId)
+        if (update.Message?.From?.Id is not { } userId)
         {
-            try
-            {
-                var result = await stateMachine.ProcessUpdateAsync(userId, update);
+            return;
+        }
 
-                if (!string.IsNullOrEmpty(result.ResponseMessage))
-                {
-                    await botClient.SendMessage(userId, result.ResponseMessage, cancellationToken: token);
-                }
-            }
-            catch (Exception ex)
+        try
+        {
+            // Создаем scope для каждого обновления
+            using var scope = serviceScopeFactory.CreateScope();
+            var stateMachine = scope.ServiceProvider.GetRequiredService<IStateMachine>();
+
+            var result = await stateMachine.ProcessUpdateAsync(userId, update);
+
+            if (!string.IsNullOrEmpty(result.ResponseMessage))
             {
-                logger.LogError(ex, "Error processing update for user {UserId}", userId);
+                await botClient.SendMessage(
+                    chatId: userId,
+                    text: result.ResponseMessage,
+                    cancellationToken: cancellationToken);
             }
+        }
+        catch (ApiRequestException ex)
+        {
+            logger.LogError(ex, "Telegram API Error: {ErrorCode}", ex.ErrorCode);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error processing update for user {UserId}", userId);
         }
     }
 
     private Task HandleErrorAsync(
-        ITelegramBotClient _, 
-        Exception exception, 
-        CancellationToken token)
+        ITelegramBotClient _,
+        Exception exception,
+        CancellationToken cancellationToken)
     {
-        logger.LogError(exception, "Telegram bot error occurred");
+        var errorMessage = exception switch
+        {
+            ApiRequestException apiRequestException
+                => $"Telegram API Error: {apiRequestException.ErrorCode}",
+            _ => exception.ToString()
+        };
+
+        logger.LogError(errorMessage);
         return Task.CompletedTask;
     }
 }

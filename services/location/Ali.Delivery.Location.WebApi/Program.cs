@@ -4,8 +4,10 @@ using Ali.Delivery.Location.Infrastructure;
 using Ali.Delivery.Location.Infrastructure.ExternalServices.Models.Configuration;
 using Ali.Delivery.Location.Infrastructure.Handlers;
 using Ali.Delivery.Location.Infrastructure.Interfaces;
+using Ali.Delivery.Location.Infrastructure.Interfaces2._0;
 using Ali.Delivery.Location.Infrastructure.Services;
 using Ali.Delivery.Location.Infrastructure.Services.WriteToDataBase;
+using Ali.Delivery.Location.Infrastructure.Services2._0;
 using Ali.Delivery.Location.WebApi.Infrastructure.IoC;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.EntityFrameworkCore;
@@ -42,8 +44,6 @@ try
     builder.Services.AddSwaggerGen();
     
     // builder.Services.AddSingleton<IMyConfigurationService>(_ => new MyConfigurationService(builder.Configuration));
-
-    builder.Services.AddSingleton<IWriteToDatabase, WriteToDatabase>();
     
     // Конфигурация Telegram бота
     var botToken = configuration["BOT_TOKEN"];
@@ -58,7 +58,14 @@ try
                                                           new TelegramBotClient(botToken));
     
     // State Machine и обработчики
-    builder.Services.AddSingleton<IStateMachine, StateMachineService>();
+    
+    builder.Services.AddScoped<IStateManager, StateManager>();
+    builder.Services.AddScoped<IUserDataManager, UserDataManager>();
+    builder.Services.AddScoped<ITransitionResolver, TransitionResolver>();
+    builder.Services.AddScoped<INotificationService, NotificationService>();
+    builder.Services.AddScoped<IUpdateProcessor, UpdateProcessor>();
+    builder.Services.AddScoped<IStateMachine, StateMachineOrchestrator>();
+    
     builder.Services.AddScoped<ICommandHandler, LoginCommandHandler>();
     builder.Services.AddScoped<ICommandHandler, CredentialsHandler>();
     builder.Services.AddScoped<ICommandHandler, GeosharingCommandHandler>();
@@ -99,7 +106,6 @@ try
     app.UseRouting();
     app.UseCors();
     app.MapControllers();
-    app.UseSerilogRequestLogging();
     app.Run();
     return 0;
 }
