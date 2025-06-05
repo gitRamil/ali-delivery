@@ -5,6 +5,7 @@ namespace Ali.Delivery.Location.Infrastructure.Interfaces;
 
 public interface ITransitionResolver
 {
-    StateTransition? ResolveTransition(BotState currentState, string? transitionKey);
     StateTransitionResult HandleUnknownAction(BotState currentState, Update update);
+
+    StateTransition? ResolveTransition(BotState currentState, string? transitionKey);
 }

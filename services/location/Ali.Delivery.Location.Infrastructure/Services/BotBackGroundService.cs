@@ -19,21 +19,25 @@ public class BotBackgroundService(ITelegramBotClient botClient, IServiceScopeFac
             DropPendingUpdates = true
         };
 
-        botClient.StartReceiving(
-            updateHandler: HandleUpdateAsync,
-            errorHandler: HandleErrorAsync,
-            receiverOptions: receiverOptions,
-            cancellationToken: stoppingToken
-        );
+        botClient.StartReceiving(HandleUpdateAsync, HandleErrorAsync, receiverOptions, stoppingToken);
 
         logger.LogInformation("Telegram bot started");
         await Task.Delay(Timeout.Infinite, stoppingToken);
     }
 
-    private async Task HandleUpdateAsync(
-        ITelegramBotClient _,
-        Update update,
-        CancellationToken cancellationToken)
+    private Task HandleErrorAsync(ITelegramBotClient _, Exception exception, CancellationToken cancellationToken)
+    {
+        var errorMessage = exception switch
+        {
+            ApiRequestException apiRequestException => $"Telegram API Error: {apiRequestException.ErrorCode}",
+            _ => exception.ToString()
+        };
+
+        logger.LogError(errorMessage);
+        return Task.CompletedTask;
+    }
+
+    private async Task HandleUpdateAsync(ITelegramBotClient _, Update update, CancellationToken cancellationToken)
     {
         if (update.Message?.From?.Id is not { } userId)
         {
@@ -42,7 +46,6 @@ public class BotBackgroundService(ITelegramBotClient botClient, IServiceScopeFac
 
         try
         {
-            // Создаем scope для каждого обновления
             using var scope = serviceScopeFactory.CreateScope();
             var stateMachine = scope.ServiceProvider.GetRequiredService<IStateMachine>();
 
@@ -50,10 +53,7 @@ public class BotBackgroundService(ITelegramBotClient botClient, IServiceScopeFac
 
             if (!string.IsNullOrEmpty(result.ResponseMessage))
             {
-                await botClient.SendMessage(
-                    chatId: userId,
-                    text: result.ResponseMessage,
-                    cancellationToken: cancellationToken);
+                await botClient.SendMessage(userId, result.ResponseMessage, cancellationToken: cancellationToken);
             }
         }
         catch (ApiRequestException ex)
@@ -64,21 +64,5 @@ public class BotBackgroundService(ITelegramBotClient botClient, IServiceScopeFac
         {
             logger.LogError(ex, "Error processing update for user {UserId}", userId);
         }
-    }
-
-    private Task HandleErrorAsync(
-        ITelegramBotClient _,
-        Exception exception,
-        CancellationToken cancellationToken)
-    {
-        var errorMessage = exception switch
-        {
-            ApiRequestException apiRequestException
-                => $"Telegram API Error: {apiRequestException.ErrorCode}",
-            _ => exception.ToString()
-        };
-
-        logger.LogError(errorMessage);
-        return Task.CompletedTask;
     }
 }

@@ -8,21 +8,18 @@ public class StopCommandHandler : ICommandHandler
 {
     public string Command => "/stop";
 
-    public Task<CommandResult> HandleAsync(
-        long userId, 
-        Update update, 
-        BotState currentState)
+    public Task<CommandResult> HandleAsync(long userId, Update update, BotState currentState)
     {
         if (update.Message?.Text?.Trim() == "/stop")
         {
             return Task.FromResult(currentState switch
             {
-                BotState.Authenticated or BotState.GeosharingActive  => new CommandResult(true,
-                                                                                                                      "OnStop",
-                                                                                                                      new Dictionary<string, object>
-                                                                                                                      {
-                                                                                                                          ["Action"] = "SessionStopped"
-                                                                                                                      }),
+                BotState.Authenticated or BotState.GeosharingActive => new CommandResult(true,
+                                                                                         "OnStop",
+                                                                                         new Dictionary<string, object>
+                                                                                         {
+                                                                                             ["Action"] = "SessionStopped"
+                                                                                         }),
 
                 BotState.Terminated => new CommandResult(true,
                                                          "OnInitial",
@@ -36,6 +33,5 @@ public class StopCommandHandler : ICommandHandler
         }
 
         return Task.FromResult(new CommandResult(false, null));
-        
     }
 }

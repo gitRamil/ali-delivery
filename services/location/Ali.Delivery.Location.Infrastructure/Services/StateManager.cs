@@ -5,28 +5,23 @@ using Microsoft.Extensions.Logging;
 
 namespace Ali.Delivery.Location.Infrastructure.Services;
 
-public class StateManager : IStateManager
+public class StateManager(IMemoryCache stateCache, ILogger<StateManager> logger) : IStateManager
 {
     private const string StateCacheKey = "user_state_{0}";
-    
-    private readonly IMemoryCache _stateCache;
-    private readonly ILogger<StateManager> _logger;
-
-    public StateManager(IMemoryCache stateCache, ILogger<StateManager> logger)
-    {
-        _stateCache = stateCache ?? throw new ArgumentNullException(nameof(stateCache));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
+    private readonly ILogger<StateManager> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly IMemoryCache _stateCache = stateCache ?? throw new ArgumentNullException(nameof(stateCache));
 
     public Task<BotState> GetUserStateAsync(long userId)
     {
         var cacheKey = string.Format(StateCacheKey, userId);
-        return _stateCache.GetOrCreateAsync(cacheKey, entry =>
-        {
-            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(24);
-            _logger.LogInformation("User {UserId} state initialized to Initial as not found in cache", userId);
-            return Task.FromResult(BotState.Initial);
-        });
+
+        return _stateCache.GetOrCreateAsync(cacheKey,
+                                            entry =>
+                                            {
+                                                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(24);
+                                                _logger.LogInformation("User {UserId} state initialized to Initial as not found in cache", userId);
+                                                return Task.FromResult(BotState.Initial);
+                                            });
     }
 
     public Task SetUserStateAsync(long userId, BotState state)

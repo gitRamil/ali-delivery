@@ -4,17 +4,24 @@ using Microsoft.Extensions.Logging;
 
 namespace Ali.Delivery.Location.Infrastructure.Services;
 
-public class UserDataManager : IUserDataManager
+public class UserDataManager(IMemoryCache cache, ILogger<UserDataManager> logger) : IUserDataManager
 {
     private const string LoginCacheKey = "user_login_{0}";
-    
-    private readonly IMemoryCache _cache;
-    private readonly ILogger<UserDataManager> _logger;
+    private readonly IMemoryCache _cache = cache ?? throw new ArgumentNullException(nameof(cache));
+    private readonly ILogger<UserDataManager> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-    public UserDataManager(IMemoryCache cache, ILogger<UserDataManager> logger)
+    public void ClearUserData(long userId)
     {
-        _cache = cache ?? throw new ArgumentNullException(nameof(cache));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        var loginCacheKey = string.Format(LoginCacheKey, userId);
+        _cache.Remove(loginCacheKey);
+        _logger.LogInformation("Cleared user data for user {UserId}", userId);
+    }
+
+    public Task<string?> GetUserLoginAsync(long userId)
+    {
+        var cacheKey = string.Format(LoginCacheKey, userId);
+        var login = _cache.Get<string>(cacheKey);
+        return Task.FromResult(login);
     }
 
     public void SaveUserData(long userId, Dictionary<string, object> userData)
@@ -23,10 +30,7 @@ public class UserDataManager : IUserDataManager
         {
             if (!string.IsNullOrEmpty(login))
             {
-                _cache.Set(
-                    string.Format(LoginCacheKey, userId),
-                    login,
-                    TimeSpan.FromHours(24));
+                _cache.Set(string.Format(LoginCacheKey, userId), login, TimeSpan.FromHours(24));
 
                 _logger.LogInformation("Cached login '{Login}' for user {UserId}", login, userId);
             }
@@ -39,19 +43,5 @@ public class UserDataManager : IUserDataManager
         {
             _logger.LogTrace("UserData for user {UserId} does not contain a 'Login' entry or it's not a string", userId);
         }
-    }
-
-    public Task<string?> GetUserLoginAsync(long userId)
-    {
-        var cacheKey = string.Format(LoginCacheKey, userId);
-        var login = _cache.Get<string>(cacheKey);
-        return Task.FromResult(login);
-    }
-
-    public void ClearUserData(long userId)
-    {
-        var loginCacheKey = string.Format(LoginCacheKey, userId);
-        _cache.Remove(loginCacheKey);
-        _logger.LogInformation("Cleared user data for user {UserId}", userId);
     }
 }

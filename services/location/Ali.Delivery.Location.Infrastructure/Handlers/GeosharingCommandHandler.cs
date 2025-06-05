@@ -10,9 +10,7 @@ public class GeosharingCommandHandler : ICommandHandler
 
     public Task<CommandResult> HandleAsync(long userId, Update update, BotState currentState)
     {
-        var result = (update.Message?.Text == "/geosharing" && currentState == BotState.Authenticated)
-                         ? new CommandResult(true, "OnGeosharing")
-                         : new CommandResult(false, null);
+        var result = update.Message?.Text == "/geosharing" && currentState == BotState.Authenticated ? new CommandResult(true, "OnGeosharing") : new CommandResult(false, null);
 
         return Task.FromResult(result);
     }

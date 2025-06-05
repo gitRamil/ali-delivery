@@ -18,13 +18,13 @@ public class WriteToDatabase(IFileServiceForLocation serviceForLocation) : IWrit
                 return createResponse.IsSuccessStatusCode;
             }
 
-            if (!updateResponse.IsSuccessStatusCode)
+            if (updateResponse.IsSuccessStatusCode)
             {
-                Console.WriteLine($"Update failed: {updateResponse.StatusCode}");
-                return false;
+                return true;
             }
 
-            return true;
+            Console.WriteLine($"Update failed: {updateResponse.StatusCode}");
+            return false;
         }
         catch (ApiException ex)
         {

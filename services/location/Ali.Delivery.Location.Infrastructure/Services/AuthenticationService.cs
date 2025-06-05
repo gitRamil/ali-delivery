@@ -6,9 +6,7 @@ using LoginRequest = Ali.Delivery.Location.Infrastructure.Interfaces.LoginReques
 
 namespace Ali.Delivery.Location.Infrastructure.Services;
 
-public class AuthenticationService(
-    IFileServiceForOrder fileServiceForOrder,
-    ILogger<AuthenticationService> logger) : IAuthenticationService
+public class AuthenticationService(IFileServiceForOrder fileServiceForOrder, ILogger<AuthenticationService> logger) : IAuthenticationService
 {
     public async Task<AuthenticationResult> AuthenticateAsync(string login, string password)
     {
@@ -23,12 +21,12 @@ public class AuthenticationService(
             }
 
             var userInfo = await fileServiceForOrder.GetCurrentUserAsync(token);
-            if (userInfo?.Login == null) // Явная проверка null
+
+            if (userInfo?.Login == null)
             {
                 return new AuthenticationResult(AuthResult.RegistrationRequired);
             }
 
-            // Проверка свойства без conditional access
             if (string.IsNullOrEmpty(userInfo.Login))
             {
                 logger.LogWarning("Empty login in user info for login: {Login}", login);

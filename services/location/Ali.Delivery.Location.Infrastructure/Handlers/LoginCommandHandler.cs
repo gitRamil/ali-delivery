@@ -14,6 +14,7 @@ public class LoginCommandHandler : ICommandHandler
         {
             return Task.FromResult(new CommandResult(true, "OnLogin"));
         }
+
         return Task.FromResult(new CommandResult(false, null));
     }
 }

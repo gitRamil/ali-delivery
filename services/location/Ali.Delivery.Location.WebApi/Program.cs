@@ -7,6 +7,7 @@ using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Ali.Delivery.Location.Infrastructure.Services;
 using Ali.Delivery.Location.Infrastructure.Services.WriteToDataBase;
 using Ali.Delivery.Location.WebApi.Infrastructure.IoC;
+using DotNetEnv;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.EntityFrameworkCore;
 using Refit;
@@ -15,12 +16,12 @@ using Telegram.Bot;
 
 try
 {
-    DotNetEnv.Env.Load(); 
+    Env.Load();
     var builder = WebApplication.CreateBuilder(args);
     var configuration = builder.Configuration;
-    
+
     builder.Services.AddEndpointsApiExplorer();
-    builder.Configuration.AddJsonFile("stateTransitions.json", optional: false, reloadOnChange: true);
+    builder.Configuration.AddJsonFile("stateTransitions.json", false, true);
     builder.Services.Configure<StateTransitionsConfig>(builder.Configuration);
     builder.Configuration.AddEnvironmentVariables("AliDeliveryLocationService_");
     builder.AddDefaultSerilog();
@@ -40,35 +41,34 @@ try
     builder.Services.AddDateTimeService();
     builder.Services.AddDefaultProblemDetails();
     builder.Services.AddSwaggerGen();
-    
-    // builder.Services.AddSingleton<IMyConfigurationService>(_ => new MyConfigurationService(builder.Configuration));
-    
+
     // Конфигурация Telegram бота
     var botToken = configuration["BOT_TOKEN"];
+
     if (string.IsNullOrEmpty(botToken))
     {
-        Log.Fatal("BOT_TOKEN is not configured!"); 
-        return 1; 
+        Log.Fatal("BOT_TOKEN is not configured!");
+        return 1;
     }
-    builder.Services.AddSingleton<ITelegramBotClient>(_ => 
-                                                          new TelegramBotClient(botToken));
-    
+
+    builder.Services.AddSingleton<ITelegramBotClient>(_ => new TelegramBotClient(botToken));
+
     // State Machine и обработчики
-    
+
     builder.Services.AddScoped<IStateManager, StateManager>();
     builder.Services.AddScoped<IUserDataManager, UserDataManager>();
     builder.Services.AddScoped<ITransitionResolver, TransitionResolver>();
     builder.Services.AddScoped<INotificationService, NotificationService>();
     builder.Services.AddScoped<IUpdateProcessor, UpdateProcessor>();
     builder.Services.AddScoped<IStateMachine, StateMachineOrchestrator>();
-    
+
     builder.Services.AddScoped<ICommandHandler, LoginCommandHandler>();
     builder.Services.AddScoped<ICommandHandler, CredentialsHandler>();
     builder.Services.AddScoped<ICommandHandler, GeosharingCommandHandler>();
     builder.Services.AddScoped<ICommandHandler, LocationHandler>();
     builder.Services.AddScoped<ICommandHandler, StopCommandHandler>();
     builder.Services.AddScoped<ICommandHandler, StartCommandHandler>();
-    
+
     builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(configuration.GetConnectionString(nameof(AppDbContext)))
                                                                   .UseSnakeCaseNamingConvention()
                                                                   .EnableSensitiveDataLogging()
@@ -76,13 +76,11 @@ try
 
     // Внешние API сервисы
     builder.Services.AddRefitClient<IFileServiceForOrder>()
-           .ConfigureHttpClient(c => 
-                                    c.BaseAddress = new Uri(configuration["ExternalServices:OrderService"]!));
-    
+           .ConfigureHttpClient(c => c.BaseAddress = new Uri(configuration["ExternalServices:OrderService"]!));
+
     builder.Services.AddRefitClient<IFileServiceForLocation>()
-           .ConfigureHttpClient(c => 
-                                    c.BaseAddress = new Uri(configuration["ExternalServices:LocationService"]!));
-    
+           .ConfigureHttpClient(c => c.BaseAddress = new Uri(configuration["ExternalServices:LocationService"]!));
+
     // Сервисы приложения
     builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
     builder.Services.AddScoped<ILocationService, LocationService>();
@@ -90,7 +88,7 @@ try
 
     // Фоновый сервис бота
     builder.Services.AddHostedService<BotBackgroundService>();
-    
+
     var app = builder.Build();
     app.AddAutomaticMigrations();
     app.UseSwagger();

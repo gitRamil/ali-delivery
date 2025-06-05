@@ -5,7 +5,9 @@ namespace Ali.Delivery.Location.Infrastructure.Interfaces;
 
 public interface IStateMachine
 {
-    Task<StateTransitionResult> ProcessUpdateAsync(long userId, Update update);
     Task<BotState> GetUserStateAsync(long userId);
+
+    Task<StateTransitionResult> ProcessUpdateAsync(long userId, Update update);
+
     Task SetUserStateAsync(long userId, BotState state);
 }

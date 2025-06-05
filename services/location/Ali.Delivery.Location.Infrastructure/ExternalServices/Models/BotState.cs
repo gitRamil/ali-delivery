@@ -7,18 +7,18 @@ public enum BotState
     WaitingCredentials,
     Authenticated,
     GeosharingActive,
+
     // RegistrationRequired,
     Terminated
 }
 
 public enum NotificationType
 {
-    
-    N0_EnterCredentials,      
-    N1_Welcome,               
-    N1_InvalidAuthCommand,    
-    N_SessionEnded,           
-    N1_InvalidCommand,        
+    N0_EnterCredentials,
+    N1_Welcome,
+    N1_InvalidAuthCommand,
+    N_SessionEnded,
+    N1_InvalidCommand,
     N2_InvalidCredentials,
     N3_RegistrationRequired,
     N4_AuthenticationComplete,
@@ -28,4 +28,3 @@ public enum NotificationType
 }
 
 public record StateTransition(BotState NextState, NotificationType? Notification);
-
