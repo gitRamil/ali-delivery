@@ -14,12 +14,16 @@ public class NotificationService(ILogger<NotificationService> logger) : INotific
         [NotificationType.N1_InvalidAuthCommand] = "Неизвестная команда. Пожалуйста, введите /login для аутентификации.",
         [NotificationType.N_SessionEnded] = "Сессия завершена. Введите /start для новой сессии.",
         [NotificationType.N1_InvalidCommand] = "Неизвестная команда или действие для текущего состояния. Пожалуйста, используйте доступные команды.",
-        [NotificationType.N2_InvalidCredentials] = "Неверные учетные данные. Пожалуйста, введите логин и пароль повторно.",
-        [NotificationType.N3_RegistrationRequired] = "Требуется регистрация. Пожалуйста, зарегистрируйтесь или обратитесь к администратору.",
+        [NotificationType.N2_InvalidCredentials] =
+            "Неверный логин или пароль, либо вы не зарегистрированы в системе. Пожалуйста пройдите по ссылке и зарегистрируйтесь: https://example.com\n" +
+            "Вы можете попробовать еще раз или остановить бота командой /stop.",
         [NotificationType.N4_AuthenticationComplete] = "Авторизация успешно завершена. Используйте /geosharing для начала отслеживания или /stop для выхода.",
-        [NotificationType.N5_RequestLocation] = "Пожалуйста, поделитесь вашей геопозицией для продолжения или введите /stop для отмены.",
-        [NotificationType.N6_LocationReceived] = "Ваша локация получена. Продолжайте делиться или введите /stop.",
-        [NotificationType.N7_InvalidLocation] = "Не удалось сохранить локацию. Пожалуйста, попробуйте снова или введите /stop."
+        [NotificationType.N5_RequestLocation] =
+            "Пожалуйста, поделитесь вашей геопозицией для продолжения или введите /stop_geosharing для перехода в режим ожидания команды, либо завершите сессию командой /stop.",
+        [NotificationType.N6_LocationReceived] =
+            "Ваша локация получена. Продолжайте делиться своей локацией или введите /stop_geosharing для перехода в режим ожидания команды, либо завершите сессию командой /stop.",
+        [NotificationType.N7_InvalidLocation] =
+            "Не удалось сохранить локацию. Пожалуйста, попробуйте снова или введите /stop_geosharing для перехода в режим ожидания команды, либо завершите сессию командой /stop."
     };
 
     private readonly ILogger<NotificationService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -56,7 +60,9 @@ public class NotificationService(ILogger<NotificationService> logger) : INotific
 
             var longitude = Convert.ToDouble(lonObj, CultureInfo.InvariantCulture)
                                    .ToString("F4", CultureInfo.InvariantCulture);
-            return $"Локация получена: Широта {latitude}, Долгота {longitude}. Продолжайте делиться или введите /stop.";
+
+            return
+                $"Локация получена: Широта {latitude}, Долгота {longitude}. Продолжайте делиться вашей локацией или введите /stop_geosharing для перехода в режим ожидания команды, либо завершите сессию командой /stop.";
         }
         catch (FormatException ex)
         {

@@ -3,12 +3,20 @@
     "OnStart": {
       "NextState": "WaitingAuthCommand",
       "Notification": "N1_Welcome"
+    },
+    "OnStop": {
+      "NextState": "Terminated",
+      "Notification": "N_SessionEnded"
     }
   },
   "WaitingAuthCommand": {
     "OnLogin": {
       "NextState": "WaitingCredentials",
       "Notification": "N0_EnterCredentials"
+    },
+    "OnStop": {
+      "NextState": "Terminated",
+      "Notification": "N_SessionEnded"
     },
     "OnInvalidCommand": {
       "NextState": "WaitingAuthCommand",
@@ -24,15 +32,19 @@
       "NextState": "WaitingCredentials",
       "Notification": "N2_InvalidCredentials"
     },
-    "OnRegistrationRequired": {
-      "NextState": "RegistrationRequired",
-      "Notification": "N3_RegistrationRequired"
+    "OnStop": {
+      "NextState": "Terminated",
+      "Notification": "N_SessionEnded"
     }
   },
   "Authenticated": {
     "OnGeosharing": {
       "NextState": "GeosharingActive",
       "Notification": "N5_RequestLocation"
+    },
+    "OnInvalidCommand": {
+      "NextState": "Authenticated",
+      "Notification": "N4_AuthenticationComplete"
     },
     "OnStop": {
       "NextState": "Terminated",
@@ -48,6 +60,14 @@
       "NextState": "GeosharingActive",
       "Notification": "N7_InvalidLocation"
     },
+    "OnInvalidCommand": {
+      "NextState": "GeosharingActive",
+      "Notification": "N7_InvalidLocation"
+    },
+    "OnStopGeosharing": {
+      "NextState": "Authenticated",
+      "Notification": "N4_AuthenticationComplete"
+    },
     "OnStop": {
       "NextState": "Terminated",
       "Notification": "N_SessionEnded"
@@ -57,16 +77,6 @@
     "OnStart": {
       "NextState": "WaitingAuthCommand",
       "Notification": "N1_Welcome"
-    }
-  },
-  "RegistrationRequired": {
-    "OnLoginAttempt": {
-      "NextState": "WaitingCredentials",
-      "Notification": "N0_EnterCredentials"
-    },
-    "OnStop": {
-      "NextState": "Terminated",
-      "Notification": "N_SessionEnded"
     }
   }
 }

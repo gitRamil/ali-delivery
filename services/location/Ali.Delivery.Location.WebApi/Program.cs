@@ -62,11 +62,12 @@ try
     builder.Services.AddScoped<IUpdateProcessor, UpdateProcessor>();
     builder.Services.AddScoped<IStateMachine, StateMachineOrchestrator>();
 
+    builder.Services.AddScoped<ICommandHandler, StopCommandHandler>();
     builder.Services.AddScoped<ICommandHandler, LoginCommandHandler>();
     builder.Services.AddScoped<ICommandHandler, CredentialsHandler>();
     builder.Services.AddScoped<ICommandHandler, GeosharingCommandHandler>();
+    builder.Services.AddScoped<ICommandHandler, StopGeosharingCommandHandler>();
     builder.Services.AddScoped<ICommandHandler, LocationHandler>();
-    builder.Services.AddScoped<ICommandHandler, StopCommandHandler>();
     builder.Services.AddScoped<ICommandHandler, StartCommandHandler>();
 
     builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(configuration.GetConnectionString(nameof(AppDbContext)))

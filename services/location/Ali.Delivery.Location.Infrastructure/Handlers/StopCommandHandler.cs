@@ -12,24 +12,14 @@ public class StopCommandHandler : ICommandHandler
     {
         if (update.Message?.Text?.Trim() == "/stop")
         {
-            return Task.FromResult(currentState switch
-            {
-                BotState.Authenticated or BotState.GeosharingActive => new CommandResult(true,
-                                                                                         "OnStop",
-                                                                                         new Dictionary<string, object>
-                                                                                         {
-                                                                                             ["Action"] = "SessionStopped"
-                                                                                         }),
-
-                BotState.Terminated => new CommandResult(true,
-                                                         "OnInitial",
-                                                         new Dictionary<string, object>
-                                                         {
-                                                             ["Action"] = "RestartSession"
-                                                         }),
-
-                _ => new CommandResult(false, null)
-            });
+            // Всегда возвращаем OnStop, вне зависимости от состояния
+            return Task.FromResult(new CommandResult(
+                                       true,
+                                       "OnStop",
+                                       new Dictionary<string, object>
+                                       {
+                                           ["Action"] = "SessionStopped"
+                                       }));
         }
 
         return Task.FromResult(new CommandResult(false, null));
