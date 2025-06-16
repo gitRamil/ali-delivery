@@ -1,82 +1,38 @@
 {
-  "Initial": {
-    "OnStart": {
-      "NextState": "WaitingAuthCommand",
-      "Notification": "N1_Welcome"
+  "Steps": [
+    {
+      "Id": "StartStep",
+      "SelectNextStep": {
+        "Authorization": "Authorization",
+        "StopStep":      "StopStep"
+      }
     },
-    "OnStop": {
-      "NextState": "Terminated",
-      "Notification": "N_SessionEnded"
+    {
+      "Id": "Authorization",
+      "SelectNextStep": {
+        "AuthComplete": "AuthComplete",
+        "StopStep":     "StopStep"
+      }
+    },
+    {
+      "Id": "AuthComplete",
+      "SelectNextStep": {
+        "GeoSharing": "GeoSharing",
+        "StopStep":   "StopStep"
+      }
+    },
+    {
+      "Id": "GeoSharing",
+      "SelectNextStep": {
+        "AuthComplete": "AuthComplete",  
+        "StopStep":     "StopStep"        
+      }
+    },
+    {
+      "Id": "StopStep",
+      "SelectNextStep": {
+        "StartStep": "StartStep"         
+      }
     }
-  },
-  "WaitingAuthCommand": {
-    "OnLogin": {
-      "NextState": "WaitingCredentials",
-      "Notification": "N0_EnterCredentials"
-    },
-    "OnStop": {
-      "NextState": "Terminated",
-      "Notification": "N_SessionEnded"
-    },
-    "OnInvalidCommand": {
-      "NextState": "WaitingAuthCommand",
-      "Notification": "N1_InvalidAuthCommand"
-    }
-  },
-  "WaitingCredentials": {
-    "OnValidCredentials": {
-      "NextState": "Authenticated",
-      "Notification": "N4_AuthenticationComplete"
-    },
-    "OnInvalidCredentials": {
-      "NextState": "WaitingCredentials",
-      "Notification": "N2_InvalidCredentials"
-    },
-    "OnStop": {
-      "NextState": "Terminated",
-      "Notification": "N_SessionEnded"
-    }
-  },
-  "Authenticated": {
-    "OnGeosharing": {
-      "NextState": "GeosharingActive",
-      "Notification": "N5_RequestLocation"
-    },
-    "OnInvalidCommand": {
-      "NextState": "Authenticated",
-      "Notification": "N4_AuthenticationComplete"
-    },
-    "OnStop": {
-      "NextState": "Terminated",
-      "Notification": "N_SessionEnded"
-    }
-  },
-  "GeosharingActive": {
-    "OnLocationReceived": {
-      "NextState": "GeosharingActive",
-      "Notification": "N6_LocationReceived"
-    },
-    "OnInvalidLocation": {
-      "NextState": "GeosharingActive",
-      "Notification": "N7_InvalidLocation"
-    },
-    "OnInvalidCommand": {
-      "NextState": "GeosharingActive",
-      "Notification": "N7_InvalidLocation"
-    },
-    "OnStopGeosharing": {
-      "NextState": "Authenticated",
-      "Notification": "N4_AuthenticationComplete"
-    },
-    "OnStop": {
-      "NextState": "Terminated",
-      "Notification": "N_SessionEnded"
-    }
-  },
-  "Terminated": {
-    "OnStart": {
-      "NextState": "WaitingAuthCommand",
-      "Notification": "N1_Welcome"
-    }
-  }
+  ]
 }

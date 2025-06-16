@@ -3,7 +3,7 @@ using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Ali.Delivery.Location.Infrastructure.Services.WriteToDataBase;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace Ali.Delivery.Location.Infrastructure.Services;
+namespace Ali.Delivery.Location.Infrastructure.Services.DataBaseServices;
 
 public class LocationService(IWriteToDatabase dbWriter, IMemoryCache cache) : ILocationService
 {

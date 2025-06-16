@@ -5,6 +5,7 @@ using Ali.Delivery.Location.Infrastructure.ExternalServices.Models.Configuration
 using Ali.Delivery.Location.Infrastructure.Handlers;
 using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Ali.Delivery.Location.Infrastructure.Services;
+using Ali.Delivery.Location.Infrastructure.Services.DataBaseServices;
 using Ali.Delivery.Location.Infrastructure.Services.WriteToDataBase;
 using Ali.Delivery.Location.WebApi.Infrastructure.IoC;
 using DotNetEnv;
@@ -22,7 +23,7 @@ try
 
     builder.Services.AddEndpointsApiExplorer();
     builder.Configuration.AddJsonFile("stateTransitions.json", false, true);
-    builder.Services.Configure<StateTransitionsConfig>(builder.Configuration);
+    builder.Services.Configure<StateMachineConfiguration>(builder.Configuration);
     builder.Configuration.AddEnvironmentVariables("AliDeliveryLocationService_");
     builder.AddDefaultSerilog();
     builder.Services.AddMemoryCache();
@@ -54,21 +55,16 @@ try
     builder.Services.AddSingleton<ITelegramBotClient>(_ => new TelegramBotClient(botToken));
 
     // State Machine и обработчики
-
-    builder.Services.AddScoped<IStateManager, StateManager>();
-    builder.Services.AddScoped<IUserDataManager, UserDataManager>();
-    builder.Services.AddScoped<ITransitionResolver, TransitionResolver>();
-    builder.Services.AddScoped<INotificationService, NotificationService>();
-    builder.Services.AddScoped<IUpdateProcessor, UpdateProcessor>();
-    builder.Services.AddScoped<IStateMachine, StateMachineOrchestrator>();
-
-    builder.Services.AddScoped<ICommandHandler, StopCommandHandler>();
-    builder.Services.AddScoped<ICommandHandler, LoginCommandHandler>();
-    builder.Services.AddScoped<ICommandHandler, CredentialsHandler>();
-    builder.Services.AddScoped<ICommandHandler, GeosharingCommandHandler>();
-    builder.Services.AddScoped<ICommandHandler, StopGeosharingCommandHandler>();
-    builder.Services.AddScoped<ICommandHandler, LocationHandler>();
-    builder.Services.AddScoped<ICommandHandler, StartCommandHandler>();
+    
+    builder.Services.AddSingleton<IUserStateService, InMemoryUserStateService>();
+    builder.Services.AddScoped<IStepHandlerMapping, StepHandlerMapping>();
+    builder.Services.AddScoped<IStateMachine, StateMachine>();
+    
+    builder.Services.AddTransient<StartStepHandler>();
+    builder.Services.AddTransient<LoginStepHandler>();
+    builder.Services.AddTransient<AuthCompleteStepHandler>();
+    builder.Services.AddTransient<GeosharingStepHandler>();
+    builder.Services.AddTransient<StopStepHandler>();
 
     builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(configuration.GetConnectionString(nameof(AppDbContext)))
                                                                   .UseSnakeCaseNamingConvention()
@@ -86,9 +82,11 @@ try
     builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
     builder.Services.AddScoped<ILocationService, LocationService>();
     builder.Services.AddScoped<IWriteToDatabase, WriteToDatabase>();
+    builder.Services.AddScoped<ICommandMethods, CommandMethods>();
+    builder.Services.AddScoped<INotificationService, NotificationService>();
 
     // Фоновый сервис бота
-    builder.Services.AddHostedService<BotBackgroundService>();
+    builder.Services.AddHostedService<TelegramBotService>();
 
     var app = builder.Build();
     app.AddAutomaticMigrations();

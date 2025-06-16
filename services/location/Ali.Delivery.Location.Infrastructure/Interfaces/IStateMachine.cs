@@ -1,13 +1,8 @@
-using Ali.Delivery.Location.Infrastructure.ExternalServices.Models;
 using Telegram.Bot.Types;
 
 namespace Ali.Delivery.Location.Infrastructure.Interfaces;
 
 public interface IStateMachine
 {
-    Task<BotState> GetUserStateAsync(long userId);
-
-    Task<StateTransitionResult> ProcessUpdateAsync(long userId, Update update);
-
-    Task SetUserStateAsync(long userId, BotState state);
+    Task ProcessUpdateAsync(Update update);
 }
