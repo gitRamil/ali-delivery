@@ -1,4 +1,6 @@
-﻿using Ali.Delivery.Location.Infrastructure.Interfaces;
+﻿using Ali.Delivery.Location.Infrastructure.ExternalServices.Models;
+using Ali.Delivery.Location.Infrastructure.ExternalServices.Models.Configuration;
+using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -35,20 +37,39 @@ public sealed class TelegramBotService : BackgroundService
         _botClient.StartReceiving(HandleUpdateAsync, HandleErrorAsync, opts, cancellationToken);
     }
 
-    private Task HandleErrorAsync(ITelegramBotClient bot, Exception ex, CancellationToken ct)
+    private static MessageInfo ConvertUpdateToMessageInfo(Update update)
+    {
+        var chatId = update.Message?.Chat.Id ?? update.CallbackQuery?.Message?.Chat.Id ?? throw new InvalidOperationException("Не найден идентификатор чата.");
+        var fromId = update.Message?.From?.Id ?? throw new InvalidOperationException("Не найден отправитель сообщения.");
+        var location = update.Message?.Location != null ? new MessageLocation(update.Message.Location.Latitude, update.Message.Location.Longitude) : null;
+
+        return new MessageInfo
+        {
+            ChatId = chatId,
+            FromId = fromId,
+            Text = update.Message?.Text,
+            Location = location
+        };
+    }
+
+    private Task HandleErrorAsync(ITelegramBotClient bot, Exception ex, CancellationToken cancellationToken)
     {
         _logger.LogError(ex, "Ошибка в Telegram-поллинге");
         return Task.CompletedTask;
     }
 
-    private async Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken ct)
+    private async Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken cancellationToken)
     {
         using var scope = _serviceProvider.CreateScope();
-        var sm = scope.ServiceProvider.GetRequiredService<IStateMachine>();
+
+        var notificationService = scope.ServiceProvider.GetRequiredService<INotificationService>();
+        var stateMachine = scope.ServiceProvider.GetRequiredService<IStateMachine>();
+        var messageInfo = ConvertUpdateToMessageInfo(update);
 
         try
         {
-            await sm.ProcessUpdateAsync(update);
+            Task SendInvalidCommandTelegramMessage() => _botClient.SendMessage(messageInfo.ChatId, notificationService.GenerateNotificationMessage(NotificationType.N1_InvalidCommand), cancellationToken: cancellationToken);
+            await stateMachine.ProcessUpdateAsync(messageInfo, SendInvalidCommandTelegramMessage);
         }
         catch (Exception ex)
         {
