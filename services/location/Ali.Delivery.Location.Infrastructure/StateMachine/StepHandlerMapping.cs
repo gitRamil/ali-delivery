@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Ali.Delivery.Location.Infrastructure.StepHandlers;
 using Microsoft.Extensions.DependencyInjection;
@@ -6,22 +7,18 @@ namespace Ali.Delivery.Location.Infrastructure.StateMachine;
 
 public sealed class StepHandlerMapping : IStepHandlerMapping
 {
-    private readonly IReadOnlyDictionary<string, Type> _map;
+    private readonly ReadOnlyDictionary<string, Type> _map = new(new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase)
+    {
+        ["StartStep"] = typeof(StartStepHandler),
+        ["Authorization"] = typeof(LoginStepHandler),
+        ["AuthComplete"] = typeof(AuthCompleteStepHandler),
+        ["GeoSharing"] = typeof(GeosharingStepHandler),
+        ["StopStep"] = typeof(StopStepHandler)
+    });
+
     private readonly IServiceProvider _sp;
 
-    public StepHandlerMapping(IServiceProvider sp)
-    {
-        _sp = sp ?? throw new ArgumentNullException(nameof(sp));
-
-        _map = new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase)
-        {
-            ["StartStep"] = typeof(StartStepHandler),
-            ["Authorization"] = typeof(LoginStepHandler),
-            ["AuthComplete"] = typeof(AuthCompleteStepHandler),
-            ["GeoSharing"] = typeof(GeosharingStepHandler),
-            ["StopStep"] = typeof(StopStepHandler)
-        };
-    }
+    public StepHandlerMapping(IServiceProvider sp) => _sp = sp ?? throw new ArgumentNullException(nameof(sp));
 
     public IStepHandler GetHandler(string stepId)
     {
