@@ -1,12 +1,13 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Ali.Delivery.Location.Infrastructure;
+using Ali.Delivery.Location.Infrastructure.BackgroundServices;
 using Ali.Delivery.Location.Infrastructure.ExternalServices.Models.Configuration;
-using Ali.Delivery.Location.Infrastructure.Handlers;
 using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Ali.Delivery.Location.Infrastructure.Services;
 using Ali.Delivery.Location.Infrastructure.Services.DataBaseServices;
 using Ali.Delivery.Location.Infrastructure.Services.WriteToDataBase;
+using Ali.Delivery.Location.Infrastructure.StepHandlers;
 using Ali.Delivery.Location.WebApi.Infrastructure.IoC;
 using DotNetEnv;
 using Hellang.Middleware.ProblemDetails;
@@ -44,27 +45,27 @@ try
     builder.Services.AddSwaggerGen();
 
     // Конфигурация Telegram бота
-    var botToken = configuration["BOT_TOKEN"];
+    var botToken = configuration["TelegramToken"];
 
     if (string.IsNullOrEmpty(botToken))
     {
-        Log.Fatal("BOT_TOKEN is not configured!");
+        Log.Fatal("TelegramToken is not configured!");
         return 1;
     }
 
     builder.Services.AddSingleton<ITelegramBotClient>(_ => new TelegramBotClient(botToken));
 
     // State Machine и обработчики
-    
+
     builder.Services.AddSingleton<IUserStateService, InMemoryUserStateService>();
     builder.Services.AddScoped<IStepHandlerMapping, StepHandlerMapping>();
     builder.Services.AddScoped<IStateMachine, StateMachine>();
-    
-    builder.Services.AddTransient<StartStepHandler>();
-    builder.Services.AddTransient<LoginStepHandler>();
-    builder.Services.AddTransient<AuthCompleteStepHandler>();
-    builder.Services.AddTransient<GeosharingStepHandler>();
-    builder.Services.AddTransient<StopStepHandler>();
+
+    builder.Services.AddScoped<StartStepHandler>();
+    builder.Services.AddScoped<LoginStepHandler>();
+    builder.Services.AddScoped<AuthCompleteStepHandler>();
+    builder.Services.AddScoped<GeosharingStepHandler>();
+    builder.Services.AddScoped<StopStepHandler>();
 
     builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(configuration.GetConnectionString(nameof(AppDbContext)))
                                                                   .UseSnakeCaseNamingConvention()

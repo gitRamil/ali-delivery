@@ -33,7 +33,7 @@ public class CommandMethods : ICommandMethods // TODO: Подумать над �
         {
             await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N7_InvalidLocation)!);
 
-            return new CommandResult("");
+            return new CommandResult(string.Empty);
         }
 
         var userLogin = await _userStateService.GetUserLoginAsync(chatId);
@@ -57,7 +57,7 @@ public class CommandMethods : ICommandMethods // TODO: Подумать над �
                                                                              ["Longitude"] = lon
                                                                          })!);
 
-        return new CommandResult("");
+        return new CommandResult(string.Empty);
     }
 
     public async Task<CommandResult> LoginAsync(long chatId, string text)
@@ -68,7 +68,7 @@ public class CommandMethods : ICommandMethods // TODO: Подумать над �
         {
             await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N0_EnterCredentials)!);
 
-            return new CommandResult("");
+            return new CommandResult(string.Empty);
         }
 
         var (login, password) = (parts[0], parts[1]);
@@ -78,17 +78,18 @@ public class CommandMethods : ICommandMethods // TODO: Подумать над �
         {
             case AuthResult.Success:
                 await _userStateService.SetUserLoginAsync(chatId, login);
+                await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N4_AuthenticationComplete)!);
                 return new CommandResult("AuthComplete");
 
             case AuthResult.InvalidCredentials:
                 await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N2_InvalidCredentials)!);
 
-                return new CommandResult("");
+                return new CommandResult(string.Empty);
 
             default:
                 await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N1_InvalidCommand)!);
 
-                return new CommandResult("");
+                return new CommandResult(string.Empty);
         }
     }
 }

@@ -3,7 +3,7 @@ using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace Ali.Delivery.Location.Infrastructure.Handlers;
+namespace Ali.Delivery.Location.Infrastructure.StepHandlers;
 
 public class StartStepHandler : IStepHandler
 {
@@ -12,8 +12,8 @@ public class StartStepHandler : IStepHandler
 
     public StartStepHandler(ITelegramBotClient bot, INotificationService notification)
     {
-        _bot = bot;
-        _notification = notification;
+        _bot = bot ?? throw new ArgumentNullException(nameof(bot));
+        _notification = notification ?? throw new ArgumentNullException(nameof(notification));
     }
 
     public async Task<HandlerResult> HandleAsync(Update update)
@@ -21,11 +21,7 @@ public class StartStepHandler : IStepHandler
         if (update.Message is not { Text: { } text })
         {
             await SendInvalid(update);
-
-            return new HandlerResult
-            {
-                NextStepOption = ""
-            };
+            return new HandlerResult(string.Empty);
         }
 
         text = text.Trim()
@@ -34,30 +30,15 @@ public class StartStepHandler : IStepHandler
         switch (text)
         {
             case "/start":
-                await OnEnterAsync(update.Message.Chat.Id);
-
-                return new HandlerResult
-                {
-                    NextStepOption = ""
-                };
+                await _bot.SendMessage(update.Message.Chat.Id, _notification.GenerateNotificationMessage(NotificationType.N1_Welcome)!);
+                return new HandlerResult(string.Empty);
             case "/login":
-                return new HandlerResult
-                {
-                    NextStepOption = "Authorization"
-                };
+                await _bot.SendMessage(update.Message.Chat.Id, _notification.GenerateNotificationMessage(NotificationType.N0_EnterCredentials)!);
+                return new HandlerResult("Authorization");
             default:
                 await SendInvalid(update);
-
-                return new HandlerResult
-                {
-                    NextStepOption = ""
-                };
+                return new HandlerResult(string.Empty);
         }
-    }
-
-    public async Task OnEnterAsync(long chatId)
-    {
-        await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N1_Welcome)!);
     }
 
     private async Task SendInvalid(Update update)

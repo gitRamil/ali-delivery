@@ -4,9 +4,9 @@ public interface IUserStateService // TODO: Сделать единую сесс
 {
     Task<string?> GetUserLoginAsync(long userId);
 
-    Task<string> GetUserStateAsync(long userId);
+    Task<string> GetUserStepIdAsync(long userId);
 
     Task SetUserLoginAsync(long userId, string login);
 
-    Task SetUserStateAsync(long userId, string stateId);
+    Task SetUserStepAsync(long userId, string stateId);
 }

@@ -1,4 +1,4 @@
-using Ali.Delivery.Location.Infrastructure.Interfaces;
+﻿using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -6,7 +6,7 @@ using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 
-namespace Ali.Delivery.Location.Infrastructure.Services;
+namespace Ali.Delivery.Location.Infrastructure.BackgroundServices;
 
 public sealed class TelegramBotService : BackgroundService
 {
@@ -16,9 +16,9 @@ public sealed class TelegramBotService : BackgroundService
 
     public TelegramBotService(ILogger<TelegramBotService> logger, ITelegramBotClient botClient, IServiceProvider serviceProvider)
     {
-        _logger = logger;
-        _botClient = botClient;
-        _serviceProvider = serviceProvider;
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _botClient = botClient ?? throw new ArgumentNullException(nameof(botClient));
+        _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
     }
 
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)

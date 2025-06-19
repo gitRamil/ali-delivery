@@ -3,7 +3,7 @@ using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace Ali.Delivery.Location.Infrastructure.Handlers;
+namespace Ali.Delivery.Location.Infrastructure.StepHandlers;
 
 public sealed class StopStepHandler : IStepHandler
 {
@@ -12,8 +12,8 @@ public sealed class StopStepHandler : IStepHandler
 
     public StopStepHandler(ITelegramBotClient bot, INotificationService notification)
     {
-        _bot = bot;
-        _notification = notification;
+        _bot = bot ?? throw new ArgumentNullException(nameof(bot));
+        _notification = notification ?? throw new ArgumentNullException(nameof(notification));
     }
 
     public async Task<HandlerResult> HandleAsync(Update update)
@@ -21,34 +21,18 @@ public sealed class StopStepHandler : IStepHandler
         if (update.Message is not { Text: { } text })
         {
             await SendInvalid(update);
-
-            return new HandlerResult
-            {
-                NextStepOption = string.Empty
-            };
+            return new HandlerResult(string.Empty);
         }
 
         if (text.Trim()
                 .Equals("/start", StringComparison.OrdinalIgnoreCase))
         {
-            return new HandlerResult
-            {
-                NextStepOption = "StartStep"
-            };
+            return new HandlerResult("StartStep");
         }
 
         await SendInvalid(update);
 
-        return new HandlerResult
-        {
-            NextStepOption = string.Empty
-        };
-    }
-
-    public async Task OnEnterAsync(long chatId)
-    {
-        var msg = _notification.GenerateNotificationMessage(NotificationType.N_SessionEnded)!;
-        await _bot.SendMessage(chatId, msg);
+        return new HandlerResult(string.Empty);
     }
 
     private async Task SendInvalid(Update update)

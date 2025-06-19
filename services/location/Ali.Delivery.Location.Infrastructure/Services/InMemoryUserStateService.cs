@@ -5,29 +5,27 @@ namespace Ali.Delivery.Location.Infrastructure.Services;
 
 public sealed class InMemoryUserStateService : IUserStateService // TODO: Объединить в одну user - сессию.
 {
-    private readonly ConcurrentDictionary<long, string> _states = new();
-    private readonly ConcurrentDictionary<long, string?> _logins = new();
     private const string DefaultState = "StartStep";
+    private readonly ConcurrentDictionary<long, string?> _logins = new();
+    private readonly ConcurrentDictionary<long, string> _states = new();
 
-    public Task<string> GetUserStateAsync(long telegramUserId)
+    public Task<string?> GetUserLoginAsync(long userId) => Task.FromResult(_logins.GetValueOrDefault(userId, null));
+
+    public Task<string> GetUserStepIdAsync(long userId)
     {
-        var state = _states.GetValueOrDefault(telegramUserId, DefaultState);
+        var state = _states.GetValueOrDefault(userId, DefaultState);
         return Task.FromResult(state);
     }
 
-    public Task SetUserStateAsync(long telegramUserId, string stateId)
-    {
-        _states[telegramUserId] = stateId;
-        return Task.CompletedTask;
-    }
-    
     public Task SetUserLoginAsync(long userId, string login)
     {
         _logins[userId] = login;
         return Task.CompletedTask;
     }
 
-    public Task<string?> GetUserLoginAsync(long userId)
-        => Task.FromResult(_logins.GetValueOrDefault(userId, null));
+    public Task SetUserStepAsync(long userId, string stateId)
+    {
+        _states[userId] = stateId;
+        return Task.CompletedTask;
+    }
 }
-

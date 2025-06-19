@@ -10,11 +10,11 @@ public class WriteToDatabase(IFileServiceForLocation serviceForLocation) : IWrit
     {
         try
         {
-            var updateResponse = await serviceForLocation.UpdateUserLocationAsync(userLogin, e ?? "", s ?? "");
+            var updateResponse = await serviceForLocation.UpdateUserLocationAsync(userLogin, e ?? string.Empty, s ?? string.Empty);
 
             if (updateResponse.StatusCode == HttpStatusCode.NotFound)
             {
-                var createResponse = await serviceForLocation.CreateUserLocationAsync(userLogin, e ?? "", s ?? "");
+                var createResponse = await serviceForLocation.CreateUserLocationAsync(userLogin, e ?? string.Empty, s ?? string.Empty);
                 return createResponse.IsSuccessStatusCode;
             }
 

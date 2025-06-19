@@ -3,7 +3,7 @@ using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace Ali.Delivery.Location.Infrastructure.Handlers;
+namespace Ali.Delivery.Location.Infrastructure.StepHandlers;
 
 public sealed class AuthCompleteStepHandler : IStepHandler
 {
@@ -12,8 +12,8 @@ public sealed class AuthCompleteStepHandler : IStepHandler
 
     public AuthCompleteStepHandler(ITelegramBotClient bot, INotificationService notification)
     {
-        _bot = bot;
-        _notification = notification;
+        _bot = bot ?? throw new ArgumentNullException(nameof(bot));
+        _notification = notification ?? throw new ArgumentNullException(nameof(notification));
     }
 
     public async Task<HandlerResult> HandleAsync(Update update)
@@ -21,11 +21,7 @@ public sealed class AuthCompleteStepHandler : IStepHandler
         if (update.Message is not { Text: { } text })
         {
             await SendInvalid(update);
-
-            return new HandlerResult
-            {
-                NextStepOption = ""
-            };
+            return new HandlerResult(string.Empty);
         }
 
         text = text.Trim()
@@ -34,24 +30,11 @@ public sealed class AuthCompleteStepHandler : IStepHandler
         switch (text)
         {
             case "/geosharing":
-                return new HandlerResult
-                {
-                    NextStepOption = "GeoSharing"
-                };
-
+                return new HandlerResult("GeoSharing");
             default:
                 await SendInvalid(update);
-
-                return new HandlerResult
-                {
-                    NextStepOption = ""
-                };
+                return new HandlerResult(string.Empty);
         }
-    }
-
-    public async Task OnEnterAsync(long chatId)
-    {
-        await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N4_AuthenticationComplete)!);
     }
 
     private async Task SendInvalid(Update update)

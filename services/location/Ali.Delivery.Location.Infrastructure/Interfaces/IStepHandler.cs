@@ -6,8 +6,6 @@ namespace Ali.Delivery.Location.Infrastructure.Interfaces;
 public interface IStepHandler
 {
     Task<HandlerResult> HandleAsync(Update update);
-
-    Task OnEnterAsync(long chatId);
 }
 
 public interface IStepHandlerMapping
