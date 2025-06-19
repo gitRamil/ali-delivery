@@ -1,7 +1,7 @@
+using Ali.Delivery.Location.Infrastructure.ExternalServices.Models;
 using Ali.Delivery.Location.Infrastructure.ExternalServices.Models.Configuration;
 using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Telegram.Bot;
-using Telegram.Bot.Types;
 
 namespace Ali.Delivery.Location.Infrastructure.StepHandlers;
 
@@ -18,17 +18,17 @@ public class GeosharingStepHandler : IStepHandler
         _notification = notification ?? throw new ArgumentNullException(nameof(notification));
     }
 
-    public async Task<HandlerResult> HandleAsync(Update update)
+    public async Task<HandlerResult> HandleAsync(MessageInfo messageInfo)
     {
-        if (update.Message?.Location is { } loc)
+        if (messageInfo.Location is { } loc)
         {
-            var res = await _method.GeoSharingAsync(update.Message.Chat.Id, $"{loc.Latitude} {loc.Longitude}");
+            var res = await _method.GeoSharingAsync(messageInfo.ChatId, $"{loc.Latitude} {loc.Longitude}");
             return new HandlerResult(res.NextStepKey);
         }
 
-        if (update.Message?.Text is not { } text)
+        if (messageInfo.Text is not { } text)
         {
-            await _bot.SendMessage(update.Message.Chat.Id, _notification.GenerateNotificationMessage(NotificationType.N5_RequestLocation));
+            await _bot.SendMessage(messageInfo.ChatId, _notification.GenerateNotificationMessage(NotificationType.N5_RequestLocation));
             return new HandlerResult(string.Empty);
         }
 

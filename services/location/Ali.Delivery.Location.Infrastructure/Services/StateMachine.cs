@@ -1,3 +1,4 @@
+using Ali.Delivery.Location.Infrastructure.ExternalServices.Models;
 using Ali.Delivery.Location.Infrastructure.ExternalServices.Models.Configuration;
 using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Microsoft.Extensions.Options;
@@ -47,7 +48,7 @@ public class StateMachine : IStateMachine // TODO: Проверить нужно
         var currentUserStepId = await _userStateService.GetUserStepIdAsync(userId);
         var currentStepConfig = GetStepConfigById(currentUserStepId);
         var handler = _stepHandlerMapping.GetHandler(currentUserStepId);
-        var result = await handler.HandleAsync(update);
+        var result = await handler.HandleAsync(UpdateConvertToMessageInfo(update));
 
         if (string.IsNullOrWhiteSpace(result.NextStepOption))
         {
@@ -65,4 +66,17 @@ public class StateMachine : IStateMachine // TODO: Проверить нужно
 
     private StepConfiguration GetStepConfigById(string stepId) =>
         _config.Steps.FirstOrDefault(s => s.Id == stepId) ?? throw new InvalidOperationException($"Конфигурация для шага '{stepId}' не найдена.");
+
+    private static MessageInfo UpdateConvertToMessageInfo(Update update) =>
+        new()
+        {
+            ChatId = update.Message!.Chat.Id,
+            Text = update.Message.Text,
+            CallbackQueryChatId = update.CallbackQuery?.Message?.Chat.Id,
+            Location = new ExternalServices.Models.Location
+            {
+                Latitude = update.Message.Location?.Latitude,
+                Longitude = update.Message.Location?.Longitude
+            }
+        };
 }

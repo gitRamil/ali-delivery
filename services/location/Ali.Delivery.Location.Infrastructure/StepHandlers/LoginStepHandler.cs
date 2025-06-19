@@ -1,7 +1,7 @@
+using Ali.Delivery.Location.Infrastructure.ExternalServices.Models;
 using Ali.Delivery.Location.Infrastructure.ExternalServices.Models.Configuration;
 using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Telegram.Bot;
-using Telegram.Bot.Types;
 
 namespace Ali.Delivery.Location.Infrastructure.StepHandlers;
 
@@ -18,16 +18,16 @@ public class LoginStepHandler : IStepHandler
         _notification = notification ?? throw new ArgumentNullException(nameof(notification));
     }
 
-    public async Task<HandlerResult> HandleAsync(Update update)
+    public async Task<HandlerResult> HandleAsync(MessageInfo messageInfo)
     {
-        var chatId = update.Message?.Chat.Id ?? 0;
+        var chatId = messageInfo.ChatId;
 
         if (chatId == 0)
         {
             return new HandlerResult(string.Empty);
         }
 
-        if (update.Message is not { Text: { } text })
+        if (messageInfo is not { Text: { } text })
         {
             await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N1_InvalidAuthCommand));
             return new HandlerResult(string.Empty);

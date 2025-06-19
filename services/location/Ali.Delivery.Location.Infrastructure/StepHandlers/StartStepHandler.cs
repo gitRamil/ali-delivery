@@ -1,7 +1,7 @@
+using Ali.Delivery.Location.Infrastructure.ExternalServices.Models;
 using Ali.Delivery.Location.Infrastructure.ExternalServices.Models.Configuration;
 using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Telegram.Bot;
-using Telegram.Bot.Types;
 
 namespace Ali.Delivery.Location.Infrastructure.StepHandlers;
 
@@ -16,11 +16,11 @@ public class StartStepHandler : IStepHandler
         _notification = notification ?? throw new ArgumentNullException(nameof(notification));
     }
 
-    public async Task<HandlerResult> HandleAsync(Update update)
+    public async Task<HandlerResult> HandleAsync(MessageInfo messageInfo)
     {
-        if (update.Message is not { Text: { } text })
+        if (messageInfo is not { Text: { } text })
         {
-            await SendInvalid(update);
+            await SendInvalid(messageInfo);
             return new HandlerResult(string.Empty);
         }
 
@@ -30,26 +30,21 @@ public class StartStepHandler : IStepHandler
         switch (text)
         {
             case "/start":
-                await _bot.SendMessage(update.Message.Chat.Id, _notification.GenerateNotificationMessage(NotificationType.N1_Welcome));
+                await _bot.SendMessage(messageInfo.ChatId!, _notification.GenerateNotificationMessage(NotificationType.N1_Welcome));
                 return new HandlerResult(string.Empty);
             case "/login":
-                await _bot.SendMessage(update.Message.Chat.Id, _notification.GenerateNotificationMessage(NotificationType.N0_EnterCredentials));
+                await _bot.SendMessage(messageInfo.ChatId!, _notification.GenerateNotificationMessage(NotificationType.N0_EnterCredentials));
                 return new HandlerResult("Authorization");
             default:
-                await SendInvalid(update);
+                await SendInvalid(messageInfo);
                 return new HandlerResult(string.Empty);
         }
     }
 
-    private async Task SendInvalid(Update update)
+    private async Task SendInvalid(MessageInfo messageInfo)
     {
-        var chatId = update.Message?.Chat.Id;
+        var chatId = messageInfo.ChatId;
 
-        if (chatId is null)
-        {
-            return;
-        }
-
-        await _bot.SendMessage(chatId.Value, _notification.GenerateNotificationMessage(NotificationType.N1_InvalidAuthCommand));
+        await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N1_InvalidAuthCommand));
     }
 }

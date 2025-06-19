@@ -1,7 +1,7 @@
+using Ali.Delivery.Location.Infrastructure.ExternalServices.Models;
 using Ali.Delivery.Location.Infrastructure.ExternalServices.Models.Configuration;
 using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Telegram.Bot;
-using Telegram.Bot.Types;
 
 namespace Ali.Delivery.Location.Infrastructure.StepHandlers;
 
@@ -16,11 +16,11 @@ public sealed class AuthCompleteStepHandler : IStepHandler
         _notification = notification ?? throw new ArgumentNullException(nameof(notification));
     }
 
-    public async Task<HandlerResult> HandleAsync(Update update)
+    public async Task<HandlerResult> HandleAsync(MessageInfo messageInfo)
     {
-        if (update.Message is not { Text: { } text })
+        if (messageInfo is not { Text: { } text })
         {
-            await SendInvalid(update);
+            await SendInvalid(messageInfo);
             return new HandlerResult(string.Empty);
         }
 
@@ -32,20 +32,15 @@ public sealed class AuthCompleteStepHandler : IStepHandler
             case "/geosharing":
                 return new HandlerResult("GeoSharing");
             default:
-                await SendInvalid(update);
+                await SendInvalid(messageInfo);
                 return new HandlerResult(string.Empty);
         }
     }
 
-    private async Task SendInvalid(Update update)
+    private async Task SendInvalid(MessageInfo messageInfo)
     {
-        var chatId = update.Message?.Chat.Id ?? update.CallbackQuery?.Message?.Chat.Id;
+        var chatId = messageInfo.ChatId;
 
-        if (chatId is null)
-        {
-            return;
-        }
-
-        await _bot.SendMessage(chatId.Value, _notification.GenerateNotificationMessage(NotificationType.N1_InvalidCommand));
+        await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N1_InvalidCommand));
     }
 }

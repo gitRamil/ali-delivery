@@ -5,8 +5,17 @@ using Refit;
 
 namespace Ali.Delivery.Location.Infrastructure.Services.DataBaseServices;
 
-public class AuthenticationService(IFileServiceForOrder api, ILogger<AuthenticationService> logger) : IAuthenticationService
+public class AuthenticationService : IAuthenticationService
 {
+    private readonly IFileServiceForOrder _api;
+    private readonly ILogger<AuthenticationService> _logger;
+
+    public AuthenticationService(IFileServiceForOrder api, ILogger<AuthenticationService> logger)
+    {
+        _api = api ?? throw new ArgumentNullException(nameof(api));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    }
+
     public async Task<AuthenticationResult> AuthenticateAsync(string login, string password)
     {
         try
@@ -32,12 +41,12 @@ public class AuthenticationService(IFileServiceForOrder api, ILogger<Authenticat
         }
         catch (ApiException ex) when (ex.StatusCode == HttpStatusCode.Unauthorized)
         {
-            logger.LogWarning("401 for {Login}", login);
+            _logger.LogWarning("401 for {Login}", login);
             return new AuthenticationResult(AuthResult.InvalidCredentials);
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Auth error for {Login}", login);
+            _logger.LogError(ex, "Auth error for {Login}", login);
             return new AuthenticationResult(AuthResult.Error);
         }
     }

@@ -5,12 +5,21 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace Ali.Delivery.Location.Infrastructure.Services.DataBaseServices;
 
-public class LocationService(IWriteToDatabase dbWriter, IMemoryCache cache) : ILocationService
+public class LocationService : ILocationService
 {
+    private readonly IMemoryCache _cache;
+    private readonly IWriteToDatabase _dbWriter;
+
+    public LocationService(IMemoryCache cache, IWriteToDatabase dbWriter)
+    {
+        _cache = cache ?? throw new ArgumentNullException(nameof(cache));
+        _dbWriter = dbWriter ?? throw new ArgumentNullException(nameof(dbWriter));
+    }
+
     public async Task<bool> SaveLocationAsync(long userId, string userLogin, double latitude, double longitude)
     {
-        cache.Set($"last_location_{userId}", (latitude, longitude), TimeSpan.FromMinutes(30));
+        _cache.Set($"last_location_{userId}", (latitude, longitude), TimeSpan.FromMinutes(30));
 
-        return await dbWriter.UpsertUserLocation(userLogin, latitude.ToString(CultureInfo.InvariantCulture), longitude.ToString(CultureInfo.InvariantCulture));
+        return await _dbWriter.UpsertUserLocation(userLogin, latitude.ToString(CultureInfo.InvariantCulture), longitude.ToString(CultureInfo.InvariantCulture));
     }
 }
