@@ -2,7 +2,7 @@ using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Ali.Delivery.Location.Infrastructure.StepHandlers;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Ali.Delivery.Location.Infrastructure.ExternalServices.Models.Configuration;
+namespace Ali.Delivery.Location.Infrastructure.StateMachine;
 
 public sealed class StepHandlerMapping : IStepHandlerMapping
 {

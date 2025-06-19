@@ -7,8 +7,3 @@ public interface IStepHandler
 {
     Task<HandlerResult> HandleAsync(MessageInfo update);
 }
-
-public interface IStepHandlerMapping
-{
-    IStepHandler GetHandler(string stepId);
-}

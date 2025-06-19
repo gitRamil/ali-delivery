@@ -64,11 +64,12 @@ public sealed class TelegramBotService : BackgroundService
 
         var notificationService = scope.ServiceProvider.GetRequiredService<INotificationService>();
         var stateMachine = scope.ServiceProvider.GetRequiredService<IStateMachine>();
-        var messageInfo = ConvertUpdateToMessageInfo(update);
 
         try
         {
+            var messageInfo = ConvertUpdateToMessageInfo(update);
             Task SendInvalidCommandTelegramMessage() => _botClient.SendMessage(messageInfo.ChatId, notificationService.GenerateNotificationMessage(NotificationType.N1_InvalidCommand), cancellationToken: cancellationToken);
+
             await stateMachine.ProcessUpdateAsync(messageInfo, SendInvalidCommandTelegramMessage);
         }
         catch (Exception ex)

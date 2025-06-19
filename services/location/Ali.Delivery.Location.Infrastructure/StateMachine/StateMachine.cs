@@ -2,10 +2,8 @@ using Ali.Delivery.Location.Infrastructure.ExternalServices.Models;
 using Ali.Delivery.Location.Infrastructure.ExternalServices.Models.Configuration;
 using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Microsoft.Extensions.Options;
-using Telegram.Bot;
-using Telegram.Bot.Types;
 
-namespace Ali.Delivery.Location.Infrastructure.Services;
+namespace Ali.Delivery.Location.Infrastructure.StateMachine;
 
 public class StateMachine : IStateMachine
 {
