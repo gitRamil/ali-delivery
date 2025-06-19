@@ -1,4 +1,5 @@
-﻿using Refit;
+﻿using Ali.Delivery.Location.Infrastructure.Models;
+using Refit;
 
 namespace Ali.Delivery.Location.Infrastructure.Interfaces;
 
@@ -10,7 +11,3 @@ public interface IFileServiceForOrder
     [Post("/api/v1/user/login")]
     Task<string?> LoginAsync([Body] LoginRequest loginRequest);
 }
-
-public record UserInfo(string? Login);
-
-public record LoginRequest(string Login, string Password);

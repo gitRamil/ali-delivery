@@ -1,5 +1,6 @@
 using System.Net;
 using Ali.Delivery.Location.Infrastructure.Interfaces;
+using Ali.Delivery.Location.Infrastructure.Models;
 using Microsoft.Extensions.Logging;
 using Refit;
 

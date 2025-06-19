@@ -1,5 +1,5 @@
-using Ali.Delivery.Location.Infrastructure.ExternalServices.Models;
-using Ali.Delivery.Location.Infrastructure.ExternalServices.Models.Configuration;
+using Ali.Delivery.Location.Infrastructure.Models;
+using Ali.Delivery.Location.Infrastructure.Models.Configuration;
 using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Microsoft.Extensions.Options;
 

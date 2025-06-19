@@ -1,4 +1,4 @@
-namespace Ali.Delivery.Location.Infrastructure.ExternalServices.Models;
+namespace Ali.Delivery.Location.Infrastructure.Models;
 
 public enum NotificationType
 {

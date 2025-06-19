@@ -1,6 +1,6 @@
 using System.Globalization;
-using Ali.Delivery.Location.Infrastructure.ExternalServices.Models;
 using Ali.Delivery.Location.Infrastructure.Interfaces;
+using Ali.Delivery.Location.Infrastructure.Models;
 using Microsoft.Extensions.Logging;
 
 namespace Ali.Delivery.Location.Infrastructure.Services;
@@ -35,7 +35,7 @@ public class NotificationService(ILogger<NotificationService> logger) : INotific
             return string.Empty;
         }
 
-        var message = GetBaseNotificationMessage(notification.Value); 
+        var message = GetBaseNotificationMessage(notification.Value);
 
         if (notification == NotificationType.N6_LocationReceived && userData != null)
         {

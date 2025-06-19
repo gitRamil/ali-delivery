@@ -1,6 +1,5 @@
-﻿using Ali.Delivery.Location.Infrastructure.ExternalServices.Models;
-using Ali.Delivery.Location.Infrastructure.ExternalServices.Models.Configuration;
-using Ali.Delivery.Location.Infrastructure.Interfaces;
+﻿using Ali.Delivery.Location.Infrastructure.Interfaces;
+using Ali.Delivery.Location.Infrastructure.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -68,7 +67,11 @@ public sealed class TelegramBotService : BackgroundService
         try
         {
             var messageInfo = ConvertUpdateToMessageInfo(update);
-            Task SendInvalidCommandTelegramMessage() => _botClient.SendMessage(messageInfo.ChatId, notificationService.GenerateNotificationMessage(NotificationType.N1_InvalidCommand), cancellationToken: cancellationToken);
+
+            Task SendInvalidCommandTelegramMessage() =>
+                _botClient.SendMessage(messageInfo.ChatId,
+                                       notificationService.GenerateNotificationMessage(NotificationType.N1_InvalidCommand),
+                                       cancellationToken: cancellationToken);
 
             await stateMachine.ProcessUpdateAsync(messageInfo, SendInvalidCommandTelegramMessage);
         }

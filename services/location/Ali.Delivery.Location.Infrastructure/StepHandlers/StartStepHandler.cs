@@ -1,6 +1,5 @@
-using Ali.Delivery.Location.Infrastructure.ExternalServices.Models;
-using Ali.Delivery.Location.Infrastructure.ExternalServices.Models.Configuration;
 using Ali.Delivery.Location.Infrastructure.Interfaces;
+using Ali.Delivery.Location.Infrastructure.Models;
 using Telegram.Bot;
 
 namespace Ali.Delivery.Location.Infrastructure.StepHandlers;

@@ -1,5 +1,4 @@
-using Ali.Delivery.Location.Infrastructure.ExternalServices.Models;
-using Ali.Delivery.Location.Infrastructure.ExternalServices.Models.Configuration;
+using Ali.Delivery.Location.Infrastructure.Models;
 
 namespace Ali.Delivery.Location.Infrastructure.Interfaces;
 
