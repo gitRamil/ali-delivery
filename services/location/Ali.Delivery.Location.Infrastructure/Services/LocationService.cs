@@ -1,9 +1,8 @@
 using System.Globalization;
 using Ali.Delivery.Location.Infrastructure.Interfaces;
-using Ali.Delivery.Location.Infrastructure.Services.WriteToDataBase;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace Ali.Delivery.Location.Infrastructure.Services.DataBaseServices;
+namespace Ali.Delivery.Location.Infrastructure.Services;
 
 public class LocationService : ILocationService
 {

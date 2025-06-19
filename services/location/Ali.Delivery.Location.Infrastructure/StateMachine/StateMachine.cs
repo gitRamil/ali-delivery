@@ -1,6 +1,6 @@
+using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Ali.Delivery.Location.Infrastructure.Models;
 using Ali.Delivery.Location.Infrastructure.Models.Configuration;
-using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Microsoft.Extensions.Options;
 
 namespace Ali.Delivery.Location.Infrastructure.StateMachine;
@@ -11,9 +11,7 @@ public class StateMachine : IStateMachine
     private readonly IStepHandlerMapping _stepHandlerMapping;
     private readonly IUserStateService _userStateService;
 
-    public StateMachine(IOptions<StateMachineConfiguration> config,
-                        IStepHandlerMapping stepHandlerMapping,
-                        IUserStateService userStateService)
+    public StateMachine(IOptions<StateMachineConfiguration> config, IStepHandlerMapping stepHandlerMapping, IUserStateService userStateService)
     {
         _config = config.Value ?? throw new ArgumentNullException(nameof(config));
         _stepHandlerMapping = stepHandlerMapping ?? throw new ArgumentNullException(nameof(stepHandlerMapping));

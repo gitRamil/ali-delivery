@@ -4,7 +4,7 @@ using Ali.Delivery.Location.Infrastructure.Models;
 using Microsoft.Extensions.Logging;
 using Refit;
 
-namespace Ali.Delivery.Location.Infrastructure.Services.DataBaseServices;
+namespace Ali.Delivery.Location.Infrastructure.Services;
 
 public class AuthenticationService : IAuthenticationService
 {

@@ -4,34 +4,34 @@
       "Id": "StartStep",
       "SelectNextStep": {
         "Authorization": "Authorization",
-        "StopStep":      "StopStep"
+        "StopStep": "StopStep"
       }
     },
     {
       "Id": "Authorization",
       "SelectNextStep": {
         "AuthComplete": "AuthComplete",
-        "StopStep":     "StopStep"
+        "StopStep": "StopStep"
       }
     },
     {
       "Id": "AuthComplete",
       "SelectNextStep": {
         "GeoSharing": "GeoSharing",
-        "StopStep":   "StopStep"
+        "StopStep": "StopStep"
       }
     },
     {
       "Id": "GeoSharing",
       "SelectNextStep": {
-        "AuthComplete": "AuthComplete",  
-        "StopStep":     "StopStep"        
+        "AuthComplete": "AuthComplete",
+        "StopStep": "StopStep"
       }
     },
     {
       "Id": "StopStep",
       "SelectNextStep": {
-        "StartStep": "StartStep"         
+        "StartStep": "StartStep"
       }
     }
   ]

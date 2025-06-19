@@ -1,4 +1,4 @@
-namespace Ali.Delivery.Location.Infrastructure.Services.WriteToDataBase;
+namespace Ali.Delivery.Location.Infrastructure.Interfaces;
 
 public interface IWriteToDatabase
 {
