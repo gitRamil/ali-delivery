@@ -31,7 +31,7 @@ public class CommandMethods : ICommandMethods // TODO: Подумать над �
             !double.TryParse(parts[0], NumberStyles.Any, CultureInfo.InvariantCulture, out var lat) ||
             !double.TryParse(parts[1], NumberStyles.Any, CultureInfo.InvariantCulture, out var lon))
         {
-            await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N7_InvalidLocation)!);
+            await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N7_InvalidLocation));
 
             return new CommandResult(string.Empty);
         }
@@ -40,7 +40,7 @@ public class CommandMethods : ICommandMethods // TODO: Подумать над �
 
         if (string.IsNullOrEmpty(userLogin))
         {
-            await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N2_InvalidCredentials)!);
+            await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N2_InvalidCredentials));
 
             return new CommandResult("Authorization");
         }
@@ -55,7 +55,7 @@ public class CommandMethods : ICommandMethods // TODO: Подумать над �
                                                                          {
                                                                              ["Latitude"] = lat,
                                                                              ["Longitude"] = lon
-                                                                         })!);
+                                                                         }));
 
         return new CommandResult(string.Empty);
     }
@@ -66,7 +66,7 @@ public class CommandMethods : ICommandMethods // TODO: Подумать над �
 
         if (parts.Length < 2)
         {
-            await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N0_EnterCredentials)!);
+            await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N0_EnterCredentials));
 
             return new CommandResult(string.Empty);
         }
@@ -78,16 +78,16 @@ public class CommandMethods : ICommandMethods // TODO: Подумать над �
         {
             case AuthResult.Success:
                 await _userStateService.SetUserLoginAsync(chatId, login);
-                await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N4_AuthenticationComplete)!);
+                await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N4_AuthenticationComplete));
                 return new CommandResult("AuthComplete");
 
             case AuthResult.InvalidCredentials:
-                await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N2_InvalidCredentials)!);
+                await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N2_InvalidCredentials));
 
                 return new CommandResult(string.Empty);
 
             default:
-                await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N1_InvalidCommand)!);
+                await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N1_InvalidCommand));
 
                 return new CommandResult(string.Empty);
         }

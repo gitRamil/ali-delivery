@@ -23,13 +23,12 @@ public class GeosharingStepHandler : IStepHandler
         if (update.Message?.Location is { } loc)
         {
             var res = await _method.GeoSharingAsync(update.Message.Chat.Id, $"{loc.Latitude} {loc.Longitude}");
-
             return new HandlerResult(res.NextStepKey);
         }
 
         if (update.Message?.Text is not { } text)
         {
-            await _bot.SendMessage(update.Message.Chat.Id, _notification.GenerateNotificationMessage(NotificationType.N5_RequestLocation)!);
+            await _bot.SendMessage(update.Message.Chat.Id, _notification.GenerateNotificationMessage(NotificationType.N5_RequestLocation));
             return new HandlerResult(string.Empty);
         }
 

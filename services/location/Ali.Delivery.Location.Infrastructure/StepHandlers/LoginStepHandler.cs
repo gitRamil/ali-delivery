@@ -29,8 +29,7 @@ public class LoginStepHandler : IStepHandler
 
         if (update.Message is not { Text: { } text })
         {
-            var hint = _notification.GenerateNotificationMessage(NotificationType.N1_InvalidAuthCommand)!;
-            await _bot.SendMessage(chatId, hint);
+            await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N1_InvalidAuthCommand));
             return new HandlerResult(string.Empty);
         }
 

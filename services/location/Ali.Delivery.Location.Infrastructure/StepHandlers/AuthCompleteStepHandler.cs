@@ -46,6 +46,6 @@ public sealed class AuthCompleteStepHandler : IStepHandler
             return;
         }
 
-        await _bot.SendMessage(chatId.Value, _notification.GenerateNotificationMessage(NotificationType.N1_InvalidCommand)!);
+        await _bot.SendMessage(chatId.Value, _notification.GenerateNotificationMessage(NotificationType.N1_InvalidCommand));
     }
 }

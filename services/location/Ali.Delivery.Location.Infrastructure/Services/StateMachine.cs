@@ -56,7 +56,7 @@ public class StateMachine : IStateMachine // TODO: Проверить нужно
 
         if (!currentStepConfig.SelectNextStep.TryGetValue(result.NextStepOption, out var nextStepId))
         {
-            await _botClient.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N1_InvalidCommand)!);
+            await _botClient.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N1_InvalidCommand));
             return;
         }
 

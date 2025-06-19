@@ -28,11 +28,11 @@ public class NotificationService(ILogger<NotificationService> logger) : INotific
 
     private readonly ILogger<NotificationService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-    public string? GenerateNotificationMessage(NotificationType? notification, Dictionary<string, object>? userData = null)
+    public string GenerateNotificationMessage(NotificationType? notification, Dictionary<string, object>? userData = null)
     {
         if (notification == null)
         {
-            return null;
+            return string.Empty;
         }
 
         var message = GetBaseNotificationMessage(notification.Value); 
@@ -72,6 +72,6 @@ public class NotificationService(ILogger<NotificationService> logger) : INotific
         return baseMessage;
     }
 
-    private string GetBaseNotificationMessage(NotificationType notification) =>
+    private static string GetBaseNotificationMessage(NotificationType notification) =>
         NotificationMessages.TryGetValue(notification, out var message) ? message : $"Неизвестный тип уведомления ({notification}). Обратитесь к разработчику.";
 }

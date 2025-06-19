@@ -43,8 +43,7 @@ public sealed class StopStepHandler : IStepHandler
 
             if (chatId != 0)
             {
-                var msg = _notification.GenerateNotificationMessage(NotificationType.N1_InvalidCommand)!;
-                await _bot.SendMessage(chatId, msg);
+                await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N1_InvalidCommand));
             }
         }
     }

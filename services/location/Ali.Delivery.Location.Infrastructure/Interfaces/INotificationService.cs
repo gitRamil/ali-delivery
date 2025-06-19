@@ -4,5 +4,5 @@ namespace Ali.Delivery.Location.Infrastructure.Interfaces;
 
 public interface INotificationService
 {
-    string? GenerateNotificationMessage(NotificationType? notification, Dictionary<string, object>? userData = null);
+    string GenerateNotificationMessage(NotificationType? notification, Dictionary<string, object>? userData = null);
 }

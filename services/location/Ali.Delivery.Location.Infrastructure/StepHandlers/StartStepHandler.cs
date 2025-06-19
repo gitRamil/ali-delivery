@@ -30,10 +30,10 @@ public class StartStepHandler : IStepHandler
         switch (text)
         {
             case "/start":
-                await _bot.SendMessage(update.Message.Chat.Id, _notification.GenerateNotificationMessage(NotificationType.N1_Welcome)!);
+                await _bot.SendMessage(update.Message.Chat.Id, _notification.GenerateNotificationMessage(NotificationType.N1_Welcome));
                 return new HandlerResult(string.Empty);
             case "/login":
-                await _bot.SendMessage(update.Message.Chat.Id, _notification.GenerateNotificationMessage(NotificationType.N0_EnterCredentials)!);
+                await _bot.SendMessage(update.Message.Chat.Id, _notification.GenerateNotificationMessage(NotificationType.N0_EnterCredentials));
                 return new HandlerResult("Authorization");
             default:
                 await SendInvalid(update);
@@ -50,6 +50,6 @@ public class StartStepHandler : IStepHandler
             return;
         }
 
-        await _bot.SendMessage(chatId.Value, _notification.GenerateNotificationMessage(NotificationType.N1_InvalidAuthCommand)!);
+        await _bot.SendMessage(chatId.Value, _notification.GenerateNotificationMessage(NotificationType.N1_InvalidAuthCommand));
     }
 }
