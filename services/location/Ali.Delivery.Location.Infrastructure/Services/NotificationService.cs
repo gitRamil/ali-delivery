@@ -5,8 +5,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Ali.Delivery.Location.Infrastructure.Services;
 
-public class NotificationService(ILogger<NotificationService> logger) : INotificationService // TODO: Подумать над уведомлениями.
+public class NotificationService : INotificationService // TODO: Подумать над уведомлениями.
 {
+    private readonly ILogger<NotificationService> _logger;
+
+    public NotificationService(ILogger<NotificationService> logger) => _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
     private static readonly Dictionary<NotificationType, string> NotificationMessages = new()
     {
         [NotificationType.N0_EnterCredentials] = "Введите логин и пароль (например, user123 pass).",
@@ -25,8 +29,6 @@ public class NotificationService(ILogger<NotificationService> logger) : INotific
         [NotificationType.N7_InvalidLocation] =
             "Не удалось сохранить локацию. Пожалуйста, попробуйте снова или введите /stop_geosharing для перехода в режим ожидания команды, либо завершите сессию командой /stop."
     };
-
-    private readonly ILogger<NotificationService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
     public string GenerateNotificationMessage(NotificationType? notification, Dictionary<string, object>? userData = null)
     {

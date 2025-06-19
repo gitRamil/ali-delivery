@@ -15,11 +15,11 @@ public class CommandMethods : ICommandMethods // TODO: Подумать над �
 
     public CommandMethods(ITelegramBotClient bot, IAuthenticationService auth, INotificationService notification, ILocationService location, IUserStateService userStateService)
     {
-        _bot = bot;
-        _auth = auth;
-        _notification = notification;
-        _location = location;
-        _userStateService = userStateService;
+        _bot = bot ?? throw new ArgumentNullException(nameof(bot));
+        _auth = auth ?? throw new ArgumentNullException(nameof(auth));
+        _notification = notification ?? throw new ArgumentNullException(nameof(notification));
+        _location = location ?? throw new ArgumentNullException(nameof(location));
+        _userStateService = userStateService ?? throw new ArgumentNullException(nameof(userStateService));
     }
 
     public async Task<CommandResult> GeoSharingAsync(long chatId, string text)
