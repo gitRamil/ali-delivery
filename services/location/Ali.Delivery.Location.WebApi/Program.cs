@@ -65,6 +65,7 @@ try
     builder.Services.AddScoped<AuthCompleteStepHandler>();
     builder.Services.AddScoped<GeosharingStepHandler>();
     builder.Services.AddScoped<StopStepHandler>();
+    builder.Services.AddScoped<SaveLocationService>();
 
     builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(configuration.GetConnectionString(nameof(AppDbContext)))
                                                                   .UseSnakeCaseNamingConvention()
@@ -74,15 +75,9 @@ try
     // Внешние API сервисы
     builder.Services.AddRefitClient<IFileServiceForOrder>()
            .ConfigureHttpClient(c => c.BaseAddress = new Uri(configuration["ExternalServices:OrderService"]!));
-
-    builder.Services.AddRefitClient<IFileServiceForLocation>()
-           .ConfigureHttpClient(c => c.BaseAddress = new Uri(configuration["ExternalServices:LocationService"]!));
-
+    
     // Сервисы приложения
     builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
-    builder.Services.AddScoped<ILocationService, LocationService>();
-    builder.Services.AddScoped<IWriteToDatabase, WriteToDatabase>();
-    builder.Services.AddScoped<ICommandMethods, CommandMethods>();
     builder.Services.AddScoped<INotificationService, NotificationService>();
 
     // Фоновый сервис бота

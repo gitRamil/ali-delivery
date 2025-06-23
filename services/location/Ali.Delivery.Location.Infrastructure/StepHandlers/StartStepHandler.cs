@@ -29,11 +29,14 @@ public class StartStepHandler : IStepHandler
         switch (text)
         {
             case "/start":
-                await _bot.SendMessage(messageInfo.ChatId!, _notification.GenerateNotificationMessage(NotificationType.N1_Welcome));
+                await _bot.SendMessage(messageInfo.ChatId, _notification.GenerateNotificationMessage(NotificationType.N1_Welcome));
                 return new HandlerResult(string.Empty);
             case "/login":
-                await _bot.SendMessage(messageInfo.ChatId!, _notification.GenerateNotificationMessage(NotificationType.N0_EnterCredentials));
+                await _bot.SendMessage(messageInfo.ChatId, _notification.GenerateNotificationMessage(NotificationType.N0_EnterCredentials));
                 return new HandlerResult("Authorization");
+            case "/stop":
+                await _bot.SendMessage(messageInfo.ChatId, _notification.GenerateNotificationMessage(NotificationType.N_SessionEnded));
+                return new HandlerResult("StopStep");
             default:
                 await SendInvalid(messageInfo);
                 return new HandlerResult(string.Empty);

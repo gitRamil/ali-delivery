@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace Ali.Delivery.Location.Infrastructure.StateMachine;
 
-public class StateMachine : IStateMachine
+public class StateMachine : IStateMachine // TODO: Реализовать нормальную обработку "StopStep" и его нотификатора
 {
     private readonly StateMachineConfiguration _config;
     private readonly IStepHandlerMapping _stepHandlerMapping;
@@ -21,14 +21,6 @@ public class StateMachine : IStateMachine
     public async Task ProcessUpdateAsync(MessageInfo messageInfo, Func<Task> sendInvalidCommandMessage)
     {
         var userId = messageInfo.FromId;
-        var text = messageInfo.Text;
-
-        if (string.Equals(text, "/stop", StringComparison.OrdinalIgnoreCase))
-        {
-            await _userStateService.SetUserStepAsync(userId, "StopStep");
-            return;
-        }
-
         var currentUserStepId = await _userStateService.GetUserStepIdAsync(userId);
         var currentStepConfig = GetStepConfigById(currentUserStepId);
         var handler = _stepHandlerMapping.GetHandler(currentUserStepId);

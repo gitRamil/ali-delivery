@@ -6,15 +6,15 @@ namespace Ali.Delivery.Location.Infrastructure.StepHandlers;
 
 public class LoginStepHandler : IStepHandler
 {
+    private readonly IAuthenticationService _authenticationService;
     private readonly ITelegramBotClient _bot;
-    private readonly ICommandMethods _method;
     private readonly INotificationService _notification;
 
-    public LoginStepHandler(ITelegramBotClient bot, ICommandMethods method, INotificationService notification)
+    public LoginStepHandler(ITelegramBotClient bot, INotificationService notification, IAuthenticationService authenticationService)
     {
         _bot = bot ?? throw new ArgumentNullException(nameof(bot));
-        _method = method ?? throw new ArgumentNullException(nameof(method));
         _notification = notification ?? throw new ArgumentNullException(nameof(notification));
+        _authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
     }
 
     public async Task<HandlerResult> HandleAsync(MessageInfo messageInfo)
@@ -32,7 +32,13 @@ public class LoginStepHandler : IStepHandler
             return new HandlerResult(string.Empty);
         }
 
-        var res = await _method.LoginAsync(chatId, text);
+        if (string.Equals(messageInfo.Text, "/stop", StringComparison.OrdinalIgnoreCase))
+        {
+            await _bot.SendMessage(messageInfo.ChatId, _notification.GenerateNotificationMessage(NotificationType.N_SessionEnded));
+            return new HandlerResult("StopStep");
+        }
+
+        var res = await _authenticationService.LoginAsync(chatId, text);
 
         return new HandlerResult(res.NextStepKey);
     }

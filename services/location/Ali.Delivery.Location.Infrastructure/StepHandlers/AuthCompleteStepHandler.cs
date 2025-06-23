@@ -29,7 +29,11 @@ public sealed class AuthCompleteStepHandler : IStepHandler
         switch (text)
         {
             case "/geosharing":
+                await _bot.SendMessage(messageInfo.ChatId, _notification.GenerateNotificationMessage(NotificationType.N5_RequestLocation));
                 return new HandlerResult("GeoSharing");
+            case "/stop":
+                await _bot.SendMessage(messageInfo.ChatId, _notification.GenerateNotificationMessage(NotificationType.N_SessionEnded));
+                return new HandlerResult("StopStep");
             default:
                 await SendInvalid(messageInfo);
                 return new HandlerResult(string.Empty);

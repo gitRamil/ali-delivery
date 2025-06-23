@@ -3,6 +3,7 @@ using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Ali.Delivery.Location.Infrastructure.Models;
 using Microsoft.Extensions.Logging;
 using Refit;
+using Telegram.Bot;
 
 namespace Ali.Delivery.Location.Infrastructure.Services;
 
@@ -10,11 +11,17 @@ public class AuthenticationService : IAuthenticationService
 {
     private readonly IFileServiceForOrder _api;
     private readonly ILogger<AuthenticationService> _logger;
+    private readonly IUserStateService _userStateService;
+    private readonly ITelegramBotClient _bot;
+    private readonly INotificationService _notification;
 
-    public AuthenticationService(IFileServiceForOrder api, ILogger<AuthenticationService> logger)
+    public AuthenticationService(IFileServiceForOrder api, ILogger<AuthenticationService> logger, IUserStateService userStateService, ITelegramBotClient bot, INotificationService notification)
     {
         _api = api ?? throw new ArgumentNullException(nameof(api));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _userStateService = userStateService ?? throw new ArgumentNullException(nameof(userStateService));
+        _bot = bot ?? throw new ArgumentNullException(nameof(bot));
+        _notification = notification ?? throw new ArgumentNullException(nameof(notification));
     }
 
     public async Task<AuthenticationResult> AuthenticateAsync(string login, string password)
@@ -49,6 +56,39 @@ public class AuthenticationService : IAuthenticationService
         {
             _logger.LogError(ex, "Auth error for {Login}", login);
             return new AuthenticationResult(AuthResult.Error);
+        }
+    }
+    
+    public async Task<CommandResult> LoginAsync(long chatId, string text)
+    {
+        var parts = text.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+
+        if (parts.Length < 2)
+        {
+            await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N0_EnterCredentials));
+
+            return new CommandResult(string.Empty);
+        }
+
+        var (login, password) = (parts[0], parts[1]);
+        var auth = await AuthenticateAsync(login, password);
+
+        switch (auth.Status)
+        {
+            case AuthResult.Success:
+                await _userStateService.SetUserLoginAsync(chatId, login);
+                await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N4_AuthenticationComplete));
+                return new CommandResult("AuthComplete");
+
+            case AuthResult.InvalidCredentials:
+                await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N2_InvalidCredentials));
+
+                return new CommandResult(string.Empty);
+
+            default:
+                await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N1_InvalidCommand));
+
+                return new CommandResult(string.Empty);
         }
     }
 }

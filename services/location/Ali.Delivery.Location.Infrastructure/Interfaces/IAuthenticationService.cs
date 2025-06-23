@@ -5,4 +5,6 @@ namespace Ali.Delivery.Location.Infrastructure.Interfaces;
 public interface IAuthenticationService // TODO: Подумать над упрощением.
 {
     Task<AuthenticationResult> AuthenticateAsync(string login, string password);
+
+    Task<CommandResult> LoginAsync(long chatId, string text);
 }
