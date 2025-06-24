@@ -1,32 +1,37 @@
 using System.Globalization;
+using Ali.Delivery.Location.Application.UseCases.CreateOrUpdateUserLocationCommand;
 using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Ali.Delivery.Location.Infrastructure.Models;
-using Ali.Delivery.Location.Infrastructure.Services;
+using MediatR;
 using Telegram.Bot;
 
-namespace Ali.Delivery.Location.Infrastructure.StepHandlers;
+namespace Ali.Delivery.Location.Application.StepHandlers;
 
 public class GeosharingStepHandler : IStepHandler
 {
     private readonly ITelegramBotClient _bot;
     private readonly INotificationService _notification;
-    private readonly SaveLocationService _saveLocationService;
+    private readonly IMediator _mediator;
 
-    public GeosharingStepHandler(ITelegramBotClient bot, INotificationService notification, SaveLocationService saveLocationService)
+    public GeosharingStepHandler(ITelegramBotClient bot, INotificationService notification, IMediator mediator)
     {
         _bot = bot ?? throw new ArgumentNullException(nameof(bot));
         _notification = notification ?? throw new ArgumentNullException(nameof(notification));
-        _saveLocationService = saveLocationService;
+        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     }
 
     public async Task<HandlerResult> HandleAsync(MessageInfo messageInfo)
     {
         if (messageInfo.Location is { } loc)
         {
-            var res = await _saveLocationService.CreateOrUpdateUserLocationAsync(messageInfo.ChatId.ToString(),
-                                                                                 loc.Latitude.ToString(CultureInfo.InvariantCulture),
-                                                                                 loc.Longitude.ToString(CultureInfo.InvariantCulture));
+            var locationCommand = new CreateOrUpdateUserLocationCommand(
+                messageInfo.ChatId.ToString(),
+                loc.Longitude.ToString(CultureInfo.InvariantCulture),
+                loc.Latitude.ToString(CultureInfo.InvariantCulture)
+            );
 
+            // 2. Отправляем команду через MediatR
+            var result = await _mediator.Send(locationCommand); // CancellationToken можно передать, если он есть в HandleAsync
             var messageWithLocation = _notification.GenerateNotificationMessage(NotificationType.N6_LocationReceived,
                                                                                 new Dictionary<string, object>
                                                                                 {
@@ -34,7 +39,7 @@ public class GeosharingStepHandler : IStepHandler
                                                                                     ["Longitude"] = loc.Longitude
                                                                                 });
             await _bot.SendMessage(messageInfo.ChatId, messageWithLocation);
-            return new HandlerResult(res.NextStepKey);
+            return new HandlerResult(result.NextStepKey);
         }
 
         if (messageInfo.Text is not { } text)

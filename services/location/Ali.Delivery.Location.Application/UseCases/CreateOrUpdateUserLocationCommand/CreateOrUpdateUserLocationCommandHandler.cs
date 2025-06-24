@@ -1,0 +1,53 @@
+using Ali.Delivery.Domain.Core.Primitives;
+using Ali.Delivery.Location.Application.Abstractions;
+using Ali.Delivery.Location.Domain.Entities;
+using Ali.Delivery.Location.Infrastructure.Models;
+using MediatR;
+
+namespace Ali.Delivery.Location.Application.UseCases.CreateOrUpdateUserLocationCommand;
+
+/// <summary>
+/// 
+/// </summary>
+public class CreateOrUpdateUserLocationCommandHandler : IRequestHandler<CreateOrUpdateUserLocationCommand,CommandResult>
+{
+    private readonly IUserLocationRepository _repository;
+    private readonly IAppDbContext _context;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="repository"></param>
+    /// <param name="context"></param>
+    public CreateOrUpdateUserLocationCommandHandler(IUserLocationRepository repository, IAppDbContext context)
+    {
+        _repository = repository;
+        _context = context;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    public async Task<CommandResult> Handle(CreateOrUpdateUserLocationCommand request, CancellationToken cancellationToken)
+    {
+        if (await _repository.UserExistsAsync(request.UserLogin, cancellationToken))
+        {
+            var userLocation = await _repository.GetByUserLoginAsync(request.UserLogin, cancellationToken);
+            if (userLocation != null)
+            {
+                userLocation.UpdateCoordinates(request.Latitude, request.Longitude);
+                await _repository.UpdateAsync(userLocation, cancellationToken);
+            }
+        }
+        else
+        {
+            var newUserLocation = new UserLocation(SequentialGuid.Create(), request.UserLogin);
+            newUserLocation.UpdateCoordinates(request.Latitude, request.Longitude);
+            await _repository.AddAsync(newUserLocation, cancellationToken);
+        }
+        await _context.SaveChangesAsync(cancellationToken);
+        return new CommandResult(string.Empty);
+    }
+}

@@ -1,6 +1,7 @@
+using Ali.Delivery.Location.Application.Configurations;
+using Ali.Delivery.Location.Application.StateMachineConfigurations;
 using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Ali.Delivery.Location.Infrastructure.Models;
-using Ali.Delivery.Location.Infrastructure.Models.Configuration;
 using Microsoft.Extensions.Options;
 
 namespace Ali.Delivery.Location.Infrastructure.StateMachine;

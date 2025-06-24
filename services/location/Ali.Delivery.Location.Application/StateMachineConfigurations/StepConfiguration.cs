@@ -1,4 +1,4 @@
-namespace Ali.Delivery.Location.Infrastructure.Models.Configuration;
+namespace Ali.Delivery.Location.Application.StateMachineConfigurations;
 
 public class StepConfiguration
 {
