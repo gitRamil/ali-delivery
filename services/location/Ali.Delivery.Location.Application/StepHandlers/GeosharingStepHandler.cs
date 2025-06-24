@@ -1,4 +1,5 @@
 using System.Globalization;
+using Ali.Delivery.Location.Application.Interfaces;
 using Ali.Delivery.Location.Application.UseCases.CreateOrUpdateUserLocationCommand;
 using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Ali.Delivery.Location.Infrastructure.Models;
@@ -10,8 +11,8 @@ namespace Ali.Delivery.Location.Application.StepHandlers;
 public class GeosharingStepHandler : IStepHandler
 {
     private readonly ITelegramBotClient _bot;
-    private readonly INotificationService _notification;
     private readonly IMediator _mediator;
+    private readonly INotificationService _notification;
 
     public GeosharingStepHandler(ITelegramBotClient bot, INotificationService notification, IMediator mediator)
     {
@@ -24,14 +25,12 @@ public class GeosharingStepHandler : IStepHandler
     {
         if (messageInfo.Location is { } loc)
         {
-            var locationCommand = new CreateOrUpdateUserLocationCommand(
-                messageInfo.ChatId.ToString(),
-                loc.Longitude.ToString(CultureInfo.InvariantCulture),
-                loc.Latitude.ToString(CultureInfo.InvariantCulture)
-            );
+            var locationCommand = new CreateOrUpdateUserLocationCommand(messageInfo.ChatId.ToString(),
+                                                                        loc.Longitude.ToString(CultureInfo.InvariantCulture),
+                                                                        loc.Latitude.ToString(CultureInfo.InvariantCulture));
+            
+            var result = await _mediator.Send(locationCommand);
 
-            // 2. Отправляем команду через MediatR
-            var result = await _mediator.Send(locationCommand); // CancellationToken можно передать, если он есть в HandleAsync
             var messageWithLocation = _notification.GenerateNotificationMessage(NotificationType.N6_LocationReceived,
                                                                                 new Dictionary<string, object>
                                                                                 {

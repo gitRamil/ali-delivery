@@ -1,4 +1,5 @@
 using Ali.Delivery.Location.Application.Configurations;
+using Ali.Delivery.Location.Application.Interfaces;
 using Ali.Delivery.Location.Application.StateMachineConfigurations;
 using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Ali.Delivery.Location.Infrastructure.Models;

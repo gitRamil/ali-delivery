@@ -7,15 +7,13 @@ using MediatR;
 namespace Ali.Delivery.Location.Application.UseCases.CreateOrUpdateUserLocationCommand;
 
 /// <summary>
-/// 
 /// </summary>
-public class CreateOrUpdateUserLocationCommandHandler : IRequestHandler<CreateOrUpdateUserLocationCommand,CommandResult>
+public class CreateOrUpdateUserLocationCommandHandler : IRequestHandler<CreateOrUpdateUserLocationCommand, CommandResult>
 {
-    private readonly IUserLocationRepository _repository;
     private readonly IAppDbContext _context;
+    private readonly IUserLocationRepository _repository;
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="repository"></param>
     /// <param name="context"></param>
@@ -26,7 +24,6 @@ public class CreateOrUpdateUserLocationCommandHandler : IRequestHandler<CreateOr
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
@@ -35,6 +32,7 @@ public class CreateOrUpdateUserLocationCommandHandler : IRequestHandler<CreateOr
         if (await _repository.UserExistsAsync(request.UserLogin, cancellationToken))
         {
             var userLocation = await _repository.GetByUserLoginAsync(request.UserLogin, cancellationToken);
+
             if (userLocation != null)
             {
                 userLocation.UpdateCoordinates(request.Latitude, request.Longitude);
@@ -47,6 +45,7 @@ public class CreateOrUpdateUserLocationCommandHandler : IRequestHandler<CreateOr
             newUserLocation.UpdateCoordinates(request.Latitude, request.Longitude);
             await _repository.AddAsync(newUserLocation, cancellationToken);
         }
+
         await _context.SaveChangesAsync(cancellationToken);
         return new CommandResult(string.Empty);
     }

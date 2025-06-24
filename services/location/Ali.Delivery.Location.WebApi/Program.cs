@@ -2,6 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Ali.Delivery.Location.Application.Abstractions;
 using Ali.Delivery.Location.Application.Configurations;
+using Ali.Delivery.Location.Application.Interfaces;
 using Ali.Delivery.Location.Application.StepHandlers;
 using Ali.Delivery.Location.Infrastructure;
 using Ali.Delivery.Location.Infrastructure.BackgroundServices;

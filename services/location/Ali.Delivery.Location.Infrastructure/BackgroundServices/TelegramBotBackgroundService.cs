@@ -1,4 +1,6 @@
-﻿using Ali.Delivery.Location.Infrastructure.Interfaces;
+﻿using Ali.Delivery.Location.Application.Interfaces;
+using Ali.Delivery.Location.Application.Models;
+using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Ali.Delivery.Location.Infrastructure.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -29,7 +31,7 @@ public sealed class TelegramBotService : BackgroundService
 
         var opts = new ReceiverOptions
         {
-            AllowedUpdates = [], // все типы
+            AllowedUpdates = [],
             DropPendingUpdates = true
         };
 

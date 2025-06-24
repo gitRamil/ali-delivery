@@ -1,4 +1,5 @@
 using System.Net;
+using Ali.Delivery.Location.Application.Interfaces;
 using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Ali.Delivery.Location.Infrastructure.Models;
 using Microsoft.Extensions.Logging;
@@ -10,12 +11,16 @@ namespace Ali.Delivery.Location.Infrastructure.Services;
 public class AuthenticationService : IAuthenticationService
 {
     private readonly IFileServiceForOrder _api;
-    private readonly ILogger<AuthenticationService> _logger;
-    private readonly IUserStateService _userStateService;
     private readonly ITelegramBotClient _bot;
+    private readonly ILogger<AuthenticationService> _logger;
     private readonly INotificationService _notification;
+    private readonly IUserStateService _userStateService;
 
-    public AuthenticationService(IFileServiceForOrder api, ILogger<AuthenticationService> logger, IUserStateService userStateService, ITelegramBotClient bot, INotificationService notification)
+    public AuthenticationService(IFileServiceForOrder api,
+                                 ILogger<AuthenticationService> logger,
+                                 IUserStateService userStateService,
+                                 ITelegramBotClient bot,
+                                 INotificationService notification)
     {
         _api = api ?? throw new ArgumentNullException(nameof(api));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -58,7 +63,7 @@ public class AuthenticationService : IAuthenticationService
             return new AuthenticationResult(AuthResult.Error);
         }
     }
-    
+
     public async Task<CommandResult> LoginAsync(long chatId, string text)
     {
         var parts = text.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);

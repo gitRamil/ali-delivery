@@ -1,3 +1,4 @@
+using Ali.Delivery.Location.Application.Interfaces;
 using Ali.Delivery.Location.Infrastructure.Interfaces;
 using Ali.Delivery.Location.Infrastructure.Models;
 using Telegram.Bot;

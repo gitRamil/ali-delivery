@@ -4,7 +4,6 @@ using MediatR;
 namespace Ali.Delivery.Location.Application.UseCases.CreateOrUpdateUserLocationCommand;
 
 /// <summary>
-/// 
 /// </summary>
 /// <param name="UserLogin"></param>
 /// <param name="Latitude"></param>
