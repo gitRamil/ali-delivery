@@ -6,7 +6,7 @@ using Ali.Delivery.Order.Infrastructure.Persistence.Configurations.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace Ali.Delivery.Location.Infrastructure;
+namespace Ali.Delivery.Location.Infrastructure.Persistence;
 
 public class AppDbContext : DbContext, IAppDbContext
 {

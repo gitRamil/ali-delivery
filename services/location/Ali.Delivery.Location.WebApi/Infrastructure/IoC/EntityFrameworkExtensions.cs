@@ -1,5 +1,5 @@
 ﻿using Ali.Delivery.Location.Application.Abstractions;
-using Ali.Delivery.Location.Infrastructure;
+using Ali.Delivery.Location.Infrastructure.Persistence;
 using EntityFramework.Exceptions.PostgreSQL;
 using Microsoft.EntityFrameworkCore;
 

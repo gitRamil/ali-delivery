@@ -3,7 +3,7 @@ using Ali.Delivery.Order.Infrastructure.Persistence.Configurations.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Ali.Delivery.Location.Infrastructure.Configurations;
+namespace Ali.Delivery.Location.Infrastructure.Persistence.Configurations;
 
 /// <summary>
 /// Представляет настройку конфигурации для типа <see cref="UserLocation" />.
