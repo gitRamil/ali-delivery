@@ -1,4 +1,4 @@
-using Ali.Delivery.Location.Infrastructure.Models;
+using Ali.Delivery.Location.Application.Models;
 using MediatR;
 
 namespace Ali.Delivery.Location.Application.UseCases.CreateOrUpdateUserLocationCommand;

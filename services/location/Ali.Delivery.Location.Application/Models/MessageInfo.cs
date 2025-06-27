@@ -1,6 +1,4 @@
-﻿using Ali.Delivery.Location.Application.Models;
-
-namespace Ali.Delivery.Location.Infrastructure.Models;
+﻿namespace Ali.Delivery.Location.Application.Models;
 
 public record MessageInfo
 {

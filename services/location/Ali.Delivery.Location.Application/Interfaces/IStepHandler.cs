@@ -1,6 +1,7 @@
-using Ali.Delivery.Location.Infrastructure.Models;
+using Ali.Delivery.Location.Application.Models;
+using Ali.Delivery.Location.Application.StepHandlers;
 
-namespace Ali.Delivery.Location.Infrastructure.Interfaces;
+namespace Ali.Delivery.Location.Application.Interfaces;
 
 public interface IStepHandler
 {

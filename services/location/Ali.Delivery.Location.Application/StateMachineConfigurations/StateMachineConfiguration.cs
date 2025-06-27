@@ -1,6 +1,4 @@
-using Ali.Delivery.Location.Application.StateMachineConfigurations;
-
-namespace Ali.Delivery.Location.Application.Configurations;
+namespace Ali.Delivery.Location.Application.StateMachineConfigurations;
 
 public class StateMachineConfiguration
 {

@@ -1,8 +1,7 @@
 using System.Globalization;
 using Ali.Delivery.Location.Application.Interfaces;
+using Ali.Delivery.Location.Application.Models;
 using Ali.Delivery.Location.Application.UseCases.CreateOrUpdateUserLocationCommand;
-using Ali.Delivery.Location.Infrastructure.Interfaces;
-using Ali.Delivery.Location.Infrastructure.Models;
 using MediatR;
 using Telegram.Bot;
 
@@ -28,7 +27,7 @@ public class GeosharingStepHandler : IStepHandler
             var locationCommand = new CreateOrUpdateUserLocationCommand(messageInfo.ChatId.ToString(),
                                                                         loc.Longitude.ToString(CultureInfo.InvariantCulture),
                                                                         loc.Latitude.ToString(CultureInfo.InvariantCulture));
-            
+
             var result = await _mediator.Send(locationCommand);
 
             var messageWithLocation = _notification.GenerateNotificationMessage(NotificationType.N6_LocationReceived,

@@ -1,7 +1,8 @@
 using System.Net;
+using Ali.Delivery.Location.Application.Abstractions;
 using Ali.Delivery.Location.Application.Interfaces;
-using Ali.Delivery.Location.Infrastructure.Interfaces;
-using Ali.Delivery.Location.Infrastructure.Models;
+using Ali.Delivery.Location.Application.Models;
+using Ali.Delivery.Location.Application.Models.Authentication;
 using Microsoft.Extensions.Logging;
 using Refit;
 using Telegram.Bot;

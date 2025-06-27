@@ -1,4 +1,5 @@
-using Ali.Delivery.Location.Infrastructure.Models;
+using Ali.Delivery.Location.Application.Models;
+using Ali.Delivery.Location.Application.Models.Authentication;
 
 namespace Ali.Delivery.Location.Application.Interfaces;
 

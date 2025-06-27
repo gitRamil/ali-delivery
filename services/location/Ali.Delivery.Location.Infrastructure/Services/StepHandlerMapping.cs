@@ -1,8 +1,6 @@
 using System.Collections.ObjectModel;
 using Ali.Delivery.Location.Application.Interfaces;
 using Ali.Delivery.Location.Application.StepHandlers;
-using Ali.Delivery.Location.Infrastructure.Interfaces;
-using Ali.Delivery.Location.Infrastructure.StepHandlers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Ali.Delivery.Location.Infrastructure.StateMachine;

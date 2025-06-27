@@ -1,7 +1,6 @@
 using System.Globalization;
 using Ali.Delivery.Location.Application.Interfaces;
-using Ali.Delivery.Location.Infrastructure.Interfaces;
-using Ali.Delivery.Location.Infrastructure.Models;
+using Ali.Delivery.Location.Application.Models;
 using Microsoft.Extensions.Logging;
 
 namespace Ali.Delivery.Location.Infrastructure.Services;

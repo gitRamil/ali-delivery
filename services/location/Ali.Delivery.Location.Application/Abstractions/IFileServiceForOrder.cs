@@ -1,8 +1,7 @@
 ﻿using Ali.Delivery.Location.Application.Models;
-using Ali.Delivery.Location.Infrastructure.Models;
 using Refit;
 
-namespace Ali.Delivery.Location.Infrastructure.Services;
+namespace Ali.Delivery.Location.Application.Abstractions;
 
 public interface IFileServiceForOrder
 {

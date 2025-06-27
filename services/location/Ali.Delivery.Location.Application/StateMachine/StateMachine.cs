@@ -1,11 +1,9 @@
-using Ali.Delivery.Location.Application.Configurations;
 using Ali.Delivery.Location.Application.Interfaces;
+using Ali.Delivery.Location.Application.Models;
 using Ali.Delivery.Location.Application.StateMachineConfigurations;
-using Ali.Delivery.Location.Infrastructure.Interfaces;
-using Ali.Delivery.Location.Infrastructure.Models;
 using Microsoft.Extensions.Options;
 
-namespace Ali.Delivery.Location.Infrastructure.StateMachine;
+namespace Ali.Delivery.Location.Application.StateMachine;
 
 public class StateMachine : IStateMachine // TODO: Реализовать нормальную обработку "StopStep" и его нотификатора
 {

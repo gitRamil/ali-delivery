@@ -1,7 +1,7 @@
 using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Location.Application.Abstractions;
+using Ali.Delivery.Location.Application.Models;
 using Ali.Delivery.Location.Domain.Entities;
-using Ali.Delivery.Location.Infrastructure.Models;
 using MediatR;
 
 namespace Ali.Delivery.Location.Application.UseCases.CreateOrUpdateUserLocationCommand;

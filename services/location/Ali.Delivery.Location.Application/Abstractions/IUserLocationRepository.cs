@@ -1,6 +1,5 @@
 using Ali.Delivery.Location.Domain.Entities;
 
-
 namespace Ali.Delivery.Location.Application.Abstractions;
 
 /// <summary>
@@ -11,7 +10,7 @@ public interface IUserLocationRepository
     /// Добавляет новую локацию пользователя.
     /// </summary>
     Task AddAsync(UserLocation userLocation, CancellationToken cancellationToken);
-    
+
     /// <summary>
     /// </summary>
     /// <param name="userLogin"></param>

@@ -1,3 +1,3 @@
-﻿namespace Ali.Delivery.Location.Infrastructure.Models;
+﻿namespace Ali.Delivery.Location.Application.Models;
 
 public record UserInfo(string? Login);
