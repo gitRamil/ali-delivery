@@ -1,19 +1,13 @@
 using Ali.Delivery.Location.Application.Interfaces;
 using Ali.Delivery.Location.Application.Models;
-using Telegram.Bot;
 
 namespace Ali.Delivery.Location.Application.StepHandlers;
 
 public sealed class StopStepHandler : IStepHandler
 {
-    private readonly ITelegramBotClient _bot;
     private readonly INotificationService _notification;
 
-    public StopStepHandler(ITelegramBotClient bot, INotificationService notification)
-    {
-        _bot = bot ?? throw new ArgumentNullException(nameof(bot));
-        _notification = notification ?? throw new ArgumentNullException(nameof(notification));
-    }
+    public StopStepHandler(INotificationService notification) => _notification = notification ?? throw new ArgumentNullException(nameof(notification));
 
     public async Task<HandlerResult> HandleAsync(MessageInfo messageInfo)
     {
@@ -36,11 +30,6 @@ public sealed class StopStepHandler : IStepHandler
 
     private async Task SendInvalid(MessageInfo messageInfo)
     {
-        var chatId = messageInfo.ChatId;
-
-        if (chatId != 0)
-        {
-            await _bot.SendMessage(chatId!, _notification.GenerateNotificationMessage(NotificationType.N1_InvalidCommand));
-        }
+        await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N1_InvalidCommand);
     }
 }

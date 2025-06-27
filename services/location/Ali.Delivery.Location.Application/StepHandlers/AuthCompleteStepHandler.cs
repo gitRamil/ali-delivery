@@ -1,19 +1,13 @@
 using Ali.Delivery.Location.Application.Interfaces;
 using Ali.Delivery.Location.Application.Models;
-using Telegram.Bot;
 
 namespace Ali.Delivery.Location.Application.StepHandlers;
 
 public sealed class AuthCompleteStepHandler : IStepHandler
 {
-    private readonly ITelegramBotClient _bot;
     private readonly INotificationService _notification;
 
-    public AuthCompleteStepHandler(ITelegramBotClient bot, INotificationService notification)
-    {
-        _bot = bot ?? throw new ArgumentNullException(nameof(bot));
-        _notification = notification ?? throw new ArgumentNullException(nameof(notification));
-    }
+    public AuthCompleteStepHandler(INotificationService notification) => _notification = notification ?? throw new ArgumentNullException(nameof(notification));
 
     public async Task<HandlerResult> HandleAsync(MessageInfo messageInfo)
     {
@@ -29,10 +23,10 @@ public sealed class AuthCompleteStepHandler : IStepHandler
         switch (text)
         {
             case "/geosharing":
-                await _bot.SendMessage(messageInfo.ChatId, _notification.GenerateNotificationMessage(NotificationType.N5_RequestLocation));
+                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N5_RequestLocation);
                 return new HandlerResult("GeoSharing");
             case "/stop":
-                await _bot.SendMessage(messageInfo.ChatId, _notification.GenerateNotificationMessage(NotificationType.N_SessionEnded));
+                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N_SessionEnded);
                 return new HandlerResult("StopStep");
             default:
                 await SendInvalid(messageInfo);
@@ -44,6 +38,6 @@ public sealed class AuthCompleteStepHandler : IStepHandler
     {
         var chatId = messageInfo.ChatId;
 
-        await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N1_InvalidCommand));
+        await _notification.SendNotificationMessageAsync(chatId, NotificationType.N1_InvalidCommand);
     }
 }

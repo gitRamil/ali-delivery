@@ -68,10 +68,7 @@ public sealed class TelegramBotService : BackgroundService
         {
             var messageInfo = ConvertUpdateToMessageInfo(update);
 
-            Task SendInvalidCommandTelegramMessage() =>
-                _botClient.SendMessage(messageInfo.ChatId,
-                                       notificationService.GenerateNotificationMessage(NotificationType.N1_InvalidCommand),
-                                       cancellationToken: cancellationToken);
+            Task SendInvalidCommandTelegramMessage() => notificationService.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N1_InvalidCommand);
 
             await stateMachine.ProcessUpdateAsync(messageInfo, SendInvalidCommandTelegramMessage);
         }

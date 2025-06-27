@@ -3,19 +3,16 @@ using Ali.Delivery.Location.Application.Interfaces;
 using Ali.Delivery.Location.Application.Models;
 using Ali.Delivery.Location.Application.UseCases.CreateOrUpdateUserLocationCommand;
 using MediatR;
-using Telegram.Bot;
 
 namespace Ali.Delivery.Location.Application.StepHandlers;
 
 public class GeosharingStepHandler : IStepHandler
 {
-    private readonly ITelegramBotClient _bot;
     private readonly IMediator _mediator;
     private readonly INotificationService _notification;
 
-    public GeosharingStepHandler(ITelegramBotClient bot, INotificationService notification, IMediator mediator)
+    public GeosharingStepHandler(INotificationService notification, IMediator mediator)
     {
-        _bot = bot ?? throw new ArgumentNullException(nameof(bot));
         _notification = notification ?? throw new ArgumentNullException(nameof(notification));
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     }
@@ -30,19 +27,19 @@ public class GeosharingStepHandler : IStepHandler
 
             var result = await _mediator.Send(locationCommand);
 
-            var messageWithLocation = _notification.GenerateNotificationMessage(NotificationType.N6_LocationReceived,
-                                                                                new Dictionary<string, object>
-                                                                                {
-                                                                                    ["Latitude"] = loc.Latitude,
-                                                                                    ["Longitude"] = loc.Longitude
-                                                                                });
-            await _bot.SendMessage(messageInfo.ChatId, messageWithLocation);
+            await _notification.SendNotificationMessageAsync(messageInfo.ChatId,
+                                                        NotificationType.N6_LocationReceived,
+                                                        new Dictionary<string, object>
+                                                        {
+                                                            ["Latitude"] = loc.Latitude,
+                                                            ["Longitude"] = loc.Longitude
+                                                        });
             return new HandlerResult(result.NextStepKey);
         }
 
         if (messageInfo.Text is not { } text)
         {
-            await _bot.SendMessage(messageInfo.ChatId, _notification.GenerateNotificationMessage(NotificationType.N5_RequestLocation));
+            await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N5_RequestLocation);
             return new HandlerResult(string.Empty);
         }
 
@@ -52,10 +49,10 @@ public class GeosharingStepHandler : IStepHandler
         switch (command)
         {
             case "/stop_geosharing":
-                await _bot.SendMessage(messageInfo.ChatId, _notification.GenerateNotificationMessage(NotificationType.N4_AuthenticationComplete));
+                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N4_AuthenticationComplete);
                 return new HandlerResult("AuthComplete");
             case "/stop":
-                await _bot.SendMessage(messageInfo.ChatId, _notification.GenerateNotificationMessage(NotificationType.N_SessionEnded));
+                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N_SessionEnded);
                 return new HandlerResult("StopStep");
             default:
                 return new HandlerResult(string.Empty);

@@ -1,19 +1,13 @@
 using Ali.Delivery.Location.Application.Interfaces;
 using Ali.Delivery.Location.Application.Models;
-using Telegram.Bot;
 
 namespace Ali.Delivery.Location.Application.StepHandlers;
 
 public class StartStepHandler : IStepHandler
 {
-    private readonly ITelegramBotClient _bot;
     private readonly INotificationService _notification;
 
-    public StartStepHandler(ITelegramBotClient bot, INotificationService notification)
-    {
-        _bot = bot ?? throw new ArgumentNullException(nameof(bot));
-        _notification = notification ?? throw new ArgumentNullException(nameof(notification));
-    }
+    public StartStepHandler(INotificationService notification) => _notification = notification ?? throw new ArgumentNullException(nameof(notification));
 
     public async Task<HandlerResult> HandleAsync(MessageInfo messageInfo)
     {
@@ -29,13 +23,13 @@ public class StartStepHandler : IStepHandler
         switch (text)
         {
             case "/start":
-                await _bot.SendMessage(messageInfo.ChatId, _notification.GenerateNotificationMessage(NotificationType.N1_Welcome));
+                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N1_Welcome);
                 return new HandlerResult(string.Empty);
             case "/login":
-                await _bot.SendMessage(messageInfo.ChatId, _notification.GenerateNotificationMessage(NotificationType.N0_EnterCredentials));
+                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N0_EnterCredentials);
                 return new HandlerResult("Authorization");
             case "/stop":
-                await _bot.SendMessage(messageInfo.ChatId, _notification.GenerateNotificationMessage(NotificationType.N_SessionEnded));
+                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N_SessionEnded);
                 return new HandlerResult("StopStep");
             default:
                 await SendInvalid(messageInfo);
@@ -47,6 +41,6 @@ public class StartStepHandler : IStepHandler
     {
         var chatId = messageInfo.ChatId;
 
-        await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N1_InvalidAuthCommand));
+        await _notification.SendNotificationMessageAsync(chatId, NotificationType.N1_InvalidAuthCommand);
     }
 }

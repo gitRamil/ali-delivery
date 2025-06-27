@@ -2,6 +2,7 @@ using System.Globalization;
 using Ali.Delivery.Location.Application.Interfaces;
 using Ali.Delivery.Location.Application.Models;
 using Microsoft.Extensions.Logging;
+using Telegram.Bot;
 
 namespace Ali.Delivery.Location.Infrastructure.Services;
 
@@ -27,17 +28,17 @@ public class NotificationService : INotificationService // TODO: Подумат�
     };
 
     private readonly ILogger<NotificationService> _logger;
+    private readonly ITelegramBotClient _telegramBotClient;
 
-    public NotificationService(ILogger<NotificationService> logger) => _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-
-    public string GenerateNotificationMessage(NotificationType? notification, Dictionary<string, object>? userData = null)
+    public NotificationService(ITelegramBotClient bot, ILogger<NotificationService> logger)
     {
-        if (notification == null)
-        {
-            return string.Empty;
-        }
+        _telegramBotClient = bot ?? throw new ArgumentNullException(nameof(bot));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    }
 
-        var message = GetBaseNotificationMessage(notification.Value);
+    public async Task SendNotificationMessageAsync(long chatId, NotificationType notification, Dictionary<string, object>? userData = null)
+    {
+        var message = GetBaseNotificationMessage(notification);
 
         if (notification == NotificationType.N6_LocationReceived && userData != null)
         {
@@ -45,7 +46,8 @@ public class NotificationService : INotificationService // TODO: Подумат�
         }
 
         _logger.LogInformation("Generated notification message for type {NotificationType}: '{Message}'", notification, message);
-        return message;
+
+        await _telegramBotClient.SendMessage(chatId, message);
     }
 
     private string EnrichLocationMessage(string baseMessage, Dictionary<string, object> userData)

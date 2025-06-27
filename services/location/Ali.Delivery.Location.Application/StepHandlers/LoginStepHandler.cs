@@ -1,18 +1,15 @@
 using Ali.Delivery.Location.Application.Interfaces;
 using Ali.Delivery.Location.Application.Models;
-using Telegram.Bot;
 
 namespace Ali.Delivery.Location.Application.StepHandlers;
 
 public class LoginStepHandler : IStepHandler
 {
     private readonly IAuthenticationService _authenticationService;
-    private readonly ITelegramBotClient _bot;
     private readonly INotificationService _notification;
 
-    public LoginStepHandler(ITelegramBotClient bot, INotificationService notification, IAuthenticationService authenticationService)
+    public LoginStepHandler(INotificationService notification, IAuthenticationService authenticationService)
     {
-        _bot = bot ?? throw new ArgumentNullException(nameof(bot));
         _notification = notification ?? throw new ArgumentNullException(nameof(notification));
         _authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
     }
@@ -28,13 +25,13 @@ public class LoginStepHandler : IStepHandler
 
         if (messageInfo is not { Text: { } text })
         {
-            await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N1_InvalidAuthCommand));
+            await _notification.SendNotificationMessageAsync(chatId, NotificationType.N1_InvalidAuthCommand);
             return new HandlerResult(string.Empty);
         }
 
         if (string.Equals(messageInfo.Text, "/stop", StringComparison.OrdinalIgnoreCase))
         {
-            await _bot.SendMessage(messageInfo.ChatId, _notification.GenerateNotificationMessage(NotificationType.N_SessionEnded));
+            await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N_SessionEnded);
             return new HandlerResult("StopStep");
         }
 

@@ -5,28 +5,21 @@ using Ali.Delivery.Location.Application.Models;
 using Ali.Delivery.Location.Application.Models.Authentication;
 using Microsoft.Extensions.Logging;
 using Refit;
-using Telegram.Bot;
 
 namespace Ali.Delivery.Location.Infrastructure.Services;
 
 public class AuthenticationService : IAuthenticationService
 {
     private readonly IFileServiceForOrder _api;
-    private readonly ITelegramBotClient _bot;
     private readonly ILogger<AuthenticationService> _logger;
     private readonly INotificationService _notification;
     private readonly IUserStateService _userStateService;
 
-    public AuthenticationService(IFileServiceForOrder api,
-                                 ILogger<AuthenticationService> logger,
-                                 IUserStateService userStateService,
-                                 ITelegramBotClient bot,
-                                 INotificationService notification)
+    public AuthenticationService(IFileServiceForOrder api, ILogger<AuthenticationService> logger, IUserStateService userStateService, INotificationService notification)
     {
         _api = api ?? throw new ArgumentNullException(nameof(api));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _userStateService = userStateService ?? throw new ArgumentNullException(nameof(userStateService));
-        _bot = bot ?? throw new ArgumentNullException(nameof(bot));
         _notification = notification ?? throw new ArgumentNullException(nameof(notification));
     }
 
@@ -71,7 +64,7 @@ public class AuthenticationService : IAuthenticationService
 
         if (parts.Length < 2)
         {
-            await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N0_EnterCredentials));
+            await _notification.SendNotificationMessageAsync(chatId, NotificationType.N0_EnterCredentials);
 
             return new CommandResult(string.Empty);
         }
@@ -83,16 +76,16 @@ public class AuthenticationService : IAuthenticationService
         {
             case AuthResult.Success:
                 await _userStateService.SetUserLoginAsync(chatId, login);
-                await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N4_AuthenticationComplete));
+                await _notification.SendNotificationMessageAsync(chatId, NotificationType.N4_AuthenticationComplete);
                 return new CommandResult("AuthComplete");
 
             case AuthResult.InvalidCredentials:
-                await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N2_InvalidCredentials));
+                await _notification.SendNotificationMessageAsync(chatId, NotificationType.N2_InvalidCredentials);
 
                 return new CommandResult(string.Empty);
 
             default:
-                await _bot.SendMessage(chatId, _notification.GenerateNotificationMessage(NotificationType.N1_InvalidCommand));
+                await _notification.SendNotificationMessageAsync(chatId, NotificationType.N1_InvalidCommand);
 
                 return new CommandResult(string.Empty);
         }

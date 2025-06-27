@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
@@ -8,19 +7,15 @@
     <PropertyGroup>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
-
     <ItemGroup>
         <ProjectReference Include="..\Ali.Delivery.Location.Domain\Ali.Delivery.Location.Domain.csproj"/>
     </ItemGroup>
-
     <ItemGroup>
         <PackageReference Include="FluentAssertions" Version="8.2.0"/>
         <PackageReference Include="FluentValidation" Version="12.0.0"/>
         <PackageReference Include="MediatR" Version="12.5.0"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2"/>
-        <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="10.0.0-preview.4.25258.110"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.6" />
+        <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.6" />
         <PackageReference Include="Refit" Version="8.0.0"/>
-        <PackageReference Include="Telegram.Bot" Version="22.5.2-dev.6"/>
     </ItemGroup>
-
 </Project>
