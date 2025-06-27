@@ -1,4 +1,4 @@
-﻿namespace Ali.Delivery.Location.Application.Interfaces;
+﻿namespace Ali.Delivery.Location.Application.Abstractions;
 
 public interface IStepHandlerMapping
 {

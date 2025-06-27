@@ -1,4 +1,4 @@
-using Ali.Delivery.Location.Application.Interfaces;
+using Ali.Delivery.Location.Application.Abstractions;
 using Ali.Delivery.Location.Application.Models;
 using Ali.Delivery.Location.Application.StateMachineConfigurations;
 using Microsoft.Extensions.Options;

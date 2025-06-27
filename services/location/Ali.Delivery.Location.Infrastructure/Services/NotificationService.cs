@@ -1,5 +1,5 @@
 using System.Globalization;
-using Ali.Delivery.Location.Application.Interfaces;
+using Ali.Delivery.Location.Application.Abstractions;
 using Ali.Delivery.Location.Application.Models;
 using Microsoft.Extensions.Logging;
 using Telegram.Bot;

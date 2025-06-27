@@ -1,7 +1,7 @@
 using Ali.Delivery.Location.Application.Models;
 using Ali.Delivery.Location.Application.Models.Authentication;
 
-namespace Ali.Delivery.Location.Application.Interfaces;
+namespace Ali.Delivery.Location.Application.Abstractions;
 
 public interface IAuthenticationService // TODO: Подумать над упрощением.
 {

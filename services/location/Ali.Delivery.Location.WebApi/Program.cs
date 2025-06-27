@@ -1,15 +1,13 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Ali.Delivery.Location.Application.Abstractions;
-using Ali.Delivery.Location.Application.Interfaces;
+using Ali.Delivery.Location.Application.Services;
 using Ali.Delivery.Location.Application.StateMachine;
 using Ali.Delivery.Location.Application.StateMachineConfigurations;
 using Ali.Delivery.Location.Application.StepHandlers;
 using Ali.Delivery.Location.Infrastructure;
 using Ali.Delivery.Location.Infrastructure.BackgroundServices;
-using Ali.Delivery.Location.Infrastructure.Persistence.Repositories;
 using Ali.Delivery.Location.Infrastructure.Services;
-using Ali.Delivery.Location.Infrastructure.StateMachine;
 using Ali.Delivery.Location.WebApi.Infrastructure.IoC;
 using DotNetEnv;
 using Hellang.Middleware.ProblemDetails;
@@ -78,7 +76,7 @@ try
     // Внешние API сервисы
     builder.Services.AddRefitClient<IFileServiceForOrder>()
            .ConfigureHttpClient(c => c.BaseAddress = new Uri(configuration["ExternalServices:OrderService"]!));
-    
+
     // Сервисы приложения
     builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
     builder.Services.AddScoped<INotificationService, NotificationService>();

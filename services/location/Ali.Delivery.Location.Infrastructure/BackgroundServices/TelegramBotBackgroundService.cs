@@ -1,4 +1,4 @@
-﻿using Ali.Delivery.Location.Application.Interfaces;
+﻿using Ali.Delivery.Location.Application.Abstractions;
 using Ali.Delivery.Location.Application.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -11,20 +11,20 @@ namespace Ali.Delivery.Location.Infrastructure.BackgroundServices;
 
 public sealed class TelegramBotService : BackgroundService
 {
-    private readonly ITelegramBotClient _botClient;
     private readonly ILogger<TelegramBotService> _logger;
     private readonly IServiceProvider _serviceProvider;
+    private readonly ITelegramBotClient _telegramBotClient;
 
-    public TelegramBotService(ILogger<TelegramBotService> logger, ITelegramBotClient botClient, IServiceProvider serviceProvider)
+    public TelegramBotService(ILogger<TelegramBotService> logger, IServiceProvider serviceProvider, ITelegramBotClient telegramBotClient)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _botClient = botClient ?? throw new ArgumentNullException(nameof(botClient));
         _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+        _telegramBotClient = telegramBotClient ?? throw new ArgumentNullException(nameof(telegramBotClient));
     }
 
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        var me = await _botClient.GetMe(cancellationToken);
+        var me = await _telegramBotClient.GetMe(cancellationToken);
         _logger.LogInformation("Бот @{User} запущен", me.Username);
 
         var opts = new ReceiverOptions
@@ -33,7 +33,7 @@ public sealed class TelegramBotService : BackgroundService
             DropPendingUpdates = true
         };
 
-        _botClient.StartReceiving(HandleUpdateAsync, HandleErrorAsync, opts, cancellationToken);
+        _telegramBotClient.StartReceiving(HandleUpdateAsync, HandleErrorAsync, opts, cancellationToken);
     }
 
     private static MessageInfo ConvertUpdateToMessageInfo(Update update)

@@ -1,5 +1,5 @@
 using System.Globalization;
-using Ali.Delivery.Location.Application.Interfaces;
+using Ali.Delivery.Location.Application.Abstractions;
 using Ali.Delivery.Location.Application.Models;
 using Ali.Delivery.Location.Application.UseCases.CreateOrUpdateUserLocationCommand;
 using MediatR;
@@ -28,12 +28,12 @@ public class GeosharingStepHandler : IStepHandler
             var result = await _mediator.Send(locationCommand);
 
             await _notification.SendNotificationMessageAsync(messageInfo.ChatId,
-                                                        NotificationType.N6_LocationReceived,
-                                                        new Dictionary<string, object>
-                                                        {
-                                                            ["Latitude"] = loc.Latitude,
-                                                            ["Longitude"] = loc.Longitude
-                                                        });
+                                                             NotificationType.N6_LocationReceived,
+                                                             new Dictionary<string, object>
+                                                             {
+                                                                 ["Latitude"] = loc.Latitude,
+                                                                 ["Longitude"] = loc.Longitude
+                                                             });
             return new HandlerResult(result.NextStepKey);
         }
 

@@ -1,6 +1,5 @@
 using System.Net;
 using Ali.Delivery.Location.Application.Abstractions;
-using Ali.Delivery.Location.Application.Interfaces;
 using Ali.Delivery.Location.Application.Models;
 using Ali.Delivery.Location.Application.Models.Authentication;
 using Microsoft.Extensions.Logging;

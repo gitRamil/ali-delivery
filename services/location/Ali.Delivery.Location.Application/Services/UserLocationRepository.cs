@@ -2,7 +2,7 @@ using Ali.Delivery.Location.Application.Abstractions;
 using Ali.Delivery.Location.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Ali.Delivery.Location.Infrastructure.Persistence.Repositories;
+namespace Ali.Delivery.Location.Application.Services;
 
 public class UserLocationRepository : IUserLocationRepository
 {

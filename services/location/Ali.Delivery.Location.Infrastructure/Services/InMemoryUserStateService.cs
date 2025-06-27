@@ -1,5 +1,5 @@
 using System.Collections.Concurrent;
-using Ali.Delivery.Location.Application.Interfaces;
+using Ali.Delivery.Location.Application.Abstractions;
 
 namespace Ali.Delivery.Location.Infrastructure.Services;
 

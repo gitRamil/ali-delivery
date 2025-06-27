@@ -1,9 +1,9 @@
 using System.Collections.ObjectModel;
-using Ali.Delivery.Location.Application.Interfaces;
+using Ali.Delivery.Location.Application.Abstractions;
 using Ali.Delivery.Location.Application.StepHandlers;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Ali.Delivery.Location.Infrastructure.StateMachine;
+namespace Ali.Delivery.Location.Application.StateMachine;
 
 public sealed class StepHandlerMapping : IStepHandlerMapping
 {
