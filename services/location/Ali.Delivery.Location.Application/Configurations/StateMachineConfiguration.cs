@@ -1,4 +1,4 @@
-namespace Ali.Delivery.Location.Application.StateMachineConfigurations;
+namespace Ali.Delivery.Location.Application.Configurations;
 
 public class StateMachineConfiguration
 {
