@@ -14,7 +14,7 @@ public class LoginStepHandler : IStepHandler
         _authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
     }
 
-    public async Task<HandlerResult> HandleAsync(MessageInfo messageInfo)
+    public async Task<HandlerResult> HandleAsync(MessageInfo messageInfo,CancellationToken cancellationToken = default)
     {
         var chatId = messageInfo.ChatId;
 

@@ -4,5 +4,5 @@ namespace Ali.Delivery.Location.Application.Abstractions;
 
 public interface IStepHandler
 {
-    Task<HandlerResult> HandleAsync(MessageInfo update);
+    Task<HandlerResult> HandleAsync(MessageInfo update, CancellationToken cancellationToken = default);
 }

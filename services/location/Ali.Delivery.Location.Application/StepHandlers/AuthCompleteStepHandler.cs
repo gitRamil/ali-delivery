@@ -9,7 +9,7 @@ public sealed class AuthCompleteStepHandler : IStepHandler
 
     public AuthCompleteStepHandler(INotificationService notification) => _notification = notification ?? throw new ArgumentNullException(nameof(notification));
 
-    public async Task<HandlerResult> HandleAsync(MessageInfo messageInfo)
+    public async Task<HandlerResult> HandleAsync(MessageInfo messageInfo, CancellationToken cancellationToken = default)
     {
         if (messageInfo is not { Text: { } text })
         {

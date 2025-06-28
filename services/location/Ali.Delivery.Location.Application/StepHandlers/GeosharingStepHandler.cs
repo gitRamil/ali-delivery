@@ -1,60 +1,79 @@
 using System.Globalization;
+using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Location.Application.Abstractions;
 using Ali.Delivery.Location.Application.Models;
-using Ali.Delivery.Location.Application.UseCases.CreateOrUpdateUserLocationCommand;
-using MediatR;
+using Ali.Delivery.Location.Domain.Entities;
 
 namespace Ali.Delivery.Location.Application.StepHandlers;
 
 public class GeosharingStepHandler : IStepHandler
 {
-    private readonly IMediator _mediator;
     private readonly INotificationService _notification;
+    private readonly IUserLocationRepository _repository;
 
-    public GeosharingStepHandler(INotificationService notification, IMediator mediator)
+    public GeosharingStepHandler(INotificationService notification, IUserLocationRepository repository)
     {
         _notification = notification ?? throw new ArgumentNullException(nameof(notification));
-        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        
     }
 
-    public async Task<HandlerResult> HandleAsync(MessageInfo messageInfo)
+    public async Task<HandlerResult> HandleAsync(MessageInfo messageInfo, CancellationToken cancellationToken)
     {
-        if (messageInfo.Location is { } loc)
+         if (messageInfo.Location is { } loc)
+         {
+             return await ProcessLocationAsync(messageInfo.ChatId, loc.Latitude.ToString(CultureInfo.InvariantCulture), loc.Longitude.ToString(CultureInfo.InvariantCulture), cancellationToken);
+         }
+         
+         if (messageInfo.Text is { } text)
+         {
+             return await ProcessTextCommandAsync(messageInfo.ChatId, text);
+         }
+         
+         await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N5_RequestLocation);
+         return new HandlerResult(string.Empty);
+    }
+
+    private async Task<HandlerResult> ProcessLocationAsync(long chatId, string latitude, string longitude, CancellationToken cancellationToken)
+    {
+        var userLogin = chatId.ToString();
+        var userLocation = await _repository.GetUserAsync(userLogin, cancellationToken);
+
+        if (userLocation is not null)
         {
-            var locationCommand = new CreateOrUpdateUserLocationCommand(messageInfo.ChatId.ToString(),
-                                                                        loc.Longitude.ToString(CultureInfo.InvariantCulture),
-                                                                        loc.Latitude.ToString(CultureInfo.InvariantCulture));
-
-            var result = await _mediator.Send(locationCommand);
-
-            await _notification.SendNotificationMessageAsync(messageInfo.ChatId,
-                                                             NotificationType.N6_LocationReceived,
-                                                             new Dictionary<string, object>
-                                                             {
-                                                                 ["Latitude"] = loc.Latitude,
-                                                                 ["Longitude"] = loc.Longitude
-                                                             });
-            return new HandlerResult(result.NextStepKey);
+            userLocation.UpdateCoordinates(longitude, latitude);
+            await _repository.UpdateUserLocationAsync(userLocation, cancellationToken);
         }
-
-        if (messageInfo.Text is not { } text)
+        else
         {
-            await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N5_RequestLocation);
-            return new HandlerResult(string.Empty);
+            var newUserLocation = new UserLocation(SequentialGuid.Create(), userLogin);
+            newUserLocation.UpdateCoordinates(longitude, latitude);
+            await _repository.AddUserLocationAsync(newUserLocation, cancellationToken);
         }
+        
+        await _notification.SendNotificationMessageAsync(chatId, NotificationType.N6_LocationReceived,new Dictionary<string, object>
+        {
+            ["Latitude"] = latitude,
+            ["Longitude"] = longitude
+        });
+        
+        return new HandlerResult(string.Empty);
+    }
 
-        var command = text.Trim()
-                          .ToLowerInvariant();
+    private async Task<HandlerResult> ProcessTextCommandAsync(long chatId, string text)
+    {
+        var command = text.Trim().ToLowerInvariant();
 
         switch (command)
         {
             case "/stop_geosharing":
-                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N4_AuthenticationComplete);
+                await _notification.SendNotificationMessageAsync(chatId, NotificationType.N4_AuthenticationComplete);
                 return new HandlerResult("AuthComplete");
             case "/stop":
-                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N_SessionEnded);
+                await _notification.SendNotificationMessageAsync(chatId, NotificationType.N_SessionEnded);
                 return new HandlerResult("StopStep");
             default:
+                await _notification.SendNotificationMessageAsync(chatId, NotificationType.N5_RequestLocation);
                 return new HandlerResult(string.Empty);
         }
     }
