@@ -29,21 +29,21 @@ public class CreateOrUpdateUserLocationCommandHandler : IRequestHandler<CreateOr
     /// <param name="cancellationToken"></param>
     public async Task<CommandResult> Handle(CreateOrUpdateUserLocationCommand request, CancellationToken cancellationToken)
     {
-        if (await _repository.UserExistsAsync(request.UserLogin, cancellationToken))
+        if (await _repository.IsUserExistsAsync(request.UserLogin, cancellationToken))
         {
-            var userLocation = await _repository.GetByUserLoginAsync(request.UserLogin, cancellationToken);
+            var userLocation = await _repository.GetUserAsync(request.UserLogin, cancellationToken);
 
             if (userLocation != null)
             {
                 userLocation.UpdateCoordinates(request.Latitude, request.Longitude);
-                await _repository.UpdateAsync(userLocation, cancellationToken);
+                await _repository.UpdateUserLocationAsync(userLocation, cancellationToken);
             }
         }
         else
         {
             var newUserLocation = new UserLocation(SequentialGuid.Create(), request.UserLogin);
             newUserLocation.UpdateCoordinates(request.Latitude, request.Longitude);
-            await _repository.AddAsync(newUserLocation, cancellationToken);
+            await _repository.AddUserLocationAsync(newUserLocation, cancellationToken);
         }
 
         await _context.SaveChangesAsync(cancellationToken);

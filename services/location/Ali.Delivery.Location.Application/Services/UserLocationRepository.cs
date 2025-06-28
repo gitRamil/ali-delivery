@@ -10,7 +10,7 @@ public class UserLocationRepository : IUserLocationRepository
 
     public UserLocationRepository(IAppDbContext context) => _context = context;
 
-    public async Task AddAsync(UserLocation userLocation, CancellationToken cancellationToken)
+    public async Task AddUserLocationAsync(UserLocation userLocation, CancellationToken cancellationToken)
     {
         await _context.UserLocations.AddAsync(userLocation, cancellationToken);
     }
@@ -18,14 +18,14 @@ public class UserLocationRepository : IUserLocationRepository
     /// <summary>
     /// Находит локацию пользователя по его логину.
     /// </summary>
-    public Task<UserLocation?> GetByUserLoginAsync(string userLogin, CancellationToken cancellationToken)
+    public Task<UserLocation?> GetUserAsync(string userLogin, CancellationToken cancellationToken)
     {
         return _context.UserLocations.FirstOrDefaultAsync(u => u.TelegramLogin == userLogin, cancellationToken);
     }
 
-    public Task UpdateAsync(UserLocation userLocation, CancellationToken cancellationToken) => Task.CompletedTask;
+    public Task UpdateUserLocationAsync(UserLocation userLocation, CancellationToken cancellationToken) => Task.CompletedTask;
 
-    public Task<bool> UserExistsAsync(string userLogin, CancellationToken cancellationToken)
+    public Task<bool> IsUserExistsAsync(string userLogin, CancellationToken cancellationToken)
     {
         return _context.UserLocations.AnyAsync(u => u.TelegramLogin == userLogin, cancellationToken);
     }
