@@ -14,7 +14,7 @@ public interface IStepHandler
     /// <param name="cancellationToken">Маркер отмены для прерывания асинхронной операции.</param>
     /// <returns>
     /// Задача, представляющая асинхронную операцию.
-    /// Результат задачи содержит объект <see cref="HandlerResult"/> с ключом для определения следующего шага.
+    /// Результат задачи содержит объект <see cref="HandlerResult" /> с ключом для определения следующего шага.
     /// </returns>
     Task<HandlerResult> HandleAsync(MessageInfo update, CancellationToken cancellationToken = default);
 }

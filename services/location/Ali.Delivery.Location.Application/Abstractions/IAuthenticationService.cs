@@ -15,7 +15,7 @@ public interface IAuthenticationService // TODO: Подумать над упр�
     /// <param name="password">Пароль пользователя.</param>
     /// <returns>
     /// Задача, представляющая асинхронную операцию.
-    /// Результат задачи содержит объект <see cref="AuthenticationResult"/> с итогами проверки.
+    /// Результат задачи содержит объект <see cref="AuthenticationResult" /> с итогами проверки.
     /// </returns>
     Task<AuthenticationResult> AuthenticateAsync(string login, string password);
 
@@ -26,7 +26,8 @@ public interface IAuthenticationService // TODO: Подумать над упр�
     /// <param name="text">Текст сообщения, предположительно содержащий логин и пароль.</param>
     /// <returns>
     /// Задача, представляющая асинхронную операцию.
-    /// Результат задачи содержит объект <see cref="CommandResult"/>, который может включать информацию о следующем шаге или результате операции для пользователя.
+    /// Результат задачи содержит объект <see cref="CommandResult" />, который может включать информацию о следующем шаге или
+    /// результате операции для пользователя.
     /// </returns>
     Task<CommandResult> LoginAsync(long chatId, string text);
 }

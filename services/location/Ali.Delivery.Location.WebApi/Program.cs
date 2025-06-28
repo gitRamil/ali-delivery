@@ -1,11 +1,9 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Ali.Delivery.Location.Application.Abstractions;
-using Ali.Delivery.Location.Application.Configurations;
+using Ali.Delivery.Location.Application.Extensions;
 using Ali.Delivery.Location.Application.Services;
-using Ali.Delivery.Location.Application.StateMachine;
-using Ali.Delivery.Location.Application.StepHandlers;
-using Ali.Delivery.Location.Infrastructure.BackgroundServices;
+using Ali.Delivery.Location.Infrastructure.Extensions;
 using Ali.Delivery.Location.Infrastructure.Persistence;
 using Ali.Delivery.Location.Infrastructure.Services;
 using Ali.Delivery.Location.WebApi.Infrastructure.IoC;
@@ -14,7 +12,6 @@ using Hellang.Middleware.ProblemDetails;
 using Microsoft.EntityFrameworkCore;
 using Refit;
 using Serilog;
-using Telegram.Bot;
 
 try
 {
@@ -24,7 +21,9 @@ try
 
     builder.Services.AddEndpointsApiExplorer();
     builder.Configuration.AddJsonFile("stateTransitions.json", false, true);
-    builder.Services.Configure<StateMachineConfiguration>(builder.Configuration);
+    builder.Services.AddTelegramBotService(configuration);
+    builder.Services.AddStateMachine(configuration);
+    builder.Services.AddCommandHandlers();
     builder.Configuration.AddEnvironmentVariables("AliDeliveryLocationService_");
     builder.AddDefaultSerilog();
     builder.Services.AddMemoryCache();
@@ -43,31 +42,8 @@ try
     builder.Services.AddDateTimeService();
     builder.Services.AddDefaultProblemDetails();
     builder.Services.AddSwaggerGen();
-
-    // Конфигурация Telegram бота
-    var botToken = configuration["TelegramToken"];
-
-    if (string.IsNullOrEmpty(botToken))
-    {
-        Log.Fatal("TelegramToken is not configured!");
-        return 1;
-    }
-
-    builder.Services.AddSingleton<ITelegramBotClient>(_ => new TelegramBotClient(botToken));
-
-    // State Machine и обработчики
-
-    builder.Services.AddSingleton<IUserStateService, InMemoryUserStateService>();
-    builder.Services.AddScoped<IStepHandlerMapping, StepHandlerMapping>();
-    builder.Services.AddScoped<IStateMachine, StateMachine>();
+    
     builder.Services.AddScoped<IUserLocationRepository, UserLocationRepository>();
-
-    builder.Services.AddScoped<StartStepHandler>();
-    builder.Services.AddScoped<LoginStepHandler>();
-    builder.Services.AddScoped<AuthCompleteStepHandler>();
-    builder.Services.AddScoped<GeosharingStepHandler>();
-    builder.Services.AddScoped<StopStepHandler>();
-
     builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(configuration.GetConnectionString(nameof(AppDbContext)))
                                                                   .UseSnakeCaseNamingConvention()
                                                                   .EnableSensitiveDataLogging()
@@ -80,10 +56,7 @@ try
     // Сервисы приложения
     builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
     builder.Services.AddScoped<INotificationService, NotificationService>();
-
-    // Фоновый сервис бота
-    builder.Services.AddHostedService<TelegramBotService>();
-
+    
     var app = builder.Build();
     app.AddAutomaticMigrations();
     app.UseSwagger();
