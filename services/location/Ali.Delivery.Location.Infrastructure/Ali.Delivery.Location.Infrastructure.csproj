@@ -9,6 +9,7 @@
         <ProjectReference Include="..\Ali.Delivery.Location.Domain\Ali.Delivery.Location.Domain.csproj"/>
     </ItemGroup>
     <ItemGroup>
+        <PackageReference Include="EFCore.NamingConventions" Version="9.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.6" />
         <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="9.0.6" />
         <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.6" />
