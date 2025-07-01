@@ -13,7 +13,7 @@ public sealed class AuthCompleteStepHandler : IStepHandler
     private readonly INotificationService _notification;
 
     /// <summary>
-    /// Инициализирует новый экземпляр класса <see cref="AuthCompleteStepHandler"/>.
+    /// Инициализирует новый экземпляр класса <see cref="AuthCompleteStepHandler" />.
     /// </summary>
     /// <param name="notification">Сервис для отправки уведомлений пользователю.</param>
     public AuthCompleteStepHandler(INotificationService notification) => _notification = notification ?? throw new ArgumentNullException(nameof(notification));
@@ -43,7 +43,7 @@ public sealed class AuthCompleteStepHandler : IStepHandler
                 return new HandlerResult(string.Empty);
         }
     }
-    
+
     private async Task SendInvalid(MessageInfo messageInfo, CancellationToken cancellationToken = default)
     {
         var chatId = messageInfo.ChatId;

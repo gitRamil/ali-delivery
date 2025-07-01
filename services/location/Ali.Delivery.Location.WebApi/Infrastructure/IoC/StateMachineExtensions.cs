@@ -6,7 +6,7 @@ using Ali.Delivery.Location.Infrastructure.Services;
 namespace Ali.Delivery.Location.WebApi.Infrastructure.IoC;
 
 /// <summary>
-/// Предоставляет методы расширения для <see cref="IServiceCollection"/>
+/// Предоставляет методы расширения для <see cref="IServiceCollection" />
 /// для регистрации сервисов, связанных с конечным автоматом (State Machine).
 /// </summary>
 public static class StateMachineExtensions
@@ -18,7 +18,7 @@ public static class StateMachineExtensions
     /// <param name="services">Коллекция сервисов для регистрации.</param>
     /// <param name="configuration">Конфигурация приложения, из которой будут считываться настройки конечного автомата.</param>
     /// <returns>
-    /// Та же самая коллекция <see cref="IServiceCollection"/> для возможности построения цепочки вызовов.
+    /// Та же самая коллекция <see cref="IServiceCollection" /> для возможности построения цепочки вызовов.
     /// </returns>
     public static IServiceCollection AddStateMachine(this IServiceCollection services, IConfiguration configuration)
     {
@@ -26,7 +26,7 @@ public static class StateMachineExtensions
         services.AddSingleton<IUserStateService, InMemoryUserStateService>();
         services.AddScoped<IStepHandlerMapping, StepHandlerMapping>();
         services.AddScoped<IStateMachine, StateMachine>();
-    
+
         return services;
     }
 }

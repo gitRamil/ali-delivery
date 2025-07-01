@@ -1,6 +1,6 @@
 using Ali.Delivery.Location.Application.Abstractions;
-using Ali.Delivery.Location.Application.Models;
 using Ali.Delivery.Location.Application.Configurations;
+using Ali.Delivery.Location.Application.Models;
 using Microsoft.Extensions.Options;
 
 namespace Ali.Delivery.Location.Application.StateMachine;
@@ -8,17 +8,19 @@ namespace Ali.Delivery.Location.Application.StateMachine;
 /// <summary>
 /// Представляет конкретную реализацию конечного автомата, управляющего диалогом с пользователем.
 /// </summary>
-public class StateMachine : IStateMachine  // TODO: Реализовать нормальную обработку "StopStep" и его нотификатора.
-
+public class StateMachine : IStateMachine // TODO: Реализовать нормальную обработку "StopStep" и его нотификатора.
 {
     private readonly StateMachineConfiguration _config;
     private readonly IStepHandlerMapping _stepHandlerMapping;
     private readonly IUserStateService _userStateService;
 
     /// <summary>
-    /// Инициализирует новый экземпляр класса <see cref="StateMachine"/>.
+    /// Инициализирует новый экземпляр класса <see cref="StateMachine" />.
     /// </summary>
-    /// <param name="config">Опции конфигурации <see cref="StateMachineConfiguration"/>, содержащие карту состояний и переходов.</param>
+    /// <param name="config">
+    /// Опции конфигурации <see cref="StateMachineConfiguration" />, содержащие карту состояний и
+    /// переходов.
+    /// </param>
     /// <param name="stepHandlerMapping">Сервис для сопоставления идентификатора шага с его конкретным обработчиком.</param>
     /// <param name="userStateService">Сервис для управления состоянием пользователя (текущий шаг, логин и т.д.).</param>
     public StateMachine(IOptions<StateMachineConfiguration> config, IStepHandlerMapping stepHandlerMapping, IUserStateService userStateService)
@@ -50,7 +52,7 @@ public class StateMachine : IStateMachine  // TODO: Реализовать но�
 
         await _userStateService.SetUserStepAsync(userId, nextStepId);
     }
-    
+
     private StepConfiguration GetStepConfigById(string stepId) =>
         _config.Steps.FirstOrDefault(s => s.Id == stepId) ?? throw new InvalidOperationException($"Конфигурация для шага '{stepId}' не найдена.");
 }

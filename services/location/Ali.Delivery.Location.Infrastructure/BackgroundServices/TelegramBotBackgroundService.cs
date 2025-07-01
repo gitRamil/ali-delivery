@@ -20,10 +20,13 @@ public sealed class TelegramBotService : BackgroundService
     private readonly ITelegramBotClient _telegramBotClient;
 
     /// <summary>
-    /// Инициализирует новый экземпляр класса <see cref="TelegramBotService"/>.
+    /// Инициализирует новый экземпляр класса <see cref="TelegramBotService" />.
     /// </summary>
     /// <param name="logger">Логгер для записи событий и ошибок.</param>
-    /// <param name="serviceProvider">Поставщик сервисов для создания Scoped-областей и разрешения зависимостей для каждого обновления.</param>
+    /// <param name="serviceProvider">
+    /// Поставщик сервисов для создания Scoped-областей и разрешения зависимостей для каждого
+    /// обновления.
+    /// </param>
     /// <param name="telegramBotClient">Клиент для взаимодействия с Telegram Bot API.</param>
     public TelegramBotService(ILogger<TelegramBotService> logger, IServiceProvider serviceProvider, ITelegramBotClient telegramBotClient)
     {
@@ -50,7 +53,7 @@ public sealed class TelegramBotService : BackgroundService
 
         _telegramBotClient.StartReceiving(HandleUpdateAsync, HandleErrorAsync, opts, cancellationToken);
     }
-    
+
     private static MessageInfo ConvertUpdateToMessageInfo(Update update)
     {
         var chatId = update.Message?.Chat.Id ?? update.CallbackQuery?.Message?.Chat.Id ?? throw new InvalidOperationException("Не найден идентификатор чата.");
@@ -65,13 +68,13 @@ public sealed class TelegramBotService : BackgroundService
             Location = location
         };
     }
-    
+
     private Task HandleErrorAsync(ITelegramBotClient bot, Exception ex, CancellationToken cancellationToken)
     {
         _logger.LogError(ex, "Ошибка в Telegram-поллинге");
         return Task.CompletedTask;
     }
-    
+
     private async Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken cancellationToken)
     {
         using var scope = _serviceProvider.CreateScope();
@@ -82,8 +85,9 @@ public sealed class TelegramBotService : BackgroundService
         try
         {
             var messageInfo = ConvertUpdateToMessageInfo(update);
-            
-            Task SendInvalidCommandTelegramMessage() => notificationService.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N1_InvalidCommand, null, cancellationToken);
+
+            Task SendInvalidCommandTelegramMessage() =>
+                notificationService.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N1_InvalidCommand, null, cancellationToken);
 
             await stateMachine.ProcessUpdateAsync(messageInfo, SendInvalidCommandTelegramMessage);
         }

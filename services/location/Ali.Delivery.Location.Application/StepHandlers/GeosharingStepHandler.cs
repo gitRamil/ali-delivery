@@ -5,6 +5,7 @@ using Ali.Delivery.Location.Application.Models;
 using Ali.Delivery.Location.Domain.Entities;
 
 namespace Ali.Delivery.Location.Application.StepHandlers;
+
 /// <summary>
 /// Представляет обработчик для состояния "GeoSharing".
 /// Этот обработчик отвечает за прием и сохранение геолокационных данных пользователя.
@@ -15,7 +16,7 @@ public class GeosharingStepHandler : IStepHandler
     private readonly IUserLocationRepository _repository;
 
     /// <summary>
-    /// Инициализирует новый экземпляр класса <see cref="GeosharingStepHandler"/>.
+    /// Инициализирует новый экземпляр класса <see cref="GeosharingStepHandler" />.
     /// </summary>
     /// <param name="notification">Сервис для отправки уведомлений пользователю.</param>
     /// <param name="repository">Репозиторий для выполнения операций с базой данных местоположений.</param>
@@ -28,20 +29,23 @@ public class GeosharingStepHandler : IStepHandler
     /// <inheritdoc />
     public async Task<HandlerResult> HandleAsync(MessageInfo messageInfo, CancellationToken cancellationToken)
     {
-         if (messageInfo.Location is { } loc)
-         {
-             return await ProcessLocationAsync(messageInfo.ChatId, loc.Longitude.ToString(CultureInfo.InvariantCulture), loc.Latitude.ToString(CultureInfo.InvariantCulture), cancellationToken);
-         }
-         
-         if (messageInfo.Text is { } text)
-         {
-             return await ProcessTextCommandAsync(messageInfo.ChatId, text, cancellationToken);
-         }
-         
-         await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N5_RequestLocation, cancellationToken: cancellationToken);
-         return new HandlerResult(string.Empty);
+        if (messageInfo.Location is { } loc)
+        {
+            return await ProcessLocationAsync(messageInfo.ChatId,
+                                              loc.Longitude.ToString(CultureInfo.InvariantCulture),
+                                              loc.Latitude.ToString(CultureInfo.InvariantCulture),
+                                              cancellationToken);
+        }
+
+        if (messageInfo.Text is { } text)
+        {
+            return await ProcessTextCommandAsync(messageInfo.ChatId, text, cancellationToken);
+        }
+
+        await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N5_RequestLocation, cancellationToken: cancellationToken);
+        return new HandlerResult(string.Empty);
     }
-    
+
     private async Task<HandlerResult> ProcessLocationAsync(long chatId, string longitude, string latitude, CancellationToken cancellationToken)
     {
         var userLogin = chatId.ToString();
@@ -58,19 +62,23 @@ public class GeosharingStepHandler : IStepHandler
             newUserLocation.UpdateCoordinates(longitude, latitude);
             await _repository.AddUserLocationAsync(newUserLocation, cancellationToken);
         }
-        
-        await _notification.SendNotificationMessageAsync(chatId, NotificationType.N6_LocationReceived, new Dictionary<string, object>
-        {
-            ["Latitude"] = latitude,
-            ["Longitude"] = longitude
-        }, cancellationToken);
-        
+
+        await _notification.SendNotificationMessageAsync(chatId,
+                                                         NotificationType.N6_LocationReceived,
+                                                         new Dictionary<string, object>
+                                                         {
+                                                             ["Latitude"] = latitude,
+                                                             ["Longitude"] = longitude
+                                                         },
+                                                         cancellationToken);
+
         return new HandlerResult(string.Empty);
     }
-    
+
     private async Task<HandlerResult> ProcessTextCommandAsync(long chatId, string text, CancellationToken cancellationToken)
     {
-        var command = text.Trim().ToLowerInvariant();
+        var command = text.Trim()
+                          .ToLowerInvariant();
 
         switch (command)
         {

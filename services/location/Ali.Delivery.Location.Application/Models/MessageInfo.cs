@@ -28,4 +28,3 @@ public record MessageInfo
     /// </summary>
     public string? Text { get; init; }
 }
-

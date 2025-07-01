@@ -19,7 +19,7 @@ public enum NotificationType
     /// Сообщение о неверной команде на этапе аутентификации.
     /// </summary>
     N1_InvalidAuthCommand,
-    
+
     /// <summary>
     /// Сообщение о завершении сессии (например, по команде /stop).
     /// </summary>

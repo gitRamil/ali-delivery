@@ -3,12 +3,11 @@ using Ali.Delivery.Location.Application.Abstractions;
 
 namespace Ali.Delivery.Location.Infrastructure.Services;
 
-
 /// <summary>
-/// Представляет потокобезопасную реализацию <see cref="IUserStateService"/>, которая хранит
-/// данные о состоянии и логинах пользователей в памяти, используя <see cref="ConcurrentDictionary{TKey,TValue}"/>.
+/// Представляет потокобезопасную реализацию <see cref="IUserStateService" />, которая хранит
+/// данные о состоянии и логинах пользователей в памяти, используя <see cref="ConcurrentDictionary{TKey,TValue}" />.
 /// </summary>
-public sealed class InMemoryUserStateService : IUserStateService 
+public sealed class InMemoryUserStateService : IUserStateService
 {
     private const string DefaultState = "StartStep";
     private readonly ConcurrentDictionary<long, string?> _logins = new();
@@ -20,7 +19,7 @@ public sealed class InMemoryUserStateService : IUserStateService
     /// <inheritdoc />
     /// <remarks>
     /// Если состояние для указанного пользователя не найдено, метод возвращает состояние по умолчанию,
-    /// определенное в константе <see cref="DefaultState"/>.
+    /// определенное в константе <see cref="DefaultState" />.
     /// </remarks>
     public Task<string> GetUserStepIdAsync(long userId)
     {

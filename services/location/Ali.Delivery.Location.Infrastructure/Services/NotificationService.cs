@@ -34,7 +34,7 @@ public class NotificationService : INotificationService
     private readonly ITelegramBotClient _telegramBotClient;
 
     /// <summary>
-    /// Инициализирует новый экземпляр класса <see cref="NotificationService"/>.
+    /// Инициализирует новый экземпляр класса <see cref="NotificationService" />.
     /// </summary>
     /// <param name="bot">Клиент для взаимодействия с Telegram Bot API.</param>
     /// <param name="logger">Логгер для записи информации и ошибок.</param>
@@ -45,11 +45,10 @@ public class NotificationService : INotificationService
     }
 
     /// <inheritdoc />
-    public async Task SendNotificationMessageAsync(
-        long chatId, 
-        NotificationType notification, 
-        Dictionary<string, object>? userData = null, 
-        CancellationToken cancellationToken = default)
+    public async Task SendNotificationMessageAsync(long chatId,
+                                                   NotificationType notification,
+                                                   Dictionary<string, object>? userData = null,
+                                                   CancellationToken cancellationToken = default)
     {
         var message = GetBaseNotificationMessage(notification);
 
@@ -60,10 +59,7 @@ public class NotificationService : INotificationService
 
         _logger.LogInformation("Generated notification message for type {NotificationType}: '{Message}'", notification, message);
 
-        await _telegramBotClient.SendMessage(
-            chatId: chatId,
-            text: message,
-            cancellationToken: cancellationToken);
+        await _telegramBotClient.SendMessage(chatId, message, cancellationToken: cancellationToken);
     }
 
     private string EnrichLocationMessage(string baseMessage, Dictionary<string, object> userData)

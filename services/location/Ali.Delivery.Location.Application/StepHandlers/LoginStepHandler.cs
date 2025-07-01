@@ -14,7 +14,7 @@ public class LoginStepHandler : IStepHandler
     private readonly INotificationService _notification;
 
     /// <summary>
-    /// Инициализирует новый экземпляр класса <see cref="LoginStepHandler"/>.
+    /// Инициализирует новый экземпляр класса <see cref="LoginStepHandler" />.
     /// </summary>
     /// <param name="notification">Сервис для отправки уведомлений пользователю.</param>
     /// <param name="authenticationService">Сервис для выполнения логики аутентификации.</param>

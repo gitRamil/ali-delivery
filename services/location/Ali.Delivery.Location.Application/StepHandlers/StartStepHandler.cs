@@ -13,7 +13,7 @@ public class StartStepHandler : IStepHandler
     private readonly INotificationService _notification;
 
     /// <summary>
-    /// Инициализирует новый экземпляр класса <see cref="StartStepHandler"/>.
+    /// Инициализирует новый экземпляр класса <see cref="StartStepHandler" />.
     /// </summary>
     /// <param name="notification">Сервис для отправки уведомлений пользователю.</param>
     public StartStepHandler(INotificationService notification) => _notification = notification ?? throw new ArgumentNullException(nameof(notification));
@@ -46,7 +46,7 @@ public class StartStepHandler : IStepHandler
                 return new HandlerResult(string.Empty);
         }
     }
-    
+
     private async Task SendInvalid(MessageInfo messageInfo, CancellationToken cancellationToken)
     {
         var chatId = messageInfo.ChatId;

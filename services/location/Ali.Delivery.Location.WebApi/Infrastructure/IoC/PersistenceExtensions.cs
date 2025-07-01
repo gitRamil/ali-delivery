@@ -22,7 +22,7 @@ public static class PersistenceExtensions
                                                               .UseSnakeCaseNamingConvention()
                                                               .EnableSensitiveDataLogging()
                                                               .LogTo(Console.WriteLine, LogLevel.Information));
-        
+
         services.AddScoped<IUserLocationRepository, UserLocationRepository>();
 
         return services;

@@ -21,7 +21,7 @@ public static class SerializationExtensions
                 {
                     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
                 });
-        
+
         return services;
     }
 }

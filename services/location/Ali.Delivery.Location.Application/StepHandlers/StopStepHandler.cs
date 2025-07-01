@@ -12,7 +12,7 @@ public sealed class StopStepHandler : IStepHandler
     private readonly INotificationService _notification;
 
     /// <summary>
-    /// Инициализирует новый экземпляр класса <see cref="StopStepHandler"/>.
+    /// Инициализирует новый экземпляр класса <see cref="StopStepHandler" />.
     /// </summary>
     /// <param name="notification">Сервис для отправки уведомлений пользователю.</param>
     public StopStepHandler(INotificationService notification) => _notification = notification ?? throw new ArgumentNullException(nameof(notification));
@@ -35,7 +35,7 @@ public sealed class StopStepHandler : IStepHandler
         await SendInvalid(messageInfo, cancellationToken);
         return new HandlerResult(string.Empty);
     }
-    
+
     private async Task SendInvalid(MessageInfo messageInfo, CancellationToken cancellationToken)
     {
         await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N1_InvalidCommand, cancellationToken: cancellationToken);
