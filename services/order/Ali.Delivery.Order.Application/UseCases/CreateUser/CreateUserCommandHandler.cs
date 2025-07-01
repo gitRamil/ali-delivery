@@ -31,7 +31,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Guid>
     {
         ArgumentNullException.ThrowIfNull(command);
 
-        var user = new User(SequentialGuid.Create(), new UserLogin(command.Login), new UserPassword(command.Password), command.Role.ToRole(), new UserBirthDay(command.Birthday));
+        var user = new User(SequentialGuid.Create(), new UserLogin(command.Login), UserPassword.CreatePassword(command.Password), command.Role.ToRole(), new UserBirthDay(command.Birthday));
 
         _context.Users.Add(user);
 

@@ -24,7 +24,17 @@ public class UserPassword : ValueObject
     /// <exception cref="ArgumentException">
     /// Выбрасывается, если пароль пустой, равен null или превышает допустимую длину.
     /// </exception>
-    public UserPassword(string password)
+    /// <remarks>Используется только EF в конфигурации</remarks>
+    public UserPassword(string password) => _password = password;
+
+    /// <summary>
+    /// Создает хеш пароля.
+    /// </summary>
+    /// <param name="password">Пароль пользователя.</param>
+    /// <exception cref="ArgumentException">
+    /// Выбрасывается, если пароль пустой, равен null или превышает допустимую длину.
+    /// </exception>
+    public static UserPassword CreatePassword(string password)
     {
         if (string.IsNullOrWhiteSpace(password))
         {
@@ -37,8 +47,9 @@ public class UserPassword : ValueObject
         {
             throw new ArgumentException($"Пароль не может быть длиннее {MaxLength} символов.", nameof(password));
         }
-
-        _password = GenerateHash(password);
+        
+        var hashedPass = GenerateHash(password);
+        return new UserPassword(hashedPass);
     }
 
     /// <summary>

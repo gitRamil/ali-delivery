@@ -41,7 +41,7 @@ public class LoginQueryHandler : IRequestHandler<LoginUserQuery, string>
                                           .Select(p => (int)p.Permission!.Code)
                                           .ToListAsync(cancellationToken);
 
-        if (user.Password.IsValidPassword(query.Password))
+        if (!user.Password.IsValidPassword(query.Password))
         {
             throw new UnauthorizedAccessException("Неверный пароль");
         }
