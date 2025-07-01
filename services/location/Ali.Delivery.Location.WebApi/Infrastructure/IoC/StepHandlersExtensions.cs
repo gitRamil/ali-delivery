@@ -1,7 +1,6 @@
 using Ali.Delivery.Location.Application.StepHandlers;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace Ali.Delivery.Location.Application.Extensions;
+namespace Ali.Delivery.Location.WebApi.Infrastructure.IoC;
 
 /// <summary>
 /// Предоставляет методы расширения StepHandlers для <see cref="IServiceCollection" />

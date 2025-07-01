@@ -1,9 +1,7 @@
 using Ali.Delivery.Location.Application.Abstractions;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Refit;
 
-namespace Ali.Delivery.Location.Infrastructure.Extensions;
+namespace Ali.Delivery.Location.WebApi.Infrastructure.IoC;
 
 /// <summary>
 /// Предоставляет методы расширения для <see cref="IServiceCollection"/> для удобной регистрации клиентов Refit.

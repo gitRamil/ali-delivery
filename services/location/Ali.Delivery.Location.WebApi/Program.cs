@@ -1,5 +1,3 @@
-using Ali.Delivery.Location.Application.Extensions;
-using Ali.Delivery.Location.Infrastructure.Extensions;
 using Ali.Delivery.Location.WebApi.Infrastructure.IoC;
 using DotNetEnv;
 using Hellang.Middleware.ProblemDetails;

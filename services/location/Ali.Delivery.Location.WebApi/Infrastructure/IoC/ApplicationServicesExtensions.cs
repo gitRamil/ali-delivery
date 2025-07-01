@@ -1,8 +1,7 @@
 using Ali.Delivery.Location.Application.Abstractions;
 using Ali.Delivery.Location.Infrastructure.Services;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace Ali.Delivery.Location.Infrastructure.Extensions;
+namespace Ali.Delivery.Location.WebApi.Infrastructure.IoC;
 
 /// <summary>
 /// Предоставляет методы расширения для регистрации сервисов приложения.
