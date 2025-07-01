@@ -8,7 +8,7 @@ namespace Ali.Delivery.Location.WebApi.Infrastructure.IoC;
 public static class StepHandlersExtensions
 {
     /// <summary>
-    /// Регистрирует все реализации обработчиков шагов (<see cref="IStepHandler" />)
+    /// Регистрирует все реализации обработчиков шагов "IStepHandler"
     /// в контейнере зависимостей с временем жизни Scoped.
     /// </summary>
     /// <param name="services">Коллекция сервисов для регистрации.</param>

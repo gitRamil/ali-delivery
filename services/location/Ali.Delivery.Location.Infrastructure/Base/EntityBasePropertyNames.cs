@@ -1,4 +1,4 @@
-namespace Ali.Delivery.Order.Infrastructure.Persistence.Configurations.Base;
+namespace Ali.Delivery.Location.Infrastructure.Base;
 
 /// <summary>
 /// Содержит названия базовых полей, общих для всех сущностей.

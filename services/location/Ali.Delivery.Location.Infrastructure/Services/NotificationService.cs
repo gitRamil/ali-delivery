@@ -6,7 +6,10 @@ using Telegram.Bot;
 
 namespace Ali.Delivery.Location.Infrastructure.Services;
 
-public class NotificationService : INotificationService // TODO: Подумать над уведомлениями.
+/// <summary>
+/// Представляет реализацию сервиса для отправки уведомлений пользователям через Telegram.
+/// </summary>
+public class NotificationService : INotificationService
 {
     private static readonly Dictionary<NotificationType, string> NotificationMessages = new()
     {
@@ -30,13 +33,23 @@ public class NotificationService : INotificationService // TODO: Подумат�
     private readonly ILogger<NotificationService> _logger;
     private readonly ITelegramBotClient _telegramBotClient;
 
+    /// <summary>
+    /// Инициализирует новый экземпляр класса <see cref="NotificationService"/>.
+    /// </summary>
+    /// <param name="bot">Клиент для взаимодействия с Telegram Bot API.</param>
+    /// <param name="logger">Логгер для записи информации и ошибок.</param>
     public NotificationService(ITelegramBotClient bot, ILogger<NotificationService> logger)
     {
         _telegramBotClient = bot ?? throw new ArgumentNullException(nameof(bot));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public async Task SendNotificationMessageAsync(long chatId, NotificationType notification, Dictionary<string, object>? userData = null)
+    /// <inheritdoc />
+    public async Task SendNotificationMessageAsync(
+        long chatId, 
+        NotificationType notification, 
+        Dictionary<string, object>? userData = null, 
+        CancellationToken cancellationToken = default)
     {
         var message = GetBaseNotificationMessage(notification);
 
@@ -47,7 +60,10 @@ public class NotificationService : INotificationService // TODO: Подумат�
 
         _logger.LogInformation("Generated notification message for type {NotificationType}: '{Message}'", notification, message);
 
-        await _telegramBotClient.SendMessage(chatId, message);
+        await _telegramBotClient.SendMessage(
+            chatId: chatId,
+            text: message,
+            cancellationToken: cancellationToken);
     }
 
     private string EnrichLocationMessage(string baseMessage, Dictionary<string, object> userData)

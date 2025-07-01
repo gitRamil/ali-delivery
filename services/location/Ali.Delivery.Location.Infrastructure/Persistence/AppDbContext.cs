@@ -2,7 +2,7 @@ using Ali.Delivery.Domain.Core;
 using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Location.Application.Abstractions;
 using Ali.Delivery.Location.Domain.Entities;
-using Ali.Delivery.Order.Infrastructure.Persistence.Configurations.Base;
+using Ali.Delivery.Location.Infrastructure.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 

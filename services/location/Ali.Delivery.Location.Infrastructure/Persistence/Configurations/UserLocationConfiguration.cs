@@ -1,5 +1,5 @@
 using Ali.Delivery.Location.Domain.Entities;
-using Ali.Delivery.Order.Infrastructure.Persistence.Configurations.Base;
+using Ali.Delivery.Location.Infrastructure.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

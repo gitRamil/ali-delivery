@@ -29,12 +29,12 @@ public class UserLocation : Entity<SequentialGuid>
         TelegramLogin = null!;
 
     /// <summary>
-    /// Возвращает координаты пользователя.
+    /// Возвращает координаты долготы.
     /// </summary>
     public string? E { get; set; }
 
     /// <summary>
-    /// Возвращает координаты пользователя.
+    /// Возвращает координаты широты.
     /// </summary>
     public string? S { get; set; }
 
@@ -46,8 +46,8 @@ public class UserLocation : Entity<SequentialGuid>
     /// <summary>
     /// Обновляет координаты пользователя.
     /// </summary>
-    /// <param name="newE">Новые координаты E.</param>
-    /// <param name="newS">Новые координаты S.</param>
+    /// <param name="newE">Новые координаты долготы.</param>
+    /// <param name="newS">Новые координаты широты.</param>
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="newS" /> или
     /// <paramref name="newE" /> равен <c>null</c>.

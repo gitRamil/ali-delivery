@@ -3,7 +3,7 @@ using Ali.Delivery.Domain.Core.Primitives;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Ali.Delivery.Order.Infrastructure.Persistence.Configurations.Base;
+namespace Ali.Delivery.Location.Infrastructure.Base;
 
 /// <summary>
 /// Представляет базовую реализацию для настройки конфигурации объектно реляционного отображения для заданного типа.
