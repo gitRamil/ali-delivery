@@ -1,4 +1,5 @@
 using Ali.Delivery.Location.Application.Abstractions;
+using Ali.Delivery.Location.Application.Constants;
 using Ali.Delivery.Location.Application.Models;
 
 namespace Ali.Delivery.Location.Application.StepHandlers;
@@ -32,15 +33,15 @@ public class StartStepHandler : IStepHandler
 
         switch (text)
         {
-            case "/start":
+            case Commands.Start:
                 await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N1_Welcome, cancellationToken: cancellationToken);
                 return new HandlerResult(string.Empty); // Остаемся на этом же шаге, ожидая /login
-            case "/login":
+            case Commands.Login:
                 await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N0_EnterCredentials, cancellationToken: cancellationToken);
-                return new HandlerResult("Authorization");
-            case "/stop":
+                return new HandlerResult(Steps.Authorization);
+            case Commands.Stop:
                 await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N_SessionEnded, cancellationToken: cancellationToken);
-                return new HandlerResult("StopStep");
+                return new HandlerResult(Steps.Stop);
             default:
                 await SendInvalid(messageInfo, cancellationToken);
                 return new HandlerResult(string.Empty);

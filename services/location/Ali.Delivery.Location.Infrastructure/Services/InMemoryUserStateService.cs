@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using Ali.Delivery.Location.Application.Abstractions;
+using Ali.Delivery.Location.Application.Constants;
 
 namespace Ali.Delivery.Location.Infrastructure.Services;
 
@@ -9,7 +10,7 @@ namespace Ali.Delivery.Location.Infrastructure.Services;
 /// </summary>
 public sealed class InMemoryUserStateService : IUserStateService
 {
-    private const string DefaultState = "StartStep";
+    private const string DefaultState = Steps.Start;
     private readonly ConcurrentDictionary<long, string?> _logins = new();
     private readonly ConcurrentDictionary<long, string> _states = new();
 

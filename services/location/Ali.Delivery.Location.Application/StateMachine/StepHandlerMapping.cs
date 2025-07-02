@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using Ali.Delivery.Location.Application.Abstractions;
+using Ali.Delivery.Location.Application.Constants;
 using Ali.Delivery.Location.Application.StepHandlers;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,11 +16,11 @@ public sealed class StepHandlerMapping : IStepHandlerMapping
 {
     private readonly ReadOnlyDictionary<string, Type> _map = new(new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase)
     {
-        ["StartStep"] = typeof(StartStepHandler),
-        ["Authorization"] = typeof(LoginStepHandler),
-        ["AuthComplete"] = typeof(AuthCompleteStepHandler),
-        ["GeoSharing"] = typeof(GeosharingStepHandler),
-        ["StopStep"] = typeof(StopStepHandler)
+        [Steps.Start] = typeof(StartStepHandler),
+        [Steps.Authorization] = typeof(LoginStepHandler),
+        [Steps.AuthComplete] = typeof(AuthCompleteStepHandler),
+        [Steps.GeoSharing] = typeof(GeosharingStepHandler),
+        [Steps.Stop] = typeof(StopStepHandler)
     });
 
     private readonly IServiceProvider _sp;

@@ -1,4 +1,5 @@
 using Ali.Delivery.Location.Application.Abstractions;
+using Ali.Delivery.Location.Application.Constants;
 using Ali.Delivery.Location.Application.Models;
 
 namespace Ali.Delivery.Location.Application.StepHandlers;
@@ -27,9 +28,9 @@ public sealed class StopStepHandler : IStepHandler
         }
 
         if (text.Trim()
-                .Equals("/start", StringComparison.OrdinalIgnoreCase))
+                .Equals(Commands.Start, StringComparison.OrdinalIgnoreCase))
         {
-            return new HandlerResult("StartStep");
+            return new HandlerResult(Steps.Start);
         }
 
         await SendInvalid(messageInfo, cancellationToken);

@@ -1,4 +1,5 @@
 using Ali.Delivery.Location.Application.Abstractions;
+using Ali.Delivery.Location.Application.Constants;
 using Ali.Delivery.Location.Application.Models;
 
 namespace Ali.Delivery.Location.Application.StepHandlers;
@@ -40,10 +41,10 @@ public class LoginStepHandler : IStepHandler
             return new HandlerResult(string.Empty);
         }
 
-        if (string.Equals(text, "/stop", StringComparison.OrdinalIgnoreCase))
+        if (string.Equals(text, Commands.Stop, StringComparison.OrdinalIgnoreCase))
         {
             await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N_SessionEnded, cancellationToken: cancellationToken);
-            return new HandlerResult("StopStep");
+            return new HandlerResult(Steps.Stop);
         }
 
         var res = await _authenticationService.LoginAsync(chatId, text);

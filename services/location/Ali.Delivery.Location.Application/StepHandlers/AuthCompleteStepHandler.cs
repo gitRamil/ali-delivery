@@ -1,4 +1,5 @@
 using Ali.Delivery.Location.Application.Abstractions;
+using Ali.Delivery.Location.Application.Constants;
 using Ali.Delivery.Location.Application.Models;
 
 namespace Ali.Delivery.Location.Application.StepHandlers;
@@ -32,12 +33,12 @@ public sealed class AuthCompleteStepHandler : IStepHandler
 
         switch (text)
         {
-            case "/geosharing":
+            case Commands.Geosharing:
                 await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N5_RequestLocation, cancellationToken: cancellationToken);
-                return new HandlerResult("GeoSharing");
-            case "/stop":
+                return new HandlerResult(Steps.GeoSharing);
+            case Commands.Stop:
                 await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N_SessionEnded, cancellationToken: cancellationToken);
-                return new HandlerResult("StopStep");
+                return new HandlerResult(Steps.Stop);
             default:
                 await SendInvalid(messageInfo, cancellationToken);
                 return new HandlerResult(string.Empty);

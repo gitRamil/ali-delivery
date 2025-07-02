@@ -1,6 +1,7 @@
 using System.Globalization;
 using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Location.Application.Abstractions;
+using Ali.Delivery.Location.Application.Constants;
 using Ali.Delivery.Location.Application.Models;
 using Ali.Delivery.Location.Domain.Entities;
 
@@ -82,12 +83,12 @@ public class GeosharingStepHandler : IStepHandler
 
         switch (command)
         {
-            case "/stop_geosharing":
+            case Commands.StopGeosharing:
                 await _notification.SendNotificationMessageAsync(chatId, NotificationType.N4_AuthenticationComplete, cancellationToken: cancellationToken);
-                return new HandlerResult("AuthComplete");
-            case "/stop":
+                return new HandlerResult(Steps.AuthComplete);
+            case Commands.Stop:
                 await _notification.SendNotificationMessageAsync(chatId, NotificationType.N_SessionEnded, cancellationToken: cancellationToken);
-                return new HandlerResult("StopStep");
+                return new HandlerResult(Steps.Stop);
             default:
                 await _notification.SendNotificationMessageAsync(chatId, NotificationType.N5_RequestLocation, cancellationToken: cancellationToken);
                 return new HandlerResult(string.Empty);

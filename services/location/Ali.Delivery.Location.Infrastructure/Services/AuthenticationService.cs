@@ -1,5 +1,6 @@
 using System.Net;
 using Ali.Delivery.Location.Application.Abstractions;
+using Ali.Delivery.Location.Application.Constants;
 using Ali.Delivery.Location.Application.Models;
 using Ali.Delivery.Location.Application.Models.Authentication;
 using Microsoft.Extensions.Logging;
@@ -106,7 +107,7 @@ public class AuthenticationService : IAuthenticationService
             case AuthResult.Success:
                 await _userStateService.SetUserLoginAsync(chatId, login);
                 await _notification.SendNotificationMessageAsync(chatId, NotificationType.N4_AuthenticationComplete);
-                return new CommandResult("AuthComplete");
+                return new CommandResult(Steps.AuthComplete);
 
             case AuthResult.InvalidCredentials:
                 await _notification.SendNotificationMessageAsync(chatId, NotificationType.N2_InvalidCredentials);
