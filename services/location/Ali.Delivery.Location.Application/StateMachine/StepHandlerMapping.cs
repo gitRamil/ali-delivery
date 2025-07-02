@@ -20,7 +20,8 @@ public sealed class StepHandlerMapping : IStepHandlerMapping
         [Steps.Authorization] = typeof(LoginStepHandler),
         [Steps.AuthComplete] = typeof(AuthCompleteStepHandler),
         [Steps.GeoSharing] = typeof(GeosharingStepHandler),
-        [Steps.Stop] = typeof(StopStepHandler)
+        [Steps.Stop] = typeof(StopStepHandler),
+        [Steps.LanguageSelection] = typeof(LanguageSelectionStepHandler)
     });
 
     private readonly IServiceProvider _sp;

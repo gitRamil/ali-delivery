@@ -1,0 +1,50 @@
+{
+  "N0_EnterCredentials": {
+    "ru": "Введите логин и пароль (например, user123 pass).",
+    "en": "Please enter your login and password (e.g., user123 pass)."
+  },
+  "N1_Welcome": {
+    "ru": "Добро пожаловать! Для начала работы введите /login.",
+    "en": "Welcome! To get started, enter /login."
+  },
+  "N1_InvalidAuthCommand": {
+    "ru": "Неизвестная команда. Пожалуйста, введите /login для аутентификации.",
+    "en": "Unknown command. Please enter /login to authenticate."
+  },
+  "N_SessionEnded": {
+    "ru": "Сессия завершена. Введите /start для новой сессии.",
+    "en": "Session ended. Enter /start to begin a new session."
+  },
+  "N1_InvalidCommand": {
+    "ru": "Неизвестная команда или действие для текущего состояния. Пожалуйста, используйте доступные команды.",
+    "en": "Unknown command or action for the current state. Please use available commands."
+  },
+  "N2_InvalidCredentials": {
+    "ru": "Неверный логин или пароль, либо вы не зарегистрированы в системе. Пожалуйста, зарегистрируйтесь: https://example.com\nВы можете попробовать еще раз или остановить бота командой /stop.",
+    "en": "Invalid login or password, or you are not registered. Please register: https://example.com\nYou can try again or stop the bot with /stop."
+  },
+  "N4_AuthenticationComplete": {
+    "ru": "Авторизация успешно завершена. Используйте /geosharing для начала отслеживания или /stop для выхода.",
+    "en": "Authentication successful. Use /geosharing to start tracking or /stop to exit."
+  },
+  "N5_RequestLocation": {
+    "ru": "Пожалуйста, поделитесь вашей геопозицией или введите /stop_geosharing для ожидания команды, либо завершите сессию командой /stop.",
+    "en": "Please share your location or enter /stop_geosharing to wait for a command, or /stop to end the session."
+  },
+  "N6_LocationReceived": {
+    "ru": "Ваша локация получена. Продолжайте делиться или введите /stop_geosharing для ожидания команды, либо завершите сессию командой /stop.",
+    "en": "Your location has been received. Continue sharing or enter /stop_geosharing to wait for a command, or /stop to end the session."
+  },
+  "N7_InvalidLocation": {
+    "ru": "Не удалось сохранить локацию. Попробуйте снова или введите /stop_geosharing для ожидания команды, либо завершите сессию командой /stop.",
+    "en": "Failed to save location. Try again or enter /stop_geosharing to wait for a command, or /stop to end the session."
+  },
+  "N8_LanguageChanged": {
+    "ru": "Язык успешно изменён. Используйте /login для авторизации.",
+    "en": "Language changed successfully. Use /login for authorization."
+  },
+  "N9_LanguagePrompt": {
+    "ru": "Пожалуйста, выберите язык:",
+    "en": "Please select your language:"
+  }
+}

@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Ali.Delivery.Location.Application.Abstractions;
 using Ali.Delivery.Location.Infrastructure.Services;
 
@@ -9,12 +10,16 @@ namespace Ali.Delivery.Location.WebApi.Infrastructure.IoC;
 public static class ApplicationServicesExtensions
 {
     /// <summary>
-    /// Регистрирует реализации сервисов приложения в контейнере зависимостей.
+    /// Регистрирует реализации сервисов приложения в контейнере зависимостей, включая сервис локализации уведомлений.
     /// </summary>
     /// <param name="services">Коллекция сервисов для регистрации.</param>
     /// <returns>Та же коллекция для построения цепочки вызовов.</returns>
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
+        var notificationsJson = File.ReadAllText("notifications.json");
+        var notifications = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(notificationsJson);
+
+        services.AddSingleton<INotificationLocalizationService>(new NotificationLocalizationService(notifications!));
         services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<INotificationService, NotificationService>();
 

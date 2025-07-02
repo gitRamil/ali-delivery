@@ -22,6 +22,7 @@ public static class StepHandlersExtensions
         services.AddScoped<AuthCompleteStepHandler>();
         services.AddScoped<GeosharingStepHandler>();
         services.AddScoped<StopStepHandler>();
+        services.AddScoped<LanguageSelectionStepHandler>();
 
         return services;
     }

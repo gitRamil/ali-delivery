@@ -7,6 +7,13 @@ namespace Ali.Delivery.Location.Application.Abstractions;
 public interface IUserStateService // TODO: Сделать единую сессию.
 {
     /// <summary>
+    /// Асинхронно получает язык пользователя.
+    /// </summary>
+    /// <param name="userId">Уникальный идентификатор пользователя.</param>
+    /// <returns>Языковой код пользователя (например, "ru", "en") или <c>null</c>, если язык не установлен.</returns>
+    Task<string?> GetUserLanguageAsync(long userId);
+
+    /// <summary>
     /// Асинхронно получает логин пользователя по его ID.
     /// </summary>
     /// <param name="userId">Уникальный идентификатор пользователя (например, ChatId).</param>
@@ -25,6 +32,13 @@ public interface IUserStateService // TODO: Сделать единую сесс
     /// Результат задачи содержит строковый идентификатор текущего шага.
     /// </returns>
     Task<string> GetUserStepIdAsync(long userId);
+
+    /// <summary>
+    /// Асинхронно сохраняет (устанавливает или обновляет) язык для указанного пользователя.
+    /// </summary>
+    /// <param name="userId">Уникальный идентификатор пользователя.</param>
+    /// <param name="languageCode">Языковой код (например, "ru", "en").</param>
+    Task SetUserLanguageAsync(long userId, string languageCode);
 
     /// <summary>
     /// Асинхронно сохраняет (устанавливает или обновляет) логин для указанного пользователя.

@@ -3,43 +3,31 @@ using Ali.Delivery.Location.Application.Abstractions;
 using Ali.Delivery.Location.Application.Models;
 using Microsoft.Extensions.Logging;
 using Telegram.Bot;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Ali.Delivery.Location.Infrastructure.Services;
 
 /// <summary>
-/// Представляет реализацию сервиса для отправки уведомлений пользователям через Telegram.
+/// Сервис для отправки уведомлений пользователям через Telegram с поддержкой локализации и выбора языка.
 /// </summary>
 public class NotificationService : INotificationService
 {
-    private static readonly Dictionary<NotificationType, string> NotificationMessages = new()
-    {
-        [NotificationType.N0_EnterCredentials] = "Введите логин и пароль (например, user123 pass).",
-        [NotificationType.N1_Welcome] = "Добро пожаловать! Для начала работы введите /login.",
-        [NotificationType.N1_InvalidAuthCommand] = "Неизвестная команда. Пожалуйста, введите /login для аутентификации.",
-        [NotificationType.N_SessionEnded] = "Сессия завершена. Введите /start для новой сессии.",
-        [NotificationType.N1_InvalidCommand] = "Неизвестная команда или действие для текущего состояния. Пожалуйста, используйте доступные команды.",
-        [NotificationType.N2_InvalidCredentials] =
-            "Неверный логин или пароль, либо вы не зарегистрированы в системе. Пожалуйста пройдите по ссылке и зарегистрируйтесь: https://example.com\n" +
-            "Вы можете попробовать еще раз или остановить бота командой /stop.",
-        [NotificationType.N4_AuthenticationComplete] = "Авторизация успешно завершена. Используйте /geosharing для начала отслеживания или /stop для выхода.",
-        [NotificationType.N5_RequestLocation] =
-            "Пожалуйста, поделитесь вашей геопозицией для продолжения или введите /stop_geosharing для перехода в режим ожидания команды, либо завершите сессию командой /stop.",
-        [NotificationType.N6_LocationReceived] =
-            "Ваша локация получена. Продолжайте делиться своей локацией или введите /stop_geosharing для перехода в режим ожидания команды, либо завершите сессию командой /stop.",
-        [NotificationType.N7_InvalidLocation] =
-            "Не удалось сохранить локацию. Пожалуйста, попробуйте снова или введите /stop_geosharing для перехода в режим ожидания команды, либо завершите сессию командой /stop."
-    };
-
+    private readonly INotificationLocalizationService _localization;
     private readonly ILogger<NotificationService> _logger;
     private readonly ITelegramBotClient _telegramBotClient;
+    private readonly IUserStateService _userStateService;
 
     /// <summary>
     /// Инициализирует новый экземпляр класса <see cref="NotificationService" />.
     /// </summary>
+    /// <param name="localization">Сервис локализации уведомлений.</param>
+    /// <param name="userStateService">Сервис для получения языка пользователя.</param>
     /// <param name="bot">Клиент для взаимодействия с Telegram Bot API.</param>
     /// <param name="logger">Логгер для записи информации и ошибок.</param>
-    public NotificationService(ITelegramBotClient bot, ILogger<NotificationService> logger)
+    public NotificationService(INotificationLocalizationService localization, IUserStateService userStateService, ITelegramBotClient bot, ILogger<NotificationService> logger)
     {
+        _localization = localization ?? throw new ArgumentNullException(nameof(localization));
+        _userStateService = userStateService ?? throw new ArgumentNullException(nameof(userStateService));
         _telegramBotClient = bot ?? throw new ArgumentNullException(nameof(bot));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
@@ -50,19 +38,34 @@ public class NotificationService : INotificationService
                                                    Dictionary<string, object>? userData = null,
                                                    CancellationToken cancellationToken = default)
     {
-        var message = GetBaseNotificationMessage(notification);
+        var language = await _userStateService.GetUserLanguageAsync(chatId) ?? "ru";
+        var message = _localization.GetNotificationMessage(notification, language);
+
+        if (notification == NotificationType.N9_LanguagePrompt)
+        {
+            var replyMarkup = new ReplyKeyboardMarkup([
+                ["Русский 🇷🇺", "English 🇬🇧"]
+            ])
+            {
+                ResizeKeyboard = true,
+                OneTimeKeyboard = true
+            };
+
+            await _telegramBotClient.SendMessage(chatId, message, replyMarkup: replyMarkup, cancellationToken: cancellationToken);
+            return;
+        }
 
         if (notification == NotificationType.N6_LocationReceived && userData != null)
         {
-            message = EnrichLocationMessage(message, userData);
+            message = EnrichLocationMessage(message, userData, language);
         }
 
-        _logger.LogInformation("Generated notification message for type {NotificationType}: '{Message}'", notification, message);
+        _logger.LogInformation("Generated notification message for type {NotificationType}, lang {Lang}: '{Message}'", notification, language, message);
 
         await _telegramBotClient.SendMessage(chatId, message, cancellationToken: cancellationToken);
     }
 
-    private string EnrichLocationMessage(string baseMessage, Dictionary<string, object> userData)
+    private string EnrichLocationMessage(string baseMessage, Dictionary<string, object> userData, string language)
     {
         if (!userData.TryGetValue("Latitude", out var latObj) || !userData.TryGetValue("Longitude", out var lonObj))
         {
@@ -77,8 +80,13 @@ public class NotificationService : INotificationService
             var longitude = Convert.ToDouble(lonObj, CultureInfo.InvariantCulture)
                                    .ToString("F4", CultureInfo.InvariantCulture);
 
-            return
-                $"Локация получена: Широта {latitude}, Долгота {longitude}. Продолжайте делиться вашей локацией или введите /stop_geosharing для перехода в режим ожидания команды, либо завершите сессию командой /stop.";
+            return language switch
+            {
+                "en" =>
+                    $"Location received: Latitude {latitude}, Longitude {longitude}. Continue sharing or enter /stop_geosharing to wait for a command, or /stop to end the session.",
+                _ =>
+                    $"Локация получена: Широта {latitude}, Долгота {longitude}. Продолжайте делиться вашей локацией или введите /stop_geosharing для перехода в режим ожидания команды, либо завершите сессию командой /stop."
+            };
         }
         catch (FormatException ex)
         {
@@ -87,7 +95,4 @@ public class NotificationService : INotificationService
 
         return baseMessage;
     }
-
-    private static string GetBaseNotificationMessage(NotificationType notification) =>
-        NotificationMessages.TryGetValue(notification, out var message) ? message : $"Неизвестный тип уведомления ({notification}). Обратитесь к разработчику.";
 }

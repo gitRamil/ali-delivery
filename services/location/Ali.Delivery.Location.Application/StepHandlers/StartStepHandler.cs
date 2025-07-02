@@ -22,6 +22,12 @@ public class StartStepHandler : IStepHandler
     /// <inheritdoc />
     public async Task<HandlerResult> HandleAsync(MessageInfo messageInfo, CancellationToken cancellationToken = default)
     {
+        if (messageInfo.Text == Commands.Start)
+        {
+            await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N9_LanguagePrompt, cancellationToken: cancellationToken);
+            return new HandlerResult(Steps.LanguageSelection);
+        }
+
         if (messageInfo is not { Text: { } text })
         {
             await SendInvalid(messageInfo, cancellationToken);
@@ -35,7 +41,7 @@ public class StartStepHandler : IStepHandler
         {
             case Commands.Start:
                 await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N1_Welcome, cancellationToken: cancellationToken);
-                return new HandlerResult(string.Empty); // Остаемся на этом же шаге, ожидая /login
+                return new HandlerResult(string.Empty);
             case Commands.Login:
                 await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N0_EnterCredentials, cancellationToken: cancellationToken);
                 return new HandlerResult(Steps.Authorization);

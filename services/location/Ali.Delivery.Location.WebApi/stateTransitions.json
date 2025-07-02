@@ -3,7 +3,16 @@
     {
       "Id": "StartStep",
       "SelectNextStep": {
+        "LanguageSelection": "LanguageSelection",
         "Authorization": "Authorization",
+        "StopStep": "StopStep"
+      }
+    },
+    {
+      "Id": "LanguageSelection",
+      "SelectNextStep": {
+        "StartStep": "StartStep",
+        "LanguageSelection": "LanguageSelection",
         "StopStep": "StopStep"
       }
     },

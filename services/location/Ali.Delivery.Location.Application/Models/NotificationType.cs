@@ -53,5 +53,15 @@ public enum NotificationType
     /// <summary>
     /// Сообщение о том, что отправленная геолокация имеет неверный формат или значение.
     /// </summary>
-    N7_InvalidLocation
+    N7_InvalidLocation,
+
+    /// <summary>
+    /// Сообщение об успешной смене языка.
+    /// </summary>
+    N8_LanguageChanged,
+
+    /// <summary>
+    /// Сообщение с просьбой выбрать язык (обычно с клавиатурой).
+    /// </summary>
+    N9_LanguagePrompt
 }
