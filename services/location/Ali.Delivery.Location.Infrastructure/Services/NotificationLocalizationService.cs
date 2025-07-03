@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Ali.Delivery.Location.Application.Abstractions;
 using Ali.Delivery.Location.Application.Models;
 
@@ -8,32 +9,57 @@ namespace Ali.Delivery.Location.Infrastructure.Services;
 /// </summary>
 public class NotificationLocalizationService : INotificationLocalizationService
 {
+    private const string DefaultLanguage = "ru";
     private readonly Dictionary<string, Dictionary<string, string>> _notifications;
+    private readonly IUserStateService _userStateService;
 
     /// <summary>
     /// Инициализирует новый экземпляр <see cref="NotificationLocalizationService" />.
     /// </summary>
-    /// <param name="notifications">
-    /// Словарь переводов уведомлений: ключ — тип уведомления, значение — словарь языков и
-    /// переводов.
-    /// </param>
-    public NotificationLocalizationService(Dictionary<string, Dictionary<string, string>> notifications) => _notifications = notifications;
+    public NotificationLocalizationService(IUserStateService userStateService)
+    {
+        var notificationsJson = File.ReadAllText("notifications.json");
+
+        _notifications = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(notificationsJson) ??
+                         throw new InvalidOperationException("Ошибка получения конфигурации с языками");
+        _userStateService = userStateService ?? throw new ArgumentNullException(nameof(userStateService));
+    }
 
     /// <inheritdoc />
-    public string GetNotificationMessage(NotificationType type, string languageCode)
+    public async Task<string> GetNotificationMessage(long chatId, NotificationType type, Dictionary<string, string>? placeholderData = null)
     {
-        var key = type.ToString();
+        var notificationTypeKey = type.ToString();
 
-        if (!_notifications.TryGetValue(key, out var translations))
+        if (!_notifications.TryGetValue(notificationTypeKey, out var messageWithLanguages))
         {
-            return $"[No localization for {key}]";
+            throw new InvalidOperationException($"Не найдено сообщение по типу сообщения {notificationTypeKey} в файле конфигурации");
         }
 
-        if (translations.TryGetValue(languageCode, out var message))
+        var languageCode = await _userStateService.GetUserLanguageAsync(chatId) ?? DefaultLanguage;
+
+        if (!messageWithLanguages.TryGetValue(languageCode, out var messageByLanguage))
         {
-            return message;
+            throw new InvalidOperationException($"Не найдено сообщение с типом {notificationTypeKey} по языку {languageCode} в файле конфигурации");
         }
 
-        return translations.TryGetValue("en", out var fallback) ? fallback : $"[No localization for {key}]";
+        var messageWithPlaceholderData = AddPlaceholderData(messageByLanguage, placeholderData);
+        return messageWithPlaceholderData;
+    }
+    
+    private static string AddPlaceholderData(string messageByLanguage, Dictionary<string, string>? placeholderData)
+    {
+        if (placeholderData == null || placeholderData.Count == 0)
+        {
+            return messageByLanguage;
+        }
+
+        var result = messageByLanguage;
+
+        foreach (var kvp in placeholderData)
+        {
+            result = result.Replace($"{{{kvp.Key}}}", kvp.Value.ToString() ?? string.Empty);
+        }
+
+        return result;
     }
 }

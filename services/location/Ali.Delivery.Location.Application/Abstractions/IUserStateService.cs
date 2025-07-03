@@ -14,16 +14,6 @@ public interface IUserStateService // TODO: Сделать единую сесс
     Task<string?> GetUserLanguageAsync(long userId);
 
     /// <summary>
-    /// Асинхронно получает логин пользователя по его ID.
-    /// </summary>
-    /// <param name="userId">Уникальный идентификатор пользователя (например, ChatId).</param>
-    /// <returns>
-    /// Задача, представляющая асинхронную операцию.
-    /// Результат задачи содержит логин пользователя, если он был сохранен; в противном случае — <c>null</c>.
-    /// </returns>
-    Task<string?> GetUserLoginAsync(long userId);
-
-    /// <summary>
     /// Асинхронно получает идентификатор текущего шага пользователя в диалоге.
     /// </summary>
     /// <param name="userId">Уникальный идентификатор пользователя.</param>
@@ -39,13 +29,6 @@ public interface IUserStateService // TODO: Сделать единую сесс
     /// <param name="userId">Уникальный идентификатор пользователя.</param>
     /// <param name="languageCode">Языковой код (например, "ru", "en").</param>
     Task SetUserLanguageAsync(long userId, string languageCode);
-
-    /// <summary>
-    /// Асинхронно сохраняет (устанавливает или обновляет) логин для указанного пользователя.
-    /// </summary>
-    /// <param name="userId">Уникальный идентификатор пользователя.</param>
-    /// <param name="login">Логин, который необходимо сохранить.</param>
-    Task SetUserLoginAsync(long userId, string login);
 
     /// <summary>
     /// Асинхронно устанавливает новый текущий шаг для пользователя.

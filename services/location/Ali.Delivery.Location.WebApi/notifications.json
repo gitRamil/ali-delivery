@@ -46,5 +46,9 @@
   "N9_LanguagePrompt": {
     "ru": "Пожалуйста, выберите язык:",
     "en": "Please select your language:"
+  },
+  "LocationWithPlaceHolder": {
+    "ru": "Локация получена: Широта {latitude}, Долгота {longitude}. Продолжайте делиться или введите /stop_geosharing для ожидания команды, либо завершите сессию командой /stop.",
+    "en": "Location received: Latitude {latitude}, Longitude {longitude}. Continue sharing or enter /stop_geosharing to wait for a command, or /stop to end the session."
   }
 }

@@ -63,5 +63,10 @@ public enum NotificationType
     /// <summary>
     /// Сообщение с просьбой выбрать язык (обычно с клавиатурой).
     /// </summary>
-    N9_LanguagePrompt
+    N9_LanguagePrompt,
+
+    /// <summary>
+    /// .
+    /// </summary>
+    LocationWithPlaceHolder
 }

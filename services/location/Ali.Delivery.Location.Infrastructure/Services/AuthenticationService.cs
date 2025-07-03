@@ -105,7 +105,6 @@ public class AuthenticationService : IAuthenticationService
         switch (auth.Status)
         {
             case AuthResult.Success:
-                await _userStateService.SetUserLoginAsync(chatId, login);
                 await _notification.SendNotificationMessageAsync(chatId, NotificationType.N4_AuthenticationComplete);
                 return new CommandResult(Steps.AuthComplete);
 

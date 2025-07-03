@@ -15,19 +15,16 @@ public class NotificationService : INotificationService
     private readonly INotificationLocalizationService _localization;
     private readonly ILogger<NotificationService> _logger;
     private readonly ITelegramBotClient _telegramBotClient;
-    private readonly IUserStateService _userStateService;
 
     /// <summary>
     /// Инициализирует новый экземпляр класса <see cref="NotificationService" />.
     /// </summary>
     /// <param name="localization">Сервис локализации уведомлений.</param>
-    /// <param name="userStateService">Сервис для получения языка пользователя.</param>
     /// <param name="bot">Клиент для взаимодействия с Telegram Bot API.</param>
     /// <param name="logger">Логгер для записи информации и ошибок.</param>
-    public NotificationService(INotificationLocalizationService localization, IUserStateService userStateService, ITelegramBotClient bot, ILogger<NotificationService> logger)
+    public NotificationService(INotificationLocalizationService localization, ITelegramBotClient bot, ILogger<NotificationService> logger)
     {
         _localization = localization ?? throw new ArgumentNullException(nameof(localization));
-        _userStateService = userStateService ?? throw new ArgumentNullException(nameof(userStateService));
         _telegramBotClient = bot ?? throw new ArgumentNullException(nameof(bot));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
@@ -38,38 +35,48 @@ public class NotificationService : INotificationService
                                                    Dictionary<string, object>? userData = null,
                                                    CancellationToken cancellationToken = default)
     {
-        var language = await _userStateService.GetUserLanguageAsync(chatId) ?? "ru";
-        var message = _localization.GetNotificationMessage(notification, language);
-
-        if (notification == NotificationType.N9_LanguagePrompt)
+        if (notification == NotificationType.N6_LocationReceived)
         {
-            var replyMarkup = new ReplyKeyboardMarkup([
-                ["Русский 🇷🇺", "English 🇬🇧"]
-            ])
-            {
-                ResizeKeyboard = true,
-                OneTimeKeyboard = true
-            };
-
-            await _telegramBotClient.SendMessage(chatId, message, replyMarkup: replyMarkup, cancellationToken: cancellationToken);
+            await SendEnrichLocationMessageAsync(chatId, userData, cancellationToken);
             return;
         }
 
-        if (notification == NotificationType.N6_LocationReceived && userData != null)
-        {
-            message = EnrichLocationMessage(message, userData, language);
-        }
+        var message = await _localization.GetNotificationMessage(chatId, notification);
 
-        _logger.LogInformation("Generated notification message for type {NotificationType}, lang {Lang}: '{Message}'", notification, language, message);
+        if (notification == NotificationType.N9_LanguagePrompt)
+        {
+            await SendChooseLanguageMessageAsync(chatId, message, cancellationToken);
+            return;
+        }
 
         await _telegramBotClient.SendMessage(chatId, message, cancellationToken: cancellationToken);
     }
 
-    private string EnrichLocationMessage(string baseMessage, Dictionary<string, object> userData, string language)
+    private async Task SendChooseLanguageMessageAsync(long chatId, string message, CancellationToken cancellationToken)
     {
+        var replyMarkup = new ReplyKeyboardMarkup([
+            ["Русский 🇷🇺", "English 🇬🇧"]
+        ])
+        {
+            ResizeKeyboard = true,
+            OneTimeKeyboard = true
+        };
+
+        await _telegramBotClient.SendMessage(chatId, message, replyMarkup: replyMarkup, cancellationToken: cancellationToken);
+    }
+
+    private async Task SendEnrichLocationMessageAsync(long chatId, Dictionary<string, object>? userData, CancellationToken cancellationToken)
+    {
+        if (userData == null)
+        {
+            _logger.LogError("В сообщении с chatId {ChatId} отсутвует локация пользователя", chatId);
+            return;
+        }
+
         if (!userData.TryGetValue("Latitude", out var latObj) || !userData.TryGetValue("Longitude", out var lonObj))
         {
-            return baseMessage;
+            _logger.LogError("В сообщении с chatId {ChatId} невозможно распарстиь локацию пользователя", chatId);
+            return;
         }
 
         try
@@ -80,19 +87,23 @@ public class NotificationService : INotificationService
             var longitude = Convert.ToDouble(lonObj, CultureInfo.InvariantCulture)
                                    .ToString("F4", CultureInfo.InvariantCulture);
 
-            return language switch
+            var locationPlaceholderData = new Dictionary<string, string>
             {
-                "en" =>
-                    $"Location received: Latitude {latitude}, Longitude {longitude}. Continue sharing or enter /stop_geosharing to wait for a command, or /stop to end the session.",
-                _ =>
-                    $"Локация получена: Широта {latitude}, Долгота {longitude}. Продолжайте делиться вашей локацией или введите /stop_geosharing для перехода в режим ожидания команды, либо завершите сессию командой /stop."
+                {
+                    "latitude", latitude
+                },
+                {
+                    "longitude", longitude
+                }
             };
+
+            var message = await _localization.GetNotificationMessage(chatId, NotificationType.LocationWithPlaceHolder, locationPlaceholderData);
+
+            await _telegramBotClient.SendMessage(chatId, message, cancellationToken: cancellationToken);
         }
         catch (FormatException ex)
         {
-            _logger.LogError(ex, "Error formatting latitude/longitude for notification. Raw Latitude: '{LatObj}', Raw Longitude: '{LonObj}'", latObj, lonObj);
+            _logger.LogError(ex, "Ошибка получения локации пользователя. Latitude: '{LatObj}', Longitude: '{LonObj}'", latObj, lonObj);
         }
-
-        return baseMessage;
     }
 }

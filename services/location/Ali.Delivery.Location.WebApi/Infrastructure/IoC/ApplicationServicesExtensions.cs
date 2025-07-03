@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Ali.Delivery.Location.Application.Abstractions;
 using Ali.Delivery.Location.Infrastructure.Services;
 
@@ -16,10 +15,7 @@ public static class ApplicationServicesExtensions
     /// <returns>Та же коллекция для построения цепочки вызовов.</returns>
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        var notificationsJson = File.ReadAllText("notifications.json");
-        var notifications = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(notificationsJson);
-
-        services.AddSingleton<INotificationLocalizationService>(new NotificationLocalizationService(notifications!));
+        services.AddSingleton<INotificationLocalizationService, NotificationLocalizationService>();
         services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<INotificationService, NotificationService>();
 

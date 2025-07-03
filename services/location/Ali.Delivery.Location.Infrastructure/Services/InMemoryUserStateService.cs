@@ -12,14 +12,10 @@ public sealed class InMemoryUserStateService : IUserStateService
 {
     private const string DefaultState = Steps.Start;
     private readonly ConcurrentDictionary<long, string> _languages = new();
-    private readonly ConcurrentDictionary<long, string?> _logins = new();
     private readonly ConcurrentDictionary<long, string> _states = new();
 
     /// <inheritdoc />
     public Task<string?> GetUserLanguageAsync(long userId) => Task.FromResult(_languages!.GetValueOrDefault(userId, null));
-
-    /// <inheritdoc />
-    public Task<string?> GetUserLoginAsync(long userId) => Task.FromResult(_logins.GetValueOrDefault(userId, null));
 
     /// <inheritdoc />
     /// <remarks>
@@ -36,13 +32,6 @@ public sealed class InMemoryUserStateService : IUserStateService
     public Task SetUserLanguageAsync(long userId, string languageCode)
     {
         _languages[userId] = languageCode;
-        return Task.CompletedTask;
-    }
-
-    /// <inheritdoc />
-    public Task SetUserLoginAsync(long userId, string login)
-    {
-        _logins[userId] = login;
         return Task.CompletedTask;
     }
 
