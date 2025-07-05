@@ -35,7 +35,7 @@ public class NotificationService : INotificationService
                                                    Dictionary<string, object>? userData = null,
                                                    CancellationToken cancellationToken = default)
     {
-        if (notification == NotificationType.N6_LocationReceived)
+        if (notification == NotificationType.LocationReceived)
         {
             await SendEnrichLocationMessageAsync(chatId, userData, cancellationToken);
             return;
@@ -43,7 +43,7 @@ public class NotificationService : INotificationService
 
         var message = await _localization.GetNotificationMessage(chatId, notification);
 
-        if (notification == NotificationType.N9_LanguagePrompt)
+        if (notification == NotificationType.LanguagePrompt)
         {
             await SendChooseLanguageMessageAsync(chatId, message, cancellationToken);
             return;

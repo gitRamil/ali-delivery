@@ -24,7 +24,7 @@ public class StartStepHandler : IStepHandler
     {
         if (messageInfo.Text == Commands.Start)
         {
-            await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N9_LanguagePrompt, cancellationToken: cancellationToken);
+            await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.LanguagePrompt, cancellationToken: cancellationToken);
             return new HandlerResult(Steps.LanguageSelection);
         }
 
@@ -40,13 +40,13 @@ public class StartStepHandler : IStepHandler
         switch (text)
         {
             case Commands.Start:
-                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N1_Welcome, cancellationToken: cancellationToken);
+                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.Welcome, cancellationToken: cancellationToken);
                 return new HandlerResult(string.Empty);
             case Commands.Login:
-                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N0_EnterCredentials, cancellationToken: cancellationToken);
+                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.EnterCredentials, cancellationToken: cancellationToken);
                 return new HandlerResult(Steps.Authorization);
             case Commands.Stop:
-                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N_SessionEnded, cancellationToken: cancellationToken);
+                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.SessionEnded, cancellationToken: cancellationToken);
                 return new HandlerResult(Steps.Stop);
             default:
                 await SendInvalid(messageInfo, cancellationToken);
@@ -57,6 +57,6 @@ public class StartStepHandler : IStepHandler
     private async Task SendInvalid(MessageInfo messageInfo, CancellationToken cancellationToken)
     {
         var chatId = messageInfo.ChatId;
-        await _notification.SendNotificationMessageAsync(chatId, NotificationType.N1_InvalidAuthCommand, cancellationToken: cancellationToken);
+        await _notification.SendNotificationMessageAsync(chatId, NotificationType.InvalidAuthCommand, cancellationToken: cancellationToken);
     }
 }

@@ -43,7 +43,7 @@ public class GeosharingStepHandler : IStepHandler
             return await ProcessTextCommandAsync(messageInfo.ChatId, text, cancellationToken);
         }
 
-        await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N5_RequestLocation, cancellationToken: cancellationToken);
+        await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.RequestLocation, cancellationToken: cancellationToken);
         return new HandlerResult(string.Empty);
     }
 
@@ -65,7 +65,7 @@ public class GeosharingStepHandler : IStepHandler
         }
 
         await _notification.SendNotificationMessageAsync(chatId,
-                                                         NotificationType.N6_LocationReceived,
+                                                         NotificationType.LocationReceived,
                                                          new Dictionary<string, object>
                                                          {
                                                              ["Latitude"] = latitude,
@@ -84,13 +84,13 @@ public class GeosharingStepHandler : IStepHandler
         switch (command)
         {
             case Commands.StopGeosharing:
-                await _notification.SendNotificationMessageAsync(chatId, NotificationType.N4_AuthenticationComplete, cancellationToken: cancellationToken);
+                await _notification.SendNotificationMessageAsync(chatId, NotificationType.AuthenticationComplete, cancellationToken: cancellationToken);
                 return new HandlerResult(Steps.AuthComplete);
             case Commands.Stop:
-                await _notification.SendNotificationMessageAsync(chatId, NotificationType.N_SessionEnded, cancellationToken: cancellationToken);
+                await _notification.SendNotificationMessageAsync(chatId, NotificationType.SessionEnded, cancellationToken: cancellationToken);
                 return new HandlerResult(Steps.Stop);
             default:
-                await _notification.SendNotificationMessageAsync(chatId, NotificationType.N5_RequestLocation, cancellationToken: cancellationToken);
+                await _notification.SendNotificationMessageAsync(chatId, NotificationType.RequestLocation, cancellationToken: cancellationToken);
                 return new HandlerResult(string.Empty);
         }
     }

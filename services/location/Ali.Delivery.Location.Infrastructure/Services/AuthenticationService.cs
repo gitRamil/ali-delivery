@@ -95,7 +95,7 @@ public class AuthenticationService : IAuthenticationService
 
         if (parts.Length < 2)
         {
-            await _notification.SendNotificationMessageAsync(chatId, NotificationType.N0_EnterCredentials);
+            await _notification.SendNotificationMessageAsync(chatId, NotificationType.EnterCredentials);
             return new CommandResult(string.Empty);
         }
 
@@ -105,15 +105,15 @@ public class AuthenticationService : IAuthenticationService
         switch (auth.Status)
         {
             case AuthResult.Success:
-                await _notification.SendNotificationMessageAsync(chatId, NotificationType.N4_AuthenticationComplete);
+                await _notification.SendNotificationMessageAsync(chatId, NotificationType.AuthenticationComplete);
                 return new CommandResult(Steps.AuthComplete);
 
             case AuthResult.InvalidCredentials:
-                await _notification.SendNotificationMessageAsync(chatId, NotificationType.N2_InvalidCredentials);
+                await _notification.SendNotificationMessageAsync(chatId, NotificationType.InvalidCredentials);
                 return new CommandResult(string.Empty);
 
             default:
-                await _notification.SendNotificationMessageAsync(chatId, NotificationType.N1_InvalidCommand);
+                await _notification.SendNotificationMessageAsync(chatId, NotificationType.InvalidCommand);
                 return new CommandResult(string.Empty);
         }
     }

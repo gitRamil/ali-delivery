@@ -21,7 +21,7 @@ public static class RefitClientExtensions
     public static IServiceCollection AddRefitClientForOrderDb(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddRefitClient<IFileServiceForOrder>()
-                .ConfigureHttpClient(c => c.BaseAddress = new Uri(configuration["ExternalServices:OrderService"]!));
+                .ConfigureHttpClient(c => c.BaseAddress = new Uri(configuration["ExternalServices:OrderService"] ?? throw new InvalidOperationException("Отсутствует строка подключения в ключе 'ExternalServices' для 'OrderService'")));
 
         return services;
     }

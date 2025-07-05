@@ -34,10 +34,10 @@ public sealed class AuthCompleteStepHandler : IStepHandler
         switch (text)
         {
             case Commands.Geosharing:
-                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N5_RequestLocation, cancellationToken: cancellationToken);
+                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.RequestLocation, cancellationToken: cancellationToken);
                 return new HandlerResult(Steps.GeoSharing);
             case Commands.Stop:
-                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N_SessionEnded, cancellationToken: cancellationToken);
+                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.SessionEnded, cancellationToken: cancellationToken);
                 return new HandlerResult(Steps.Stop);
             default:
                 await SendInvalid(messageInfo, cancellationToken);
@@ -48,6 +48,6 @@ public sealed class AuthCompleteStepHandler : IStepHandler
     private async Task SendInvalid(MessageInfo messageInfo, CancellationToken cancellationToken = default)
     {
         var chatId = messageInfo.ChatId;
-        await _notification.SendNotificationMessageAsync(chatId, NotificationType.N1_InvalidCommand, cancellationToken: cancellationToken);
+        await _notification.SendNotificationMessageAsync(chatId, NotificationType.InvalidCommand, cancellationToken: cancellationToken);
     }
 }

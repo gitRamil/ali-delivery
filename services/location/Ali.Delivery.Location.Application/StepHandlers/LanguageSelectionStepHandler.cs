@@ -36,17 +36,17 @@ public class LanguageSelectionStepHandler : IStepHandler
         if (langCode != null)
         {
             await _userStateService.SetUserLanguageAsync(messageInfo.ChatId, langCode);
-            await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N8_LanguageChanged, cancellationToken: cancellationToken);
+            await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.LanguageChanged, cancellationToken: cancellationToken);
             return new HandlerResult(Steps.Start);
         }
 
         if (string.Equals(messageInfo.Text, Commands.Stop, StringComparison.OrdinalIgnoreCase))
         {
-            await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N_SessionEnded, cancellationToken: cancellationToken);
+            await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.SessionEnded, cancellationToken: cancellationToken);
             return new HandlerResult(Steps.Stop);
         }
 
-        await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N9_LanguagePrompt, cancellationToken: cancellationToken);
+        await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.LanguagePrompt, cancellationToken: cancellationToken);
         return new HandlerResult(Steps.LanguageSelection);
     }
 }

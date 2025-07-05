@@ -37,13 +37,13 @@ public class LoginStepHandler : IStepHandler
 
         if (messageInfo is not { Text: { } text })
         {
-            await _notification.SendNotificationMessageAsync(chatId, NotificationType.N1_InvalidAuthCommand, cancellationToken: cancellationToken);
+            await _notification.SendNotificationMessageAsync(chatId, NotificationType.InvalidAuthCommand, cancellationToken: cancellationToken);
             return new HandlerResult(string.Empty);
         }
 
         if (string.Equals(text, Commands.Stop, StringComparison.OrdinalIgnoreCase))
         {
-            await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N_SessionEnded, cancellationToken: cancellationToken);
+            await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.SessionEnded, cancellationToken: cancellationToken);
             return new HandlerResult(Steps.Stop);
         }
 

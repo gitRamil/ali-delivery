@@ -39,6 +39,6 @@ public sealed class StopStepHandler : IStepHandler
 
     private async Task SendInvalid(MessageInfo messageInfo, CancellationToken cancellationToken)
     {
-        await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.N1_InvalidCommand, cancellationToken: cancellationToken);
+        await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.InvalidCommand, cancellationToken: cancellationToken);
     }
 }
