@@ -12,7 +12,7 @@ public interface INotificationLocalizationService
     /// </summary>
     /// <param name="chatId">Языковой код (например, "ru", "en").</param>
     /// <param name="type">Тип уведомления (<see cref="NotificationType" />).</param>
-    /// <param name="placeholderData"></param>
+    /// <param name="placeholderData">Опциональные данные для подстановки в шаблон.</param>
     /// <returns>Локализованный текст уведомления.</returns>
     Task<string> GetNotificationMessage(long chatId, NotificationType type, Dictionary<string, string>? placeholderData = null);
 }
