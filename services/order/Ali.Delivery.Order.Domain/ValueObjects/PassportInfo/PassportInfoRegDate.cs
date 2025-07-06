@@ -37,17 +37,27 @@ public sealed class PassportInfoRegDate : ValueObject
         yield return _regDate;
     }
 
-    /// <summary>
-    /// Выполняет явное преобразование из <see cref="DateTime" /> в <see cref="PassportInfoRegDate" />.
-    /// </summary>
-    /// <param name="obj">Значение наименования справочника статусов заказа.</param>
+    // /// <summary>
+    // /// Выполняет явное преобразование из <see cref="DateTime" /> в <see cref="PassportInfoRegDate" />.
+    // /// </summary>
+    // /// <param name="obj">Значение наименования справочника статусов заказа.</param>
+    // [return: NotNullIfNotNull(nameof(obj))]
+    // public static explicit operator PassportInfoRegDate?(DateTime? obj) => obj == null ? null : (PassportInfoRegDate)obj;
+    //
+    // /// <summary>
+    // /// Выполняет неявное преобразование из <see cref="PassportInfoRegDate" /> в <see cref="DateTime" />.
+    // /// </summary>
+    // /// <param name="obj">Значение наименования справочника статусов заказа.</param>
+    // [return: NotNullIfNotNull(nameof(obj))]
+    // public static implicit operator DateTime?(PassportInfoRegDate? obj) => obj?._regDate;
     [return: NotNullIfNotNull(nameof(obj))]
-    public static explicit operator PassportInfoRegDate?(DateTime? obj) => obj == null ? null : (PassportInfoRegDate)obj;
+    public static explicit operator PassportInfoRegDate?(DateTime? obj)
+        => obj.HasValue
+            ? new PassportInfoRegDate(obj.Value)
+            : null;
 
-    /// <summary>
-    /// Выполняет неявное преобразование из <see cref="PassportInfoRegDate" /> в <see cref="DateTime" />.
-    /// </summary>
-    /// <param name="obj">Значение наименования справочника статусов заказа.</param>
+    // ОБРАТНЫЙ оператор: PassportInfoRegDate? → DateTime?
     [return: NotNullIfNotNull(nameof(obj))]
-    public static implicit operator DateTime?(PassportInfoRegDate? obj) => obj?._regDate;
+    public static implicit operator DateTime?(PassportInfoRegDate? obj)
+        => obj?._regDate;
 }
