@@ -27,34 +27,30 @@ public class UserLocationController : ControllerBase
     /// <summary>
     /// Создает локацию пользователя.
     /// </summary>
-    /// <param name="userLogin">Логин пользователя.</param>
-    /// <param name="s">Координаты S.</param>
+    /// <param name="command">Команда создания локации пользователя.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
-    /// <param name="e">Координаты E.</param>
     /// <returns>Статус команды.</returns>
     [HttpPost("create-location")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> CreateUserLocation(string userLogin, string e, string s, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateUserLocation([FromBody] CreateUserLocationCommand command, CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new CreateUserLocationCommand(userLogin, e, s), cancellationToken);
+        var result = await _mediator.Send(command, cancellationToken);
         return Ok(result);
     }
 
     /// <summary>
     /// Обновляет локацию пользователя.
     /// </summary>
-    /// <param name="userLogin">Логин пользователя.</param>
-    /// <param name="s">Координаты S.</param>
+    /// <param name="command">Команда обновления локации пользователя.</param>
     /// <param name="cancellationToken">Маркер отмены.</param>
-    /// <param name="e">Координаты E.</param>
     /// <returns>Статус команды.</returns>
     [HttpPut("update-location")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateUserLocation(string userLogin, string e, string s, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateUserLocation([FromBody] UpdateUserLocationCommand command, CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new UpdateUserLocationCommand(userLogin, e, s), cancellationToken);
+        var result = await _mediator.Send(command, cancellationToken);
         return Ok(result);
     }
 }

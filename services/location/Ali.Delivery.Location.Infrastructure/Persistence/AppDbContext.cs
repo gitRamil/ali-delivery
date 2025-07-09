@@ -41,9 +41,21 @@ public class AppDbContext : DbContext, IAppDbContext
 
         return await base.SaveChangesAsync(cancellationToken);
     }
-
+    
+    /// <summary>
+    /// Возвращает набор локаций пользователя.
+    /// </summary>
     public DbSet<UserLocation> UserLocations { get; set; }
-
+    
+    /// <summary>
+    /// Возвращает набор пользователей.
+    /// </summary>
+    public DbSet<User> Users { get; set; }
+    
+    /// <summary>
+    /// Возвращает набор конфигураций пользователя.
+    /// </summary>
+    public DbSet<UserConfig> UserConfigs { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);

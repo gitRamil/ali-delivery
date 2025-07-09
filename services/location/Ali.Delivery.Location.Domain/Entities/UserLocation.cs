@@ -12,13 +12,13 @@ public class UserLocation : Entity<SequentialGuid>
     /// Инициализирует новый экземпляр типа <see cref="UserLocation" />.
     /// </summary>
     /// <param name="id">Идентификатор локации пользователя.</param>
-    /// <param name="telegramLogin">Телеграм логин.</param>
+    /// <param name="user">Id пользователя.</param>
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если <paramref name="telegramLogin" /> равен <c>null</c>.
+    /// Возникает, если <paramref name="user" /> равен <c>null</c>.
     /// </exception>
-    public UserLocation(SequentialGuid id, string telegramLogin)
+    public UserLocation(SequentialGuid id, User user)
         : base(id) =>
-        TelegramLogin = telegramLogin ?? throw new ArgumentNullException(nameof(telegramLogin));
+        User = user;
 
     /// <summary>
     /// Инициализирует новый экземпляр типа <see cref="UserLocation" /> для использования ORM.
@@ -26,7 +26,7 @@ public class UserLocation : Entity<SequentialGuid>
     /// <remarks>Конструктор без параметров необходим для Entity Framework.</remarks>
     protected UserLocation()
         : base(SequentialGuid.Empty) =>
-        TelegramLogin = null!;
+        User = null!;
 
     /// <summary>
     /// Возвращает координаты долготы.
@@ -41,7 +41,7 @@ public class UserLocation : Entity<SequentialGuid>
     /// <summary>
     /// Возвращает пользователя.
     /// </summary>
-    public string TelegramLogin { get; }
+    public virtual User User { get; private set; }
 
     /// <summary>
     /// Обновляет координаты пользователя.

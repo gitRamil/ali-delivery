@@ -47,7 +47,7 @@ public class LoginStepHandler : IStepHandler
             return new HandlerResult(Steps.Stop);
         }
 
-        var res = await _authenticationService.LoginAsync(chatId, text);
+        var res = await _authenticationService.LoginAsync(chatId, text, cancellationToken);
 
         return new HandlerResult(res.NextStepKey);
     }

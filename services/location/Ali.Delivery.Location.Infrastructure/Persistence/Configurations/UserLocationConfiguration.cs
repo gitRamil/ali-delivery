@@ -6,7 +6,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Ali.Delivery.Location.Infrastructure.Persistence.Configurations;
 
 /// <summary>
-/// Представляет настройку конфигурации для типа <see cref="UserLocation" />.
+/// Представляет настройку конфигурации Entity Framework для типа <see cref="UserLocation" />.
+/// Определяет схему базы данных и связи для локаций пользователей.
 /// </summary>
 internal class UserLocationConfiguration : EntityTypeConfigurationBase<UserLocation>
 {
@@ -16,18 +17,16 @@ internal class UserLocationConfiguration : EntityTypeConfigurationBase<UserLocat
        /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
        protected override void OnConfigure(EntityTypeBuilder<UserLocation> builder)
     {
-        builder.ToTable("userLocations", t => t.HasComment("Локации пользователя"));
+        builder.ToTable("user_locations", t => t.HasComment("Локации пользователя"));
 
         builder.Property(p => p.S)
-               .HasComment("Координаты S");
+               .HasComment("Координаты широты");
 
         builder.Property(p => p.E)
-               .HasComment("Координаты E");
+               .HasComment("Координаты долготы");
 
-        builder.Property(p => p.TelegramLogin)
-               .HasComment("Ник телеграм");
-
-        builder.HasIndex(u => u.TelegramLogin)
-               .IsUnique();
+        builder.HasOne(u => u.User)
+               .WithMany()
+               .HasForeignKey("user_id");
     }
 }

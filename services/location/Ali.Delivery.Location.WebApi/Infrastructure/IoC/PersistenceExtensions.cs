@@ -23,7 +23,7 @@ public static class PersistenceExtensions
                                                               .EnableSensitiveDataLogging()
                                                               .LogTo(Console.WriteLine, LogLevel.Information));
 
-        services.AddScoped<IUserLocationRepository, UserLocationRepository>();
+        services.AddScoped<IDataBaseRepository, DataBaseRepository>();
 
         return services;
     }

@@ -24,10 +24,11 @@ public interface IAuthenticationService // TODO: Подумать над упр�
     /// </summary>
     /// <param name="chatId">Уникальный идентификатор чата с пользователем.</param>
     /// <param name="text">Текст сообщения, предположительно содержащий логин и пароль.</param>
+    /// <param name="cancellationToken">Маркет отмены.</param>
     /// <returns>
     /// Задача, представляющая асинхронную операцию.
     /// Результат задачи содержит объект <see cref="CommandResult" />, который может включать информацию о следующем шаге или
     /// результате операции для пользователя.
     /// </returns>
-    Task<CommandResult> LoginAsync(long chatId, string text);
+    Task<CommandResult> LoginAsync(long chatId, string text, CancellationToken cancellationToken);
 }

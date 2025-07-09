@@ -5,8 +5,15 @@ namespace Ali.Delivery.Location.Application.Abstractions;
 /// <summary>
 /// Представляет контракт для репозитория, управляющего сущностями местоположения пользователя.
 /// </summary>
-public interface IUserLocationRepository
+public interface IDataBaseRepository
 {
+    /// <summary>
+    /// Добавляет нового пользователя в систему.
+    /// </summary>
+    /// <param name="user">Пользователь для добавления в систему.</param>
+    /// <param name="cancellationToken">Токен отмены операции.</param>
+    Task AddUserAsync(User user, CancellationToken cancellationToken);
+
     /// <summary>
     /// Асинхронно добавляет новую сущность местоположения пользователя в хранилище.
     /// </summary>
@@ -17,14 +24,21 @@ public interface IUserLocationRepository
     /// <summary>
     /// Асинхронно получает сущность местоположения пользователя по его логину.
     /// </summary>
-    /// <param name="userLogin">Логин пользователя, местоположение которого необходимо найти.</param>
+    /// <param name="user">Пользователь.</param>
     /// <param name="cancellationToken">Маркер отмены для прерывания асинхронной операции.</param>
     /// <returns>
     /// Задача, представляющая асинхронную операцию.
     /// Результат задачи содержит сущность <see cref="UserLocation" />, если пользователь найден; в противном случае —
     /// <c>null</c>.
     /// </returns>
-    Task<UserLocation?> GetUserAsync(string userLogin, CancellationToken cancellationToken);
+    Task<UserLocation?> GetUserAsync(User user, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Получает пользователя по идентификатору чата.
+    /// </summary>
+    /// <param name="chatId">Идентификатор чата для поиска пользователя.</param>
+    /// <param name="cancellationToken">Токен отмены операции.</param>
+    Task<User> GetUserByChatIdAsync(string chatId, CancellationToken cancellationToken);
 
     /// <summary>
     /// Асинхронно обновляет существующую сущность местоположения пользователя в хранилище.

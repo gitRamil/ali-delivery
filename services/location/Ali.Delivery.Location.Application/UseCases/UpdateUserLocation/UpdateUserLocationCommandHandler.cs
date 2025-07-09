@@ -30,8 +30,8 @@ public class UpdateUserLocationCommandHandler : IRequestHandler<UpdateUserLocati
     {
         ArgumentNullException.ThrowIfNull(command);
 
-        var userLocation = await _context.UserLocations.FirstOrDefaultAsync(u => u.TelegramLogin == command.UserLogin, cancellationToken) ??
-                           throw new NotFoundException(typeof(UserLocation), command.UserLogin);
+        var userLocation = await _context.UserLocations.FirstOrDefaultAsync(u => u.User == command.UserId, cancellationToken) ??
+                           throw new NotFoundException(typeof(UserLocation), command.UserId);
 
         userLocation.UpdateCoordinates(command.E, command.S);
         await _context.SaveChangesAsync(cancellationToken);

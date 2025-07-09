@@ -14,14 +14,14 @@ namespace Ali.Delivery.Location.Application.StepHandlers;
 public class GeosharingStepHandler : IStepHandler
 {
     private readonly INotificationService _notification;
-    private readonly IUserLocationRepository _repository;
+    private readonly IDataBaseRepository _repository;
 
     /// <summary>
     /// Инициализирует новый экземпляр класса <see cref="GeosharingStepHandler" />.
     /// </summary>
     /// <param name="notification">Сервис для отправки уведомлений пользователю.</param>
     /// <param name="repository">Репозиторий для выполнения операций с базой данных местоположений.</param>
-    public GeosharingStepHandler(INotificationService notification, IUserLocationRepository repository)
+    public GeosharingStepHandler(INotificationService notification, IDataBaseRepository repository)
     {
         _notification = notification ?? throw new ArgumentNullException(nameof(notification));
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
@@ -49,8 +49,8 @@ public class GeosharingStepHandler : IStepHandler
 
     private async Task<HandlerResult> ProcessLocationAsync(long chatId, string longitude, string latitude, CancellationToken cancellationToken)
     {
-        var userLogin = chatId.ToString();
-        var userLocation = await _repository.GetUserAsync(userLogin, cancellationToken);
+        var userId = await _repository.GetUserByChatIdAsync(chatId.ToString(), cancellationToken);
+        var userLocation = await _repository.GetUserAsync(userId, cancellationToken);
 
         if (userLocation is not null)
         {
@@ -59,7 +59,7 @@ public class GeosharingStepHandler : IStepHandler
         }
         else
         {
-            var newUserLocation = new UserLocation(SequentialGuid.Create(), userLogin);
+            var newUserLocation = new UserLocation(SequentialGuid.Create(), userId);
             newUserLocation.UpdateCoordinates(longitude, latitude);
             await _repository.AddUserLocationAsync(newUserLocation, cancellationToken);
         }
