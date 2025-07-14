@@ -1,5 +1,6 @@
 using Ali.Delivery.Domain.Core;
 using Ali.Delivery.Domain.Core.Primitives;
+using Ali.Delivery.Location.Domain.Entities.Dictionaries;
 
 namespace Ali.Delivery.Location.Domain.Entities;
 
@@ -17,7 +18,7 @@ public class UserConfig : Entity<SequentialGuid>
     /// <exception cref="ArgumentNullException">
     /// Выбрасывается, когда <paramref name="language" /> или <paramref name="user" /> равны <c>null</c>.
     /// </exception>
-    public UserConfig(SequentialGuid id, string language, User user)
+    public UserConfig(SequentialGuid id, LanguageDictionary language, User user)
         : base(id)
     {
         User = user ?? throw new ArgumentNullException(nameof(user));
@@ -40,10 +41,19 @@ public class UserConfig : Entity<SequentialGuid>
     /// <summary>
     /// Язык интерфейса пользователя.
     /// </summary>
-    public string Language { get; private set; }
+    public virtual LanguageDictionary Language { get; private set; }
 
     /// <summary>
     /// Пользователь, к которому относится данная конфигурация.
     /// </summary>
     public virtual User User { get; private set; }
+
+    /// <summary>
+    /// Обновляет язык в конфигурации пользователя.
+    /// </summary>
+    /// <param name="newLanguage">Новый язык для установки.</param>
+    public void UpdateLanguage(LanguageDictionary newLanguage)
+    {
+        Language = newLanguage ?? throw new ArgumentNullException(nameof(newLanguage));
+    }
 }

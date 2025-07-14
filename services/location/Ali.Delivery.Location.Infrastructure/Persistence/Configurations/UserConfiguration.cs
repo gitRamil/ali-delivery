@@ -7,14 +7,13 @@ namespace Ali.Delivery.Location.Infrastructure.Persistence.Configurations;
 
 /// <summary>
 /// Конфигурация Entity Framework для сущности <see cref="User" />.
-/// Определяет схему базы данных, индексы и ограничения для пользователей.
 /// </summary>
 internal class UserConfiguration : EntityTypeConfigurationBase<User>
 {
        /// <summary>
        /// Настраивает конфигурацию Entity Framework для сущности <see cref="User" />.
        /// </summary>
-       /// <param name="builder">Построитель конфигурации типа сущности для настройки <see cref="User" />.</param>
+       /// <param name="builder">Строитель конфигурации типа сущности для настройки <see cref="User" />.</param>
        protected override void OnConfigure(EntityTypeBuilder<User> builder)
     {
         builder.ToTable("users", t => t.HasComment("Пользователи"));
@@ -30,5 +29,13 @@ internal class UserConfiguration : EntityTypeConfigurationBase<User>
 
         builder.HasIndex(u => u.ChatId)
                .IsUnique();
+
+        builder.HasMany(ul => ul.UserLocations)
+               .WithOne(u => u.User)
+               .HasForeignKey("user_id");
+
+        builder.HasMany(ul => ul.UserConfigs)
+               .WithOne(u => u.User)
+               .HasForeignKey("user_id");
     }
 }

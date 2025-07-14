@@ -7,6 +7,6 @@ namespace Ali.Delivery.Location.Application.UseCases.CreateUserLocation;
 /// Представляет команду создания локации пользователя.
 /// </summary>
 /// <param name="UserId">Id пользователя.</param>
-/// <param name="E">Координаты долготы.</param>
-/// <param name="S">Координаты широты.</param>
-public record CreateUserLocationCommand(User UserId, string E, string S) : IRequest<Guid>;
+/// <param name="Longitude">Координаты долготы.</param>
+/// <param name="Latitude">Координаты широты.</param>
+public record CreateUserLocationCommand(User UserId, double Longitude, double Latitude) : IRequest<Guid>;

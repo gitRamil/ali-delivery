@@ -1,9 +1,9 @@
-using System.Globalization;
-using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Location.Application.Abstractions;
 using Ali.Delivery.Location.Application.Constants;
+using Ali.Delivery.Location.Application.Exceptions;
 using Ali.Delivery.Location.Application.Models;
 using Ali.Delivery.Location.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ali.Delivery.Location.Application.StepHandlers;
 
@@ -13,18 +13,21 @@ namespace Ali.Delivery.Location.Application.StepHandlers;
 /// </summary>
 public class GeosharingStepHandler : IStepHandler
 {
+    private readonly IAppDbContext _dbContext;
     private readonly INotificationService _notification;
-    private readonly IDataBaseRepository _repository;
+    private readonly IUserStateService _userStateService;
 
     /// <summary>
     /// Инициализирует новый экземпляр класса <see cref="GeosharingStepHandler" />.
     /// </summary>
     /// <param name="notification">Сервис для отправки уведомлений пользователю.</param>
-    /// <param name="repository">Репозиторий для выполнения операций с базой данных местоположений.</param>
-    public GeosharingStepHandler(INotificationService notification, IDataBaseRepository repository)
+    /// <param name="dbContext">Контекст БД.</param>
+    /// <param name="userStateService"> Сервис управляющий сохранением и извлечением конфигураций пользователя.</param>
+    public GeosharingStepHandler(INotificationService notification, IAppDbContext dbContext, IUserStateService userStateService)
     {
         _notification = notification ?? throw new ArgumentNullException(nameof(notification));
-        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+        _userStateService = userStateService;
     }
 
     /// <inheritdoc />
@@ -32,10 +35,7 @@ public class GeosharingStepHandler : IStepHandler
     {
         if (messageInfo.Location is { } loc)
         {
-            return await ProcessLocationAsync(messageInfo.ChatId,
-                                              loc.Longitude.ToString(CultureInfo.InvariantCulture),
-                                              loc.Latitude.ToString(CultureInfo.InvariantCulture),
-                                              cancellationToken);
+            return await ProcessLocationAsync(messageInfo.ChatId, loc.Longitude, loc.Latitude, cancellationToken);
         }
 
         if (messageInfo.Text is { } text)
@@ -47,22 +47,17 @@ public class GeosharingStepHandler : IStepHandler
         return new HandlerResult(string.Empty);
     }
 
-    private async Task<HandlerResult> ProcessLocationAsync(long chatId, string longitude, string latitude, CancellationToken cancellationToken)
+    private async Task<HandlerResult> ProcessLocationAsync(long chatId, double longitude, double latitude, CancellationToken cancellationToken)
     {
-        var userId = await _repository.GetUserByChatIdAsync(chatId.ToString(), cancellationToken);
-        var userLocation = await _repository.GetUserAsync(userId, cancellationToken);
-
-        if (userLocation is not null)
-        {
-            userLocation.UpdateCoordinates(longitude, latitude);
-            await _repository.UpdateUserLocationAsync(userLocation, cancellationToken);
-        }
-        else
-        {
-            var newUserLocation = new UserLocation(SequentialGuid.Create(), userId);
-            newUserLocation.UpdateCoordinates(longitude, latitude);
-            await _repository.AddUserLocationAsync(newUserLocation, cancellationToken);
-        }
+        var user = await _dbContext.Users.Include(u => u.UserConfigs)
+                                   .ThenInclude(uc => uc.Language)
+                                   .Where(u => u.ChatId == chatId.ToString())
+                                   .FirstOrDefaultAsync(cancellationToken) ??
+                   throw new NotFoundException(typeof(User), chatId);
+        var languageCode = await _userStateService.GetUserLanguageAsync(chatId);
+        user.AddOrUpdateUserConfig(languageCode);
+        user.AddUserLocation(longitude, latitude);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         await _notification.SendNotificationMessageAsync(chatId,
                                                          NotificationType.LocationReceived,

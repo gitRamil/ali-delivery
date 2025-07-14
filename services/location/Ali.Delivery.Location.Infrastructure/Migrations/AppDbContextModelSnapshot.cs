@@ -25,6 +25,76 @@ namespace Ali.Delivery.Location.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Ali.Delivery.Location.Domain.Entities.Dictionaries.LanguageDictionary", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id")
+                        .HasComment("Уникальный идентификатор");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)")
+                        .HasColumnName("code")
+                        .HasComment("Код");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("created_by");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)))
+                        .HasColumnName("created_date");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("name")
+                        .HasComment("Наименование");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("updated_by");
+
+                    b.Property<DateTimeOffset>("UpdatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)))
+                        .HasColumnName("updated_date");
+
+                    b.HasKey("Id")
+                        .HasName("pk_language_dictionary");
+
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasDatabaseName("ix_language_dictionary_code");
+
+                    b.ToTable("language_dictionary", null, t =>
+                        {
+                            t.HasComment("Справочник языков");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("3a156e1f-6090-39cd-7580-20395231a00f"),
+                            Code = "RU",
+                            Name = "Русский"
+                        },
+                        new
+                        {
+                            Id = new Guid("3a156e1f-6091-875d-e42d-3e8e7ec6e082"),
+                            Code = "EN",
+                            Name = "Английский"
+                        });
+                });
+
             modelBuilder.Entity("Ali.Delivery.Location.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -101,12 +171,6 @@ namespace Ali.Delivery.Location.Infrastructure.Migrations
                         .HasDefaultValue(new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)))
                         .HasColumnName("created_date");
 
-                    b.Property<string>("Language")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("language")
-                        .HasComment("Язык интерфейса пользователя");
-
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
@@ -118,12 +182,21 @@ namespace Ali.Delivery.Location.Infrastructure.Migrations
                         .HasDefaultValue(new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)))
                         .HasColumnName("updated_date");
 
+                    b.Property<Guid>("language_id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("language_id")
+                        .HasComment("Идентификатор словаря языков");
+
                     b.Property<Guid>("user_id")
                         .HasColumnType("uuid")
-                        .HasColumnName("user_id");
+                        .HasColumnName("user_id")
+                        .HasComment("Идентификатор пользователя");
 
                     b.HasKey("Id")
                         .HasName("pk_user_config");
+
+                    b.HasIndex("language_id")
+                        .HasDatabaseName("ix_user_config_language_id");
 
                     b.HasIndex("user_id")
                         .HasDatabaseName("ix_user_config_user_id");
@@ -152,15 +225,15 @@ namespace Ali.Delivery.Location.Infrastructure.Migrations
                         .HasDefaultValue(new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)))
                         .HasColumnName("created_date");
 
-                    b.Property<string>("E")
-                        .HasColumnType("text")
-                        .HasColumnName("e")
-                        .HasComment("Координаты долготы");
-
-                    b.Property<string>("S")
-                        .HasColumnType("text")
-                        .HasColumnName("s")
+                    b.Property<double>("Latitude")
+                        .HasColumnType("double precision")
+                        .HasColumnName("latitude")
                         .HasComment("Координаты широты");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("double precision")
+                        .HasColumnName("longitude")
+                        .HasComment("Координаты долготы");
 
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(100)
@@ -175,7 +248,8 @@ namespace Ali.Delivery.Location.Infrastructure.Migrations
 
                     b.Property<Guid>("user_id")
                         .HasColumnType("uuid")
-                        .HasColumnName("user_id");
+                        .HasColumnName("user_id")
+                        .HasComment("Идентификатор пользователя");
 
                     b.HasKey("Id")
                         .HasName("pk_user_locations");
@@ -191,12 +265,21 @@ namespace Ali.Delivery.Location.Infrastructure.Migrations
 
             modelBuilder.Entity("Ali.Delivery.Location.Domain.Entities.UserConfig", b =>
                 {
-                    b.HasOne("Ali.Delivery.Location.Domain.Entities.User", "User")
+                    b.HasOne("Ali.Delivery.Location.Domain.Entities.Dictionaries.LanguageDictionary", "Language")
                         .WithMany()
+                        .HasForeignKey("language_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_user_config_language_dictionary_language_id");
+
+                    b.HasOne("Ali.Delivery.Location.Domain.Entities.User", "User")
+                        .WithMany("UserConfigs")
                         .HasForeignKey("user_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_user_config_users_user_id");
+
+                    b.Navigation("Language");
 
                     b.Navigation("User");
                 });
@@ -204,13 +287,20 @@ namespace Ali.Delivery.Location.Infrastructure.Migrations
             modelBuilder.Entity("Ali.Delivery.Location.Domain.Entities.UserLocation", b =>
                 {
                     b.HasOne("Ali.Delivery.Location.Domain.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("UserLocations")
                         .HasForeignKey("user_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_user_locations_users_user_id");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Ali.Delivery.Location.Domain.Entities.User", b =>
+                {
+                    b.Navigation("UserConfigs");
+
+                    b.Navigation("UserLocations");
                 });
 #pragma warning restore 612, 618
         }

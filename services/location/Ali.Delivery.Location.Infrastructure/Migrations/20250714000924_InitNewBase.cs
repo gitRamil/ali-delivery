@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Ali.Delivery.Location.Infrastructure.Migrations
 {
     /// <inheritdoc />
@@ -16,6 +18,14 @@ namespace Ali.Delivery.Location.Infrastructure.Migrations
                 table: "userLocations");
 
             migrationBuilder.DropColumn(
+                name: "e",
+                table: "userLocations");
+
+            migrationBuilder.DropColumn(
+                name: "s",
+                table: "userLocations");
+
+            migrationBuilder.DropColumn(
                 name: "telegram_login",
                 table: "userLocations");
 
@@ -23,34 +33,47 @@ namespace Ali.Delivery.Location.Infrastructure.Migrations
                 name: "userLocations",
                 newName: "user_locations");
 
-            migrationBuilder.AlterColumn<string>(
-                name: "s",
+            migrationBuilder.AddColumn<double>(
+                name: "latitude",
                 table: "user_locations",
-                type: "text",
-                nullable: true,
-                comment: "Координаты широты",
-                oldClrType: typeof(string),
-                oldType: "text",
-                oldNullable: true,
-                oldComment: "Координаты S");
+                type: "double precision",
+                nullable: false,
+                defaultValue: 0.0,
+                comment: "Координаты широты");
 
-            migrationBuilder.AlterColumn<string>(
-                name: "e",
+            migrationBuilder.AddColumn<double>(
+                name: "longitude",
                 table: "user_locations",
-                type: "text",
-                nullable: true,
-                comment: "Координаты долготы",
-                oldClrType: typeof(string),
-                oldType: "text",
-                oldNullable: true,
-                oldComment: "Координаты E");
+                type: "double precision",
+                nullable: false,
+                defaultValue: 0.0,
+                comment: "Координаты долготы");
 
             migrationBuilder.AddColumn<Guid>(
                 name: "user_id",
                 table: "user_locations",
                 type: "uuid",
                 nullable: false,
-                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
+                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"),
+                comment: "Идентификатор пользователя");
+
+            migrationBuilder.CreateTable(
+                name: "language_dictionary",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Уникальный идентификатор"),
+                    code = table.Column<string>(type: "character varying(3)", maxLength: 3, nullable: false, comment: "Код"),
+                    name = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false, comment: "Наименование"),
+                    created_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    created_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))),
+                    updated_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    updated_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)))
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_language_dictionary", x => x.id);
+                },
+                comment: "Справочник языков");
 
             migrationBuilder.CreateTable(
                 name: "users",
@@ -75,8 +98,8 @@ namespace Ali.Delivery.Location.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Уникальный идентификатор"),
-                    language = table.Column<string>(type: "text", nullable: false, comment: "Язык интерфейса пользователя"),
-                    user_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    language_id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Идентификатор словаря языков"),
+                    user_id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Идентификатор пользователя"),
                     created_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     created_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))),
                     updated_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
@@ -86,6 +109,12 @@ namespace Ali.Delivery.Location.Infrastructure.Migrations
                 {
                     table.PrimaryKey("pk_user_config", x => x.id);
                     table.ForeignKey(
+                        name: "fk_user_config_language_dictionary_language_id",
+                        column: x => x.language_id,
+                        principalTable: "language_dictionary",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "fk_user_config_users_user_id",
                         column: x => x.user_id,
                         principalTable: "users",
@@ -94,10 +123,30 @@ namespace Ali.Delivery.Location.Infrastructure.Migrations
                 },
                 comment: "Конфигурации пользователя");
 
+            migrationBuilder.InsertData(
+                table: "language_dictionary",
+                columns: new[] { "id", "code", "created_by", "name", "updated_by" },
+                values: new object[,]
+                {
+                    { new Guid("3a156e1f-6090-39cd-7580-20395231a00f"), "RU", null, "Русский", null },
+                    { new Guid("3a156e1f-6091-875d-e42d-3e8e7ec6e082"), "EN", null, "Английский", null }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "ix_user_locations_user_id",
                 table: "user_locations",
                 column: "user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_language_dictionary_code",
+                table: "language_dictionary",
+                column: "code",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "ix_user_config_language_id",
+                table: "user_config",
+                column: "language_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_user_config_user_id",
@@ -136,10 +185,21 @@ namespace Ali.Delivery.Location.Infrastructure.Migrations
                 name: "user_config");
 
             migrationBuilder.DropTable(
+                name: "language_dictionary");
+
+            migrationBuilder.DropTable(
                 name: "users");
 
             migrationBuilder.DropIndex(
                 name: "ix_user_locations_user_id",
+                table: "user_locations");
+
+            migrationBuilder.DropColumn(
+                name: "latitude",
+                table: "user_locations");
+
+            migrationBuilder.DropColumn(
+                name: "longitude",
                 table: "user_locations");
 
             migrationBuilder.DropColumn(
@@ -150,27 +210,19 @@ namespace Ali.Delivery.Location.Infrastructure.Migrations
                 name: "user_locations",
                 newName: "userLocations");
 
-            migrationBuilder.AlterColumn<string>(
-                name: "s",
-                table: "userLocations",
-                type: "text",
-                nullable: true,
-                comment: "Координаты S",
-                oldClrType: typeof(string),
-                oldType: "text",
-                oldNullable: true,
-                oldComment: "Координаты широты");
-
-            migrationBuilder.AlterColumn<string>(
+            migrationBuilder.AddColumn<string>(
                 name: "e",
                 table: "userLocations",
                 type: "text",
                 nullable: true,
-                comment: "Координаты E",
-                oldClrType: typeof(string),
-                oldType: "text",
-                oldNullable: true,
-                oldComment: "Координаты долготы");
+                comment: "Координаты E");
+
+            migrationBuilder.AddColumn<string>(
+                name: "s",
+                table: "userLocations",
+                type: "text",
+                nullable: true,
+                comment: "Координаты S");
 
             migrationBuilder.AddColumn<string>(
                 name: "telegram_login",

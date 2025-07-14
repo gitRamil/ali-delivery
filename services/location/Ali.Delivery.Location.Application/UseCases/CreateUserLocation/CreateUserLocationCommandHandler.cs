@@ -29,9 +29,7 @@ public class CreateUserLocationCommandHandler : IRequestHandler<CreateUserLocati
     {
         ArgumentNullException.ThrowIfNull(command);
 
-        var userLocation = new UserLocation(SequentialGuid.Create(), command.UserId);
-
-        userLocation.UpdateCoordinates(command.E, command.S);
+        var userLocation = new UserLocation(SequentialGuid.Create(), command.UserId, command.Longitude, command.Latitude);
 
         _context.UserLocations.Add(userLocation);
 

@@ -4,6 +4,7 @@ using Ali.Delivery.Location.Application.Constants;
 using Ali.Delivery.Location.Application.Models;
 using Ali.Delivery.Location.Application.Models.Authentication;
 using Ali.Delivery.Location.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Refit;
 
@@ -17,9 +18,9 @@ namespace Ali.Delivery.Location.Infrastructure.Services;
 public class AuthenticationService : IAuthenticationService
 {
     private readonly IFileServiceForOrder _api;
+    private readonly IAppDbContext _dbContext;
     private readonly ILogger<AuthenticationService> _logger;
     private readonly INotificationService _notification;
-    private readonly IDataBaseRepository _repository;
 
     /// <summary>
     /// Инициализирует новый экземпляр класса <see cref="AuthenticationService" />.
@@ -27,13 +28,13 @@ public class AuthenticationService : IAuthenticationService
     /// <param name="api">Refit-клиент для отправки запросов к внешнему сервису.</param>
     /// <param name="logger">Логгер для записи событий и ошибок.</param>
     /// <param name="notification">Сервис для отправки уведомлений пользователю.</param>
-    /// <param name="repository">Репозиторий для работы с базой данных.</param>
-    public AuthenticationService(IFileServiceForOrder api, ILogger<AuthenticationService> logger, INotificationService notification, IDataBaseRepository repository)
+    /// <param name="dbContext">Контекст БД.</param>
+    public AuthenticationService(IFileServiceForOrder api, ILogger<AuthenticationService> logger, INotificationService notification, IAppDbContext dbContext)
     {
         _api = api ?? throw new ArgumentNullException(nameof(api));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _notification = notification ?? throw new ArgumentNullException(nameof(notification));
-        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
     }
 
     /// <inheritdoc />
@@ -58,7 +59,7 @@ public class AuthenticationService : IAuthenticationService
             }
 
             _logger.LogInformation("Login OK: {Login}", user.Login);
-            return new AuthenticationResult(AuthResult.Success,user.Id);
+            return new AuthenticationResult(AuthResult.Success, user.Id);
         }
         catch (ApiException ex) when (ex.StatusCode == HttpStatusCode.Unauthorized)
         {
@@ -91,8 +92,16 @@ public class AuthenticationService : IAuthenticationService
             case AuthResult.Success:
 
                 await _notification.SendNotificationMessageAsync(chatId, NotificationType.AuthenticationComplete, cancellationToken: cancellationToken);
+                var existingUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.ChatId == chatId.ToString(), cancellationToken);
+
+                if (existingUser != null)
+                {
+                    return new CommandResult(Steps.AuthComplete);
+                }
+
                 var user = new User(auth.UserId, login, chatId.ToString());
-                await _repository.AddUserAsync(user, cancellationToken);
+                _dbContext.Users.Add(user);
+                await _dbContext.SaveChangesAsync(cancellationToken);
                 return new CommandResult(Steps.AuthComplete);
 
             case AuthResult.InvalidCredentials:
