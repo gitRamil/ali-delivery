@@ -44,8 +44,8 @@
     "en": "Language changed successfully. Use /login for authorization."
   },
   "LanguagePrompt": {
-    "ru": "Пожалуйста, выберите язык:",
-    "en": "Please select your language:"
+    "ru": "Пожалуйста, выберите язык:\nPlease select your language:",
+    "en": "Пожалуйста, выберите язык:\nPlease select your language:"
   },
   "LocationWithPlaceHolder": {
     "ru": "Локация получена: Широта {latitude}, Долгота {longitude}. Продолжайте делиться или введите /stop_geosharing для ожидания команды, либо завершите сессию командой /stop.",
