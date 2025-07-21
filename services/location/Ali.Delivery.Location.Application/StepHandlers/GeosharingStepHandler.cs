@@ -15,19 +15,16 @@ public class GeosharingStepHandler : IStepHandler
 {
     private readonly IAppDbContext _dbContext;
     private readonly INotificationService _notification;
-    private readonly IUserStateService _userStateService;
 
     /// <summary>
     /// Инициализирует новый экземпляр класса <see cref="GeosharingStepHandler" />.
     /// </summary>
     /// <param name="notification">Сервис для отправки уведомлений пользователю.</param>
     /// <param name="dbContext">Контекст БД.</param>
-    /// <param name="userStateService"> Сервис управляющий сохранением и извлечением конфигураций пользователя.</param>
-    public GeosharingStepHandler(INotificationService notification, IAppDbContext dbContext, IUserStateService userStateService)
+    public GeosharingStepHandler(INotificationService notification, IAppDbContext dbContext)
     {
         _notification = notification ?? throw new ArgumentNullException(nameof(notification));
         _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-        _userStateService = userStateService;
     }
 
     /// <inheritdoc />
@@ -49,13 +46,10 @@ public class GeosharingStepHandler : IStepHandler
 
     private async Task<HandlerResult> ProcessLocationAsync(long chatId, double longitude, double latitude, CancellationToken cancellationToken)
     {
-        var user = await _dbContext.Users.Include(u => u.UserConfigs)
-                                   .ThenInclude(uc => uc.Language)
-                                   .Where(u => u.ChatId == chatId.ToString())
+        var user = await _dbContext.Users.Where(u => u.ChatId == chatId.ToString())
                                    .FirstOrDefaultAsync(cancellationToken) ??
                    throw new NotFoundException(typeof(User), chatId);
-        var languageCode = await _userStateService.GetUserLanguageAsync(chatId);
-        user.AddOrUpdateUserConfig(languageCode);
+
         user.AddUserLocation(longitude, latitude);
         await _dbContext.SaveChangesAsync(cancellationToken);
 

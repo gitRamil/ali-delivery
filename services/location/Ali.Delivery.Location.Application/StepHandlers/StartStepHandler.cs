@@ -12,20 +12,34 @@ namespace Ali.Delivery.Location.Application.StepHandlers;
 public class StartStepHandler : IStepHandler
 {
     private readonly INotificationService _notification;
+    private readonly IUserLanguageService _userLanguageService;
 
     /// <summary>
     /// Инициализирует новый экземпляр класса <see cref="StartStepHandler" />.
     /// </summary>
     /// <param name="notification">Сервис для отправки уведомлений пользователю.</param>
-    public StartStepHandler(INotificationService notification) => _notification = notification ?? throw new ArgumentNullException(nameof(notification));
+    /// <param name="userLanguageService">Сервис для работы с языковыми настройками пользователей.</param>
+    public StartStepHandler(INotificationService notification, IUserLanguageService userLanguageService)
+    {
+        _notification = notification ?? throw new ArgumentNullException(nameof(notification));
+        _userLanguageService = userLanguageService ?? throw new ArgumentNullException(nameof(userLanguageService));
+    }
 
     /// <inheritdoc />
     public async Task<HandlerResult> HandleAsync(MessageInfo messageInfo, CancellationToken cancellationToken = default)
     {
         if (messageInfo.Text == Commands.Start)
         {
-            await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.LanguagePrompt, cancellationToken: cancellationToken);
-            return new HandlerResult(Steps.LanguageSelection);
+            var userLanguage = await _userLanguageService.GetUserLanguageAsync(messageInfo.ChatId);
+
+            if (string.IsNullOrEmpty(userLanguage))
+            {
+                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.LanguagePrompt, cancellationToken: cancellationToken);
+                return new HandlerResult(Steps.LanguageSelection);
+            }
+
+            await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.Welcome, cancellationToken: cancellationToken);
+            return new HandlerResult(string.Empty);
         }
 
         if (messageInfo is not { Text: { } text })

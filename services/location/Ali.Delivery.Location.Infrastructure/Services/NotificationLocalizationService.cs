@@ -11,18 +11,18 @@ public class NotificationLocalizationService : INotificationLocalizationService
 {
     private const string DefaultLanguage = "ru";
     private readonly Dictionary<string, Dictionary<string, string>> _notifications;
-    private readonly IUserStateService _userStateService;
+    private readonly IUserLanguageService _userLanguageService;
 
     /// <summary>
     /// Инициализирует новый экземпляр <see cref="NotificationLocalizationService" />.
     /// </summary>
-    public NotificationLocalizationService(IUserStateService userStateService)
+    public NotificationLocalizationService(IUserLanguageService userLanguageService)
     {
         var notificationsJson = File.ReadAllText("notifications.json");
 
         _notifications = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(notificationsJson) ??
                          throw new InvalidOperationException("Ошибка получения конфигурации с языками");
-        _userStateService = userStateService ?? throw new ArgumentNullException(nameof(userStateService));
+        _userLanguageService = userLanguageService ?? throw new ArgumentNullException(nameof(userLanguageService));
     }
 
     /// <inheritdoc />
@@ -35,7 +35,7 @@ public class NotificationLocalizationService : INotificationLocalizationService
             throw new InvalidOperationException($"Не найдено сообщение по типу сообщения {notificationTypeKey} в файле конфигурации");
         }
 
-        var languageCode = await _userStateService.GetUserLanguageAsync(chatId) ?? DefaultLanguage;
+        var languageCode = await _userLanguageService.GetUserLanguageAsync(chatId) ?? DefaultLanguage;
 
         if (!messageWithLanguages.TryGetValue(languageCode, out var messageByLanguage))
         {
@@ -45,7 +45,7 @@ public class NotificationLocalizationService : INotificationLocalizationService
         var messageWithPlaceholderData = AddPlaceholderData(messageByLanguage, placeholderData);
         return messageWithPlaceholderData;
     }
-    
+
     private static string AddPlaceholderData(string messageByLanguage, Dictionary<string, string>? placeholderData)
     {
         if (placeholderData == null || placeholderData.Count == 0)
@@ -57,7 +57,7 @@ public class NotificationLocalizationService : INotificationLocalizationService
 
         foreach (var kvp in placeholderData)
         {
-            result = result.Replace($"{{{kvp.Key}}}", kvp.Value.ToString() ?? string.Empty);
+            result = result.Replace($"{{{kvp.Key}}}", kvp.Value ?? string.Empty);
         }
 
         return result;

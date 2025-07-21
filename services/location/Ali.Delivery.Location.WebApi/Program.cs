@@ -19,6 +19,7 @@ try
     builder.Configuration.AddEnvironmentVariables("AliDeliveryLocationService_");
     builder.AddDefaultSerilog();
     builder.Services.AddMemoryCache();
+    builder.Services.AddLazyCache();
     builder.Services.AddLogging();
     builder.Services.AddCustomJsonOptions();
     builder.Services.AddDefaultApiVersioning();

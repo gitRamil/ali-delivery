@@ -13,8 +13,8 @@ public class UserLocation : Entity<SequentialGuid>
     /// </summary>
     /// <param name="id">Идентификатор локации пользователя.</param>
     /// <param name="user">Id пользователя.</param>
-    /// <param name="longitude"></param>
-    /// <param name="latitude"></param>
+    /// <param name="longitude">Долгота.</param>
+    /// <param name="latitude">Широта.</param>
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="user" /> равен <c>null</c>.
     /// </exception>

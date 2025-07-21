@@ -34,7 +34,7 @@ public class StateMachine : IStateMachine // TODO: Реализовать нор
     public async Task ProcessUpdateAsync(MessageInfo messageInfo, Func<Task> sendInvalidCommandMessage)
     {
         var userId = messageInfo.FromId;
-        var currentUserStepId = await _userStateService.GetUserStepIdAsync(userId);
+        var currentUserStepId = await _userStateService.GetUserStepId(userId);
         var currentStepConfig = GetStepConfigById(currentUserStepId);
         var handler = _stepHandlerMapping.GetHandler(currentUserStepId);
         var result = await handler.HandleAsync(messageInfo);
@@ -50,7 +50,7 @@ public class StateMachine : IStateMachine // TODO: Реализовать нор
             return;
         }
 
-        await _userStateService.SetUserStepAsync(userId, nextStepId);
+        await _userStateService.SetUserStep(userId, nextStepId);
     }
 
     private StepConfiguration GetStepConfigById(string stepId) =>

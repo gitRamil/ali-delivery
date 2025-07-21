@@ -10,17 +10,17 @@ namespace Ali.Delivery.Location.Application.StepHandlers;
 public class LanguageSelectionStepHandler : IStepHandler
 {
     private readonly INotificationService _notification;
-    private readonly IUserStateService _userStateService;
+    private readonly IUserLanguageService _userLanguageService;
 
     /// <summary>
     /// Инициализирует новый экземпляр <see cref="LanguageSelectionStepHandler" />.
     /// </summary>
-    /// <param name="userStateService">Сервис для работы с состоянием пользователя.</param>
     /// <param name="notification">Сервис для отправки уведомлений.</param>
-    public LanguageSelectionStepHandler(IUserStateService userStateService, INotificationService notification)
+    /// <param name="userLanguageService">Сервис для работы с языковыми настройками пользователей.</param>
+    public LanguageSelectionStepHandler(INotificationService notification, IUserLanguageService userLanguageService)
     {
-        _userStateService = userStateService;
-        _notification = notification;
+        _notification = notification ?? throw new ArgumentNullException(nameof(notification));
+        _userLanguageService = userLanguageService ?? throw new ArgumentNullException(nameof(userLanguageService));
     }
 
     /// <inheritdoc />
@@ -35,7 +35,7 @@ public class LanguageSelectionStepHandler : IStepHandler
 
         if (langCode != null)
         {
-            await _userStateService.SetUserLanguageAsync(messageInfo.ChatId, langCode);
+            await _userLanguageService.SetUserLanguage(messageInfo.ChatId, langCode);
             await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.LanguageChanged, cancellationToken: cancellationToken);
             return new HandlerResult(Steps.Start);
         }
