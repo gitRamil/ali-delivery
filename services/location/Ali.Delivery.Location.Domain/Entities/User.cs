@@ -9,7 +9,7 @@ namespace Ali.Delivery.Location.Domain.Entities;
 /// </summary>
 public class User : Entity<SequentialGuid>
 {
-    private readonly List<UserConfig> _userConfigs = [];
+    private UserConfig? _userConfig;
     private readonly List<UserLocation> _userLocations = [];
 
     /// <summary>
@@ -52,12 +52,16 @@ public class User : Entity<SequentialGuid>
     public string Login { get; private set; }
 
     /// <summary>
-    /// Получает коллекцию конфигураций пользователя только для чтения.
+    /// Получает конфигурацию пользователя.
     /// </summary>
     /// <value>
     /// Коллекция объектов <see cref="UserConfig" />.
     /// </value>
-    public virtual IReadOnlyCollection<UserConfig> UserConfigs => _userConfigs;
+    public virtual UserConfig? UserConfig
+    {
+        get => _userConfig;
+        private set => _userConfig = value;
+    }
 
     /// <summary>
     /// Получает коллекцию местоположений пользователя только для чтения.
@@ -66,34 +70,6 @@ public class User : Entity<SequentialGuid>
     /// Коллекция объектов <see cref="UserLocation" />.
     /// </value>
     public virtual IReadOnlyCollection<UserLocation> UserLocations => _userLocations;
-
-    /// <summary>
-    /// Добавляет или обновляет конфигурацию пользователя с выбранным языком.
-    /// Если конфигурация уже существует, обновляет только язык. Если язык не изменился, ничего не делает.
-    /// </summary>
-    /// <param name="languageCode">Код языка (например, "ru" или "en"). Если не указан, будет использован "ru".</param>
-    /// <exception cref="ArgumentException">Если код языка неизвестен.</exception>
-    public void UpsertUserLanguage(string? languageCode)
-    {
-        var languageDict = LanguageDictionary.FromCode(languageCode ?? "ru");
-
-        var existingConfig = _userConfigs.FirstOrDefault();
-
-        if (existingConfig != null)
-        {
-            if (existingConfig.Language.Id == languageDict.Id)
-            {
-                return;
-            }
-
-            existingConfig.UpdateLanguage(languageDict);
-        }
-        else
-        {
-            var userConfig = new UserConfig(SequentialGuid.Create(), languageDict, this);
-            _userConfigs.Add(userConfig);
-        }
-    }
 
     /// <summary>
     /// Добавляет новую запись в таблицу UserLocation.
@@ -105,5 +81,30 @@ public class User : Entity<SequentialGuid>
     {
         var userLocation = new UserLocation(SequentialGuid.Create(), this, longitude, latitude);
         _userLocations.Add(userLocation);
+    }
+
+    /// <summary>
+    /// Добавляет или обновляет конфигурацию пользователя с выбранным языком.
+    /// Если конфигурация уже существует, обновляет только язык. Если язык не изменился, ничего не делает.
+    /// </summary>
+    /// <param name="languageCode">Код языка (например, "ru" или "en"). Если не указан, будет использован "ru".</param>
+    /// <exception cref="ArgumentException">Если код языка неизвестен.</exception>
+    public void UpsertUserLanguage(string? languageCode)
+    {
+        var languageDict = LanguageDictionary.FromCode(languageCode ?? "ru");
+
+        if (_userConfig != null)
+        {
+            if (_userConfig.Language.Id == languageDict.Id)
+            {
+                return;
+            }
+
+            _userConfig.UpdateLanguage(languageDict);
+        }
+        else
+        {
+            _userConfig = new UserConfig(Id, languageDict);
+        }
     }
 }

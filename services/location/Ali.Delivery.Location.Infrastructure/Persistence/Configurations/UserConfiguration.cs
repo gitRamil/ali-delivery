@@ -33,9 +33,5 @@ internal class UserConfiguration : EntityTypeConfigurationBase<User>
         builder.HasMany(ul => ul.UserLocations)
                .WithOne(u => u.User)
                .HasForeignKey("user_id");
-
-        builder.HasMany(ul => ul.UserConfigs)
-               .WithOne(u => u.User)
-               .HasForeignKey("user_id");
     }
 }

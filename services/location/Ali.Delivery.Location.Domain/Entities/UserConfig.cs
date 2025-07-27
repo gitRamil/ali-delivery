@@ -14,16 +14,9 @@ public class UserConfig : Entity<SequentialGuid>
     /// </summary>
     /// <param name="id">Уникальный идентификатор конфигурации пользователя.</param>
     /// <param name="language">Язык интерфейса пользователя.</param>
-    /// <param name="user">Пользователь, к которому относится данная конфигурация.</param>
-    /// <exception cref="ArgumentNullException">
-    /// Выбрасывается, когда <paramref name="language" /> или <paramref name="user" /> равны <c>null</c>.
-    /// </exception>
-    public UserConfig(SequentialGuid id, LanguageDictionary language, User user)
-        : base(id)
-    {
-        User = user ?? throw new ArgumentNullException(nameof(user));
+    public UserConfig(SequentialGuid id, LanguageDictionary language)
+        : base(id) =>
         Language = language ?? throw new ArgumentNullException(nameof(language));
-    }
 
     /// <summary>
     /// Инициализирует новый экземпляр класса <see cref="UserConfig" /> для Entity Framework.
@@ -32,21 +25,15 @@ public class UserConfig : Entity<SequentialGuid>
     /// Этот конструктор предназначен только для использования Entity Framework и не должен вызываться напрямую.
     /// </remarks>
     protected UserConfig()
-        : base(SequentialGuid.Empty)
-    {
-        User = null!;
+        : base(SequentialGuid.Empty) =>
         Language = null!;
-    }
 
     /// <summary>
     /// Язык интерфейса пользователя.
     /// </summary>
     public virtual LanguageDictionary Language { get; private set; }
 
-    /// <summary>
-    /// Пользователь, к которому относится данная конфигурация.
-    /// </summary>
-    public virtual User User { get; private set; }
+    public virtual User? User { get; }
 
     /// <summary>
     /// Обновляет язык в конфигурации пользователя.

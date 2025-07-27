@@ -18,18 +18,16 @@ internal class UserConfigConfiguration : EntityTypeConfigurationBase<UserConfig>
     {
         builder.ToTable("user_config", t => t.HasComment("Конфигурации пользователя"));
 
-        builder.HasOne(uc => uc.User)
-               .WithMany(u => u.UserConfigs)
-               .HasForeignKey("user_id");
-
-        builder.Property("user_id")
-               .HasComment("Идентификатор пользователя");
-
         builder.HasOne(uc => uc.Language)
                .WithMany()
                .HasForeignKey("language_id");
 
         builder.Property("language_id")
                .HasComment("Идентификатор словаря языков");
+
+        builder.HasOne(uc => uc.User)
+               .WithOne(u => u.UserConfig)
+               .HasForeignKey<UserConfig>(uc => uc.Id)
+               .IsRequired(false);
     }
 }

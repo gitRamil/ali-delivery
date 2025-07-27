@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ali.Delivery.Location.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250714000924_InitNewBase")]
-    partial class InitNewBase
+    [Migration("20250727210257_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -190,19 +190,11 @@ namespace Ali.Delivery.Location.Infrastructure.Migrations
                         .HasColumnName("language_id")
                         .HasComment("Идентификатор словаря языков");
 
-                    b.Property<Guid>("user_id")
-                        .HasColumnType("uuid")
-                        .HasColumnName("user_id")
-                        .HasComment("Идентификатор пользователя");
-
                     b.HasKey("Id")
                         .HasName("pk_user_config");
 
                     b.HasIndex("language_id")
                         .HasDatabaseName("ix_user_config_language_id");
-
-                    b.HasIndex("user_id")
-                        .HasDatabaseName("ix_user_config_user_id");
 
                     b.ToTable("user_config", null, t =>
                         {
@@ -268,19 +260,17 @@ namespace Ali.Delivery.Location.Infrastructure.Migrations
 
             modelBuilder.Entity("Ali.Delivery.Location.Domain.Entities.UserConfig", b =>
                 {
+                    b.HasOne("Ali.Delivery.Location.Domain.Entities.User", "User")
+                        .WithOne("UserConfig")
+                        .HasForeignKey("Ali.Delivery.Location.Domain.Entities.UserConfig", "Id")
+                        .HasConstraintName("fk_user_config_users_id");
+
                     b.HasOne("Ali.Delivery.Location.Domain.Entities.Dictionaries.LanguageDictionary", "Language")
                         .WithMany()
                         .HasForeignKey("language_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_user_config_language_dictionary_language_id");
-
-                    b.HasOne("Ali.Delivery.Location.Domain.Entities.User", "User")
-                        .WithMany("UserConfigs")
-                        .HasForeignKey("user_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_user_config_users_user_id");
 
                     b.Navigation("Language");
 
@@ -301,7 +291,7 @@ namespace Ali.Delivery.Location.Infrastructure.Migrations
 
             modelBuilder.Entity("Ali.Delivery.Location.Domain.Entities.User", b =>
                 {
-                    b.Navigation("UserConfigs");
+                    b.Navigation("UserConfig");
 
                     b.Navigation("UserLocations");
                 });
