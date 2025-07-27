@@ -33,6 +33,9 @@ public class UserConfig : Entity<SequentialGuid>
     /// </summary>
     public virtual LanguageDictionary Language { get; private set; }
 
+    /// <summary>
+    /// Навигационное свойство User для правильной связи 1:1.
+    /// </summary>
     public virtual User? User { get; }
 
     /// <summary>

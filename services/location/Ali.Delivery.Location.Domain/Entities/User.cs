@@ -54,9 +54,6 @@ public class User : Entity<SequentialGuid>
     /// <summary>
     /// Получает конфигурацию пользователя.
     /// </summary>
-    /// <value>
-    /// Коллекция объектов <see cref="UserConfig" />.
-    /// </value>
     public virtual UserConfig? UserConfig
     {
         get => _userConfig;
