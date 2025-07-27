@@ -3,7 +3,6 @@
     {
       "Id": "StartStep",
       "SelectNextStep": {
-        "LanguageSelection": "LanguageSelection",
         "Authorization": "Authorization",
         "StopStep": "StopStep"
       }
@@ -11,7 +10,7 @@
     {
       "Id": "LanguageSelection",
       "SelectNextStep": {
-        "StartStep": "StartStep",
+        "AuthComplete": "AuthComplete",
         "LanguageSelection": "LanguageSelection",
         "StopStep": "StopStep"
       }
@@ -19,7 +18,7 @@
     {
       "Id": "Authorization",
       "SelectNextStep": {
-        "AuthComplete": "AuthComplete",
+        "LanguageSelection": "LanguageSelection",
         "StopStep": "StopStep"
       }
     },

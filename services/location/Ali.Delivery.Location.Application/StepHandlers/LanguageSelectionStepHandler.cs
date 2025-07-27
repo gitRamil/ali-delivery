@@ -37,7 +37,9 @@ public class LanguageSelectionStepHandler : IStepHandler
         {
             await _userLanguageService.UpsertUserLanguageAsync(messageInfo.ChatId, langCode, cancellationToken);
             await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.LanguageChanged, cancellationToken: cancellationToken);
-            return new HandlerResult(Steps.Start);
+            await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.AuthCompleteCommandHelp, cancellationToken: cancellationToken);
+
+            return new HandlerResult(Steps.AuthComplete);
         }
 
         if (string.Equals(messageInfo.Text, Commands.Stop, StringComparison.OrdinalIgnoreCase))

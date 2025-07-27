@@ -34,8 +34,8 @@ public class StartStepHandler : IStepHandler
 
             if (string.IsNullOrEmpty(userLanguage))
             {
-                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.LanguagePrompt, cancellationToken: cancellationToken);
-                return new HandlerResult(Steps.LanguageSelection);
+                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.Welcome, cancellationToken: cancellationToken);
+                return new HandlerResult(string.Empty);
             }
 
             await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.Welcome, cancellationToken: cancellationToken);

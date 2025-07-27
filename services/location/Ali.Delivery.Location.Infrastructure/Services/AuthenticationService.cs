@@ -92,17 +92,18 @@ public class AuthenticationService : IAuthenticationService
             case AuthResult.Success:
 
                 await _notification.SendNotificationMessageAsync(chatId, NotificationType.AuthenticationComplete, cancellationToken: cancellationToken);
+                await _notification.SendNotificationMessageAsync(chatId, NotificationType.LanguagePrompt, cancellationToken: cancellationToken);
                 var existingUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.ChatId == chatId.ToString(), cancellationToken);
 
                 if (existingUser != null)
                 {
-                    return new CommandResult(Steps.AuthComplete);
+                    return new CommandResult(Steps.LanguageSelection);
                 }
 
                 var user = new User(auth.UserId, login, chatId.ToString());
                 _dbContext.Users.Add(user);
                 await _dbContext.SaveChangesAsync(cancellationToken);
-                return new CommandResult(Steps.AuthComplete);
+                return new CommandResult(Steps.LanguageSelection);
 
             case AuthResult.InvalidCredentials:
                 await _notification.SendNotificationMessageAsync(chatId, NotificationType.InvalidCredentials, cancellationToken: cancellationToken);

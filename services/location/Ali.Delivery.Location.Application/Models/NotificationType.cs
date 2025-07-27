@@ -66,7 +66,12 @@ public enum NotificationType
     LanguagePrompt,
 
     /// <summary>
-    /// .
+    /// Сообщение с координатами пользователя.
     /// </summary>
-    LocationWithPlaceHolder
+    LocationWithPlaceHolder,
+
+    /// <summary>
+    /// Сообщение с командами для быстрого доступа к геошерингу.
+    /// </summary>
+    AuthCompleteCommandHelp
 }

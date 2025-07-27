@@ -14,19 +14,18 @@ public class LoginStepHandler : IStepHandler
     private readonly IAuthenticationService _authenticationService;
     private readonly IAppDbContext _dbContext;
     private readonly INotificationService _notification;
-    private readonly IUserLanguageService _userLanguageService;
 
     /// <summary>
     /// Инициализирует новый экземпляр класса <see cref="LoginStepHandler" />.
     /// </summary>
     /// <param name="notification">Сервис для отправки уведомлений пользователю.</param>
     /// <param name="authenticationService">Сервис для выполнения логики аутентификации.</param>
-    public LoginStepHandler(INotificationService notification, IAuthenticationService authenticationService, IAppDbContext dbContext, IUserLanguageService userLanguageService)
+    /// <param name="dbContext">Контекст базы данных.</param>
+    public LoginStepHandler(INotificationService notification, IAuthenticationService authenticationService, IAppDbContext dbContext)
     {
         _notification = notification ?? throw new ArgumentNullException(nameof(notification));
         _authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
         _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-        _userLanguageService = userLanguageService ?? throw new ArgumentNullException(nameof(userLanguageService));
     }
 
     /// <inheritdoc />
@@ -52,15 +51,6 @@ public class LoginStepHandler : IStepHandler
         }
 
         var res = await _authenticationService.LoginAsync(chatId, text, cancellationToken);
-
-        var language = await _userLanguageService.GetUserLanguageAsync(chatId);
-
-        if (language == null)
-        {
-            throw new ArgumentException(nameof(language));
-        }
-
-        await _userLanguageService.UpsertUserLanguageAsync(chatId, language, cancellationToken);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 

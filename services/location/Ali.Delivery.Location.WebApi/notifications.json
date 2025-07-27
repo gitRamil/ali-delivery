@@ -24,8 +24,12 @@
     "en": "Invalid login or password, or you are not registered. Please register: https://example.com\nYou can try again or stop the bot with /stop."
   },
   "AuthenticationComplete": {
-    "ru": "Авторизация успешно завершена. Используйте /geosharing для начала отслеживания или /stop для выхода.",
-    "en": "Authentication successful. Use /geosharing to start tracking or /stop to exit."
+    "ru": "Авторизация успешно завершена.",
+    "en": "Authentication successful."
+  },
+  "AuthCompleteCommandHelp": {
+    "ru": "Используйте /geosharing для начала отслеживания или /stop для выхода.",
+    "en": "Use /geosharing to start tracking or /stop to exit."
   },
   "RequestLocation": {
     "ru": "Пожалуйста, поделитесь вашей геопозицией или введите /stop_geosharing для ожидания команды, либо завершите сессию командой /stop.",
@@ -40,8 +44,8 @@
     "en": "Failed to save location. Try again or enter /stop_geosharing to wait for a command, or /stop to end the session."
   },
   "LanguageChanged": {
-    "ru": "Язык успешно изменён. Используйте /login для авторизации.",
-    "en": "Language changed successfully. Use /login for authorization."
+    "ru": "Язык успешно изменён.",
+    "en": "Language changed successfully."
   },
   "LanguagePrompt": {
     "ru": "Пожалуйста, выберите язык:\nPlease select your language:",

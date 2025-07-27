@@ -1,10 +1,17 @@
-﻿using Ali.Delivery.Location.Application.Models;
+﻿namespace Ali.Delivery.Location.Application.Abstractions;
 
-namespace Ali.Delivery.Location.Application.Abstractions;
-
+/// <summary>
+/// Провайдер для работы с кэшированными данными.
+/// </summary>
 public interface ILookupProvider
 {
-    Task<Dictionary<string, string>> GetUserLanguagesAsync();
-    Task<Dictionary<Guid, LocationInfo>> GetUserLocationsAsync();
+    /// <summary>
+    /// Получает словарь из кэша или базы данных.
+    /// </summary>
+    Task<Dictionary<string, string>> GetAsync();
+
+    /// <summary>
+    /// Сбрасывает кэш.
+    /// </summary>
     Task Reset();
 }
