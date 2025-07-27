@@ -17,12 +17,12 @@ public class UserTests
         var chatId = fixture.Create<string>();
         var user = new User(id, login, chatId);
 
-        user.AddOrUpdateUserConfig("ru");
+        user.UpsertUserLanguage("ru");
         var initialConfig = user.UserConfigs.First();
         var initialId = initialConfig.Id;
 
         // Act
-        user.AddOrUpdateUserConfig("ru");
+        user.UpsertUserLanguage("ru");
 
         // Assert
         user.UserConfigs.Should()
@@ -49,7 +49,7 @@ public class UserTests
         var user = new User(id, login, chatId);
 
         // Act
-        user.AddOrUpdateUserConfig(languageCode);
+        user.UpsertUserLanguage(languageCode);
 
         // Assert
         user.UserConfigs.Should()
@@ -76,7 +76,7 @@ public class UserTests
         var user = new User(id, login, chatId);
 
         // Act
-        user.AddOrUpdateUserConfig(null);
+        user.UpsertUserLanguage(null);
 
         // Assert
         user.UserConfigs.Should()
@@ -104,7 +104,7 @@ public class UserTests
         var user = new User(id, login, chatId);
 
         //Act.
-        var act = () => user.AddOrUpdateUserConfig(languageCode);
+        var act = () => user.UpsertUserLanguage(languageCode);
 
         //Assert.
         act.Should()
@@ -131,7 +131,7 @@ public class UserTests
         var user = new User(id, login, chatId);
 
         // Act
-        var act = () => user.AddOrUpdateUserConfig(invalidLanguageCode);
+        var act = () => user.UpsertUserLanguage(invalidLanguageCode);
 
         // Assert
         act.Should()
@@ -150,10 +150,10 @@ public class UserTests
         var login = fixture.Create<string>();
         var chatId = fixture.Create<string>();
         var user = new User(id, login, chatId);
-        user.AddOrUpdateUserConfig("ru");
+        user.UpsertUserLanguage("ru");
 
         // Act 
-        user.AddOrUpdateUserConfig("en");
+        user.UpsertUserLanguage("en");
 
         // Assert
         user.UserConfigs.Should()

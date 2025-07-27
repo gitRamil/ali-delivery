@@ -60,7 +60,7 @@ public class LoginStepHandler : IStepHandler
             throw new ArgumentException(nameof(language));
         }
 
-        await _userLanguageService.SaveUserLanguageToDbAsync(chatId, language, cancellationToken);
+        await _userLanguageService.UpsertUserLanguageAsync(chatId, language, cancellationToken);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 

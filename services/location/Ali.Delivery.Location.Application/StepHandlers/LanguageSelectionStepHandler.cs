@@ -35,7 +35,7 @@ public class LanguageSelectionStepHandler : IStepHandler
 
         if (langCode != null)
         {
-            await _userLanguageService.SetUserLanguage(messageInfo.ChatId, langCode);
+            await _userLanguageService.UpsertUserLanguageAsync(messageInfo.ChatId, langCode, cancellationToken);
             await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.LanguageChanged, cancellationToken: cancellationToken);
             return new HandlerResult(Steps.Start);
         }

@@ -1,52 +1,43 @@
 using Ali.Delivery.Location.Application.Abstractions;
-using LazyCache;
+using Ali.Delivery.Location.Application.Exceptions;
+using Ali.Delivery.Location.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace Ali.Delivery.Location.Infrastructure.Services;
-
 /// <summary>
 /// Реализует сервис для работы с языковыми настройками пользователей.
-/// Поддерживает кэширование для повышения производительности и работу с базой данных для постоянного хранения.
+/// Использует LookupProvider для кэширования всех языковых настроек в виде словаря.
 /// </summary>
 public class UserLanguageService : IUserLanguageService
 {
-    private const string LanguageCachePrefix = "UserLanguage_";
-    private static readonly TimeSpan CacheExpiration = TimeSpan.FromHours(24);
-    private readonly IAppCache _cache;
+    private readonly ILookupProvider _lookupProvider;
     private readonly IAppDbContext _context;
+
 
     /// <summary>
     /// Инициализирует новый экземпляр класса <see cref="UserLanguageService" />.
     /// </summary>
-    /// <param name="cache">Сервис кэширования для временного хранения языковых настроек.</param>
+    /// <param name="lookupProvider">Провайдер для получения кэшированных данных пользователей.</param>
     /// <param name="context">Контекст базы данных для постоянного хранения языковых настроек.</param>
     /// <exception cref="ArgumentNullException">
-    /// Возникает, если <paramref name="cache" /> или <paramref name="context" /> равен <c>null</c>.
+    /// Возникает, если <paramref name="lookupProvider" /> или <paramref name="context" /> равен <c>null</c>.
     /// </exception>
-    public UserLanguageService(IAppCache cache, IAppDbContext context)
+    public UserLanguageService(ILookupProvider lookupProvider, IAppDbContext context)
     {
-        _cache = cache ?? throw new ArgumentNullException(nameof(cache));
+        _lookupProvider = lookupProvider ?? throw new ArgumentNullException(nameof(lookupProvider));
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
     /// <inheritdoc />
     public async Task<string?> GetUserLanguageAsync(long userId)
     {
-        var cacheKey = $"{LanguageCachePrefix}{userId}";
-
-        var language = await _cache.GetOrAddAsync(cacheKey,
-                                                  async entry =>
-                                                  {
-                                                      entry.SetAbsoluteExpiration(CacheExpiration);
-                                                      return await LoadUserLanguageFromDbAsync(userId);
-                                                  });
-
-        return language?.ToLowerInvariant();
+        var userLanguages = await _lookupProvider.GetUserLanguagesAsync();
+        var chatId = userId.ToString();
+        return userLanguages.GetValueOrDefault(chatId);
     }
-
+    
     /// <inheritdoc />
-    public async Task SaveUserLanguageToDbAsync(long chatId, string languageCode, CancellationToken cancellationToken)
+    public async Task UpsertUserLanguageAsync(long chatId, string languageCode, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(languageCode))
         {
@@ -54,40 +45,13 @@ public class UserLanguageService : IUserLanguageService
         }
 
         var user = await _context.Users.Include(u => u.UserConfigs)
+                                 .ThenInclude(uc => uc.Language)
                                  .Where(u => u.ChatId == chatId.ToString())
-                                 .FirstOrDefaultAsync(cancellationToken);
-
-        if (user == null)
-        {
-            throw new InvalidOperationException($"Пользователь с ChatId {chatId} не найден.");
-        }
-
-        user.AddOrUpdateUserConfig(languageCode);
+                                 .FirstOrDefaultAsync(cancellationToken) ??throw new NotFoundException(typeof(User), chatId);
+        
+        user.UpsertUserLanguage(languageCode);
         await _context.SaveChangesAsync(cancellationToken);
 
-        var cacheKey = $"{LanguageCachePrefix}{chatId}";
-        _cache.Add(cacheKey, languageCode.ToLowerInvariant(), CacheExpiration);
-    }
-
-    /// <inheritdoc />
-    public Task SetUserLanguage(long userId, string languageCode)
-    {
-        if (string.IsNullOrWhiteSpace(languageCode))
-        {
-            throw new ArgumentException("Код языка не может быть пустым.", nameof(languageCode));
-        }
-
-        var cacheKey = $"{LanguageCachePrefix}{userId}";
-        _cache.Add(cacheKey, languageCode.ToLowerInvariant(), CacheExpiration);
-        return Task.CompletedTask;
-    }
-
-    private async Task<string?> LoadUserLanguageFromDbAsync(long chatId)
-    {
-        return await _context.Users.Where(u => u.ChatId == chatId.ToString())
-                             .SelectMany(u => u.UserConfigs)
-                             .Where(uc => true)
-                             .Select(uc => uc.Language.Code)
-                             .FirstOrDefaultAsync();
+        await _lookupProvider.Reset();
     }
 }

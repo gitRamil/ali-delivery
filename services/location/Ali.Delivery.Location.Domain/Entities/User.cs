@@ -73,7 +73,7 @@ public class User : Entity<SequentialGuid>
     /// </summary>
     /// <param name="languageCode">Код языка (например, "ru" или "en"). Если не указан, будет использован "ru".</param>
     /// <exception cref="ArgumentException">Если код языка неизвестен.</exception>
-    public void AddOrUpdateUserConfig(string? languageCode)
+    public void UpsertUserLanguage(string? languageCode)
     {
         var languageDict = LanguageDictionary.FromCode(languageCode ?? "ru");
 

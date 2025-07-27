@@ -19,12 +19,9 @@ public interface IUserLanguageService
     /// <param name="chatId">Идентификатор чата пользователя.</param>
     /// <param name="languageCode">Языковой код для сохранения (например, "ru", "en").</param>
     /// <param name="cancellationToken">Токен отмены операции.</param>
-    Task SaveUserLanguageToDbAsync(long chatId, string languageCode, CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// Сохраняет (устанавливает или обновляет) язык для указанного пользователя.
-    /// </summary>
-    /// <param name="userId">Уникальный идентификатор пользователя.</param>
-    /// <param name="languageCode">Языковой код (например, "ru", "en").</param>
-    Task SetUserLanguage(long userId, string languageCode);
+    Task UpsertUserLanguageAsync(long chatId, string languageCode, CancellationToken cancellationToken = default);
 }
+
+
+
+
