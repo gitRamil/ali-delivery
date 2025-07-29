@@ -12,12 +12,12 @@ public class UserConfigTest
     {
         //Arrange.
         var fixture = new Fixture();
-        var id = fixture.Create<SequentialGuid>();
         var user = fixture.Create<User>();
+        var userId = user.Id;
         var language = LanguageDictionary.English;
 
         //Act.
-        var act = () => new UserConfig(id, language, user);
+        var act = () => new UserConfig(userId, language);
 
         //Assert.
         act.Should()
@@ -29,34 +29,18 @@ public class UserConfigTest
     {
         //Arrange.
         var fixture = new Fixture();
-        var id = fixture.Create<SequentialGuid>();
         var user = fixture.Create<User>();
+        var userId = user.Id;
         LanguageDictionary language = null!;
 
         //Act.
-        var act = () => new UserConfig(id, language, user);
+        var act = () => new UserConfig(userId, language);
 
         //Assert.
         act.Should()
            .Throw<ArgumentNullException>(nameof(language));
     }
-
-    [Fact]
-    public void AddUserConfigShouldThrowArgumentNullExceptionWhenUserIsNull()
-    {
-        //Arrange.
-        var fixture = new Fixture();
-        var id = fixture.Create<SequentialGuid>();
-        User user = null!;
-        var language = LanguageDictionary.English;
-
-        //Act.
-        var act = () => new UserConfig(id, language, user);
-
-        //Assert.
-        act.Should()
-           .Throw<ArgumentNullException>(nameof(user));
-    }
+    
 
     [Fact]
     public void ProtectedConstructorShouldInitializePropertiesWithDefaultValues()
@@ -75,9 +59,6 @@ public class UserConfigTest
         userConfig.Id.Should()
                   .Be(SequentialGuid.Empty);
 
-        userConfig.User.Should()
-                  .BeNull();
-
         userConfig.Language.Should()
                   .BeNull();
     }
@@ -87,11 +68,11 @@ public class UserConfigTest
     {
         //Arrange.
         var fixture = new Fixture();
-        var id = fixture.Create<SequentialGuid>();
         var user = fixture.Create<User>();
+        var userId = user.Id;
         var language = LanguageDictionary.English;
         var newLanguage = LanguageDictionary.Russian;
-        var userConfig = new UserConfig(id, language, user);
+        var userConfig = new UserConfig(userId, language);
 
         //Act.
         var act = () => userConfig.UpdateLanguage(newLanguage);
@@ -102,12 +83,9 @@ public class UserConfigTest
 
         userConfig.Language.Should()
                   .Be(newLanguage);
-
-        userConfig.User.Should()
-                  .Be(user);
-
+        
         userConfig.Id.Should()
-                  .Be(id);
+                  .Be(userId);
     }
 
     [Fact]
@@ -115,11 +93,11 @@ public class UserConfigTest
     {
         //Arrange.
         var fixture = new Fixture();
-        var id = fixture.Create<SequentialGuid>();
         var user = fixture.Create<User>();
+        var userId = user.Id;
         var language = LanguageDictionary.English;
         LanguageDictionary newLanguage = null!;
-        var userConfig = new UserConfig(id, language, user);
+        var userConfig = new UserConfig(userId, language);
 
         //Act.
         var act = () => userConfig.UpdateLanguage(newLanguage);

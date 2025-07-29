@@ -18,21 +18,19 @@ public class UserTests
         var user = new User(id, login, chatId);
 
         user.UpsertUserLanguage("ru");
-        var initialConfig = user.UserConfigs.First();
+        var initialConfig = user.UserConfig! ;
         var initialId = initialConfig.Id;
 
         // Act
         user.UpsertUserLanguage("ru");
 
         // Assert
-        user.UserConfigs.Should()
-            .HaveCount(1);
 
-        user.UserConfigs.First()
+        user.UserConfig!
             .Id.Should()
             .Be(initialId);
 
-        user.UserConfigs.First()
+        user.UserConfig
             .Language.Should()
             .Be(LanguageDictionary.Russian);
     }
@@ -52,14 +50,11 @@ public class UserTests
         user.UpsertUserLanguage(languageCode);
 
         // Assert
-        user.UserConfigs.Should()
-            .HaveCount(1);
-
-        user.UserConfigs.First()
+        user.UserConfig!
             .Language.Should()
             .Be(LanguageDictionary.English);
 
-        user.UserConfigs.First()
+        user.UserConfig
             .Language.Code.ToString()
             .Should()
             .Be("EN");
@@ -79,15 +74,12 @@ public class UserTests
         user.UpsertUserLanguage(null);
 
         // Assert
-        user.UserConfigs.Should()
-            .HaveCount(1);
-
-        user.UserConfigs.First()
+        user.UserConfig!
             .Language.Code.ToString()
             .Should()
             .Be("RU");
 
-        user.UserConfigs.First()
+        user.UserConfig!
             .Language.Should()
             .Be(LanguageDictionary.Russian);
     }
@@ -110,10 +102,7 @@ public class UserTests
         act.Should()
            .NotThrow();
 
-        user.UserConfigs.Should()
-            .HaveCount(1);
-
-        user.UserConfigs.First()
+        user.UserConfig!
             .Language.Code.ToString()
             .Should()
             .Be("RU");
@@ -156,10 +145,7 @@ public class UserTests
         user.UpsertUserLanguage("en");
 
         // Assert
-        user.UserConfigs.Should()
-            .HaveCount(1);
-
-        user.UserConfigs.First()
+       user.UserConfig!
             .Language.Should()
             .Be(LanguageDictionary.English);
     }
