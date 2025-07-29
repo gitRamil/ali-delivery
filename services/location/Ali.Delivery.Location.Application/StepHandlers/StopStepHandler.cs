@@ -30,6 +30,7 @@ public sealed class StopStepHandler : IStepHandler
         if (text.Trim()
                 .Equals(Commands.Start, StringComparison.OrdinalIgnoreCase))
         {
+            await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.Welcome, cancellationToken: cancellationToken);
             return new HandlerResult(Steps.Start);
         }
 
