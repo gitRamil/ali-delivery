@@ -18,6 +18,9 @@ internal class UserConfigConfiguration : EntityTypeConfigurationBase<UserConfig>
     {
         builder.ToTable("user_config", t => t.HasComment("Конфигурации пользователя"));
 
+        builder.Property(uc => uc.Id)
+               .ValueGeneratedNever();
+
         builder.HasOne(uc => uc.Language)
                .WithMany()
                .HasForeignKey("language_id");
@@ -27,7 +30,6 @@ internal class UserConfigConfiguration : EntityTypeConfigurationBase<UserConfig>
 
         builder.HasOne(uc => uc.User)
                .WithOne(u => u.UserConfig)
-               .HasForeignKey<UserConfig>(uc => uc.Id)
-               .IsRequired(false);
+               .HasForeignKey<UserConfig>(uc => uc.Id);
     }
 }

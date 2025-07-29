@@ -29,12 +29,12 @@ public class UserConfig : Entity<SequentialGuid>
         Language = null!;
 
     /// <summary>
-    /// Язык интерфейса пользователя.
+    /// Возвращает язык интерфейса пользователя.
     /// </summary>
     public virtual LanguageDictionary Language { get; private set; }
 
     /// <summary>
-    /// Навигационное свойство User для правильной связи 1:1.
+    /// Возвращает пользователя.
     /// </summary>
     public virtual User? User { get; }
 
@@ -44,6 +44,11 @@ public class UserConfig : Entity<SequentialGuid>
     /// <param name="newLanguage">Новый язык для установки.</param>
     public void UpdateLanguage(LanguageDictionary newLanguage)
     {
-        Language = newLanguage ?? throw new ArgumentNullException(nameof(newLanguage));
+        if (Language == newLanguage)
+        {
+            return;
+        }
+
+        Language = newLanguage;
     }
 }

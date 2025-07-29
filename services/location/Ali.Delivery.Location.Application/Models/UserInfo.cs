@@ -8,4 +8,4 @@
 /// Логин пользователя. Может быть <c>null</c>, если пользователь не аутентифицирован или логин не
 /// установлен.
 /// </param>
-public record UserInfo(Guid Id, string? Login);
+public record UserInfo(Guid Id, string Login);

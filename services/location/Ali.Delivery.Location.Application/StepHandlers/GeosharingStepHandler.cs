@@ -1,6 +1,7 @@
 using Ali.Delivery.Location.Application.Abstractions;
 using Ali.Delivery.Location.Application.Constants;
 using Ali.Delivery.Location.Application.Exceptions;
+using Ali.Delivery.Location.Application.Extensions;
 using Ali.Delivery.Location.Application.Models;
 using Ali.Delivery.Location.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -30,23 +31,36 @@ public class GeosharingStepHandler : IStepHandler
     /// <inheritdoc />
     public async Task<HandlerResult> HandleAsync(MessageInfo messageInfo, CancellationToken cancellationToken)
     {
+        var chatId = messageInfo.ChatId;
+
         if (messageInfo.Location is { } loc)
         {
             return await ProcessLocationAsync(messageInfo.ChatId, loc.Longitude, loc.Latitude, cancellationToken);
         }
 
-        if (messageInfo.Text is { } text)
+        if (messageInfo.Text is not { } text)
         {
-            return await ProcessTextCommandAsync(messageInfo.ChatId, text, cancellationToken);
+            await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.RequestLocation, cancellationToken: cancellationToken);
+            return new HandlerResult(string.Empty);
         }
 
-        await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.RequestLocation, cancellationToken: cancellationToken);
-        return new HandlerResult(string.Empty);
+        switch (text.MessageToCommand())
+        {
+            case Commands.StopGeosharing:
+                await _notification.SendNotificationMessageAsync(chatId, NotificationType.AuthenticationComplete, cancellationToken: cancellationToken);
+                return new HandlerResult(Steps.AuthComplete);
+            case Commands.Stop:
+                await _notification.SendNotificationMessageAsync(chatId, NotificationType.SessionEnded, cancellationToken: cancellationToken);
+                return new HandlerResult(Steps.Stop);
+            default:
+                await _notification.SendNotificationMessageAsync(chatId, NotificationType.RequestLocation, cancellationToken: cancellationToken);
+                return new HandlerResult(string.Empty);
+        }
     }
 
     private async Task<HandlerResult> ProcessLocationAsync(long chatId, double longitude, double latitude, CancellationToken cancellationToken)
     {
-        var user = await _dbContext.Users.Where(u => u.ChatId == chatId.ToString())
+        var user = await _dbContext.Users.Where(u => u.ChatId == chatId)
                                    .FirstOrDefaultAsync(cancellationToken) ??
                    throw new NotFoundException(typeof(User), chatId);
 
@@ -63,24 +77,5 @@ public class GeosharingStepHandler : IStepHandler
                                                          cancellationToken);
 
         return new HandlerResult(string.Empty);
-    }
-
-    private async Task<HandlerResult> ProcessTextCommandAsync(long chatId, string text, CancellationToken cancellationToken)
-    {
-        var command = text.Trim()
-                          .ToLowerInvariant();
-
-        switch (command)
-        {
-            case Commands.StopGeosharing:
-                await _notification.SendNotificationMessageAsync(chatId, NotificationType.AuthenticationComplete, cancellationToken: cancellationToken);
-                return new HandlerResult(Steps.AuthComplete);
-            case Commands.Stop:
-                await _notification.SendNotificationMessageAsync(chatId, NotificationType.SessionEnded, cancellationToken: cancellationToken);
-                return new HandlerResult(Steps.Stop);
-            default:
-                await _notification.SendNotificationMessageAsync(chatId, NotificationType.RequestLocation, cancellationToken: cancellationToken);
-                return new HandlerResult(string.Empty);
-        }
     }
 }

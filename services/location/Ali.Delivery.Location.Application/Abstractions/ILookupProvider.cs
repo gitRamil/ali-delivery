@@ -1,4 +1,6 @@
-﻿namespace Ali.Delivery.Location.Application.Abstractions;
+﻿using Ali.Delivery.Location.Domain.ValueObjects.Dictionaries.LanguageDictionary;
+
+namespace Ali.Delivery.Location.Application.Abstractions;
 
 /// <summary>
 /// Провайдер для работы с кэшированными данными.
@@ -8,7 +10,7 @@ public interface ILookupProvider
     /// <summary>
     /// Получает словарь из кэша или базы данных.
     /// </summary>
-    Task<Dictionary<string, string>> GetAsync();
+    Task<Dictionary<long, LanguageCode>> GetAsync();
 
     /// <summary>
     /// Сбрасывает кэш.

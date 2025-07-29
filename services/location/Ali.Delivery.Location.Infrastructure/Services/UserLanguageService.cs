@@ -1,13 +1,14 @@
 using Ali.Delivery.Location.Application.Abstractions;
 using Ali.Delivery.Location.Application.Exceptions;
 using Ali.Delivery.Location.Domain.Entities;
+using Ali.Delivery.Location.Domain.Entities.Dictionaries;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ali.Delivery.Location.Infrastructure.Services;
 
 /// <summary>
 /// Реализует сервис для работы с языковыми настройками пользователей.
-/// Использует LookupForUserLanguages для кэширования всех языковых настроек в виде словаря.
+/// Использует UserLanguagesLookup для кэширования всех языковых настроек в виде словаря.
 /// </summary>
 public class UserLanguageService : IUserLanguageService
 {
@@ -29,28 +30,13 @@ public class UserLanguageService : IUserLanguageService
     }
 
     /// <inheritdoc />
-    public async Task<string?> GetUserLanguageAsync(long userId)
+    public async Task UpsertUserLanguageAsync(long chatId, LanguageDictionary languageDictionary, CancellationToken cancellationToken)
     {
-        var userLanguages = await _lookupProvider.GetAsync();
-        var chatId = userId.ToString();
-        return userLanguages.GetValueOrDefault(chatId);
-    }
-
-    /// <inheritdoc />
-    public async Task UpsertUserLanguageAsync(long chatId, string languageCode, CancellationToken cancellationToken)
-    {
-        if (string.IsNullOrWhiteSpace(languageCode))
-        {
-            throw new ArgumentException("Код языка не может быть пустым.", nameof(languageCode));
-        }
-
-        var user = await _context.Users.Include(u => u.UserConfig)
-                                 .ThenInclude(uc => uc!.Language)
-                                 .Where(u => u.ChatId == chatId.ToString())
+        var user = await _context.Users.Where(u => u.ChatId == chatId)
                                  .FirstOrDefaultAsync(cancellationToken) ??
                    throw new NotFoundException(typeof(User), chatId);
 
-        user.UpsertUserLanguage(languageCode);
+        user.UpsertUserLanguage(languageDictionary);
         await _context.SaveChangesAsync(cancellationToken);
 
         await _lookupProvider.Reset();

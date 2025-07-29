@@ -8,7 +8,7 @@ namespace Ali.Delivery.Location.Application.StateMachine;
 /// <summary>
 /// Представляет конкретную реализацию конечного автомата, управляющего диалогом с пользователем.
 /// </summary>
-public class StateMachine : IStateMachine // TODO: Реализовать нормальную обработку "StopStep" и его нотификатора.
+public class StateMachine : IStateMachine // TODO: Реализовать нормальную обработку "Stop" и его нотификатора.
 {
     private readonly StateMachineConfiguration _config;
     private readonly IStepHandlerMapping _stepHandlerMapping;

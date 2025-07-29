@@ -36,7 +36,7 @@ namespace Ali.Delivery.Location.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, comment: "Уникальный идентификатор"),
-                    chat_id = table.Column<string>(type: "text", nullable: false, comment: "ID чата пользователя из телеграма"),
+                    chat_id = table.Column<long>(type: "bigint", nullable: false, comment: "ID чата пользователя из телеграма"),
                     login = table.Column<string>(type: "text", nullable: false, comment: "Логин пользователя"),
                     created_by = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     created_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))),
@@ -73,7 +73,8 @@ namespace Ali.Delivery.Location.Infrastructure.Migrations
                         name: "fk_user_config_users_id",
                         column: x => x.id,
                         principalTable: "users",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 },
                 comment: "Конфигурации пользователя");
 
@@ -107,8 +108,8 @@ namespace Ali.Delivery.Location.Infrastructure.Migrations
                 columns: new[] { "id", "code", "created_by", "name", "updated_by" },
                 values: new object[,]
                 {
-                    { new Guid("3a156e1f-6090-39cd-7580-20395231a00f"), "RU", null, "Русский", null },
-                    { new Guid("3a156e1f-6091-875d-e42d-3e8e7ec6e082"), "EN", null, "Английский", null }
+                    { new Guid("3a156e1f-6090-39cd-7580-20395231a00f"), "ru", null, "Русский", null },
+                    { new Guid("3a156e1f-6091-875d-e42d-3e8e7ec6e082"), "en", null, "Английский", null }
                 });
 
             migrationBuilder.CreateIndex(

@@ -1,10 +1,17 @@
 {
   "Steps": [
     {
-      "Id": "StartStep",
+      "Id": "Start",
       "SelectNextStep": {
         "Authorization": "Authorization",
-        "StopStep": "StopStep"
+        "Stop": "Stop"
+      }
+    },
+    {
+      "Id": "Authorization",
+      "SelectNextStep": {
+        "LanguageSelection": "LanguageSelection",
+        "Stop": "Stop"
       }
     },
     {
@@ -12,34 +19,27 @@
       "SelectNextStep": {
         "AuthComplete": "AuthComplete",
         "LanguageSelection": "LanguageSelection",
-        "StopStep": "StopStep"
-      }
-    },
-    {
-      "Id": "Authorization",
-      "SelectNextStep": {
-        "LanguageSelection": "LanguageSelection",
-        "StopStep": "StopStep"
+        "Stop": "Stop"
       }
     },
     {
       "Id": "AuthComplete",
       "SelectNextStep": {
         "GeoSharing": "GeoSharing",
-        "StopStep": "StopStep"
+        "Stop": "Stop"
       }
     },
     {
       "Id": "GeoSharing",
       "SelectNextStep": {
         "AuthComplete": "AuthComplete",
-        "StopStep": "StopStep"
+        "Stop": "Stop"
       }
     },
     {
-      "Id": "StopStep",
+      "Id": "Stop",
       "SelectNextStep": {
-        "StartStep": "StartStep"
+        "Start": "Start"
       }
     }
   ]

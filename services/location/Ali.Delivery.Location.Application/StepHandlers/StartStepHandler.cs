@@ -1,11 +1,12 @@
 using Ali.Delivery.Location.Application.Abstractions;
 using Ali.Delivery.Location.Application.Constants;
+using Ali.Delivery.Location.Application.Extensions;
 using Ali.Delivery.Location.Application.Models;
 
 namespace Ali.Delivery.Location.Application.StepHandlers;
 
 /// <summary>
-/// Представляет обработчик для начального состояния ("StartStep").
+/// Представляет обработчик для начального состояния ("Start").
 /// Он отвечает за обработку первых команд пользователя, таких как /start и /login,
 /// и инициирует переход к следующим шагам.
 /// </summary>
@@ -17,19 +18,12 @@ public class StartStepHandler : IStepHandler
     /// Инициализирует новый экземпляр класса <see cref="StartStepHandler" />.
     /// </summary>
     /// <param name="notification">Сервис для отправки уведомлений пользователю.</param>
-    public StartStepHandler(INotificationService notification)
-    {
-        _notification = notification ?? throw new ArgumentNullException(nameof(notification));
-    }
+    public StartStepHandler(INotificationService notification) => _notification = notification ?? throw new ArgumentNullException(nameof(notification));
 
     /// <inheritdoc />
     public async Task<HandlerResult> HandleAsync(MessageInfo messageInfo, CancellationToken cancellationToken = default)
     {
-        if (messageInfo.Text == Commands.Start)
-        {
-            await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.Welcome, cancellationToken: cancellationToken);
-            return new HandlerResult(string.Empty);
-        }
+        var chatId = messageInfo.ChatId;
 
         if (messageInfo is not { Text: { } text })
         {
@@ -37,19 +31,16 @@ public class StartStepHandler : IStepHandler
             return new HandlerResult(string.Empty);
         }
 
-        text = text.Trim()
-                   .ToLowerInvariant();
-
-        switch (text)
+        switch (text.MessageToCommand())
         {
             case Commands.Start:
-                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.Welcome, cancellationToken: cancellationToken);
+                await _notification.SendNotificationMessageAsync(chatId, NotificationType.Welcome, cancellationToken: cancellationToken);
                 return new HandlerResult(string.Empty);
             case Commands.Login:
-                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.EnterCredentials, cancellationToken: cancellationToken);
+                await _notification.SendNotificationMessageAsync(chatId, NotificationType.EnterCredentials, cancellationToken: cancellationToken);
                 return new HandlerResult(Steps.Authorization);
             case Commands.Stop:
-                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.SessionEnded, cancellationToken: cancellationToken);
+                await _notification.SendNotificationMessageAsync(chatId, NotificationType.SessionEnded, cancellationToken: cancellationToken);
                 return new HandlerResult(Steps.Stop);
             default:
                 await SendInvalid(messageInfo, cancellationToken);
@@ -57,9 +48,6 @@ public class StartStepHandler : IStepHandler
         }
     }
 
-    private async Task SendInvalid(MessageInfo messageInfo, CancellationToken cancellationToken)
-    {
-        var chatId = messageInfo.ChatId;
-        await _notification.SendNotificationMessageAsync(chatId, NotificationType.InvalidAuthCommand, cancellationToken: cancellationToken);
-    }
+    private async Task SendInvalid(MessageInfo messageInfo, CancellationToken cancellationToken) =>
+        await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.InvalidAuthCommand, cancellationToken: cancellationToken);
 }

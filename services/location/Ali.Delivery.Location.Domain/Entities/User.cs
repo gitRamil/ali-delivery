@@ -9,7 +9,6 @@ namespace Ali.Delivery.Location.Domain.Entities;
 /// </summary>
 public class User : Entity<SequentialGuid>
 {
-    private UserConfig? _userConfig;
     private readonly List<UserLocation> _userLocations = [];
 
     /// <summary>
@@ -21,11 +20,11 @@ public class User : Entity<SequentialGuid>
     /// <exception cref="ArgumentNullException">
     /// Выбрасывается, когда <paramref name="login" /> или <paramref name="chatId" /> равны <c>null</c>.
     /// </exception>
-    public User(SequentialGuid id, string login, string chatId)
+    public User(SequentialGuid id, string login, long chatId)
         : base(id)
     {
         Login = login ?? throw new ArgumentNullException(nameof(login));
-        ChatId = chatId ?? throw new ArgumentNullException(nameof(chatId));
+        ChatId = chatId;
     }
 
     /// <summary>
@@ -35,45 +34,34 @@ public class User : Entity<SequentialGuid>
     /// Этот конструктор предназначен только для использования Entity Framework и не должен вызываться напрямую.
     /// </remarks>
     protected User()
-        : base(SequentialGuid.Empty)
-    {
+        : base(SequentialGuid.Empty) =>
         Login = null!;
-        ChatId = null!;
-    }
 
     /// <summary>
-    /// Идентификатор чата пользователя в мессенджере.
+    /// Возвращает идентификатор чата пользователя в мессенджере.
     /// </summary>
-    public string ChatId { get; private set; }
+    public long ChatId { get; private set; }
 
     /// <summary>
-    /// Логин пользователя в системе.
+    /// Возвращает логин пользователя в системе.
     /// </summary>
     public string Login { get; private set; }
 
     /// <summary>
-    /// Получает конфигурацию пользователя.
+    /// Возвращает конфигурацию пользователя.
     /// </summary>
-    public virtual UserConfig? UserConfig
-    {
-        get => _userConfig;
-        private set => _userConfig = value;
-    }
+    public virtual UserConfig? UserConfig { get; private set; }
 
     /// <summary>
-    /// Получает коллекцию местоположений пользователя только для чтения.
+    /// Возвращает местоположения пользователя.
     /// </summary>
-    /// <value>
-    /// Коллекция объектов <see cref="UserLocation" />.
-    /// </value>
     public virtual IReadOnlyCollection<UserLocation> UserLocations => _userLocations;
 
     /// <summary>
-    /// Добавляет новую запись в таблицу UserLocation.
+    /// Добавляет местоположение.
     /// </summary>
     /// <param name="longitude">Долгота.</param>
     /// <param name="latitude">Широта.</param>
-    /// <exception cref="ArgumentException">Если код языка неизвестен.</exception>
     public void AddUserLocation(double longitude, double latitude)
     {
         var userLocation = new UserLocation(SequentialGuid.Create(), this, longitude, latitude);
@@ -82,26 +70,16 @@ public class User : Entity<SequentialGuid>
 
     /// <summary>
     /// Добавляет или обновляет конфигурацию пользователя с выбранным языком.
-    /// Если конфигурация уже существует, обновляет только язык. Если язык не изменился, ничего не делает.
     /// </summary>
-    /// <param name="languageCode">Код языка (например, "ru" или "en"). Если не указан, будет использован "ru".</param>
-    /// <exception cref="ArgumentException">Если код языка неизвестен.</exception>
-    public void UpsertUserLanguage(string? languageCode)
+    /// <param name="languageDictionary">Код языка (например, "ru" или "en"). Если не указан, будет использован "ru".</param>
+    public void UpsertUserLanguage(LanguageDictionary languageDictionary)
     {
-        var languageDict = LanguageDictionary.FromCode(languageCode ?? "ru");
-
-        if (_userConfig != null)
+        if (UserConfig == null)
         {
-            if (_userConfig.Language.Id == languageDict.Id)
-            {
-                return;
-            }
+            UserConfig = new UserConfig(Id, languageDictionary);
+            return;
+        }
 
-            _userConfig.UpdateLanguage(languageDict);
-        }
-        else
-        {
-            _userConfig = new UserConfig(Id, languageDict);
-        }
+        UserConfig.UpdateLanguage(languageDictionary);
     }
 }

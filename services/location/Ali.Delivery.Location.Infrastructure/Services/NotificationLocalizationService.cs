@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Ali.Delivery.Location.Application.Abstractions;
 using Ali.Delivery.Location.Application.Models;
+using Ali.Delivery.Location.Domain.Entities.Dictionaries;
 
 namespace Ali.Delivery.Location.Infrastructure.Services;
 
@@ -9,20 +10,20 @@ namespace Ali.Delivery.Location.Infrastructure.Services;
 /// </summary>
 public class NotificationLocalizationService : INotificationLocalizationService
 {
-    private const string DefaultLanguage = "ru";
     private readonly Dictionary<string, Dictionary<string, string>> _notifications;
-    private readonly IUserLanguageService _userLanguageService;
+    private readonly ILookupProvider _userLanguagesLookup;
 
     /// <summary>
     /// Инициализирует новый экземпляр <see cref="NotificationLocalizationService" />.
     /// </summary>
-    public NotificationLocalizationService(IUserLanguageService userLanguageService)
+    public NotificationLocalizationService(ILookupProvider userLanguagesLookup)
     {
         var notificationsJson = File.ReadAllText("notifications.json");
 
+        _userLanguagesLookup = userLanguagesLookup ?? throw new ArgumentNullException(nameof(userLanguagesLookup));
+
         _notifications = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(notificationsJson) ??
                          throw new InvalidOperationException("Ошибка получения конфигурации с языками");
-        _userLanguageService = userLanguageService ?? throw new ArgumentNullException(nameof(userLanguageService));
     }
 
     /// <inheritdoc />
@@ -35,7 +36,10 @@ public class NotificationLocalizationService : INotificationLocalizationService
             throw new InvalidOperationException($"Не найдено сообщение по типу сообщения {notificationTypeKey} в файле конфигурации");
         }
 
-        var languageCode = await _userLanguageService.GetUserLanguageAsync(chatId) ?? DefaultLanguage;
+        var userLanguagesLookup = await _userLanguagesLookup.GetAsync();
+        var defaultLanguage = LanguageDictionary.Russian.Code;
+
+        var languageCode = userLanguagesLookup.GetValueOrDefault(chatId) ?? defaultLanguage;
 
         if (!messageWithLanguages.TryGetValue(languageCode, out var messageByLanguage))
         {

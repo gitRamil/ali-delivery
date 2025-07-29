@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ali.Delivery.Location.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250727210257_Init")]
+    [Migration("20250729221541_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -87,13 +87,13 @@ namespace Ali.Delivery.Location.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("3a156e1f-6090-39cd-7580-20395231a00f"),
-                            Code = "RU",
+                            Code = "ru",
                             Name = "Русский"
                         },
                         new
                         {
                             Id = new Guid("3a156e1f-6091-875d-e42d-3e8e7ec6e082"),
-                            Code = "EN",
+                            Code = "en",
                             Name = "Английский"
                         });
                 });
@@ -105,9 +105,8 @@ namespace Ali.Delivery.Location.Infrastructure.Migrations
                         .HasColumnName("id")
                         .HasComment("Уникальный идентификатор");
 
-                    b.Property<string>("ChatId")
-                        .IsRequired()
-                        .HasColumnType("text")
+                    b.Property<long>("ChatId")
+                        .HasColumnType("bigint")
                         .HasColumnName("chat_id")
                         .HasComment("ID чата пользователя из телеграма");
 
@@ -263,6 +262,8 @@ namespace Ali.Delivery.Location.Infrastructure.Migrations
                     b.HasOne("Ali.Delivery.Location.Domain.Entities.User", "User")
                         .WithOne("UserConfig")
                         .HasForeignKey("Ali.Delivery.Location.Domain.Entities.UserConfig", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("fk_user_config_users_id");
 
                     b.HasOne("Ali.Delivery.Location.Domain.Entities.Dictionaries.LanguageDictionary", "Language")

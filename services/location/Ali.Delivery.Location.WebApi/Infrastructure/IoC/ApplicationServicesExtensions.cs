@@ -19,7 +19,7 @@ public static class ApplicationServicesExtensions
         services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<INotificationService, NotificationService>();
         services.AddScoped<IUserLanguageService, UserLanguageService>();
-        services.AddScoped<ILookupProvider, LookupForUserLanguages>();
+        services.AddScoped<ILookupProvider, UserLanguagesLookup>();
 
         return services;
     }

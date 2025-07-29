@@ -12,12 +12,12 @@ public class LanguageDictionary : Entity<SequentialGuid>
     /// <summary>
     /// Возвращает язык: English.
     /// </summary>
-    public static readonly LanguageDictionary English = new(new Guid("3a156e1f-6091-875d-e42d-3e8e7ec6e082"), new LanguageCode("EN"), new LanguageName("Английский"));
+    public static readonly LanguageDictionary English = new(new Guid("3a156e1f-6091-875d-e42d-3e8e7ec6e082"), new LanguageCode("en"), new LanguageName("Английский"));
 
     /// <summary>
     /// Возвращает язык: Russian.
     /// </summary>
-    public static readonly LanguageDictionary Russian = new(new Guid("3a156e1f-6090-39cd-7580-20395231a00f"), new LanguageCode("RU"), new LanguageName("Русский"));
+    public static readonly LanguageDictionary Russian = new(new Guid("3a156e1f-6090-39cd-7580-20395231a00f"), new LanguageCode("ru"), new LanguageName("Русский"));
 
     private static readonly Dictionary<LanguageCode, LanguageDictionary> Languages = new()
     {
@@ -52,29 +52,6 @@ public class LanguageDictionary : Entity<SequentialGuid>
     /// Возвращает наименование языка.
     /// </summary>
     public LanguageName Name { get; }
-
-    /// <summary>
-    /// Возвращает объект <see cref="LanguageDictionary" /> по строковому коду языка (например, "ru" или "en").
-    /// </summary>
-    /// <param name="code">Код языка (регистр не важен).</param>
-    /// <returns>Экземпляр <see cref="LanguageDictionary" />.</returns>
-    /// <exception cref="ArgumentException">Если код языка пустой или не найден в справочнике.</exception>
-    public static LanguageDictionary FromCode(string code)
-    {
-        if (string.IsNullOrWhiteSpace(code))
-        {
-            throw new ArgumentException("Код языка не может быть пустым.", nameof(code));
-        }
-
-        var langCode = new LanguageCode(code.ToUpperInvariant());
-
-        if (!Languages.TryGetValue(langCode, out var language))
-        {
-            throw new ArgumentException($"Неизвестный код языка: {code}", nameof(code));
-        }
-
-        return language;
-    }
 
     /// <summary>
     /// Возвращает все значения перечисления языков.
