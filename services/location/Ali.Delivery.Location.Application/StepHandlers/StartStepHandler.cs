@@ -12,17 +12,14 @@ namespace Ali.Delivery.Location.Application.StepHandlers;
 public class StartStepHandler : IStepHandler
 {
     private readonly INotificationService _notification;
-    private readonly IUserLanguageService _userLanguageService;
 
     /// <summary>
     /// Инициализирует новый экземпляр класса <see cref="StartStepHandler" />.
     /// </summary>
     /// <param name="notification">Сервис для отправки уведомлений пользователю.</param>
-    /// <param name="userLanguageService">Сервис для работы с языковыми настройками пользователей.</param>
-    public StartStepHandler(INotificationService notification, IUserLanguageService userLanguageService)
+    public StartStepHandler(INotificationService notification)
     {
         _notification = notification ?? throw new ArgumentNullException(nameof(notification));
-        _userLanguageService = userLanguageService ?? throw new ArgumentNullException(nameof(userLanguageService));
     }
 
     /// <inheritdoc />
@@ -30,14 +27,6 @@ public class StartStepHandler : IStepHandler
     {
         if (messageInfo.Text == Commands.Start)
         {
-            var userLanguage = await _userLanguageService.GetUserLanguageAsync(messageInfo.ChatId);
-
-            if (string.IsNullOrEmpty(userLanguage))
-            {
-                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.Welcome, cancellationToken: cancellationToken);
-                return new HandlerResult(string.Empty);
-            }
-
             await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.Welcome, cancellationToken: cancellationToken);
             return new HandlerResult(string.Empty);
         }
