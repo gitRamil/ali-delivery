@@ -14,15 +14,17 @@ public class UserTests
         var fixture = new Fixture();
         var id = fixture.Create<SequentialGuid>();
         var login = fixture.Create<string>();
-        var chatId = fixture.Create<string>();
+        var chatId = fixture.Create<long>();
         var user = new User(id, login, chatId);
-
-        user.UpsertUserLanguage("ru");
+        var langRus = LanguageDictionary.Russian;
+        
+        
+        user.UpsertUserLanguage(langRus);
         var initialConfig = user.UserConfig! ;
         var initialId = initialConfig.Id;
 
         // Act
-        user.UpsertUserLanguage("ru");
+        user.UpsertUserLanguage(langRus);
 
         // Assert
 
@@ -34,101 +36,53 @@ public class UserTests
             .Language.Should()
             .Be(LanguageDictionary.Russian);
     }
-
-    [Fact]
-    public void AddOrUpdateUserConfigShouldSetCorrectLanguageWhenValidLanguageCodeProvided()
-    {
-        // Arrange
-        const string languageCode = "en";
-        var fixture = new Fixture();
-        var id = fixture.Create<SequentialGuid>();
-        var login = fixture.Create<string>();
-        var chatId = fixture.Create<string>();
-        var user = new User(id, login, chatId);
-
-        // Act
-        user.UpsertUserLanguage(languageCode);
-
-        // Assert
-        user.UserConfig!
-            .Language.Should()
-            .Be(LanguageDictionary.English);
-
-        user.UserConfig
-            .Language.Code.ToString()
-            .Should()
-            .Be("EN");
-    }
-
-    [Fact]
-    public void AddOrUpdateUserConfigShouldSetDefaultLanguageWhenLanguageCodeIsNull()
-    {
-        // Arrange
-        var fixture = new Fixture();
-        var id = fixture.Create<SequentialGuid>();
-        var login = fixture.Create<string>();
-        var chatId = fixture.Create<string>();
-        var user = new User(id, login, chatId);
-
-        // Act
-        user.UpsertUserLanguage(null);
-
-        // Assert
-        user.UserConfig!
-            .Language.Code.ToString()
-            .Should()
-            .Be("RU");
-
-        user.UserConfig!
-            .Language.Should()
-            .Be(LanguageDictionary.Russian);
-    }
+    
 
     [Fact]
     public void AddOrUpdateUserConfigShouldSucceedWhenAllValidArgumentsArePassed()
     {
         //Arrange.
-        const string languageCode = "ru";
+        var langRus = LanguageDictionary.Russian;
         var fixture = new Fixture();
         var id = fixture.Create<SequentialGuid>();
         var login = fixture.Create<string>();
-        var chatId = fixture.Create<string>();
+        var chatId = fixture.Create<long>();
         var user = new User(id, login, chatId);
 
         //Act.
-        var act = () => user.UpsertUserLanguage(languageCode);
+        var act = () => user.UpsertUserLanguage(langRus);
 
         //Assert.
         act.Should()
            .NotThrow();
 
         user.UserConfig!
-            .Language.Code.ToString()
+            .Language
             .Should()
-            .Be("RU");
+            .Be(LanguageDictionary.Russian);
     }
 
-    [Fact]
-    public void AddOrUpdateUserConfigShouldThrowArgumentExceptionWhenLanguageCodeIsInvalid()
-    {
-        // Arrange
-        const string invalidLanguageCode = "gr";
-        var fixture = new Fixture();
-        var id = fixture.Create<SequentialGuid>();
-        var login = fixture.Create<string>();
-        var chatId = fixture.Create<string>();
-        var user = new User(id, login, chatId);
-
-        // Act
-        var act = () => user.UpsertUserLanguage(invalidLanguageCode);
-
-        // Assert
-        act.Should()
-           .Throw<ArgumentException>()
-           .WithMessage("*gr*")
-           .And.ParamName.Should()
-           .Be("code");
-    }
+    // [Fact]
+    // public void AddOrUpdateUserConfigShouldThrowArgumentExceptionWhenLanguageCodeIsInvalid()
+    // {
+    //     // Arrange
+    //     const string invalidLanguageCode = "gr";
+    //     var fixture = new Fixture();
+    //     var id = fixture.Create<SequentialGuid>();
+    //     var login = fixture.Create<string>();
+    //     var chatId = fixture.Create<long>();
+    //     var user = new User(id, login, chatId);
+    //
+    //     // Act
+    //     var act = () => user.UpsertUserLanguage(invalidLanguageCode);
+    //
+    //     // Assert
+    //     act.Should()
+    //        .Throw<ArgumentException>()
+    //        .WithMessage("*gr*")
+    //        .And.ParamName.Should()
+    //        .Be("code");
+    // }
 
     [Fact]
     public void AddOrUpdateUserConfigShouldUpdateExistingConfigWhenConfigAlreadyExists()
@@ -137,12 +91,14 @@ public class UserTests
         var fixture = new Fixture();
         var id = fixture.Create<SequentialGuid>();
         var login = fixture.Create<string>();
-        var chatId = fixture.Create<string>();
+        var chatId = fixture.Create<long>();
         var user = new User(id, login, chatId);
-        user.UpsertUserLanguage("ru");
+        var langRus = LanguageDictionary.Russian;
+        var langEng = LanguageDictionary.English;
+        user.UpsertUserLanguage(langRus);
 
         // Act 
-        user.UpsertUserLanguage("en");
+        user.UpsertUserLanguage(langEng);
 
         // Assert
        user.UserConfig!
@@ -157,7 +113,7 @@ public class UserTests
         var fixture = new Fixture();
         var id = fixture.Create<SequentialGuid>();
         var login = fixture.Create<string>();
-        var chatId = fixture.Create<string>();
+        var chatId = fixture.Create<long>();
         var user = new User(id, login, chatId);
 
         const double longitude = 37.6173;
@@ -191,7 +147,7 @@ public class UserTests
         var fixture = new Fixture();
         var id = fixture.Create<SequentialGuid>();
         var login = fixture.Create<string>();
-        var chatId = fixture.Create<string>();
+        var chatId = fixture.Create<long>();
 
         //Act.
         var act = () => new User(id, login, chatId);
@@ -200,23 +156,7 @@ public class UserTests
         act.Should()
            .NotThrow();
     }
-
-    [Fact]
-    public void AddUserShouldThrowArgumentNullExceptionWhenChatIdIsNull()
-    {
-        //Arrange.
-        var fixture = new Fixture();
-        var id = fixture.Create<SequentialGuid>();
-        string chatId = null!;
-        var login = fixture.Create<string>();
-
-        //Act.
-        var act = () => new User(id, login, chatId);
-
-        //Assert.
-        act.Should()
-           .Throw<ArgumentNullException>(nameof(chatId));
-    }
+    
 
     [Fact]
     public void AddUserShouldThrowArgumentNullExceptionWhenLoginIsNull()
@@ -224,7 +164,7 @@ public class UserTests
         //Arrange.
         var fixture = new Fixture();
         var id = fixture.Create<SequentialGuid>();
-        var chatId = fixture.Create<string>();
+        var chatId = fixture.Create<long>();
         string login = null!;
 
         //Act.
@@ -255,7 +195,5 @@ public class UserTests
         user.Login.Should()
             .BeNull();
 
-        user.ChatId.Should()
-            .BeNull();
     }
 }
