@@ -17,10 +17,10 @@ public class UserTests
         var chatId = fixture.Create<long>();
         var user = new User(id, login, chatId);
         var langRus = LanguageDictionary.Russian;
-        
-        
+
+
         user.UpsertUserLanguage(langRus);
-        var initialConfig = user.UserConfig! ;
+        var initialConfig = user.UserConfig!;
         var initialId = initialConfig.Id;
 
         // Act
@@ -36,7 +36,22 @@ public class UserTests
             .Language.Should()
             .Be(LanguageDictionary.Russian);
     }
-    
+
+    [Fact]
+    public void ChatId_ShouldBeSetCorrectly_FromConstructor()
+    {
+        // Arrange
+        var fixture = new Fixture();
+        var id = fixture.Create<SequentialGuid>();
+        var login = fixture.Create<string>();
+        var expectedChatId = fixture.Create<long>();
+
+        // Act
+        var user = new User(id, login, expectedChatId);
+
+        // Assert
+        user.ChatId.Should().Be(expectedChatId);
+    }
 
     [Fact]
     public void AddOrUpdateUserConfigShouldSucceedWhenAllValidArgumentsArePassed()
@@ -54,35 +69,13 @@ public class UserTests
 
         //Assert.
         act.Should()
-           .NotThrow();
+            .NotThrow();
 
         user.UserConfig!
             .Language
             .Should()
             .Be(LanguageDictionary.Russian);
     }
-
-    // [Fact]
-    // public void AddOrUpdateUserConfigShouldThrowArgumentExceptionWhenLanguageCodeIsInvalid()
-    // {
-    //     // Arrange
-    //     const string invalidLanguageCode = "gr";
-    //     var fixture = new Fixture();
-    //     var id = fixture.Create<SequentialGuid>();
-    //     var login = fixture.Create<string>();
-    //     var chatId = fixture.Create<long>();
-    //     var user = new User(id, login, chatId);
-    //
-    //     // Act
-    //     var act = () => user.UpsertUserLanguage(invalidLanguageCode);
-    //
-    //     // Assert
-    //     act.Should()
-    //        .Throw<ArgumentException>()
-    //        .WithMessage("*gr*")
-    //        .And.ParamName.Should()
-    //        .Be("code");
-    // }
 
     [Fact]
     public void AddOrUpdateUserConfigShouldUpdateExistingConfigWhenConfigAlreadyExists()
@@ -101,7 +94,7 @@ public class UserTests
         user.UpsertUserLanguage(langEng);
 
         // Assert
-       user.UserConfig!
+        user.UserConfig!
             .Language.Should()
             .Be(LanguageDictionary.English);
     }
@@ -128,16 +121,16 @@ public class UserTests
         var addedLocation = user.UserLocations.First();
 
         addedLocation.Longitude.Should()
-                     .Be(longitude);
+            .Be(longitude);
 
         addedLocation.Latitude.Should()
-                     .Be(latitude);
+            .Be(latitude);
 
         addedLocation.User.Should()
-                     .Be(user);
+            .Be(user);
 
         addedLocation.Id.Should()
-                     .NotBe(SequentialGuid.Empty);
+            .NotBe(SequentialGuid.Empty);
     }
 
     [Fact]
@@ -154,9 +147,9 @@ public class UserTests
 
         //Assert.
         act.Should()
-           .NotThrow();
+            .NotThrow();
     }
-    
+
 
     [Fact]
     public void AddUserShouldThrowArgumentNullExceptionWhenLoginIsNull()
@@ -172,7 +165,7 @@ public class UserTests
 
         //Assert.
         act.Should()
-           .Throw<ArgumentNullException>(nameof(login));
+            .Throw<ArgumentNullException>(nameof(login));
     }
 
     [Fact]
@@ -180,7 +173,8 @@ public class UserTests
     {
         // Arrange
         var type = typeof(User);
-        var constructor = type.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, Type.EmptyTypes, null)!;
+        var constructor =
+            type.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, Type.EmptyTypes, null)!;
 
         // Act
         var user = (User)constructor.Invoke(null);
@@ -194,6 +188,5 @@ public class UserTests
 
         user.Login.Should()
             .BeNull();
-
     }
 }

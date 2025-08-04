@@ -21,7 +21,7 @@ public class UserLocationTests
 
         //Assert.
         act.Should()
-           .NotThrow();
+            .NotThrow();
     }
 
     [Fact]
@@ -39,7 +39,7 @@ public class UserLocationTests
 
         //Assert.
         act.Should()
-           .Throw<ArgumentNullException>(nameof(user));
+            .Throw<ArgumentNullException>(nameof(user));
     }
 
     [Fact]
@@ -47,25 +47,26 @@ public class UserLocationTests
     {
         // Arrange
         var type = typeof(UserLocation);
-        var constructor = type.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, Type.EmptyTypes, null)!;
+        var constructor =
+            type.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, Type.EmptyTypes, null)!;
 
         // Act
         var userLocation = (UserLocation)constructor.Invoke(null);
 
         // Assert
         userLocation.Should()
-                    .NotBeNull();
+            .NotBeNull();
 
         userLocation.Id.Should()
-                    .Be(SequentialGuid.Empty);
+            .Be(SequentialGuid.Empty);
 
         userLocation.User.Should()
-                    .BeNull();
+            .BeNull();
 
         userLocation.Longitude.Should()
-                    .Be(0);
+            .Be(0);
 
         userLocation.Latitude.Should()
-                    .Be(0);
+            .Be(0);
     }
 }

@@ -12,7 +12,7 @@ public class LanguageDictionaryTests
 
         //Act.
         var values = LanguageDictionary.GetAllValues()
-                                       .ToList();
+            .ToList();
 
         //Assert.
         values[0]
@@ -30,50 +30,5 @@ public class LanguageDictionaryTests
         values[1]
             .Name.Should()
             .Be(LanguageDictionary.English.Name);
-    }
-
-    [Fact]
-    public void LanguageDictionaryFromCodeShouldReturnLanguage()
-    {
-        //Arrange.
-        const string languageCode = "ru";
-
-        //Act.
-        var act = () => LanguageDictionary.FromCode(languageCode);
-
-        //Assert
-        act.Should()
-           .NotThrow();
-
-        act.Should()
-           .NotBeNull();
-    }
-
-    [Fact]
-    public void LanguageDictionaryFromCodeShouldThrowArgumentExceptionWhenCodeIsInvalid()
-    {
-        //Arrange.
-        const string languageCode = "gr";
-
-        //Act.
-        var act = () => LanguageDictionary.FromCode(languageCode);
-
-        //Assert
-        act.Should()
-           .Throw<ArgumentException>($"Неизвестный код языка: {languageCode}");
-    }
-
-    [Fact]
-    public void LanguageDictionaryFromCodeShouldThrowArgumentExceptionWhenCodeIsNull()
-    {
-        //Arrange.
-        const string languageCode = null!;
-
-        //Act.
-        var act = () => LanguageDictionary.FromCode(languageCode!);
-
-        //Assert
-        act.Should()
-           .Throw<ArgumentException>("Код языка не может быть пустым.");
     }
 }

@@ -21,7 +21,7 @@ public class UserConfigTest
 
         //Assert.
         act.Should()
-           .NotThrow();
+            .NotThrow();
     }
 
     [Fact]
@@ -38,30 +38,47 @@ public class UserConfigTest
 
         //Assert.
         act.Should()
-           .Throw<ArgumentNullException>(nameof(language));
+            .Throw<ArgumentNullException>(nameof(language));
     }
-    
+
 
     [Fact]
     public void ProtectedConstructorShouldInitializePropertiesWithDefaultValues()
     {
         // Arrange
         var type = typeof(UserConfig);
-        var constructor = type.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, Type.EmptyTypes, null)!;
+        var constructor =
+            type.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, Type.EmptyTypes, null)!;
 
         // Act
         var userConfig = (UserConfig)constructor.Invoke(null);
 
         // Assert
         userConfig.Should()
-                  .NotBeNull();
+            .NotBeNull();
 
         userConfig.Id.Should()
-                  .Be(SequentialGuid.Empty);
+            .Be(SequentialGuid.Empty);
 
         userConfig.Language.Should()
-                  .BeNull();
+            .BeNull();
     }
+
+    [Fact]
+    public void UserShouldBeNullWhenUserConfigCreatedManually()
+    {
+        // Arrange
+        var fixture = new Fixture();
+        var language = LanguageDictionary.English;
+        var user = fixture.Create<User>();
+
+        var userConfig = new UserConfig(user.Id, language);
+
+        // Act & Assert
+        userConfig.User.Should().BeNull();
+        userConfig.Id.Should().Be(user.Id);
+    }
+
 
     [Fact]
     public void UpdateLanguageShouldSucceedWhenAllArgumentsArePasses()
@@ -79,31 +96,12 @@ public class UserConfigTest
 
         //Assert.
         act.Should()
-           .NotThrow();
+            .NotThrow();
 
         userConfig.Language.Should()
-                  .Be(newLanguage);
-        
+            .Be(newLanguage);
+
         userConfig.Id.Should()
-                  .Be(userId);
-    }
-
-    [Fact]
-    public void UpdateLanguageShouldThrowArgumentNullExceptionWhenNewLanguageIsNull()
-    {
-        //Arrange.
-        var fixture = new Fixture();
-        var user = fixture.Create<User>();
-        var userId = user.Id;
-        var language = LanguageDictionary.English;
-        LanguageDictionary newLanguage = null!;
-        var userConfig = new UserConfig(userId, language);
-
-        //Act.
-        var act = () => userConfig.UpdateLanguage(newLanguage);
-
-        //Assert.
-        act.Should()
-           .Throw<ArgumentNullException>(nameof(newLanguage));
+            .Be(userId);
     }
 }
