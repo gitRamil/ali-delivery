@@ -34,47 +34,52 @@ public class GeosharingStepHandler : IStepHandler
         var chatId = messageInfo.ChatId;
 
         if (messageInfo.Location is { } loc)
-        {
             return await ProcessLocationAsync(messageInfo.ChatId, loc.Longitude, loc.Latitude, cancellationToken);
-        }
 
         if (messageInfo.Text is not { } text)
         {
-            await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.RequestLocation, cancellationToken: cancellationToken);
+            await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.RequestLocation,
+                cancellationToken: cancellationToken);
             return new HandlerResult(string.Empty);
         }
 
         switch (text.MessageToCommand())
         {
             case Commands.StopGeosharing:
-                await _notification.SendNotificationMessageAsync(chatId, NotificationType.AuthenticationComplete, cancellationToken: cancellationToken);
+                await _notification.SendNotificationMessageAsync(chatId, NotificationType.AuthenticationComplete,
+                    cancellationToken: cancellationToken);
+                await _notification.SendNotificationMessageAsync(chatId, NotificationType.AuthCompleteCommandHelp,
+                    cancellationToken: cancellationToken);
                 return new HandlerResult(Steps.AuthComplete);
             case Commands.Stop:
-                await _notification.SendNotificationMessageAsync(chatId, NotificationType.SessionEnded, cancellationToken: cancellationToken);
+                await _notification.SendNotificationMessageAsync(chatId, NotificationType.SessionEnded,
+                    cancellationToken: cancellationToken);
                 return new HandlerResult(Steps.Stop);
             default:
-                await _notification.SendNotificationMessageAsync(chatId, NotificationType.RequestLocation, cancellationToken: cancellationToken);
+                await _notification.SendNotificationMessageAsync(chatId, NotificationType.RequestLocation,
+                    cancellationToken: cancellationToken);
                 return new HandlerResult(string.Empty);
         }
     }
 
-    private async Task<HandlerResult> ProcessLocationAsync(long chatId, double longitude, double latitude, CancellationToken cancellationToken)
+    private async Task<HandlerResult> ProcessLocationAsync(long chatId, double longitude, double latitude,
+        CancellationToken cancellationToken)
     {
         var user = await _dbContext.Users.Where(u => u.ChatId == chatId)
-                                   .FirstOrDefaultAsync(cancellationToken) ??
+                       .FirstOrDefaultAsync(cancellationToken) ??
                    throw new NotFoundException(typeof(User), chatId);
 
         user.AddUserLocation(longitude, latitude);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         await _notification.SendNotificationMessageAsync(chatId,
-                                                         NotificationType.LocationReceived,
-                                                         new Dictionary<string, object>
-                                                         {
-                                                             ["Latitude"] = latitude,
-                                                             ["Longitude"] = longitude
-                                                         },
-                                                         cancellationToken);
+            NotificationType.LocationReceived,
+            new Dictionary<string, object>
+            {
+                ["Latitude"] = latitude,
+                ["Longitude"] = longitude
+            },
+            cancellationToken);
 
         return new HandlerResult(string.Empty);
     }
