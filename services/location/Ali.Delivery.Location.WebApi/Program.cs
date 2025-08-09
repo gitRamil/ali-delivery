@@ -13,6 +13,7 @@ try
     builder.Configuration.AddJsonFile("stateTransitions.json", false, true);
     builder.Services.AddTelegramBotService(configuration);
     builder.Services.AddStateMachine(configuration);
+    builder.Services.AddRabbitMqServices(configuration);
     builder.Services.AddRefitClientForOrderDb(configuration);
     builder.Services.AddPersistence(configuration);
     builder.Services.AddCommandHandlers();
@@ -31,7 +32,8 @@ try
     builder.Services.AddDefaultProblemDetails();
     builder.Services.AddSwaggerGen();
     builder.Services.AddApplicationServices();
-    
+
+
     var app = builder.Build();
     app.AddAutomaticMigrations();
     app.UseSwagger();

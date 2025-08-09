@@ -16,10 +16,10 @@ try
     builder.AddDefaultSerilog();
 
     builder.Services.AddControllers()
-           .AddJsonOptions(options =>
-           {
-               options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
-           });
+        .AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
+        });
     builder.Services.AddDefaultApiVersioning();
     builder.Services.AddDefaultSwagger();
     builder.Services.AddDefaultMediatr();
@@ -36,6 +36,7 @@ try
     builder.Services.AddTransient<IDictionaryValuesProvider, DictionaryValuesProvider>();
     builder.Services.AddTransient<IDictionaryTypeMap, DictionaryTypeMap>();
     builder.Services.AddTransient<ICurrentUser, CurrentUserService>();
+    builder.Services.AddRabbitMqServices(builder.Configuration);
 
     var app = builder.Build();
     app.AddAutomaticMigrations();

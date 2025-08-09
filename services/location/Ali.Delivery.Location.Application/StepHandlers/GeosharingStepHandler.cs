@@ -16,16 +16,21 @@ public class GeosharingStepHandler : IStepHandler
 {
     private readonly IAppDbContext _dbContext;
     private readonly INotificationService _notification;
+    private readonly ILocationPublisherService _locationPublisherService;
 
     /// <summary>
     /// Инициализирует новый экземпляр класса <see cref="GeosharingStepHandler" />.
     /// </summary>
     /// <param name="notification">Сервис для отправки уведомлений пользователю.</param>
     /// <param name="dbContext">Контекст БД.</param>
-    public GeosharingStepHandler(INotificationService notification, IAppDbContext dbContext)
+    /// <param name="locationPublisherService">Сервис для публикации локаций.</param>
+    public GeosharingStepHandler(INotificationService notification, IAppDbContext dbContext,
+        ILocationPublisherService locationPublisherService)
     {
         _notification = notification ?? throw new ArgumentNullException(nameof(notification));
         _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+        _locationPublisherService = locationPublisherService ??
+                                    throw new ArgumentNullException(nameof(locationPublisherService));
     }
 
     /// <inheritdoc />
@@ -71,6 +76,7 @@ public class GeosharingStepHandler : IStepHandler
 
         user.AddUserLocation(longitude, latitude);
         await _dbContext.SaveChangesAsync(cancellationToken);
+        await _locationPublisherService.PublishLocationAsync(chatId, longitude, latitude);
 
         await _notification.SendNotificationMessageAsync(chatId,
             NotificationType.LocationReceived,
