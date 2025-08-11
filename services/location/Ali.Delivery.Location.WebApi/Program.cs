@@ -1,6 +1,10 @@
+using Ali.Delivery.Location.Application.Abstractions;
+using Ali.Delivery.Location.Infrastructure.Services;
+using Ali.Delivery.Location.WebApi;
 using Ali.Delivery.Location.WebApi.Infrastructure.IoC;
 using DotNetEnv;
 using Hellang.Middleware.ProblemDetails;
+using RabbitMQ.Client;
 using Serilog;
 
 try
@@ -8,12 +12,28 @@ try
     Env.Load();
     var builder = WebApplication.CreateBuilder(args);
     var configuration = builder.Configuration;
+    
+    
+    
+    // Конфигурация RabbitMQ
+    var rabbitMQConfig = new RabbitMQConfiguration();
+    builder.Configuration.GetSection("RabbitMQ").Bind(rabbitMQConfig);
+
+    // Регистрация сервисов
+    builder.Services.AddSingleton(rabbitMQConfig);
+    builder.Services.AddSingleton<RabbitMQConnectionFactory>();
+    builder.Services.AddSingleton<IConnection>(serviceProvider =>
+    {
+        var factory = serviceProvider.GetRequiredService<RabbitMQConnectionFactory>();
+        return factory.CreateConnection();
+    });
+    builder.Services.AddScoped<IPublisherService, RabbitMQPublisherService>();
 
     builder.Services.AddEndpointsApiExplorer();
     builder.Configuration.AddJsonFile("stateTransitions.json", false, true);
     builder.Services.AddTelegramBotService(configuration);
     builder.Services.AddStateMachine(configuration);
-    builder.Services.AddRabbitMqServices(configuration);
+
     builder.Services.AddRefitClientForOrderDb(configuration);
     builder.Services.AddPersistence(configuration);
     builder.Services.AddCommandHandlers();

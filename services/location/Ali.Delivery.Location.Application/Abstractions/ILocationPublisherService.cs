@@ -1,16 +1,8 @@
 ﻿namespace Ali.Delivery.Location.Application.Abstractions;
 
-/// <summary>
-/// Представляет контракт для создания Publisher для локаций в RabbitMQ.
-/// </summary>
-public interface ILocationPublisherService
+public interface IPublisherService
 {
-    /// <summary>
-    /// Публикует сообщение с локациями в очередь locationQueue.
-    /// </summary>
-    /// <param name="chatId">Уникальный идентификатор чата.</param>
-    /// <param name="longitude">Долгота.</param>
-    /// <param name="latitude">Широта.</param>
-    /// <returns></returns>
-    Task PublishLocationAsync(long chatId, double longitude, double latitude);
+    Task PublishAsync<TMessage>(TMessage message, CancellationToken cancellationToken = default);
+    Task PublishAsync<TMessage>(TMessage message, string routingKey, CancellationToken cancellationToken = default);
+    Task PublishAsync<TMessage>(TMessage message, string exchange, string routingKey, CancellationToken cancellationToken = default);
 }

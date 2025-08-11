@@ -1,4 +1,6 @@
+using Ali.Delivery.Location.Application.Abstractions;
 using Ali.Delivery.Location.Application.UseCases.CreateUserLocation;
+using Ali.Delivery.Location.Infrastructure.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +14,7 @@ namespace Ali.Delivery.Location.WebApi.Controllers;
 [ApiExplorerSettings(GroupName = "v1")]
 public class UserLocationController : ControllerBase
 {
+    private readonly IPublisherService _publisherService;
     private readonly IMediator _mediator;
 
     /// <summary>
@@ -21,7 +24,11 @@ public class UserLocationController : ControllerBase
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="mediator" /> равен <c>null</c>.
     /// </exception>
-    public UserLocationController(IMediator mediator) => _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+    public UserLocationController(IMediator mediator, IPublisherService publisherService)
+    {
+        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        _publisherService = publisherService;
+    }
 
     /// <summary>
     /// Создает локацию пользователя.
@@ -34,7 +41,20 @@ public class UserLocationController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CreateUserLocation([FromBody] CreateUserLocationCommand command, CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(command, cancellationToken);
-        return Ok(result);
+        var userId = Guid.NewGuid();
+        
+        var userCreatedMessage = new UserCreatedMessage
+        {
+            UserId = userId,
+            Email = "QWEQWEQWE",
+            Name = "ASDASD",
+            CreatedAt = DateTime.UtcNow
+        };
+
+        await _publisherService.PublishAsync(userCreatedMessage);
+
+        return Ok(new { UserId = userId });
+        // var result = await _mediator.Send(command, cancellationToken);
+        // return Ok(result);
     }
 }
