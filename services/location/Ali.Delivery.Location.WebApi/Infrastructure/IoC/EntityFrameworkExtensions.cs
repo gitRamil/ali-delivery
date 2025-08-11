@@ -39,7 +39,6 @@ internal static class EntityFrameworkExtensions
 
             var connectionString = configuration.GetConnectionString(DbConstants.ConnectionStringSectionName) ??
                                    throw new ArgumentException("Строка подключения к БД не указана в конфигурации.");
-            Console.WriteLine($"Using connection string: {connectionString}");
             builder.UseExceptionProcessor();
             builder.UseLazyLoadingProxies();
             builder.UseSnakeCaseNamingConvention();

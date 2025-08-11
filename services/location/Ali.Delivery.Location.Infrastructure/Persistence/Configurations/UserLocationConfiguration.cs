@@ -6,28 +6,29 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Ali.Delivery.Location.Infrastructure.Persistence.Configurations;
 
 /// <summary>
-/// Представляет настройку конфигурации для типа <see cref="UserLocation" />.
+/// Конфигурация Entity Framework для сущности <see cref="UserLocation" />.
 /// </summary>
 internal class UserLocationConfiguration : EntityTypeConfigurationBase<UserLocation>
 {
        /// <summary>
-       /// Вызывается при выполнении конфигурации сущности типа <see cref="UserLocation" />.
+       /// Настраивает конфигурацию Entity Framework для сущности <see cref="UserLocation" />.
        /// </summary>
-       /// <param name="builder">Строитель, используемый при конфигурации сущности.</param>
+       /// <param name="builder">Строитель конфигурации типа сущности для настройки <see cref="UserLocation" />.</param>
        protected override void OnConfigure(EntityTypeBuilder<UserLocation> builder)
     {
-        builder.ToTable("userLocations", t => t.HasComment("Локации пользователя"));
+        builder.ToTable("user_locations", t => t.HasComment("Локации пользователя"));
 
-        builder.Property(p => p.S)
-               .HasComment("Координаты S");
+        builder.Property(p => p.Latitude)
+               .HasComment("Координаты широты");
 
-        builder.Property(p => p.E)
-               .HasComment("Координаты E");
+        builder.Property(p => p.Longitude)
+               .HasComment("Координаты долготы");
 
-        builder.Property(p => p.TelegramLogin)
-               .HasComment("Ник телеграм");
+        builder.HasOne(u => u.User)
+               .WithMany(ul => ul.UserLocations)
+               .HasForeignKey("user_id");
 
-        builder.HasIndex(u => u.TelegramLogin)
-               .IsUnique();
+        builder.Property("user_id")
+               .HasComment("Идентификатор пользователя");
     }
 }

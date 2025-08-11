@@ -1,6 +1,8 @@
 using Ali.Delivery.Location.Application.Abstractions;
 using Ali.Delivery.Location.Application.Constants;
+using Ali.Delivery.Location.Application.Extensions;
 using Ali.Delivery.Location.Application.Models;
+using Ali.Delivery.Location.Domain.Entities.Dictionaries;
 
 namespace Ali.Delivery.Location.Application.StepHandlers;
 
@@ -10,43 +12,54 @@ namespace Ali.Delivery.Location.Application.StepHandlers;
 public class LanguageSelectionStepHandler : IStepHandler
 {
     private readonly INotificationService _notification;
-    private readonly IUserStateService _userStateService;
+    private readonly IUserLanguageService _userLanguageService;
 
     /// <summary>
     /// Инициализирует новый экземпляр <see cref="LanguageSelectionStepHandler" />.
     /// </summary>
-    /// <param name="userStateService">Сервис для работы с состоянием пользователя.</param>
     /// <param name="notification">Сервис для отправки уведомлений.</param>
-    public LanguageSelectionStepHandler(IUserStateService userStateService, INotificationService notification)
+    /// <param name="userLanguageService">Сервис для работы с языковыми настройками пользователей.</param>
+    public LanguageSelectionStepHandler(INotificationService notification, IUserLanguageService userLanguageService)
     {
-        _userStateService = userStateService;
-        _notification = notification;
+        _notification = notification ?? throw new ArgumentNullException(nameof(notification));
+        _userLanguageService = userLanguageService ?? throw new ArgumentNullException(nameof(userLanguageService));
     }
 
     /// <inheritdoc />
     public async Task<HandlerResult> HandleAsync(MessageInfo messageInfo, CancellationToken cancellationToken = default)
     {
-        var langCode = messageInfo.Text switch
+        var chatId = messageInfo.ChatId;
+
+        if (messageInfo is not { Text: { } text })
         {
-            "Русский 🇷🇺" => "ru",
-            "English 🇬🇧" => "en",
+            await _notification.SendNotificationMessageAsync(chatId, NotificationType.InvalidAuthCommand, cancellationToken: cancellationToken);
+            return new HandlerResult(string.Empty);
+        }
+
+        var languageDictionary = messageInfo.Text switch
+        {
+            "Русский 🇷🇺" => LanguageDictionary.Russian,
+            "English 🇬🇧" => LanguageDictionary.English,
             _ => null
         };
 
-        if (langCode != null)
+        if (languageDictionary != null)
         {
-            await _userStateService.SetUserLanguageAsync(messageInfo.ChatId, langCode);
-            await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.LanguageChanged, cancellationToken: cancellationToken);
-            return new HandlerResult(Steps.Start);
+            await _userLanguageService.UpsertUserLanguageAsync(chatId, languageDictionary, cancellationToken);
+            await _notification.SendNotificationMessageAsync(chatId, NotificationType.LanguageChanged, cancellationToken: cancellationToken);
+            await _notification.SendNotificationMessageAsync(chatId, NotificationType.AuthCompleteCommandHelp, cancellationToken: cancellationToken);
+
+            return new HandlerResult(Steps.AuthComplete);
         }
 
-        if (string.Equals(messageInfo.Text, Commands.Stop, StringComparison.OrdinalIgnoreCase))
+        switch (text.MessageToCommand())
         {
-            await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.SessionEnded, cancellationToken: cancellationToken);
-            return new HandlerResult(Steps.Stop);
+            case Commands.Stop:
+                await _notification.SendNotificationMessageAsync(chatId, NotificationType.SessionEnded, cancellationToken: cancellationToken);
+                return new HandlerResult(Steps.Stop);
+            default:
+                await _notification.SendNotificationMessageAsync(chatId, NotificationType.LanguagePrompt, cancellationToken: cancellationToken);
+                return new HandlerResult(Steps.LanguageSelection);
         }
-
-        await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.LanguagePrompt, cancellationToken: cancellationToken);
-        return new HandlerResult(Steps.LanguageSelection);
     }
 }

@@ -8,7 +8,7 @@ namespace Ali.Delivery.Location.Application.UseCases.CreateUserLocation;
 /// <summary>
 /// Представляет обработчик команды создания локации пользователя.
 /// </summary>
-public class CreateUserLocationCommandHandler : IRequestHandler<CreateUserLocationCommand, string>
+public class CreateUserLocationCommandHandler : IRequestHandler<CreateUserLocationCommand, Guid>
 {
     private readonly IAppDbContext _context;
 
@@ -25,18 +25,16 @@ public class CreateUserLocationCommandHandler : IRequestHandler<CreateUserLocati
     /// <exception cref="ArgumentNullException">
     /// Возникает, если <paramref name="command" /> равен <c>null</c>.
     /// </exception>
-    public async Task<string> Handle(CreateUserLocationCommand command, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CreateUserLocationCommand command, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(command);
 
-        var userLocation = new UserLocation(SequentialGuid.Create(), command.UserLogin);
-
-        userLocation.UpdateCoordinates(command.E, command.S);
+        var userLocation = new UserLocation(SequentialGuid.Create(), command.UserId, command.Longitude, command.Latitude);
 
         _context.UserLocations.Add(userLocation);
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return userLocation.TelegramLogin;
+        return userLocation.User.Id;
     }
 }

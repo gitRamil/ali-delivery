@@ -15,9 +15,11 @@ public static class ApplicationServicesExtensions
     /// <returns>Та же коллекция для построения цепочки вызовов.</returns>
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        services.AddSingleton<INotificationLocalizationService, NotificationLocalizationService>();
+        services.AddScoped<INotificationLocalizationService, NotificationLocalizationService>();
         services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<INotificationService, NotificationService>();
+        services.AddScoped<IUserLanguageService, UserLanguageService>();
+        services.AddScoped<ILookupProvider, UserLanguagesLookup>();
 
         return services;
     }

@@ -1,5 +1,6 @@
 using Ali.Delivery.Location.Application.Abstractions;
 using Ali.Delivery.Location.Application.Constants;
+using Ali.Delivery.Location.Application.Extensions;
 using Ali.Delivery.Location.Application.Models;
 
 namespace Ali.Delivery.Location.Application.StepHandlers;
@@ -22,22 +23,21 @@ public sealed class AuthCompleteStepHandler : IStepHandler
     /// <inheritdoc />
     public async Task<HandlerResult> HandleAsync(MessageInfo messageInfo, CancellationToken cancellationToken = default)
     {
+        var chatId = messageInfo.ChatId;
+
         if (messageInfo is not { Text: { } text })
         {
             await SendInvalid(messageInfo, cancellationToken);
             return new HandlerResult(string.Empty);
         }
 
-        text = text.Trim()
-                   .ToLowerInvariant();
-
-        switch (text)
+        switch (text.MessageToCommand())
         {
             case Commands.Geosharing:
-                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.RequestLocation, cancellationToken: cancellationToken);
+                await _notification.SendNotificationMessageAsync(chatId, NotificationType.RequestLocation, cancellationToken: cancellationToken);
                 return new HandlerResult(Steps.GeoSharing);
             case Commands.Stop:
-                await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.SessionEnded, cancellationToken: cancellationToken);
+                await _notification.SendNotificationMessageAsync(chatId, NotificationType.SessionEnded, cancellationToken: cancellationToken);
                 return new HandlerResult(Steps.Stop);
             default:
                 await SendInvalid(messageInfo, cancellationToken);
@@ -45,9 +45,6 @@ public sealed class AuthCompleteStepHandler : IStepHandler
         }
     }
 
-    private async Task SendInvalid(MessageInfo messageInfo, CancellationToken cancellationToken = default)
-    {
-        var chatId = messageInfo.ChatId;
-        await _notification.SendNotificationMessageAsync(chatId, NotificationType.InvalidCommand, cancellationToken: cancellationToken);
-    }
+    private async Task SendInvalid(MessageInfo messageInfo, CancellationToken cancellationToken = default) =>
+        await _notification.SendNotificationMessageAsync(messageInfo.ChatId, NotificationType.InvalidCommand, cancellationToken: cancellationToken);
 }

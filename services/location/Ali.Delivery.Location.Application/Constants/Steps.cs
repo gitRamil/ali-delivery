@@ -28,10 +28,10 @@ public static class Steps
     /// <summary>
     /// Начальное состояние (шаг) бота, в котором пользователь только начал сессию.
     /// </summary>
-    public const string Start = "StartStep";
+    public const string Start = "Start";
 
     /// <summary>
     /// Финальное состояние, в котором сессия пользователя завершена.
     /// </summary>
-    public const string Stop = "StopStep";
+    public const string Stop = "Stop";
 }

@@ -3,5 +3,6 @@
 /// <summary>
 /// Представляет результат операции аутентификации.
 /// </summary>
-/// <param name="Status">Статус результата аутентификации.</param>
-public record AuthenticationResult(AuthResult Status);
+/// <param name="AuthResult">Статус результата операции аутентификации.</param>
+/// <param name="UserId">Идентификатор пользователя.</param>
+public record AuthenticationResult(AuthResult AuthResult, Guid? UserId);

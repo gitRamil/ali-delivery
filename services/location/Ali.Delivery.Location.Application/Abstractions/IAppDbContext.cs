@@ -9,12 +9,28 @@ namespace Ali.Delivery.Location.Application.Abstractions;
 public interface IAppDbContext
 {
     /// <summary>
-    /// Возвращает набор незарегистрированных пользователей.
+    /// Возвращает набор конфигураций пользователей.
     /// </summary>
     /// <value>
-    /// Незарегистрированные пользователи.
+    /// Конфигурации пользователей.
+    /// </value>
+    DbSet<UserConfig> UserConfigs { get; }
+
+    /// <summary>
+    /// Возвращает набор локаций пользователей.
+    /// </summary>
+    /// <value>
+    /// Локации пользователи.
     /// </value>
     DbSet<UserLocation> UserLocations { get; }
+
+    /// <summary>
+    /// Возвращает набор пользователей.
+    /// </summary>
+    /// <value>
+    /// Пользователи.
+    /// </value>
+    DbSet<User> Users { get; }
 
     /// <summary>
     /// Сохраняет изменения.

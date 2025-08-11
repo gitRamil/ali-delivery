@@ -1,5 +1,3 @@
-using Ali.Delivery.Location.Application.Abstractions;
-using Ali.Delivery.Location.Application.Services;
 using Ali.Delivery.Location.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,9 +20,6 @@ public static class PersistenceExtensions
                                                               .UseSnakeCaseNamingConvention()
                                                               .EnableSensitiveDataLogging()
                                                               .LogTo(Console.WriteLine, LogLevel.Information));
-
-        services.AddScoped<IUserLocationRepository, UserLocationRepository>();
-
         return services;
     }
 }

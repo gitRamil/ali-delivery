@@ -1,46 +1,45 @@
 {
   "Steps": [
     {
-      "Id": "StartStep",
+      "Id": "Start",
       "SelectNextStep": {
-        "LanguageSelection": "LanguageSelection",
         "Authorization": "Authorization",
-        "StopStep": "StopStep"
-      }
-    },
-    {
-      "Id": "LanguageSelection",
-      "SelectNextStep": {
-        "StartStep": "StartStep",
-        "LanguageSelection": "LanguageSelection",
-        "StopStep": "StopStep"
+        "Stop": "Stop"
       }
     },
     {
       "Id": "Authorization",
       "SelectNextStep": {
+        "LanguageSelection": "LanguageSelection",
+        "Stop": "Stop"
+      }
+    },
+    {
+      "Id": "LanguageSelection",
+      "SelectNextStep": {
         "AuthComplete": "AuthComplete",
-        "StopStep": "StopStep"
+        "LanguageSelection": "LanguageSelection",
+        "Stop": "Stop"
       }
     },
     {
       "Id": "AuthComplete",
       "SelectNextStep": {
         "GeoSharing": "GeoSharing",
-        "StopStep": "StopStep"
+        "Stop": "Stop"
       }
     },
     {
       "Id": "GeoSharing",
       "SelectNextStep": {
         "AuthComplete": "AuthComplete",
-        "StopStep": "StopStep"
+        "Stop": "Stop"
       }
     },
     {
-      "Id": "StopStep",
+      "Id": "Stop",
       "SelectNextStep": {
-        "StartStep": "StartStep"
+        "Start": "Start"
       }
     }
   ]

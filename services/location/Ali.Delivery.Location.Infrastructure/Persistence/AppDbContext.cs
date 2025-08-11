@@ -2,6 +2,7 @@ using Ali.Delivery.Domain.Core;
 using Ali.Delivery.Domain.Core.Primitives;
 using Ali.Delivery.Location.Application.Abstractions;
 using Ali.Delivery.Location.Domain.Entities;
+using Ali.Delivery.Location.Domain.Entities.Dictionaries;
 using Ali.Delivery.Location.Infrastructure.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -21,8 +22,11 @@ public class AppDbContext : DbContext, IAppDbContext
     /// Возникает, если <paramref name="dateTimeService" /> равен <c>null</c>.
     /// </exception>
     public AppDbContext(DbContextOptions<AppDbContext> options, IDateTimeService dateTimeService)
-        : base(options) =>
+        : base(options)
+    {
         _dateTimeService = dateTimeService ?? throw new ArgumentNullException(nameof(dateTimeService));
+        AttachDictionaryValues();
+    }
 
     /// <inheritdoc cref="DbContext" />
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -42,17 +46,34 @@ public class AppDbContext : DbContext, IAppDbContext
         return await base.SaveChangesAsync(cancellationToken);
     }
 
+    /// <summary>
+    /// Возвращает набор конфигураций пользователя.
+    /// </summary>
+    public DbSet<UserConfig> UserConfigs { get; set; }
+
+    /// <summary>
+    /// Возвращает набор локаций пользователя.
+    /// </summary>
     public DbSet<UserLocation> UserLocations { get; set; }
+
+    /// <summary>
+    /// Возвращает набор пользователей.
+    /// </summary>
+    public DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
     }
 
+    private void AttachDictionaryValues()
+    {
+        AttachRange(LanguageDictionary.GetAllValues());
+    }
+
     private void MarkCreated(EntityEntry entry)
     {
         var now = _dateTimeService.GetCurrentDateTime();
-        //var userId = _currentUser.IsAuthenticated ? _currentUser.Id.ToString() : SystemUser.Id.ToString();
 
         SetEntryProperty(entry, EntityBasePropertyNames.CreatedDate, now);
         SetEntryProperty(entry, EntityBasePropertyNames.UpdatedDate, now);
@@ -63,7 +84,6 @@ public class AppDbContext : DbContext, IAppDbContext
     private void MarkUpdated(EntityEntry entry)
     {
         var now = _dateTimeService.GetCurrentDateTime();
-        //var userId = _currentUser.IsAuthenticated ? _currentUser.Id.ToString() : SystemUser.Id.ToString();
 
         SetEntryProperty(entry, EntityBasePropertyNames.UpdatedDate, now);
         //SetEntryProperty(entry, EntityBasePropertyNames.UpdatedBy, userId);
