@@ -1,6 +1,5 @@
 using Ali.Delivery.Location.Application.Abstractions;
-using Ali.Delivery.Location.Application.Models;
-using Ali.Delivery.Location.Infrastructure;
+using Ali.Delivery.Location.Infrastructure.Persistence.Configurations;
 using Ali.Delivery.Location.Infrastructure.Services;
 using Ali.Delivery.Location.WebApi.Infrastructure.IoC;
 using DotNetEnv;
@@ -13,21 +12,21 @@ try
     Env.Load();
     var builder = WebApplication.CreateBuilder(args);
     var configuration = builder.Configuration;
-    
-    
-    // Конфигурация RabbitMQ
-    var rabbitMqConfig = new RabbitMQConfiguration();
-    builder.Configuration.GetSection("RabbitMQ").Bind(rabbitMqConfig);
-    
-    // Регистрация сервисов
+
+    var rabbitMqConfig = new RabbitMqConfiguration();
+
+    builder.Configuration.GetSection("RabbitMQ")
+           .Bind(rabbitMqConfig);
+
     builder.Services.AddSingleton(rabbitMqConfig);
-    builder.Services.AddSingleton<RabbitMQConnectionFactory>();
+    builder.Services.AddSingleton<RabbitMqConnectionFactory>();
+
     builder.Services.AddSingleton<IConnection>(serviceProvider =>
     {
-        var factory = serviceProvider.GetRequiredService<RabbitMQConnectionFactory>();
+        var factory = serviceProvider.GetRequiredService<RabbitMqConnectionFactory>();
         return factory.CreateConnection();
     });
-    builder.Services.AddScoped<IPublisherService, RabbitMQPublisherService>();
+    builder.Services.AddScoped<IPublisherService, RabbitMqPublisherService>();
 
     builder.Services.AddEndpointsApiExplorer();
     builder.Configuration.AddJsonFile("stateTransitions.json", false, true);
@@ -52,7 +51,6 @@ try
     builder.Services.AddDefaultProblemDetails();
     builder.Services.AddSwaggerGen();
     builder.Services.AddApplicationServices();
-
 
     var app = builder.Build();
     app.AddAutomaticMigrations();

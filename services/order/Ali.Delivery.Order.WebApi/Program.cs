@@ -5,6 +5,7 @@ using Ali.Delivery.Order.Application.Abstractions;
 using Ali.Delivery.Order.Application.Handlers;
 using Ali.Delivery.Order.Application.Services;
 using Ali.Delivery.Order.Infrastructure.services;
+using Ali.Delivery.Order.Infrastructure.Services;
 using Ali.Delivery.Order.WebApi.Infrastructure.IoC;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.CookiePolicy;
@@ -19,10 +20,10 @@ try
     builder.AddDefaultSerilog();
 
     builder.Services.AddControllers()
-        .AddJsonOptions(options =>
-        {
-            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
-        });
+           .AddJsonOptions(options =>
+           {
+               options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
+           });
     builder.Services.AddDefaultApiVersioning();
     builder.Services.AddDefaultSwagger();
     builder.Services.AddDefaultMediatr();
@@ -40,43 +41,31 @@ try
     builder.Services.AddTransient<IDictionaryTypeMap, DictionaryTypeMap>();
     builder.Services.AddTransient<ICurrentUser, CurrentUserService>();
 
-    // Конфигурация RabbitMQ
-    builder.Services.Configure<RabbitMQConfiguration>(
-        builder.Configuration.GetSection("RabbitMQ"));
+    builder.Services.Configure<RabbitMqConfiguration>(builder.Configuration.GetSection("RabbitMQ"));
 
-// ИСПРАВЛЕНИЕ: Регистрируем RabbitMQConfiguration как singleton
-    builder.Services.AddSingleton<RabbitMQConfiguration>(provider =>
+    builder.Services.AddSingleton<RabbitMqConfiguration>(provider =>
     {
-        var options = provider.GetRequiredService<IOptions<RabbitMQConfiguration>>();
+        var options = provider.GetRequiredService<IOptions<RabbitMqConfiguration>>();
         return options.Value;
     });
+    builder.Services.AddSingleton<RabbitMqConnectionFactory>();
 
-// RabbitMQConnectionFactory теперь сможет получить RabbitMQConfiguration
-    builder.Services.AddSingleton<RabbitMQConnectionFactory>();
-
-// RabbitMQ Connection
     builder.Services.AddSingleton<IConnection>(provider =>
     {
-        var factory = provider.GetRequiredService<RabbitMQConnectionFactory>();
+        var factory = provider.GetRequiredService<RabbitMqConnectionFactory>();
         return factory.CreateConnection();
     });
 
-// Consumer
-    builder.Services.AddSingleton<IMessageConsumer, RabbitMQConsumerService>();
+    builder.Services.AddSingleton<IMessageConsumer, RabbitMqConsumerService>();
 
-// Handlers
     builder.Services.AddScoped<LocationCreatedHandler>();
 
-    
-    
     var app = builder.Build();
     app.AddAutomaticMigrations();
 
-    // Запуск консумера
     var consumer = app.Services.GetRequiredService<IMessageConsumer>();
     await consumer.StartAsync();
 
-// Остановка консумера при завершении приложения
     app.Lifetime.ApplicationStopping.Register(async () =>
     {
         await consumer.StopAsync();

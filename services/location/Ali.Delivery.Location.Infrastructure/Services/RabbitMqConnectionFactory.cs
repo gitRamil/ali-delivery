@@ -1,20 +1,17 @@
-using Ali.Delivery.Location.Application.Models;
+using Ali.Delivery.Location.Infrastructure.Persistence.Configurations;
 using RabbitMQ.Client;
 
 namespace Ali.Delivery.Location.Infrastructure.Services;
 
-public class RabbitMQConnectionFactory
+public class RabbitMqConnectionFactory
 {
-    private readonly RabbitMQConfiguration _configuration;
+    private readonly RabbitMqConfiguration _configuration;
 
-    public RabbitMQConnectionFactory(RabbitMQConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
+    public RabbitMqConnectionFactory(RabbitMqConfiguration configuration) => _configuration = configuration;
 
     public IConnection CreateConnection()
     {
-        var factory = new ConnectionFactory()
+        var factory = new ConnectionFactory
         {
             HostName = _configuration.HostName,
             Port = _configuration.Port,
