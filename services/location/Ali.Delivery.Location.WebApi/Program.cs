@@ -1,6 +1,7 @@
 using Ali.Delivery.Location.Application.Abstractions;
+using Ali.Delivery.Location.Application.Models;
+using Ali.Delivery.Location.Infrastructure;
 using Ali.Delivery.Location.Infrastructure.Services;
-using Ali.Delivery.Location.WebApi;
 using Ali.Delivery.Location.WebApi.Infrastructure.IoC;
 using DotNetEnv;
 using Hellang.Middleware.ProblemDetails;
@@ -14,11 +15,10 @@ try
     var configuration = builder.Configuration;
     
     
-    
     // Конфигурация RabbitMQ
     var rabbitMqConfig = new RabbitMQConfiguration();
     builder.Configuration.GetSection("RabbitMQ").Bind(rabbitMqConfig);
-
+    
     // Регистрация сервисов
     builder.Services.AddSingleton(rabbitMqConfig);
     builder.Services.AddSingleton<RabbitMQConnectionFactory>();

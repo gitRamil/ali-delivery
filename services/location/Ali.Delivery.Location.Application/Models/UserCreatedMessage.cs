@@ -1,5 +1,7 @@
 namespace Ali.Delivery.Location.Application.Models;
 
+
+[RabbitMQMessage("location.exchange", "location.created")]
 public class UserCreatedMessage
 {
     public long UserId { get; set; }
@@ -7,3 +9,4 @@ public class UserCreatedMessage
     public double Latitude { get; set; }
     public DateTime CreatedAt { get; set; }
 }
+

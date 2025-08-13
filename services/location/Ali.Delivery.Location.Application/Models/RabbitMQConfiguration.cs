@@ -1,4 +1,4 @@
-﻿namespace Ali.Delivery.Location.WebApi;
+﻿namespace Ali.Delivery.Location.Application.Models;
 
 public class RabbitMQConfiguration
 {

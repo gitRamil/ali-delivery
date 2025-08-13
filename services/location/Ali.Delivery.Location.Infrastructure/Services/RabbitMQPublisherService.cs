@@ -1,14 +1,12 @@
 ﻿using System.Reflection;
 using System.Text.Json;
 using Ali.Delivery.Location.Application.Abstractions;
-using Ali.Delivery.Location.WebApi;
+using Ali.Delivery.Location.Application.Models;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 
 namespace Ali.Delivery.Location.Infrastructure.Services;
 
-
-[RabbitMQMessage("user.exchange", "user.created")]
 public class RabbitMQPublisherService : IPublisherService, IDisposable
 {
     private readonly IConnection _connection;

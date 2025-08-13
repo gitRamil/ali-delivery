@@ -1,7 +1,7 @@
-using Ali.Delivery.Location.Application.Models;
 using RabbitMQ.Client;
 
-namespace Ali.Delivery.Location.Infrastructure.Services;
+namespace Ali.Delivery.Order.Infrastructure.services;
+
 
 public class RabbitMQConnectionFactory
 {
