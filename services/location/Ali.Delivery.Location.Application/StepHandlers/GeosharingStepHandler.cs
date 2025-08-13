@@ -16,7 +16,7 @@ public class GeosharingStepHandler : IStepHandler
 {
     private readonly IAppDbContext _dbContext;
     private readonly INotificationService _notification;
-    private readonly ILocationPublisherService _locationPublisherService;
+    private readonly IPublisherService _locationPublisherService;
 
     /// <summary>
     /// Инициализирует новый экземпляр класса <see cref="GeosharingStepHandler" />.
@@ -25,7 +25,7 @@ public class GeosharingStepHandler : IStepHandler
     /// <param name="dbContext">Контекст БД.</param>
     /// <param name="locationPublisherService">Сервис для публикации локаций.</param>
     public GeosharingStepHandler(INotificationService notification, IAppDbContext dbContext,
-        ILocationPublisherService locationPublisherService)
+        IPublisherService locationPublisherService)
     {
         _notification = notification ?? throw new ArgumentNullException(nameof(notification));
         _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
@@ -39,7 +39,9 @@ public class GeosharingStepHandler : IStepHandler
         var chatId = messageInfo.ChatId;
 
         if (messageInfo.Location is { } loc)
+        {
             return await ProcessLocationAsync(messageInfo.ChatId, loc.Longitude, loc.Latitude, cancellationToken);
+        }
 
         if (messageInfo.Text is not { } text)
         {
@@ -76,7 +78,15 @@ public class GeosharingStepHandler : IStepHandler
 
         user.AddUserLocation(longitude, latitude);
         await _dbContext.SaveChangesAsync(cancellationToken);
-        await _locationPublisherService.PublishLocationAsync(chatId, longitude, latitude);
+
+        var locationMessage = new UserCreatedMessage()
+        {
+            UserId = chatId,
+            Longitude = longitude,
+            Latitude = latitude,
+            CreatedAt = DateTime.UtcNow
+        };
+        await _locationPublisherService.PublishAsync(locationMessage, cancellationToken);
 
         await _notification.SendNotificationMessageAsync(chatId,
             NotificationType.LocationReceived,

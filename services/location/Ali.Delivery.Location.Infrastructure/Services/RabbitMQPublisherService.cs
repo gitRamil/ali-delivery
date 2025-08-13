@@ -7,41 +7,8 @@ using RabbitMQ.Client;
 
 namespace Ali.Delivery.Location.Infrastructure.Services;
 
-public class RabbitMQConnectionFactory
-{
-    private readonly RabbitMQConfiguration _configuration;
-
-    public RabbitMQConnectionFactory(RabbitMQConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
-
-    public IConnection CreateConnection()
-    {
-        var factory = new ConnectionFactory()
-        {
-            HostName = _configuration.HostName,
-            Port = _configuration.Port,
-            UserName = _configuration.UserName,
-            Password = _configuration.Password,
-            VirtualHost = _configuration.VirtualHost,
-            AutomaticRecoveryEnabled = true,
-            NetworkRecoveryInterval = TimeSpan.FromSeconds(10)
-        };
-
-        return factory.CreateConnection();
-    }
-}
 
 [RabbitMQMessage("user.exchange", "user.created")]
-public class UserCreatedMessage
-{
-    public Guid UserId { get; set; }
-    public string Email { get; set; }
-    public string Name { get; set; }
-    public DateTime CreatedAt { get; set; }
-}
-
 public class RabbitMQPublisherService : IPublisherService, IDisposable
 {
     private readonly IConnection _connection;
@@ -95,7 +62,7 @@ public class RabbitMQPublisherService : IPublisherService, IDisposable
                 _channel.QueueBind(
                     queue: queue.Name,
                     exchange: queue.Exchange,
-                    routingKey: queue.RoutingKey ?? "");
+                    routingKey: queue.RoutingKey);
             }
         }
     }
@@ -158,7 +125,7 @@ public class RabbitMQPublisherService : IPublisherService, IDisposable
 
     public void Dispose()
     {
-        _channel?.Close();
-        _channel?.Dispose();
+        _channel.Close();
+        _channel.Dispose();
     }
 }

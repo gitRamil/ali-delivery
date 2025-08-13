@@ -30,31 +30,31 @@ public class UserLocationController : ControllerBase
         _publisherService = publisherService;
     }
 
-    /// <summary>
-    /// Создает локацию пользователя.
-    /// </summary>
-    /// <param name="command">Команда создания локации пользователя.</param>
-    /// <param name="cancellationToken">Маркер отмены.</param>
-    /// <returns>Статус команды.</returns>
-    [HttpPost("create-location")]
-    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> CreateUserLocation([FromBody] CreateUserLocationCommand command, CancellationToken cancellationToken)
-    {
-        var userId = Guid.NewGuid();
-        
-        var userCreatedMessage = new UserCreatedMessage
-        {
-            UserId = userId,
-            Email = "QWEQWEQWE",
-            Name = "ASDASD",
-            CreatedAt = DateTime.UtcNow
-        };
-
-        await _publisherService.PublishAsync(userCreatedMessage);
-
-        return Ok(new { UserId = userId });
-        // var result = await _mediator.Send(command, cancellationToken);
-        // return Ok(result);
-    }
+    // /// <summary>
+    // /// Создает локацию пользователя.
+    // /// </summary>
+    // /// <param name="command">Команда создания локации пользователя.</param>
+    // /// <param name="cancellationToken">Маркер отмены.</param>
+    // /// <returns>Статус команды.</returns>
+    // [HttpPost("create-location")]
+    // [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+    // [ProducesResponseType(StatusCodes.Status404NotFound)]
+    // public async Task<IActionResult> CreateUserLocation([FromBody] CreateUserLocationCommand command, CancellationToken cancellationToken)
+    // {
+    //     var userId = Guid.NewGuid();
+    //     
+    //     var userCreatedMessage = new UserCreatedMessage
+    //     {
+    //         UserId = userId,
+    //          = "QWEQWEQWE",
+    //         Name = "ASDASD",
+    //         CreatedAt = DateTime.UtcNow
+    //     };
+    //
+    //     await _publisherService.PublishAsync(userCreatedMessage);
+    //
+    //     return Ok(new { UserId = userId });
+    //     // var result = await _mediator.Send(command, cancellationToken);
+    //     // return Ok(result);
+    // }
 }

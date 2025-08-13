@@ -36,7 +36,7 @@ public class UserTests
             .Language.Should()
             .Be(LanguageDictionary.Russian);
     }
-
+ 
     [Fact]
     public void ChatId_ShouldBeSetCorrectly_FromConstructor()
     {

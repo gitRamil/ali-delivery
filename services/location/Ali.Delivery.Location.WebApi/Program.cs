@@ -16,11 +16,11 @@ try
     
     
     // Конфигурация RabbitMQ
-    var rabbitMQConfig = new RabbitMQConfiguration();
-    builder.Configuration.GetSection("RabbitMQ").Bind(rabbitMQConfig);
+    var rabbitMqConfig = new RabbitMQConfiguration();
+    builder.Configuration.GetSection("RabbitMQ").Bind(rabbitMqConfig);
 
     // Регистрация сервисов
-    builder.Services.AddSingleton(rabbitMQConfig);
+    builder.Services.AddSingleton(rabbitMqConfig);
     builder.Services.AddSingleton<RabbitMQConnectionFactory>();
     builder.Services.AddSingleton<IConnection>(serviceProvider =>
     {
