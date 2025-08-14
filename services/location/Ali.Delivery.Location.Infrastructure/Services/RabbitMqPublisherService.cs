@@ -8,6 +8,10 @@ using RabbitMQ.Client;
 
 namespace Ali.Delivery.Location.Infrastructure.Services;
 
+/// <summary>
+/// Реализация службы публикации сообщений для RabbitMQ.
+/// Обеспечивает публикацию сообщений в различные exchange с поддержкой автоматической настройки инфраструктуры.
+/// </summary>
 public class RabbitMqPublisherService : IPublisherService, IDisposable
 {
     private readonly IModel _channel;
@@ -16,6 +20,12 @@ public class RabbitMqPublisherService : IPublisherService, IDisposable
     private readonly JsonSerializerOptions _jsonOptions;
     private readonly ILogger<RabbitMqPublisherService> _logger;
 
+    /// <summary>
+    /// Инициализирует новый экземпляр класса <see cref="RabbitMqPublisherService"/>.
+    /// </summary>
+    /// <param name="connection">Подключение к RabbitMQ.</param>
+    /// <param name="configuration">Конфигурация RabbitMQ.</param>
+    /// <param name="logger">Логгер для записи операций.</param>
     public RabbitMqPublisherService(IConnection connection, RabbitMqConfiguration configuration, ILogger<RabbitMqPublisherService> logger)
     {
         _connection = connection;
@@ -32,12 +42,16 @@ public class RabbitMqPublisherService : IPublisherService, IDisposable
         InitializeInfrastructure();
     }
 
+    /// <summary>
+    /// Освобождает управляемые и неуправляемые ресурсы, используемые <see cref="RabbitMqPublisherService"/>.
+    /// </summary>
     public void Dispose()
     {
         _channel.Close();
         _channel.Dispose();
     }
 
+    /// <inheritdoc />
     public async Task PublishAsync<TMessage>(TMessage message, CancellationToken cancellationToken = default)
     {
         var messageType = typeof(TMessage);
@@ -51,6 +65,7 @@ public class RabbitMqPublisherService : IPublisherService, IDisposable
         await PublishAsync(message, attribute.Exchange, attribute.RoutingKey, cancellationToken);
     }
 
+    /// <inheritdoc />
     public async Task PublishAsync<TMessage>(TMessage message, string routingKey, CancellationToken cancellationToken = default)
     {
         var messageType = typeof(TMessage);
@@ -60,6 +75,7 @@ public class RabbitMqPublisherService : IPublisherService, IDisposable
         await PublishAsync(message, exchange, routingKey, cancellationToken);
     }
 
+    /// <inheritdoc />
     public async Task PublishAsync<TMessage>(TMessage message, string exchange, string routingKey, CancellationToken cancellationToken = default)
     {
         try

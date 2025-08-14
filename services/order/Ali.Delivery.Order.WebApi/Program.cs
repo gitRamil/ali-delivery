@@ -2,15 +2,11 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Ali.Delivery.Order.Application;
 using Ali.Delivery.Order.Application.Abstractions;
-using Ali.Delivery.Order.Application.Handlers;
 using Ali.Delivery.Order.Application.Services;
 using Ali.Delivery.Order.Infrastructure.services;
-using Ali.Delivery.Order.Infrastructure.Services;
 using Ali.Delivery.Order.WebApi.Infrastructure.IoC;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.CookiePolicy;
-using Microsoft.Extensions.Options;
-using RabbitMQ.Client;
 using Serilog;
 
 try
@@ -40,25 +36,7 @@ try
     builder.Services.AddTransient<IDictionaryValuesProvider, DictionaryValuesProvider>();
     builder.Services.AddTransient<IDictionaryTypeMap, DictionaryTypeMap>();
     builder.Services.AddTransient<ICurrentUser, CurrentUserService>();
-
-    builder.Services.Configure<RabbitMqConfiguration>(builder.Configuration.GetSection("RabbitMQ"));
-
-    builder.Services.AddSingleton<RabbitMqConfiguration>(provider =>
-    {
-        var options = provider.GetRequiredService<IOptions<RabbitMqConfiguration>>();
-        return options.Value;
-    });
-    builder.Services.AddSingleton<RabbitMqConnectionFactory>();
-
-    builder.Services.AddSingleton<IConnection>(provider =>
-    {
-        var factory = provider.GetRequiredService<RabbitMqConnectionFactory>();
-        return factory.CreateConnection();
-    });
-
-    builder.Services.AddSingleton<IMessageConsumer, RabbitMqConsumerService>();
-
-    builder.Services.AddScoped<LocationCreatedHandler>();
+    builder.Services.AddRabbitMqService(builder.Configuration);
 
     var app = builder.Build();
     app.AddAutomaticMigrations();
