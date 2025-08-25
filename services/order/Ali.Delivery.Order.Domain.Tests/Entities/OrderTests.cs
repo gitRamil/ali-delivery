@@ -196,7 +196,10 @@ public class OrderTests
 
         order.OrderStatus.Should()
              .Be(OrderStatus.Finished);
-        order.Name.ToString().Should().Be(orderName);
+
+        order.Name.ToString()
+             .Should()
+             .Be(orderName);
     }
 
     [Fact]

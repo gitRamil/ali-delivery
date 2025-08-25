@@ -188,19 +188,24 @@ public class OrderInfoTests
         act.Should()
            .NotThrow();
 
-        orderInfo.Weight.ToString().Should()
+        orderInfo.Weight.ToString()
+                 .Should()
                  .Be(weight1.ToString());
 
-        orderInfo.Price.ToString().Should()
+        orderInfo.Price.ToString()
+                 .Should()
                  .Be(price1.ToString());
 
-        orderInfo.AddressFrom.ToString().Should()
+        orderInfo.AddressFrom.ToString()
+                 .Should()
                  .Be(addressFrom1.ToString());
 
-        orderInfo.AddressTo.ToString().Should()
+        orderInfo.AddressTo.ToString()
+                 .Should()
                  .Be(addressTo1.ToString());
 
-        orderInfo.Size.ToString().Should()
+        orderInfo.Size.ToString()
+                 .Should()
                  .Be(size1.ToString());
     }
 }

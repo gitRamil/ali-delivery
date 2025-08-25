@@ -1,4 +1,3 @@
-
 using Ali.Delivery.Order.Domain.Entities.Dictionaries;
 
 namespace Ali.Delivery.Order.Domain.Tests.Entities.Dictionaries;
@@ -12,10 +11,16 @@ public class SizeTests
         //Arrange. 
 
         //Act.
-        var values = Size.GetAllValues().ToList();
+        var values = Size.GetAllValues()
+                         .ToList();
 
         //Assert.
-        values[0].Id.Should().Be(Size.Small.Id);
-        values[0].Name.Should().Be(Size.Small.Name);
+        values[0]
+            .Id.Should()
+            .Be(Size.Small.Id);
+
+        values[0]
+            .Name.Should()
+            .Be(Size.Small.Name);
     }
 }

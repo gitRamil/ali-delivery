@@ -23,18 +23,24 @@ public class RolePermissionTests
         act.Should()
            .NotThrow();
     }
-    
+
     [Fact]
     public void GetAllValuesShouldReturnAllValues()
     {
         //Arrange.
 
         //Act.
-        var values = RolePermission.GetAllValues().ToList();
+        var values = RolePermission.GetAllValues()
+                                   .ToList();
 
         //Assert.
-        values[0].RoleId.Should().Be(Role.NotAuthUser.Id);
-        values[1].RoleId.Should().Be(Role.BasicUser.Id);
+        values[0]
+            .RoleId.Should()
+            .Be(Role.NotAuthUser.Id);
+
+        values[1]
+            .RoleId.Should()
+            .Be(Role.BasicUser.Id);
     }
 
     [Fact]
