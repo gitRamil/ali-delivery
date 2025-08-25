@@ -1,3 +1,4 @@
+using Ali.Delivery.Order.Infrastructure.Persistence.Configurations.RabbitMqConfigurations;
 using RabbitMQ.Client;
 
 namespace Ali.Delivery.Order.Infrastructure.Services;

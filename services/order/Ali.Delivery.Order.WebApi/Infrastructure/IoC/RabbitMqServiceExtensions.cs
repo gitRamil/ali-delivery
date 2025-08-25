@@ -1,5 +1,6 @@
 using Ali.Delivery.Order.Application.Abstractions;
 using Ali.Delivery.Order.Application.Handlers;
+using Ali.Delivery.Order.Infrastructure.Persistence.Configurations.RabbitMqConfigurations;
 using Ali.Delivery.Order.Infrastructure.Services;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
@@ -19,12 +20,18 @@ internal static class RabbitMqServiceExtensions
     public static IServiceCollection AddRabbitMqService(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<RabbitMqConfiguration>(configuration.GetSection("RabbitMq"));
+
+        services.Configure<ExchangeConfiguration>(configuration.GetSection("RabbitMq:Exchanges"));
+        services.Configure<QueueConfiguration>(configuration.GetSection("RabbitMq:Queues"));
+
         services.AddSingleton<RabbitMqConfiguration>(provider =>
         {
             var options = provider.GetRequiredService<IOptions<RabbitMqConfiguration>>();
             return options.Value;
         });
+
         services.AddSingleton<RabbitMqConnectionFactory>();
+
         services.AddSingleton<IConnection>(provider =>
         {
             var factory = provider.GetRequiredService<RabbitMqConnectionFactory>();
@@ -32,6 +39,7 @@ internal static class RabbitMqServiceExtensions
         });
         services.AddSingleton<IMessageConsumer, RabbitMqConsumerService>();
         services.AddScoped<LocationCreatedHandler>();
+
         return services;
     }
 }

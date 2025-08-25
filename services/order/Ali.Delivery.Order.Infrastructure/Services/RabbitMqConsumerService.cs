@@ -18,7 +18,6 @@ namespace Ali.Delivery.Order.Infrastructure.Services;
 public class RabbitMqConsumerService : IMessageConsumer
 {
     private readonly IModel _channel;
-    private readonly IConnection _connection;
     private readonly Dictionary<string, ConsumerInfo> _consumers;
     private bool _disposed;
     private readonly JsonSerializerOptions _jsonOptions;
@@ -34,8 +33,7 @@ public class RabbitMqConsumerService : IMessageConsumer
     /// <param name="logger">Логгер для ведения сервисных сообщений.</param>
     public RabbitMqConsumerService(IConnection connection, IServiceProvider serviceProvider, ILogger<RabbitMqConsumerService> logger)
     {
-        _connection = connection;
-        _channel = _connection.CreateModel();
+        _channel = connection.CreateModel();
         _serviceProvider = serviceProvider;
         _logger = logger;
         _messageHandlers = new Dictionary<string, Type>();
@@ -211,7 +209,7 @@ public class RabbitMqConsumerService : IMessageConsumer
 
         if (!string.IsNullOrEmpty(consumerInfo.Exchange))
         {
-            _channel.ExchangeDeclare(consumerInfo.Exchange, "direct", true, false);
+            _channel.ExchangeDeclare(consumerInfo.Exchange, "direct", true);
 
             _channel.QueueBind(consumerInfo.Queue, consumerInfo.Exchange, consumerInfo.RoutingKey ?? "");
         }
@@ -233,12 +231,12 @@ public class RabbitMqConsumerService : IMessageConsumer
 
     private class ConsumerInfo
     {
-        public bool AutoAck { get; set; }
-        public string? Exchange { get; set; }
-        public Type? HandlerType { get; set; }
-        public Type? MessageType { get; set; }
-        public ushort PrefetchCount { get; set; }
-        public string? Queue { get; set; }
-        public string? RoutingKey { get; set; }
+        public bool AutoAck { get; init; }
+        public string? Exchange { get; init; }
+        public Type? HandlerType { get; init; }
+        public Type? MessageType { get; init; }
+        public ushort PrefetchCount { get; init; }
+        public string? Queue { get; init; }
+        public string? RoutingKey { get; init; }
     }
 }

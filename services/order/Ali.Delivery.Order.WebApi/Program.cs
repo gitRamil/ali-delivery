@@ -20,11 +20,16 @@ try
            {
                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
            });
+
     builder.Services.AddDefaultApiVersioning();
     builder.Services.AddDefaultSwagger();
     builder.Services.AddDefaultMediatr();
     builder.Services.AddDefaultEfCore();
     builder.Services.AddDefaultCorsPolicy();
+
+    builder.Services.AddSignalRServices(builder.Configuration);
+    builder.Services.AddSignalRCorsPolicy("http://localhost:3000", "https://localhost:3000");
+
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
     builder.Services.AddDateTimeService();
@@ -49,17 +54,14 @@ try
         await consumer.StopAsync();
     });
 
-    //if (app.Environment.IsDevelopment())
-    //{
     app.UseSwagger();
     app.UseSwaggerUI();
-    //}
 
     app.UseSerilogRequestLogging();
-    // app.UseHttpsRedirection();
     app.UseProblemDetails();
     app.UseRouting();
-    app.UseCors();
+
+    app.UseCors("SignalRCorsPolicy");
 
     app.UseCookiePolicy(new CookiePolicyOptions
     {
@@ -67,9 +69,11 @@ try
         HttpOnly = HttpOnlyPolicy.Always,
         Secure = CookieSecurePolicy.None // для http
     });
+
     app.UseAuthentication();
     app.UseAuthorization();
     app.MapControllers();
+    app.MapSignalRHubs();
 
     app.Run();
 
