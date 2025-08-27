@@ -11,9 +11,12 @@ public class OrderStatusTests
         //Arrange.
 
         //Act.
-        var values = OrderStatus.GetAllValues().ToList();
+        var values = OrderStatus.GetAllValues()
+                                .ToList();
 
         //Assert.
-        values[0].Id.Should().Be(OrderStatus.Created.Id);
+        values[0]
+            .Id.Should()
+            .Be(OrderStatus.Created.Id);
     }
 }

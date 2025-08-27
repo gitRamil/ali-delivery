@@ -11,10 +11,16 @@ public class PermissionTests
         //Arrange.
 
         //Act.
-        var values = Permission.GetAllValues().ToList();
+        var values = Permission.GetAllValues()
+                               .ToList();
 
         //Assert.
-        values[0].Id.Should().Be(Permission.UserManagement.Id);
-        values[0].Name.Should().Be(Permission.UserManagement.Name);
+        values[0]
+            .Id.Should()
+            .Be(Permission.UserManagement.Id);
+
+        values[0]
+            .Name.Should()
+            .Be(Permission.UserManagement.Name);
     }
 }

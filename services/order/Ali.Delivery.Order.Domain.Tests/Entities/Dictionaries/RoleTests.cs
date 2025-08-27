@@ -11,9 +11,12 @@ public class RoleTests
         //Arrange.
 
         //Act.
-        var values = Role.GetAllValues().ToList();
+        var values = Role.GetAllValues()
+                         .ToList();
 
         //Assert.
-        values[0].Id.Should().Be(Role.Courier.Id);
+        values[0]
+            .Id.Should()
+            .Be(Role.Courier.Id);
     }
 }

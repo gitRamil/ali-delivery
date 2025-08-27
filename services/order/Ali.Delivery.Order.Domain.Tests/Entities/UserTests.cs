@@ -434,11 +434,21 @@ public class UserTests
 
         user.Role.Should()
             .Be(newRole);
-        
-        user.Login.ToString().Should().Be(login.ToString());
-        user.Password.ToString().Should().Be(password.ToString());
-        user.FirstName!.ToString().Should().Be(firstName.ToString());
-        user.LastName!.ToString().Should().Be(lastName.ToString());
 
+        user.Login.ToString()
+            .Should()
+            .Be(login.ToString());
+
+        user.Password.ToString()
+            .Should()
+            .Be(password.ToString());
+
+        user.FirstName!.ToString()
+            .Should()
+            .Be(firstName.ToString());
+
+        user.LastName!.ToString()
+            .Should()
+            .Be(lastName.ToString());
     }
 }

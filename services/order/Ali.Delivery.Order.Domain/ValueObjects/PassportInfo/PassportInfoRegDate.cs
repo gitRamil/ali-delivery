@@ -51,13 +51,9 @@ public sealed class PassportInfoRegDate : ValueObject
     // [return: NotNullIfNotNull(nameof(obj))]
     // public static implicit operator DateTime?(PassportInfoRegDate? obj) => obj?._regDate;
     [return: NotNullIfNotNull(nameof(obj))]
-    public static explicit operator PassportInfoRegDate?(DateTime? obj)
-        => obj.HasValue
-            ? new PassportInfoRegDate(obj.Value)
-            : null;
+    public static explicit operator PassportInfoRegDate?(DateTime? obj) => obj.HasValue ? new PassportInfoRegDate(obj.Value) : null;
 
     // ОБРАТНЫЙ оператор: PassportInfoRegDate? → DateTime?
     [return: NotNullIfNotNull(nameof(obj))]
-    public static implicit operator DateTime?(PassportInfoRegDate? obj)
-        => obj?._regDate;
+    public static implicit operator DateTime?(PassportInfoRegDate? obj) => obj?._regDate;
 }

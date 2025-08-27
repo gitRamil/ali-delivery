@@ -157,16 +157,20 @@ public class PassportInfoTests
         act.Should()
            .NotThrow();
 
-        passportInfo.PassportType.ToString().Should()
+        passportInfo.PassportType.ToString()
+                    .Should()
                     .Be(passportType1.ToString());
 
-        passportInfo.PassportNumber.ToString().Should()
+        passportInfo.PassportNumber.ToString()
+                    .Should()
                     .Be(passportNumber1.ToString());
 
-        passportInfo.RegDate.ToString().Should()
+        passportInfo.RegDate.ToString()
+                    .Should()
                     .Be(regDate1.ToString());
 
-        passportInfo.IssuedBy.ToString().Should()
+        passportInfo.IssuedBy.ToString()
+                    .Should()
                     .Be(issuedBy1.ToString());
     }
 }

@@ -20,11 +20,16 @@ try
            {
                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
            });
+
     builder.Services.AddDefaultApiVersioning();
     builder.Services.AddDefaultSwagger();
     builder.Services.AddDefaultMediatr();
     builder.Services.AddDefaultEfCore();
     builder.Services.AddDefaultCorsPolicy();
+
+    builder.Services.AddSignalRServices(builder.Configuration);
+    builder.Services.AddSignalRCorsPolicy("http://localhost:3000", "https://localhost:3000");
+
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
     builder.Services.AddDateTimeService();
@@ -36,21 +41,27 @@ try
     builder.Services.AddTransient<IDictionaryValuesProvider, DictionaryValuesProvider>();
     builder.Services.AddTransient<IDictionaryTypeMap, DictionaryTypeMap>();
     builder.Services.AddTransient<ICurrentUser, CurrentUserService>();
+    builder.Services.AddRabbitMqService(builder.Configuration);
 
     var app = builder.Build();
     app.AddAutomaticMigrations();
 
-    //if (app.Environment.IsDevelopment())
-    //{
+    var consumer = app.Services.GetRequiredService<IMessageConsumer>();
+    await consumer.StartAsync();
+
+    app.Lifetime.ApplicationStopping.Register(async () =>
+    {
+        await consumer.StopAsync();
+    });
+
     app.UseSwagger();
     app.UseSwaggerUI();
-    //}
 
     app.UseSerilogRequestLogging();
-    // app.UseHttpsRedirection();
     app.UseProblemDetails();
     app.UseRouting();
-    app.UseCors();
+
+    app.UseCors("SignalRCorsPolicy");
 
     app.UseCookiePolicy(new CookiePolicyOptions
     {
@@ -58,9 +69,11 @@ try
         HttpOnly = HttpOnlyPolicy.Always,
         Secure = CookieSecurePolicy.None // для http
     });
+
     app.UseAuthentication();
     app.UseAuthorization();
     app.MapControllers();
+    app.MapSignalRHubs();
 
     app.Run();
 

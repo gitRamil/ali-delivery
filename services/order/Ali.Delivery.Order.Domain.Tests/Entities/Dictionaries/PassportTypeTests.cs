@@ -11,9 +11,12 @@ public class PassportTypeTests
         //Arrange.
 
         //Act.
-        var values = PassportType.GetAllValues().ToList();
+        var values = PassportType.GetAllValues()
+                                 .ToList();
 
         //Assert.
-        values[0].Id.Should().Be(PassportType.Internal.Id);
+        values[0]
+            .Id.Should()
+            .Be(PassportType.Internal.Id);
     }
 }
