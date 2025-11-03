@@ -35,6 +35,7 @@ try
     builder.Services.AddApplicationServices();
 
     var app = builder.Build();
+    app.UseHttpsRedirection();
     app.AddAutomaticMigrations();
     app.UseSwagger();
     app.UseSwaggerUI();

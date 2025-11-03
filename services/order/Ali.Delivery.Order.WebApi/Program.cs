@@ -44,6 +44,7 @@ try
     builder.Services.AddRabbitMqService(builder.Configuration);
 
     var app = builder.Build();
+    app.UseHttpsRedirection();
     app.AddAutomaticMigrations();
 
     var consumer = app.Services.GetRequiredService<IMessageConsumer>();
