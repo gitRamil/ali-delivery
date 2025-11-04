@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ed-seq
+  namespace: ed-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ed-seq
+  template:
+    metadata:
+      labels:
+        app: ed-seq
+    spec:
+      containers:
+      - name: seq
+        image: datalust/seq:latest
+        env:
+        - name: ACCEPT_EULA
+          value: "Y"
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ed-seq
+  namespace: ed-namespace
+spec:
+  selector:
+    app: ed-seq
+  ports:
+  - port: 80
+    targetPort: 80

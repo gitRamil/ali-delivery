@@ -1,0 +1,39 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+  namespace: ed-namespace
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /orders
+        pathType: Prefix
+        backend:
+          service:
+            name: order-service
+            port:
+              number: 80
+      - path: /location
+        pathType: Prefix
+        backend:
+          service:
+            name: location-service
+            port:
+              number: 80
+      - path: /seq
+        pathType: Prefix
+        backend:
+          service:
+            name: ed-seq
+            port:
+              number: 80
+      - path: /rabbitmq
+        pathType: Prefix
+        backend:
+          service:
+            name: ed-rabbitmq
+            port:
+              number: 15672

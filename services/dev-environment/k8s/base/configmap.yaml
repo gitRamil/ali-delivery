@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: ed-namespace
+data:
+  RABBITMQ_HOST: "ed-rabbitmq"
+  POSTGRES_HOST: "ed-postgres"
+  SEQ_HOST: "ed-seq"
