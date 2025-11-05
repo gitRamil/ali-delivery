@@ -1,48 +1,48 @@
-name: Deploy to prod
+# name: Deploy to prod
 
-on:
-  push:
-    branches:
-      - main
+# on:
+#   push:
+#     branches:
+#       - main
 
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+# jobs:
+#   build-and-deploy:
+#     runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4.2.2
+#     steps:
+#     - name: Checkout repository
+#       uses: actions/checkout@v4.2.2
 
-    - name: Build docker image
-      run: |
-        cd ./services/order
-        docker build -f Ali.Delivery.Order.WebApi/Dockerfile -t ali-delivery-order-service:0.0.1 .
+#     - name: Build docker image
+#       run: |
+#         cd ./services/order
+#         docker build -f Ali.Delivery.Order.WebApi/Dockerfile -t ali-delivery-order-service:0.0.1 .
     
-    - name: Save docker image to file
-      run: |
-        cd ./services/order
-        docker save -o ali-delivery-order-service-0.0.1.tar ali-delivery-order-service:0.0.1
+#     - name: Save docker image to file
+#       run: |
+#         cd ./services/order
+#         docker save -o ali-delivery-order-service-0.0.1.tar ali-delivery-order-service:0.0.1
 
-    - name: Copy docker image to VPS
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        VPS_IP: ${{ vars.VPS_IP }}
-      run: |
-        cd ./services/order
-        mkdir -p ~/.ssh
-        echo "${SSH_PRIVATE_KEY}" > ~/.ssh/ali-delivery_ssh_key
-        chmod 600 ~/.ssh/ali-delivery_ssh_key
-        scp -o StrictHostKeyChecking=no -i ~/.ssh/ali-delivery_ssh_key ali-delivery-order-service-0.0.1.tar root@${VPS_IP}:/ali-delivery/order-service
+#     - name: Copy docker image to VPS
+#       env:
+#         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+#         VPS_IP: ${{ vars.VPS_IP }}
+#       run: |
+#         cd ./services/order
+#         mkdir -p ~/.ssh
+#         echo "${SSH_PRIVATE_KEY}" > ~/.ssh/ali-delivery_ssh_key
+#         chmod 600 ~/.ssh/ali-delivery_ssh_key
+#         scp -o StrictHostKeyChecking=no -i ~/.ssh/ali-delivery_ssh_key ali-delivery-order-service-0.0.1.tar root@${VPS_IP}:/ali-delivery/order-service
 
-    - name: Deploy on VPS
-      env:
-        VPS_IP: ${{ vars.VPS_IP }}
-        APP_PORT: ${{ vars.APP_PORT }}
-      run: |
-        cd ./services/order
-        ssh -o StrictHostKeyChecking=no -i ~/.ssh/ali-delivery_ssh_key root@${VPS_IP} << EOF
-          docker load -i /ali-delivery/order-service/ali-delivery-order-service-0.0.1.tar
-          docker stop ali-delivery-order-service || true
-          docker rm ali-delivery-order-service || true
-          docker run -d --name ali-delivery-order-service --env-file /ali-delivery/order-service/.env -p ${APP_PORT} ali-delivery-order-service:0.0.1
-        EOF
+#     - name: Deploy on VPS
+#       env:
+#         VPS_IP: ${{ vars.VPS_IP }}
+#         APP_PORT: ${{ vars.APP_PORT }}
+#       run: |
+#         cd ./services/order
+#         ssh -o StrictHostKeyChecking=no -i ~/.ssh/ali-delivery_ssh_key root@${VPS_IP} << EOF
+#           docker load -i /ali-delivery/order-service/ali-delivery-order-service-0.0.1.tar
+#           docker stop ali-delivery-order-service || true
+#           docker rm ali-delivery-order-service || true
+#           docker run -d --name ali-delivery-order-service --env-file /ali-delivery/order-service/.env -p ${APP_PORT} ali-delivery-order-service:0.0.1
+#         EOF
