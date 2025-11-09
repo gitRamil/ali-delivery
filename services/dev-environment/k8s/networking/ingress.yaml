@@ -4,25 +4,12 @@ metadata:
   name: app-ingress
   namespace: ed-namespace
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
+  ingressClassName: nginx
   rules:
   - http:
       paths:
-      - path: /orders
-        pathType: Prefix
-        backend:
-          service:
-            name: order-service
-            port:
-              number: 80
-      - path: /location
-        pathType: Prefix
-        backend:
-          service:
-            name: location-service
-            port:
-              number: 80
       - path: /seq
         pathType: Prefix
         backend:
@@ -37,3 +24,4 @@ spec:
             name: ed-rabbitmq
             port:
               number: 15672
+  

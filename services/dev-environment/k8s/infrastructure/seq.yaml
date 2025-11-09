@@ -19,14 +19,19 @@ spec:
         env:
         - name: ACCEPT_EULA
           value: "Y"
+        - name: SEQ_FIRSTRUN_ADMINPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: seq-admin-password
         ports:
         - containerPort: 80
         resources:
           requests:
-            memory: "256Mi"
-            cpu: "100m"
-          limits:
             memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
             cpu: "500m"
 ---
 apiVersion: v1

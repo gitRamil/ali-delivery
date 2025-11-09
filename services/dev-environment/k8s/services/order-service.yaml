@@ -15,24 +15,64 @@ spec:
     spec:
       containers:
       - name: order-service
-        image: your-registry/order-service:1.0
+        image: order-service:1.0
         ports:
-        - containerPort: 80
+        - containerPort: 8080  # Правильно - приложение на 8080
         env:
-        - name: ConnectionStrings__PostgreSQL
-          value: "Host=ed-postgres;Port=5432;Database=order_db;Username=postgres;Password=$(POSTGRES_PASSWORD)"
-        - name: RabbitMQ__Host
+        # Настройки ASP.NET Core
+        - name: ASPNETCORE_URLS
+          value: "http://*:8080"
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Development"
+        # Явно настраиваем HTTP endpoint
+        - name: AliDeliveryOrderService_Kestrel__Endpoints__Http__Url
+          value: "http://*:8080"
+        - name: AliDeliveryOrderService_ConnectionStrings__DefaultConnection
+          value: "Host=ed-postgres;Port=5432;Database=order-service;Username=postgres;Password=postgres"
+        - name: AliDeliveryOrderService_RabbitMQ__HostName
           value: "ed-rabbitmq"
-        - name: RabbitMQ__UserName
+        - name: AliDeliveryOrderService_RabbitMQ__Port
+          value: "5672"
+        - name: AliDeliveryOrderService_RabbitMQ__UserName
           valueFrom:
             secretKeyRef:
               name: app-secrets
               key: rabbitmq-username
-        - name: RabbitMQ__Password
+        - name: AliDeliveryOrderService_RabbitMQ__Password
           valueFrom:
             secretKeyRef:
               name: app-secrets
               key: rabbitmq-password
+        - name: AliDeliveryOrderService_RabbitMQ__VirtualHost
+          value: "/"
+        # Exchanges
+        - name: AliDeliveryOrderService_RabbitMQ__Exchanges__location__Name
+          value: "location.exchange"
+        - name: AliDeliveryOrderService_RabbitMQ__Exchanges__location__Type
+          value: "direct"
+        - name: AliDeliveryOrderService_RabbitMQ__Exchanges__location__Durable
+          value: "true"
+        - name: AliDeliveryOrderService_RabbitMQ__Exchanges__location__AutoDelete
+          value: "false"
+        # Queues
+        - name: AliDeliveryOrderService_RabbitMQ__Queues__locationCreated__Name
+          value: "location.created.queue"
+        - name: AliDeliveryOrderService_RabbitMQ__Queues__locationCreated__Exchange
+          value: "location.exchange"
+        - name: AliDeliveryOrderService_RabbitMQ__Queues__locationCreated__RoutingKey
+          value: "location.created"
+        - name: AliDeliveryOrderService_RabbitMQ__Queues__locationCreated__Durable
+          value: "true"
+        - name: AliDeliveryOrderService_RabbitMQ__Queues__locationCreated__Exclusive
+          value: "false"
+        - name: AliDeliveryOrderService_RabbitMQ__Queues__locationCreated__AutoDelete
+          value: "false"
+        # Seq Settings
+        - name: AliDeliveryOrderService_Serilog__WriteTo__2__Args__serverUrl
+          value: "http://ed-seq:5341"
+        # JWT Settings
+        - name: AliDeliveryOrderService_JwtOptions__SecretKey
+          value: "wGBxjDhFANhT8WhGWNi6CyIYJYGRLsth"
         - name: Seq__Host
           value: "http://ed-seq"
         envFrom:
@@ -50,15 +90,15 @@ spec:
         livenessProbe:
           httpGet:
             path: /health
-            port: 80
-          initialDelaySeconds: 30
+            port: 8080  # ИЗМЕНИТЕ: 80 → 8080
+          initialDelaySeconds: 60
           periodSeconds: 10
         readinessProbe:
           httpGet:
             path: /health
-            port: 80
-          initialDelaySeconds: 5
-          periodSeconds: 5
+            port: 8080  # ИЗМЕНИТЕ: 80 → 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
 ---
 apiVersion: v1
 kind: Service
@@ -70,4 +110,4 @@ spec:
     app: order-service
   ports:
   - port: 80
-    targetPort: 80
+    targetPort: 8080  # ИЗМЕНИТЕ: 80 → 8080

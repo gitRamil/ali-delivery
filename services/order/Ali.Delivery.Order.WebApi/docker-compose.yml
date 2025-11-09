@@ -1,15 +1,17 @@
-﻿version: "3.8"
-services:
-  ali-delivery-service:
-    container_name: "${APP_NAME}"
-    image: "${APP_NAME}"
-    build:
-      context: ../
-      dockerfile: ./Ali.Delivery.Order.WebApi/Dockerfile
-      target: final
-    environment:
-      AliDeliveryOrderService_ConnectionStrings__DefaultConnection: "${APP_DB_CONNECTION_STRING}"
-      AliDeliveryOrderService_Serilog__WriteTo__2__Args__serverUrl: "${SEQ_SERVER_URL}"
-      AliDeliveryOrderService_JwtOptions__SecretKey: "${JWT_SECRET_KEY}"
-    ports:
-      - "${APP_PORT}"
+﻿# version: "3.8"
+# services:
+#   ali-delivery-service:
+#     container_name: "${APP_NAME}"
+#     image: "${APP_NAME}"
+#     build:
+#       context: ../
+#       dockerfile: ./Ali.Delivery.Order.WebApi/Dockerfile
+#       target: final
+#     environment:
+#       AliDeliveryOrderService_ConnectionStrings__DefaultConnection: "${APP_DB_CONNECTION_STRING}"
+#       AliDeliveryOrderService_Serilog__WriteTo__2__Args__serverUrl: "${SEQ_SERVER_URL}"
+#       AliDeliveryOrderService_JwtOptions__SecretKey: "${JWT_SECRET_KEY}"
+#     ports:
+#       - "${APP_PORT}"
+
+
